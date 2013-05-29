@@ -2,28 +2,16 @@
   "name": "Guancio Meda Player",
   "version": "1",
   "manifest_version": 2,
-  "minimum_chrome_version": "23",
   "icons": {
     "16": "camera.png",
     "128": "camera.png"
   },
   "app": {
-    "background": {
-      "scripts": ["background.js"]
+    "urls": [
+        "*://htmlpreview.github.io/"
+    ],
+    "launch": {
+      "web_url": "http://htmlpreview.github.io/?https://github.com/guancio/ChromeOsSubtitle/bolb/hosted/index.html"
     }
-  },
-  "permissions": [
-    "fileSystem"
-  ]
-  // ,
-  // "intents": {
-  //   "http://webintents.org/view" : [{
-  //     "title" : "Txt Reader",
-  //     "type" : ["text/*"]
-  //   }],
-  //   "http://webintents.org/edit" : [{
-  //     "title" : "Txt Reader",
-  //     "type" : ["text/*"]
-  //   }]
-  // }
+  }
 }
