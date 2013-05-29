@@ -5,67 +5,39 @@ var chooseSrtFileButton = $('#choose_srt_file')[0];
 var startButton = $('#start_button')[0];
 var startButton2 = $('#start_button2')[0];
 
-chooseVideoFileButton.addEventListener('click', function(e) {
-    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
-	if (!readOnlyEntry) {
-	    console.log('No file selected.');
-	    return;
-	}
-	console.log(readOnlyEntry);
-	chosenVideoFileEntry = readOnlyEntry;
-	chrome.fileSystem.getDisplayPath(chosenVideoFileEntry, function(path) {
-	    $('#video_file_path')[0].value = path;
-	});
-    });
+chooseVideoFileButton.addEventListener('change', function(e) {
+    if (chooseVideoFileButton.files.length != 1) {
+	console.log('No file selected.');
+	return;
+    }
+    if (!chooseVideoFileButton.files[0]) {
+	console.log('No file selected.');
+	return;
+    }
+    console.log(chooseVideoFileButton.files[0]);
+    chosenVideoFileEntry = chooseVideoFileButton.files[0];
 });
 
-chooseSrtFileButton.addEventListener('click', function(e) {
-    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
-	if (!readOnlyEntry) {
-	    console.log('No file selected.');
-	    return;
-	}
-	console.log(readOnlyEntry);
-	chosenSrtFileEntry = readOnlyEntry;
-	chrome.fileSystem.getDisplayPath(chosenSrtFileEntry, function(path) {
-	    $('#srt_file_path')[0].value = path;
-	});
-    });
+chooseSrtFileButton.addEventListener('change', function(e) {
+    if (chooseSrtFileButton.files.length != 1) {
+	console.log('No file selected.');
+	return;
+    }
+    if (!chooseSrtFileButton.files[0]) {
+	console.log('No file selected.');
+	return;
+    }
+    console.log(chooseSrtFileButton.files[0]);
+    chosenSrtFileEntry = chooseSrtFileButton.files[0];
 });
 
 startButton.addEventListener('click', function(e) {
     $('#main').append('<video width="360" height="203" id="player" controls="controls"></video>');
-    // chosenVideoFileEntry.file(function(fff) {
-    //     var reader = new FileReader();
-    //     reader.onerror = function(e) {
-    // 	    console.log(e);
-    // 	};
-    //     reader.onloadend = function(e) {
-    // 	    $('#player').append('<source src="'+this.result+'" type="video/mp4">');
-	    
-    // 	    chrome.fileSystem.getDisplayPath(chosenSrtFileEntry, function(path) {
-    // 		$('#player').append('<track kind="subtitles" src="'+path+'" srclang="en" />');
-    // 		$('#player').mediaelementplayer({});
-    // 	    });
-    //     };
-    //     reader.readAsDataURL(fff);
-    // });
-    chosenVideoFileEntry.file(function fff(file) {
-	$('#player').append('<source src="'+window.URL.createObjectURL(file)+'" type="video/mp4">');
-	chosenSrtFileEntry.file(function fff(file) {
-	    $('#player').append('<track kind="subtitles" src="'+window.URL.createObjectURL(file)+'" srclang="en" />');
-	    $('#player').mediaelementplayer({
-		startLanguage:'en'
-	    });
-	});
-    });
-});
-
-
-startButton2.addEventListener('click', function(e) {
-    $('#main').append('<video width="360" height="203" id="player" controls="controls"></video>');
+    $('#player').append('<source src="'+window.URL.createObjectURL(chosenVideoFileEntry)+'" type="video/mp4">');
+    $('#player').append('<track kind="subtitles" src="'+window.URL.createObjectURL(chosenSrtFileEntry)+'" srclang="en" />');
     $('#player').mediaelementplayer({
 	startLanguage:'en'
     });
 });
+
 
