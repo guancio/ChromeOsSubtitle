@@ -8,10 +8,10 @@
   },
   "app": {
     "urls": [
-        "*://rawgithub.com/guancio/ChromeOsSubtitle/hosted/"
+        "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/webapp/"
     ],
     "launch": {
-      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/index.html"
+      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/webapp/index.html"
     }
   }
 }
