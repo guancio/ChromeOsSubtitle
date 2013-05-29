@@ -8,10 +8,10 @@
   },
   "app": {
     "urls": [
-        "*://htmlpreview.github.io/"
+        "*://rawgithub.com/guancio/ChromeOsSubtitle/hosted/"
     ],
     "launch": {
-      "web_url": "http://htmlpreview.github.io/?https://github.com/guancio/ChromeOsSubtitle/bolb/hosted/index.html"
+      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/index.html"
     }
   }
 }
