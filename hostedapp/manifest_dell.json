@@ -1,0 +1,17 @@
+{
+  "name": "Chrome Os Subtitle",
+  "version": "1.0.1",
+  "manifest_version": 2,
+  "icons": {
+    "16": "camera.png",
+    "128": "camera.png"
+  },
+  "app": {
+    "urls": [
+        "http://localhost"
+    ],
+    "launch": {
+      "web_url": "http://localhost:8000/index.html"
+    }
+  }
+}

@@ -32,11 +32,16 @@ chooseSrtFileButton.addEventListener('change', function(e) {
 });
 
 startButton.addEventListener('click', function(e) {
+    $('#main').empty();
+    var myURL = window.URL || window.webkitURL;
     $('#main').append('<video width="360" height="203" id="player" controls="controls"></video>');
-    $('#player').append('<source src="'+window.URL.createObjectURL(chosenVideoFileEntry)+'" type="video/mp4">');
-    $('#player').append('<track kind="subtitles" src="'+window.URL.createObjectURL(chosenSrtFileEntry)+'" srclang="en" />');
+    $('#player').append('<source src="'+myURL.createObjectURL(chosenVideoFileEntry)+'" type="video/mp4">');
+    $('#player').append('<track kind="subtitles" src="'+myURL.createObjectURL(chosenSrtFileEntry)+'" srclang="en" />');
     $('#player').mediaelementplayer({
-	startLanguage:'en'
+	startLanguage:'en',
+	success: function (mediaElement, domObject) { 
+	    mediaElement.play();
+	}
     });
 });
 
