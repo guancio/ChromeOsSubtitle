@@ -205,6 +205,19 @@
 }
 /* End: Play/pause */
 
+/* Start: Play/pause */
+.mejs-controls .mejs-source button {
+	background-position: -144px 0;
+}
+.mejs-controls .mejs-captionsize .mejs-reduce button {
+	background-position: -160px 0;
+}
+.mejs-controls .mejs-captionsize .mejs-increase button {
+	background-position: -160px -16px;
+}
+.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize  label {
+	width: 60px;
+}
 
 /* Stop */
 .mejs-controls .mejs-stop button {
