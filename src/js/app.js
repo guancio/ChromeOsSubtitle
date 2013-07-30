@@ -4,8 +4,7 @@ var chooseVideoFileButton = $('#choose_video_file')[0];
 var chooseSrtFileButton = $('#choose_srt_file')[0];
 var startButton = $('#start_button')[0];
 var startButton2 = $('#start_button2')[0];
-
-var defaultSize = 
+var myURL = window.URL || window.webkitURL;
 
 MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, media) {
     var
@@ -47,6 +46,40 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 	});  
 };
 
+
+(function($) {
+    $.extend(mejs.MepDefaults, {
+	sourceText: mejs.i18n.t('Open video...')
+    });
+
+    $.extend(MediaElementPlayer.prototype, {
+	buildsource: function(player, controls, layers, media) {
+	    var 
+	    t = this,
+	    open  = 
+		$('<div class="mejs-button mejs-playpause-button mejs-play" >' +
+		  '<button type="button" aria-controls="' + t.id + '" title="' + t.options.sourceText + '" aria-label="' + t.options.sourceText + '"></button>' +
+		  '</div>')
+		.appendTo(controls)
+		.click(function(e) {
+		    e.preventDefault();
+		    
+		    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
+			mainMediaElement.stop();
+			theFileEntry.file(function fff(file) {
+			    var path = window.URL.createObjectURL(file);
+			// var a = myURL.createObjectURL(theFileEntry);
+			    // chrome.fileSystem.getDisplayPath(theFileEntry, function(path) {
+			    mainMediaElement.setSrc(path);
+			});
+		    });
+		    return false;
+		});
+	}
+    });
+})(mejs.$);
+
+
 chooseVideoFileButton.addEventListener('change', function(e) {
     if (chooseVideoFileButton.files.length != 1) {
 	console.log('No file selected.');
@@ -58,6 +91,9 @@ chooseVideoFileButton.addEventListener('change', function(e) {
     }
     console.log(chooseVideoFileButton.files[0]);
     chosenVideoFileEntry = chooseVideoFileButton.files[0];
+    mainMediaElement.stop();
+    var a = myURL.createObjectURL(chosenVideoFileEntry);
+    mainMediaElement.setSrc(a);
 });
 
 chooseSrtFileButton.addEventListener('change', function(e) {
@@ -89,3 +125,18 @@ startButton.addEventListener('click', function(e) {
 });
 
 
+var myURL = window.URL || window.webkitURL;
+
+var mainMediaElement = null;
+
+$('#main').append('<video width="1024" height="500" id="player" controls="controls"></video>');
+$('#player').mediaelementplayer({
+    startLanguage:'en',
+    isVideo:true,
+    mode:"native",
+    features: ['source', 'playpause','progress','current','duration','subsize', 'tracks','volume','fullscreen'],
+    success: function (mediaElement, domObject) { 
+	mainMediaElement = mediaElement;
+	// mediaElement.play();
+    }
+});

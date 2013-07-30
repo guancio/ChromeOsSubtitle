@@ -11,5 +11,6 @@
   	 "background": {
          	       "scripts": ["background.js"]
 	 }
-  }
+  },
+  "permissions":["fileSystem"]
 }
