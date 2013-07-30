@@ -22,9 +22,6 @@
 		hasChapters: false,
 
 		buildtracks: function(player, controls, layers, media) {
-			if (player.tracks.length == 0)
-				return;
-
 			var t = this, 
 				i, 
 				options = '';
@@ -37,7 +34,7 @@
 						.prependTo(layers).hide();
 			player.captionsText = player.captions.find('.mejs-captions-text');
 			player.captionsButton = 
-					$('<div class="mejs-button mejs-captions-button">'+
+					$('<div class="mejs-button mejs-captions-button mejs-captions-enabled">'+
 						'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>'+
 						'<div class="mejs-captions-selector">'+
 							'<ul>'+
@@ -167,12 +164,9 @@
 		
 			if (lang == 'none') {
 				t.selectedTrack = null;
-				t.captionsButton.removeClass('mejs-captions-enabled');
 			} else {
 				for (i=0; i<t.tracks.length; i++) {
 					if (t.tracks[i].srclang == lang) {
-						if (t.selectedTrack == null)
-						    t.captionsButton.addClass('mejs-captions-enabled');
 						t.selectedTrack = t.tracks[i];
 						t.captions.attr('lang', t.selectedTrack.srclang);
 						t.displayCaptions();

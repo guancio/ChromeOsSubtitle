@@ -7,14 +7,13 @@ var startButton2 = $('#start_button2')[0];
 var myURL = window.URL || window.webkitURL;
 
 MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, media) {
+    var captionSelector = player.captionsButton.find('.mejs-captions-selector');
     var
-    // create the button
-    dec =
-        $('<div class="mejs-subsize">' +
-	    '<span>-</span>' +
-	  '</div>')
-    // append it to the toolbar
-        .appendTo(controls)
+    t = this;
+    // create the buttons
+    var dec =
+        $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
+	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption size') + '" aria-label="' + mejs.i18n.t('Decrease caption size') + '"></button>' +  '</div>')
 	.click(function() {
 	    $('.mejs-captions-layer').css({
 		"line-height":function( index, value ) {
@@ -24,16 +23,10 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 		    return ( parseFloat( value )/1.2) + "px";
 		}
 	    });
-	});  
-
-    var
-    // create the button
-    inc =
-        $('<div class="mejs-subsize">' +
-	    '<span>+</span>' +
-	  '</div>')
-    // append it to the toolbar
-        .appendTo(controls)
+	}); 
+    var inc = 
+	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
+	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption size') + '" aria-label="' + mejs.i18n.t('Increase caption size') + '"></button>' +  '</div>')
 	.click(function() {
 	    $('.mejs-captions-layer').css({
 		"line-height":function( index, value ) {
@@ -44,32 +37,35 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 		}
 	    });
 	});  
+
+    var line =
+	$('<li class="mejs-captionsize"></li>')
+	.append(dec)
+	.append(inc)
+	.append($('<label>Caption size</label>'));
+    captionSelector.find('ul').prepend(line);
 };
 
 
 (function($) {
-    $.extend(mejs.MepDefaults, {
-	sourceText: mejs.i18n.t('Open video...')
-    });
-
     $.extend(MediaElementPlayer.prototype, {
 	buildsource: function(player, controls, layers, media) {
 	    var 
 	    t = this,
 	    open  = 
-		$('<div class="mejs-button mejs-playpause-button mejs-play" >' +
-		  '<button type="button" aria-controls="' + t.id + '" title="' + t.options.sourceText + '" aria-label="' + t.options.sourceText + '"></button>' +
+		$('<div class="mejs-button mejs-source-button mejs-source" >' +
+		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
 		  '</div>')
 		.appendTo(controls)
 		.click(function(e) {
 		    e.preventDefault();
 		    
 		    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
+			if (theFileEntry == null)
+			    return;
 			mainMediaElement.stop();
 			theFileEntry.file(function fff(file) {
 			    var path = window.URL.createObjectURL(file);
-			// var a = myURL.createObjectURL(theFileEntry);
-			    // chrome.fileSystem.getDisplayPath(theFileEntry, function(path) {
 			    mainMediaElement.setSrc(path);
 			});
 		    });
@@ -117,7 +113,7 @@ startButton.addEventListener('click', function(e) {
     $('#player').append('<track kind="subtitles" src="'+myURL.createObjectURL(chosenSrtFileEntry)+'" srclang="en" />');
     $('#player').mediaelementplayer({
 	startLanguage:'en',
-	features: ['playpause','progress','current','duration','subsize', 'tracks','volume','fullscreen'],
+	features: ['playpause','progress','current','duration','tracks','volume','subsize', 'fullscreen'],
 	success: function (mediaElement, domObject) { 
 	    mediaElement.play();
 	}
@@ -133,8 +129,9 @@ $('#main').append('<video width="1024" height="500" id="player" controls="contro
 $('#player').mediaelementplayer({
     startLanguage:'en',
     isVideo:true,
+    hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration','subsize', 'tracks','volume','fullscreen'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume','fullscreen'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 	// mediaElement.play();
