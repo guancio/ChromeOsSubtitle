@@ -1,9 +1,3 @@
-var chosenVideoFileEntry = null;
-var chosenSrtFileEntry = null;
-var chooseVideoFileButton = $('#choose_video_file')[0];
-var chooseSrtFileButton = $('#choose_srt_file')[0];
-var startButton = $('#start_button')[0];
-var startButton2 = $('#start_button2')[0];
 var myURL = window.URL || window.webkitURL;
 
 MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, media) {
@@ -38,11 +32,43 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 	    });
 	});  
 
+    var open = 
+	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
+	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +  '</div>')
+	.click(function(e) {
+	    e.preventDefault();
+	    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
+		if (theFileEntry == null)
+		    return;
+		theFileEntry.file(function fff(file) {
+		    var path = window.URL.createObjectURL(file);
+		    mainMediaElement.player.tracks.push({
+			srclang: 'en',
+			src: path,
+			kind: 'subtitles',
+			label: '',
+			entries: [],
+			isLoaded: false
+		    });
+		    mainMediaElement.player.addTrackButton(
+			mainMediaElement.player.tracks[0].srclang,
+			mainMediaElement.player.tracks[0].label);
+		    mainMediaElement.player.loadTrack(0);
+		});
+	    });
+	    return false;
+	});  
+
     var line =
 	$('<li class="mejs-captionsize"></li>')
 	.append(dec)
 	.append(inc)
 	.append($('<label>Caption size</label>'));
+    captionSelector.find('ul').prepend(line);
+
+    var line =
+	$('<li class="mejs-captionsize"></li>')
+	.append(open)
     captionSelector.find('ul').prepend(line);
 };
 
@@ -76,56 +102,12 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 })(mejs.$);
 
 
-chooseVideoFileButton.addEventListener('change', function(e) {
-    if (chooseVideoFileButton.files.length != 1) {
-	console.log('No file selected.');
-	return;
-    }
-    if (!chooseVideoFileButton.files[0]) {
-	console.log('No file selected.');
-	return;
-    }
-    console.log(chooseVideoFileButton.files[0]);
-    chosenVideoFileEntry = chooseVideoFileButton.files[0];
-    mainMediaElement.stop();
-    var a = myURL.createObjectURL(chosenVideoFileEntry);
-    mainMediaElement.setSrc(a);
-});
-
-chooseSrtFileButton.addEventListener('change', function(e) {
-    if (chooseSrtFileButton.files.length != 1) {
-	console.log('No file selected.');
-	return;
-    }
-    if (!chooseSrtFileButton.files[0]) {
-	console.log('No file selected.');
-	return;
-    }
-    console.log(chooseSrtFileButton.files[0]);
-    chosenSrtFileEntry = chooseSrtFileButton.files[0];
-});
-
-startButton.addEventListener('click', function(e) {
-    $('#main').empty();
-    var myURL = window.URL || window.webkitURL;
-    $('#main').append('<video width="1024" height="500" id="player" controls="controls"></video>');
-    $('#player').append('<source src="'+myURL.createObjectURL(chosenVideoFileEntry)+'" type="video/mp4">');
-    $('#player').append('<track kind="subtitles" src="'+myURL.createObjectURL(chosenSrtFileEntry)+'" srclang="en" />');
-    $('#player').mediaelementplayer({
-	startLanguage:'en',
-	features: ['playpause','progress','current','duration','tracks','volume','subsize', 'fullscreen'],
-	success: function (mediaElement, domObject) { 
-	    mediaElement.play();
-	}
-    });
-});
-
 
 var myURL = window.URL || window.webkitURL;
 
 var mainMediaElement = null;
 
-$('#main').append('<video width="1024" height="500" id="player" controls="controls"></video>');
+$('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#player').mediaelementplayer({
     startLanguage:'en',
     isVideo:true,
@@ -134,6 +116,5 @@ $('#player').mediaelementplayer({
     features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume','fullscreen'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
-	// mediaElement.play();
     }
 });
