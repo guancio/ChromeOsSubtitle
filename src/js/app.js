@@ -32,43 +32,11 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 	    });
 	});  
 
-    var open = 
-	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
-	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +  '</div>')
-	.click(function(e) {
-	    e.preventDefault();
-	    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
-		if (theFileEntry == null)
-		    return;
-		theFileEntry.file(function fff(file) {
-		    var path = window.URL.createObjectURL(file);
-		    mainMediaElement.player.tracks.push({
-			srclang: 'en',
-			src: path,
-			kind: 'subtitles',
-			label: '',
-			entries: [],
-			isLoaded: false
-		    });
-		    mainMediaElement.player.addTrackButton(
-			mainMediaElement.player.tracks[0].srclang,
-			mainMediaElement.player.tracks[0].label);
-		    mainMediaElement.player.loadTrack(0);
-		});
-	    });
-	    return false;
-	});  
-
     var line =
 	$('<li class="mejs-captionsize"></li>')
 	.append(dec)
 	.append(inc)
 	.append($('<label>Caption size</label>'));
-    captionSelector.find('ul').prepend(line);
-
-    var line =
-	$('<li class="mejs-captionsize"></li>')
-	.append(open)
     captionSelector.find('ul').prepend(line);
 };
 

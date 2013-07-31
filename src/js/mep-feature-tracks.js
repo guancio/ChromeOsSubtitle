@@ -42,31 +42,36 @@
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
 									'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') +'</label>'+
 								'</li>'	+
+								'<li>'+
+									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
+					  '<div class="mejs-button mejs-increase-button mejs-opensubtitle" >' +
+					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +  '</div>'+								'</li>'	+
 							'</ul>'+
 						'</div>'+
 					'</div>')
 						.appendTo(controls);
-			
-						
-			var subtitleCount = 0;
-			for (i=0; i<player.tracks.length; i++) {
-				if (player.tracks[i].kind == 'subtitles') {
-					subtitleCount++;
-				}
-			}
 
-			// if only one language then just make the button a toggle
-			if (t.options.toggleCaptionsButtonWhenOnlyOne && subtitleCount == 1){
-				// click
-				player.captionsButton.on('click',function() {
-					if (player.selectedTrack == null) {
-						var lang = player.tracks[0].srclang;
-					} else {
-						var lang = 'none';
-					}
-					player.setTrack(lang);
+		    player.captionsButton.find('.mejs-opensubtitle').click(function(e) {
+			e.preventDefault();
+			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
+			    if (theFileEntry == null)
+				return;
+			    theFileEntry.file(function fff(file) {
+				var path = window.URL.createObjectURL(file);
+				player.tracks = [];
+				player.tracks.push({
+				    srclang: 'enabled',
+				    src: path,
+				    kind: 'subtitles',
+				    label: 'Enabled',
+				    entries: [],
+				    isLoaded: false
 				});
-			} else {
+				mainMediaElement.player.loadTrack(0);
+			    });
+			});
+			return false;
+		    });
 				// hover
 				player.captionsButton.hover(function() {
 					$(this).find('.mejs-captions-selector').css('visibility','visible');
@@ -79,8 +84,6 @@
 					lang = this.value;
 					player.setTrack(lang);
 				});
-
-			}
 
 			if (!player.options.alwaysShowControls) {
 				// move with controls
@@ -105,7 +108,6 @@
 			player.isLoadingTrack = false;
 
 			
-
 			// add to list
 			for (i=0; i<player.tracks.length; i++) {
 				if (player.tracks[i].kind == 'subtitles') {
@@ -155,6 +157,15 @@
 			if (player.node.getAttribute('autoplay') !== null) {
 				player.chapters.css('visibility','hidden');
 			}
+
+		    media.addEventListener('loadeddata',function() {
+			$('#' + t.id + '_captions_none').click();
+			player.tracks = [];
+			t.captionsButton
+			    .find('input[value=enabled]')
+			    .prop('disabled',true);
+
+		    });
 		},
 		
 		setTrack: function(lang){
@@ -248,15 +259,10 @@
 			}			
 
 			t.captionsButton
-				.find('input[value=' + lang + ']')
-					.prop('disabled',false)
-				.siblings('label')
-					.html( label );
+				.find('input[value=enabled]')
+					.prop('disabled',false);
 
-			// auto select
-			if (t.options.startLanguage == lang) {
-				$('#' + t.id + '_captions_' + lang).click();
-			}
+		        $('#' + t.id + '_captions_enabled').click();
 
 			t.adjustLanguageBox();
 		},
