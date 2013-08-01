@@ -35,8 +35,8 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
     var line =
 	$('<li class="mejs-captionsize"></li>')
 	.append(dec)
-	.append(inc)
-	.append($('<label>Caption size</label>'));
+	.append($('<label>Caption size</label>'))
+	.append(inc);
     captionSelector.find('ul').prepend(line);
 };
 
