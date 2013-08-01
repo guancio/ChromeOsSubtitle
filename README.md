@@ -10,12 +10,16 @@ Please, if possible submit bug and feature request at https://github.com/guancio
 Note that the subtitle file must be UTF-8 to handle special characters.
 
 Change log:
-Version 1.0.3
- - deployed as packaged app
-Version 1.0.2
- - buttons to change subtitle size
-Version 1.0.1
- - first published release
+- Version 1.0.4
+  - integrated file selection with the main media player
+  - fixed window resize in non-fullscreen mode
+  - disabled fullscreen   
+- Version 1.0.3
+  - deployed as packaged app
+- Version 1.0.2
+  - buttons to change subtitle size
+- Version 1.0.1
+  - first published release
 
 Missing features/bug:
 - fix full screen in chrome os
