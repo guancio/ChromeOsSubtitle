@@ -334,7 +334,7 @@
 				}
 
 				// set the size, while we wait for the plugins to load below
-				t.setPlayerSize(t.width, t.height);
+				// t.setPlayerSize(t.width, t.height);
 				
 				// create MediaElementShim
 				meOptions.pluginWidth = t.height;
@@ -735,6 +735,7 @@
 		},
 
 		setPlayerSize: function(width,height) {
+		    return;
 			var t = this;
 
 			if (typeof width != 'undefined')

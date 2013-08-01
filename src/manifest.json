@@ -1,6 +1,6 @@
 {
   "name": "Subtitle Videoplayer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "manifest_version": 2,
   "minimum_chrome_version": "28",
   "icons": {
@@ -12,5 +12,6 @@
          	       "scripts": ["background.js"]
 	 }
   },
-  "permissions":["fileSystem"]
+  "permissions":["fileSystem"],
+  "offline_enabled": true
 }
