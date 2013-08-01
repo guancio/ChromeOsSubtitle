@@ -23,8 +23,6 @@ Change log:
 
 Missing features/bug:
 - fix full screen in chrome os
-- integrate file selection with the main media player
-- fix window resize in non-fullscreen mode
 - fix subtitle stored in non-UTF8 files (e.g. greek)
 - advance/delay subtitles
 - file type association
