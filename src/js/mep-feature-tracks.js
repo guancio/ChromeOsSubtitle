@@ -42,16 +42,16 @@
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
 									'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') +'</label>'+
 								'</li>'	+
-								'<li>'+
+								'<li class="mejs-captionload">'+
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
-					  '<div class="mejs-button mejs-increase-button mejs-opensubtitle" >' +
+					  '<div class="mejs-button  mejs-captionload" >' +
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +  '</div>'+								'</li>'	+
 							'</ul>'+
 						'</div>'+
 					'</div>')
 						.appendTo(controls);
 
-		    player.captionsButton.find('.mejs-opensubtitle').click(function(e) {
+		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
 			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
 			    if (theFileEntry == null)
@@ -67,11 +67,12 @@
 				    entries: [],
 				    isLoaded: false
 				});
-				mainMediaElement.player.loadTrack(0);
+				player.loadTrack(0);
 			    });
 			});
 			return false;
 		    });
+
 				// hover
 				player.captionsButton.hover(function() {
 					$(this).find('.mejs-captions-selector').css('visibility','visible');

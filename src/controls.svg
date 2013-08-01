@@ -586,7 +586,7 @@
      offset="100%"
      stop-opacity="1"
      stop-color="#c8c8c8" /></linearGradient><linearGradient
-   gradientTransform="matrix(1,0,0,1.6529068,15.392234,-11.801024)"
+   gradientTransform="matrix(1,0,0,1.6529068,15.392238,-12.864514)"
    y2="13.407922"
    x2="152.36789"
    y1="11.690458"
@@ -782,6 +782,7 @@
    id="text140"><tspan
      id="tspan142">cc</tspan></text>
 
+
 		<path
    d="m 55,7 c -4.7187,-3.2187 -4.937,5.9405 0,3"
    id="path144"
@@ -959,7 +960,7 @@
    width="8.751358"
    height="2.6923435"
    x="163.51154"
-   y="7.6558638" /><path
+   y="6.5923738" /><path
    style="fill:url(#linearGradient4134);fill-opacity:1;fill-rule:nonzero"
    d="M 166.28125 19.375 L 166.28125 22.15625 L 163.5 22.15625 L 163.5 24.84375 L 166.28125 24.84375 L 166.28125 28.125 L 168.96875 28.125 L 168.96875 24.84375 L 172.25 24.84375 L 172.25 22.15625 L 168.96875 22.15625 L 168.96875 19.375 L 166.28125 19.375 z "
    id="rect4003-9-9" /></svg>
