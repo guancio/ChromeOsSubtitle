@@ -25,7 +25,6 @@ Change log:
   - first published release
 
 Missing features/bug:
-- fix full screen in chrome os
 - fix subtitle stored in non-UTF8 files (e.g. greek)
 - advance/delay subtitles
-- file type association
+- file type association to open video and subtitle togheter
