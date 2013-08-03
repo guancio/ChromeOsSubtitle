@@ -12,6 +12,14 @@
          	       "scripts": ["background.js"]
 	 }
   },
+    "file_handlers": {
+	"text": {
+	    "title": "Watch",
+	    "icons": {"16": "camera.png"},
+	    "types": ["video/*"]// ,
+	    // "extensions": ["srt"]
+	}
+    },
   "permissions":["fileSystem", "fullscreen"],
   "offline_enabled": true
 }
