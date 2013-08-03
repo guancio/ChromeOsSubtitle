@@ -82,7 +82,7 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume', 'fullscreen'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
@@ -112,6 +112,5 @@ $('#player').mediaelementplayer({
 	    .height('100%');
 
 	t.setControlsSize();
-	t.isFullScreen = true;	
     }
 });

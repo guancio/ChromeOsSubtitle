@@ -435,6 +435,14 @@
 				mejs.MediaFeatures.cancelFullScreen();
 			}
 
+			t.fullscreenBtn
+				.removeClass('mejs-unfullscreen')
+				.addClass('mejs-fullscreen');
+
+			t.setControlsSize();
+			t.isFullScreen = false;
+		    return;
+
 			// restore scroll bars to document
 			document.documentElement.style.overflow = docStyleOverflow;
 
