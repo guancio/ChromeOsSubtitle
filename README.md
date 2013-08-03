@@ -12,6 +12,7 @@ Note that the subtitle file must be UTF-8 to handle special characters.
 Change log:
 - Version 1.0.5
   - restored fullscreen button
+  - added file type association, allowing to launch the player from the file browser
 - Version 1.0.4
   - integrated file selection with the main media player
   - fixed window resize in non-fullscreen mode
