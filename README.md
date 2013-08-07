@@ -10,6 +10,9 @@ Please, if possible submit bug and feature request at https://github.com/guancio
 Note that the subtitle file must be UTF-8 to handle special characters.
 
 Change log:
+- Version 1.0.5
+  - restored fullscreen button
+  - added file type association, allowing to launch the player from the file browser
 - Version 1.0.4
   - integrated file selection with the main media player
   - fixed window resize in non-fullscreen mode
@@ -22,7 +25,6 @@ Change log:
   - first published release
 
 Missing features/bug:
-- fix full screen in chrome os
 - fix subtitle stored in non-UTF8 files (e.g. greek)
 - advance/delay subtitles
-- file type association
+- file type association to open video and subtitle togheter
