@@ -82,7 +82,7 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume', 'fullscreen'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
@@ -112,6 +112,21 @@ $('#player').mediaelementplayer({
 	    .height('100%');
 
 	t.setControlsSize();
-	t.isFullScreen = true;	
+
+	if (!window.launchData)
+	    return;
+	if (!window.launchData.items)
+	    return;
+	if (window.launchData.items.length != 1)
+	    return;
+	entry = window.launchData.items[0].entry;
+	if (entry == null)
+	    return;
+	mainMediaElement.stop();
+	entry.file(function fff(file) {
+	    var path = window.URL.createObjectURL(file);
+	    mainMediaElement.setSrc(path);
+	    mainMediaElement.play();
+	});
     }
 });
