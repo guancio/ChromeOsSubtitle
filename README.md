@@ -10,6 +10,8 @@ Please, if possible submit bug and feature request at https://github.com/guancio
 Note that the subtitle file must be UTF-8 to handle special characters.
 
 Change log:
+- Version 1.0.6
+  - added feature to synchronize (advance/delay) captions
 - Version 1.0.5
   - restored fullscreen button
   - added file type association, allowing to launch the player from the file browser
@@ -26,5 +28,7 @@ Change log:
 
 Missing features/bug:
 - fix subtitle stored in non-UTF8 files (e.g. greek)
-- advance/delay subtitles
 - file type association to open video and subtitle togheter
+- restyle caption interface
+- better code style/integration with me player
+- integration of an android remote control app

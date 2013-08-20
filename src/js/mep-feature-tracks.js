@@ -165,8 +165,11 @@
 			t.captionsButton
 			    .find('input[value=enabled]')
 			    .prop('disabled',true);
-
+			
 		    });
+
+		    player.adjustLanguageBox();
+		    player.capDelayValue = 0;
 		},
 		
 		setTrack: function(lang){
@@ -288,6 +291,7 @@
 		},
 
 		adjustLanguageBox:function() {
+		    return;
 			var t = this;
 			// adjust the size of the outer box
 			t.captionsButton.find('.mejs-captions-selector').height(
@@ -327,9 +331,11 @@
 				i,
 				track = t.selectedTrack;
 
+		    var currTime = t.media.currentTime - t.capDelayValue;
+
 			if (track != null && track.isLoaded) {
 				for (i=0; i<track.entries.times.length; i++) {
-					if (t.media.currentTime >= track.entries.times[i].start && t.media.currentTime <= track.entries.times[i].stop){
+					if (currTime >= track.entries.times[i].start && currTime <= track.entries.times[i].stop){
 						t.captionsText.html(track.entries.text[i]);
 						t.captions.show().height(0);
 						return; // exit out if one is visible;
