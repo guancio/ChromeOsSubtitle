@@ -41,6 +41,51 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 };
 
 
+MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, media) {
+    var captionSelector = player.captionsButton.find('.mejs-captions-selector');
+    var
+    t = this;
+    var value =
+	$('<input style="background-color: transparent; width: 52px; color: white; font-size: 10px;clear: none"></input>').
+	on('input',function(e){
+	    t.capDelayValue = Number(t.capDelayInput.value);
+	}
+	);
+
+    t.capDelayInput = value[0];
+    t.capDelayInput.value = 0;
+
+    // create the buttons
+    var dec =
+        $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
+	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption delay') + '" aria-label="' + mejs.i18n.t('Decrease caption delay') + '"></button>' +  '</div>')
+	.click(function() {
+	    t.capDelayInput.value = (Number(t.capDelayInput.value) - 0.1).toFixed(1);
+	    t.capDelayValue = Number(t.capDelayInput.value);
+	}); 
+    var inc = 
+	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
+	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption delay') + '" aria-label="' + mejs.i18n.t('Increase caption delay') + '"></button>' +  '</div>')
+	.click(function() {
+	    t.capDelayInput.value = (Number(t.capDelayInput.value) + 0.1).toFixed(1);
+	    t.capDelayValue = Number(t.capDelayInput.value);
+	});
+
+    var line =
+	$('<li class="mejs-captionsize"></li>')
+	.append(dec)
+	.append(value)
+	.append(inc);
+    captionSelector.find('ul').prepend(line);
+
+    media.addEventListener('loadeddata',function() {
+	t.capDelayInput.value = 0;
+	t.capDelayValue = 0;
+    });
+
+};
+
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	buildsource: function(player, controls, layers, media) {
@@ -82,7 +127,7 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subsize','volume', 'fullscreen'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'fullscreen'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
