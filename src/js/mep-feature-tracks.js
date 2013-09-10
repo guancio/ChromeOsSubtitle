@@ -45,7 +45,10 @@
 								'<li class="mejs-captionload">'+
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
 					  '<div class="mejs-button  mejs-captionload" >' +
-					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +  '</div>'+								'</li>'	+
+					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' + 
+ '</div>'+								'</li>'	+
+'<li><select><option value="UTF-8">UTF-8</option><option value="ISO-8859-7">ISO-8859-7: Greek</option></select></il>'+
+
 							'</ul>'+
 						'</div>'+
 					'</div>')
@@ -61,7 +64,7 @@
 				player.tracks = [];
 				player.tracks.push({
 				    srclang: 'enabled',
-				    src: path,
+				    file: file,
 				    kind: 'subtitles',
 				    label: 'Enabled',
 				    entries: [],
@@ -77,7 +80,7 @@
 				player.captionsButton.hover(function() {
 					$(this).find('.mejs-captions-selector').css('visibility','visible');
 				}, function() {
-					$(this).find('.mejs-captions-selector').css('visibility','hidden');
+					// $(this).find('.mejs-captions-selector').css('visibility','hidden');
 				})
 
 				// handle clicks to the language radio buttons
@@ -211,48 +214,37 @@
 				t = this,
 				track = t.tracks[index],
 				after = function() {
-
 					track.isLoaded = true;
-
 					// create button
 					//t.addTrackButton(track.srclang);
 					t.enableTrackButton(track.srclang, track.label);
-
 					t.loadNextTrack();
-
 				};
-
-
-			$.ajax({
-				url: track.src,
-				dataType: "text",
-				success: function(d) {
-
-					// parse the loaded file
-					if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
-						track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
-					} else {	
-						track.entries = mejs.TrackFormatParser.webvvt.parse(d);
-					}
-					
-					after();
-
-					if (track.kind == 'chapters') {
-						t.media.addEventListener('play', function(e) {
-							if (t.media.duration > 0) {
-								t.displayChapters(track);
-							}
-						}, false);
-					}
-					
-					if (track.kind == 'slides') {
-						t.setupSlides(track);
-					}					
-				},
-				error: function() {
-					t.loadNextTrack();
+		    var reader = new FileReader();
+		    reader.onloadend = function(evt) {
+			// parse the loaded file
+			var d = evt.target.result;
+			if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
+			    track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
+			} else {	
+			    track.entries = mejs.TrackFormatParser.webvvt.parse(d);
+			}
+			after();
+			if (track.kind == 'chapters') {
+			    t.media.addEventListener('play', function(e) {
+				if (t.media.duration > 0) {
+				    t.displayChapters(track);
 				}
-			});
+			    }, false);
+			}
+			if (track.kind == 'slides') {
+			    t.setupSlides(track);
+			}					
+		    };
+		    reader.onerror = function() {
+			t.loadNextTrack();
+		    };
+		    reader.readAsText(track.file, "ISO-8859-7");
 		},
 
 		enableTrackButton: function(lang, label) {
