@@ -76,6 +76,7 @@
 				// hover
 				player.captionsButton.hover(function() {
 					$(this).find('.mejs-captions-selector').css('visibility','visible');
+
 				}, function() {
 					$(this).find('.mejs-captions-selector').css('visibility','hidden');
 				})
@@ -85,6 +86,14 @@
 					lang = this.value;
 					player.setTrack(lang);
 				});
+		    
+		    player.captionsButton.find('.mejs-captions-selector').bind('mouseenter mouseover mousemove',  function(event) {
+			player.killControlsTimer('enter');
+			event.stopPropagation();
+		    });
+
+
+		    
 
 			if (!player.options.alwaysShowControls) {
 				// move with controls
