@@ -7,9 +7,10 @@ It is basically a simple wrapper for http://mediaelementjs.com/
 
 Please, if possible submit bug and feature request at https://github.com/guancio/ChromeOsSubtitle/issues
 
-Note that the subtitle file must be UTF-8 to handle special characters.
-
 Change log:
+- Version 1.1.0
+  - support to select the subtitle encofing, allowing to load Greek and Korean subtitles
+  - minor graphical fix on the subtitle menu
 - Version 1.0.6
   - added feature to synchronize (advance/delay) captions
 - Version 1.0.5
