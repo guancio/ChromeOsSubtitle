@@ -241,7 +241,7 @@
 	/* font-size: 10px; */
 }
 
-}
+
 
 /* Stop */
 .mejs-controls .mejs-stop button {
@@ -567,7 +567,7 @@
 	bottom: 26px;
 	right: -10px;
 	width: 130px;
-	height: 100px;
+	height: 130px;
 	background: url(background.png);
 	background: rgba(50,50,50,0.7);
 	border: solid 1px transparent;
