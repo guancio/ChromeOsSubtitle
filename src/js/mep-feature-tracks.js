@@ -33,6 +33,82 @@
 					$('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
 						.prependTo(layers).hide();
 			player.captionsText = player.captions.find('.mejs-captions-text');
+
+		    var encodings = [
+			"utf-8",
+			"ibm866",
+			"iso-8859-2",
+			"iso-8859-3",
+			"iso-8859-4",
+			"iso-8859-5",
+			"iso-8859-6",
+			"iso-8859-7",
+			"iso-8859-8",
+			"iso-8859-10",
+			"iso-8859-13 ",
+			"iso-8859-14",
+			"iso-8859-15",
+			"iso-8859-16",
+			"koi8-r",
+			"koi8-u",
+			"windows-874",
+			"windows-1250",
+			"windows-1251",
+			"windows-1252",
+			"windows-1253",
+			"windows-1254",
+			"windows-1255",
+			"windows-1256",
+			"windows-1257",
+			"windows-1258",
+			"gbk",
+			"gb18030",
+			"euc-jp",
+			"iso-2022-jp",
+			"shift_jis",
+			"euc-kr"];
+		    var encoding_labels = [
+			"UTF-8",
+			"ibm866 Cyrillic",
+			"iso-8859-2 Latin-2",
+			"iso-8859-3 Latin-3",
+			"iso-8859-4 Latin-4",
+			"iso-8859-5 Cyrillic",
+			"iso-8859-6 Arabic",
+			"iso-8859-7 Greek",
+			"iso-8859-8 Hebrew",
+			"iso-8859-10 Latin-6",
+			"iso-8859-13 ",
+			"iso-8859-14",
+			"iso-8859-15",
+			"iso-8859-16",
+			"koi8-r",
+			"koi8-u",
+			"windows-874",
+			"windows-1250",
+			"windows-1251",
+			"windows-1252 US-ascii",
+			"windows-1253",
+			"windows-1254 Latin-5",
+			"windows-1255",
+			"windows-1256",
+			"windows-1257",
+			"windows-1258",
+			"gbk Chinese",
+			"gb18030",
+			"euc-jp",
+			"iso-2022-jp",
+			"shift_jis",
+			"euc-kr"];
+
+		    var encodingText = '<li><select id="encoding-selector">';
+		    for (i=0; i<encodings.length; i++) {
+			encodingText = encodingText + '<option value="'+encodings[i]+'">'+encoding_labels[i]+'</option>';
+		    }
+		    encodingText = encodingText +'</select></il>';
+
+
+
 			player.captionsButton = 
 					$('<div class="mejs-button mejs-captions-button mejs-captions-enabled">'+
 						'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>'+
@@ -47,13 +123,21 @@
 					  '<div class="mejs-button  mejs-captionload" >' +
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' + 
  '</div>'+								'</li>'	+
-'<li><select><option value="UTF-8">UTF-8</option><option value="ISO-8859-7">ISO-8859-7: Greek</option></select></il>'+
+					  encodingText +
 
 							'</ul>'+
 						'</div>'+
 					'</div>')
 						.appendTo(controls);
 
+		    
+		    player.captionEncodingSelect = player.captionsButton.find('#encoding-selector')[0];
+		    player.captionsButton.find('#encoding-selector').change(function(e) {
+			if (player.tracks.length == 0)
+			    return;
+			player.tracks[0].isLoaded = false;
+			player.loadTrack(0);
+		    });
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
 			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
@@ -61,6 +145,7 @@
 				return;
 			    theFileEntry.file(function fff(file) {
 				var path = window.URL.createObjectURL(file);
+				$('#encoding-selector').val("UTF-8");
 				player.tracks = [];
 				player.tracks.push({
 				    srclang: 'enabled',
@@ -81,7 +166,7 @@
 					$(this).find('.mejs-captions-selector').css('visibility','visible');
 
 				}, function() {
-					// $(this).find('.mejs-captions-selector').css('visibility','hidden');
+					$(this).find('.mejs-captions-selector').css('visibility','hidden');
 				})
 
 				// handle clicks to the language radio buttons
@@ -253,7 +338,7 @@
 		    reader.onerror = function() {
 			t.loadNextTrack();
 		    };
-		    reader.readAsText(track.file, "ISO-8859-7");
+		    reader.readAsText(track.file, t.captionEncodingSelect.value);
 		},
 
 		enableTrackButton: function(lang, label) {
