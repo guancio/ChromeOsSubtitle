@@ -103,6 +103,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 			if (theFileEntry == null)
 			    return;
 			mainMediaElement.stop();
+			player.tracks = [];
 			theFileEntry.file(function fff(file) {
 			    var path = window.URL.createObjectURL(file);
 			    mainMediaElement.setSrc(path);
@@ -114,6 +115,56 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     });
 })(mejs.$);
 
+(function($) {
+    $.extend(MediaElementPlayer.prototype, {
+	builddrop: function(player, controls, layers, media) {
+	    var 
+	    t = this;
+	    document.body.addEventListener('dragover', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	    }, false);
+	    document.body.addEventListener('dragleave', function(e) {
+		e.preventDefault();
+	    }, false);
+	    document.body.addEventListener('drop', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var draggedVideo = null;
+		var draggedSrt = null;
+		if (e.dataTransfer.types.indexOf('Files') >= 0) {
+		    var files = e.dataTransfer.files;
+		    for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.type.indexOf("video") >= 0)
+			    draggedVideo = file;
+			else if (file.type.indexOf("subrip") >= 0)
+			    draggedSrt = file;
+		    }
+		}
+		if (draggedVideo != null) {
+		    mainMediaElement.stop();
+		    var path = window.URL.createObjectURL(draggedVideo);
+		    mainMediaElement.setSrc(path);
+		}
+		if (draggedSrt != null) {
+		    var path = window.URL.createObjectURL(draggedSrt);
+		    $('#encoding-selector').val("UTF-8");
+		    player.tracks = [];
+		    player.tracks.push({
+			srclang: 'enabled',
+			file: file,
+			kind: 'subtitles',
+			label: 'Enabled',
+			entries: [],
+			isLoaded: false
+		    });
+		    player.loadTrack(0);
+		}
+	    }, false);
+	}
+    });
+})(mejs.$);
 
 
 var myURL = window.URL || window.webkitURL;
@@ -127,7 +178,7 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'fullscreen'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'fullscreen', 'drop'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
