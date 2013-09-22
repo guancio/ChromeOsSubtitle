@@ -1,3 +1,6 @@
+
+zip.workerScriptsPath = "/lib/";
+
 (function($) {
 
 	// add extra default options 
@@ -144,6 +147,29 @@
 			    if (theFileEntry == null)
 				return;
 			    theFileEntry.file(function fff(file) {
+
+				zip.createReader(new zip.BlobReader(file), function(reader) {
+				    // get all entries from the zip
+				    reader.getEntries(function(entries) {
+					if (entries.length) {
+					    // get first entry content as text
+					    entries[0].getData(new zip.TextWriter(), function(text) {
+						// text contains the entry data as a String
+						console.log(text);
+						// close the zip reader
+						reader.close(function() {
+						    // onclose callback
+						});
+					    }, function(current, total) {
+						// onprogress callback
+					    });
+					}
+				    });
+				}, function(error) {
+				    // onerror callback
+				});
+
+
 				var path = window.URL.createObjectURL(file);
 				$('#encoding-selector').val("UTF-8");
 				player.tracks = [];
