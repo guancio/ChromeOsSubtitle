@@ -1,3 +1,6 @@
+
+zip.workerScriptsPath = "/lib/";
+
 (function($) {
 
 	// add extra default options 
@@ -141,22 +144,7 @@
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
 			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
-			    if (theFileEntry == null)
-				return;
-			    theFileEntry.file(function fff(file) {
-				var path = window.URL.createObjectURL(file);
-				$('#encoding-selector').val("UTF-8");
-				player.tracks = [];
-				player.tracks.push({
-				    srclang: 'enabled',
-				    file: file,
-				    kind: 'subtitles',
-				    label: 'Enabled',
-				    entries: [],
-				    isLoaded: false
-				});
-				player.loadTrack(0);
-			    });
+			    player.openSrtEntry(theFileEntry);
 			});
 			return false;
 		    });
@@ -268,6 +256,54 @@
 		    player.adjustLanguageBox();
 		    player.capDelayValue = 0;
 		},
+
+	    openSrtEntry: function(entry) {
+		var t = this;
+		if (entry == null)
+		    return;
+		entry.file(function fff(file) {
+		    $('#encoding-selector').val("UTF-8");
+		    t.tracks = [];
+		    t.tracks.push({
+			srclang: 'enabled',
+			file: file,
+			kind: 'subtitles',
+			label: 'Enabled',
+			entries: [],
+			isLoaded: false
+		    });
+				
+		    if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
+			t.loadTrack(0);
+			return;
+		    }
+				
+		    t.tracks[0].zipFile = file;
+		    zip.createReader(new zip.BlobReader(file), function(reader) {
+			// get all entries from the zip
+			reader.getEntries(function(entries) {
+			    if (entries.length) {
+				// get first entry content as text
+				entries[0].getData(new zip.BlobWriter(), function(data) {
+				    // text contains the entry data as a blob
+				    t.tracks[0].file = data;
+
+				    t.loadTrack(0);
+
+				    // close the zip reader
+				    reader.close(function() {
+					// onclose callback
+				    });
+				}, function(current, total) {
+				    // onprogress callback
+				});
+			    }
+			});
+		    }, function(error) {
+			// onerror callback
+		    });
+		});
+	    },
 		
 		setTrack: function(lang){
 		
