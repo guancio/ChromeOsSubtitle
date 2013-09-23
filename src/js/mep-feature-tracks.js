@@ -245,12 +245,12 @@ zip.workerScriptsPath = "/lib/";
 			}
 
 		    media.addEventListener('loadeddata',function() {
-			$('#' + t.id + '_captions_none').click();
-			player.tracks = [];
-			t.captionsButton
-			    .find('input[value=enabled]')
-			    .prop('disabled',true);
-			
+			if (player.tracks.length == 0) {
+			    $('#' + t.id + '_captions_none').click();
+			    t.captionsButton
+				.find('input[value=enabled]')
+				.prop('disabled',true);
+			}
 		    });
 
 		    player.adjustLanguageBox();
