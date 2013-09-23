@@ -7,6 +7,11 @@ It is basically a simple wrapper for http://mediaelementjs.com/
 
 Please, if possible submit bug and feature request at https://github.com/guancio/ChromeOsSubtitle/issues
 
+- Drag and Drop:
+  - drop a video file to the player to open it
+  - drop a srt file to show it on an already opened video
+  - drop a video and a srt (together) open the video and the corresponding subtitle
+
 Change log:
 - Version 1.1.0
   - support to select the subtitle encofing, allowing to load Greek and Korean subtitles
