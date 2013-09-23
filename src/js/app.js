@@ -140,6 +140,8 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 			    draggedVideo = file;
 			else if (file.type.indexOf("subrip") >= 0)
 			    draggedSrt = file;
+			else if (file.type.indexOf("application/zip") >= 0)
+			    draggedSrt = file;
 		    }
 		}
 		if (draggedVideo != null) {
@@ -147,19 +149,9 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		    var path = window.URL.createObjectURL(draggedVideo);
 		    mainMediaElement.setSrc(path);
 		}
+		player.tracks = [];
 		if (draggedSrt != null) {
-		    var path = window.URL.createObjectURL(draggedSrt);
-		    $('#encoding-selector').val("UTF-8");
-		    player.tracks = [];
-		    player.tracks.push({
-			srclang: 'enabled',
-			file: file,
-			kind: 'subtitles',
-			label: 'Enabled',
-			entries: [],
-			isLoaded: false
-		    });
-		    player.loadTrack(0);
+		    player.openSrtEntry(draggedSrt);
 		}
 	    }, false);
 	}

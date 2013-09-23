@@ -144,7 +144,11 @@ zip.workerScriptsPath = "/lib/";
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
 			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
-			    player.openSrtEntry(theFileEntry);
+			    if (theFileEntry == null)
+				return;
+			    theFileEntry.file(function fff(file) {
+				player.openSrtEntry(file);
+			    });
 			});
 			return false;
 		    });
@@ -257,51 +261,47 @@ zip.workerScriptsPath = "/lib/";
 		    player.capDelayValue = 0;
 		},
 
-	    openSrtEntry: function(entry) {
+	    openSrtEntry: function(file) {
 		var t = this;
-		if (entry == null)
+		$('#encoding-selector').val("UTF-8");
+		t.tracks = [];
+		t.tracks.push({
+		    srclang: 'enabled',
+		    file: file,
+		    kind: 'subtitles',
+		    label: 'Enabled',
+		    entries: [],
+		    isLoaded: false
+		});
+				
+		if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
+		    t.loadTrack(0);
 		    return;
-		entry.file(function fff(file) {
-		    $('#encoding-selector').val("UTF-8");
-		    t.tracks = [];
-		    t.tracks.push({
-			srclang: 'enabled',
-			file: file,
-			kind: 'subtitles',
-			label: 'Enabled',
-			entries: [],
-			isLoaded: false
-		    });
+		}
 				
-		    if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
-			t.loadTrack(0);
-			return;
-		    }
+		t.tracks[0].zipFile = file;
+		zip.createReader(new zip.BlobReader(file), function(reader) {
+		    // get all entries from the zip
+		    reader.getEntries(function(entries) {
+			if (entries.length) {
+			    // get first entry content as text
+			    entries[0].getData(new zip.BlobWriter(), function(data) {
+				// text contains the entry data as a blob
+				t.tracks[0].file = data;
 				
-		    t.tracks[0].zipFile = file;
-		    zip.createReader(new zip.BlobReader(file), function(reader) {
-			// get all entries from the zip
-			reader.getEntries(function(entries) {
-			    if (entries.length) {
-				// get first entry content as text
-				entries[0].getData(new zip.BlobWriter(), function(data) {
-				    // text contains the entry data as a blob
-				    t.tracks[0].file = data;
-
-				    t.loadTrack(0);
-
-				    // close the zip reader
-				    reader.close(function() {
-					// onclose callback
-				    });
-				}, function(current, total) {
-				    // onprogress callback
+				t.loadTrack(0);
+				
+				// close the zip reader
+				reader.close(function() {
+				    // onclose callback
 				});
-			    }
-			});
-		    }, function(error) {
-			// onerror callback
+			    }, function(current, total) {
+				// onprogress callback
+			    });
+			}
 		    });
+		}, function(error) {
+		    // onerror callback
 		});
 	    },
 		
