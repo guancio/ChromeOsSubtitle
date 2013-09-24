@@ -115,6 +115,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     });
 })(mejs.$);
 
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	builddrop: function(player, controls, layers, media) {
@@ -159,6 +160,36 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 })(mejs.$);
 
 
+(function($) {
+    $.extend(MediaElementPlayer.prototype, {
+	buildinfo: function(player, controls, layers, media) {
+	    var 
+	    t = this,
+	    info = $(
+		'<div style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/><h2>Subtitle Videoplayer v1.3.0</h2>Developed by Guancio.<br><br>A small Chrome video player that supports external subtitles.<br><br>The main madia player component is a fork of <a href="http://mediaelementjs.com/" target="_blank">MediaelEment.js</a>, developed by John Dyer<br><br>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a><br><br></div>'
+	    ).appendTo(controls[0].parentElement);
+
+	    info.click(function(e) {
+		// e.preventDefault();
+		info.css('visibility','hidden');
+		// return false;
+	    });
+
+	    open  = 
+		$('<div class="mejs-button mejs-source-button mejs-source" >' +
+		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button>' +
+		  '</div>')
+		.appendTo(controls)
+		.click(function(e) {
+		    e.preventDefault();
+		    info.css('visibility','visible');
+		    return false;
+		});
+	}
+    });
+})(mejs.$);
+
+
 var myURL = window.URL || window.webkitURL;
 
 var mainMediaElement = null;
@@ -170,7 +201,7 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'fullscreen', 'drop'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
