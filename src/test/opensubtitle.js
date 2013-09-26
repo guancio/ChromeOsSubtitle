@@ -47,6 +47,8 @@ function bbb() {
     });
 }
 
+var content = null;
+
 function ccc() {
     service.DownloadSubtitles({
 	params: [token, [
@@ -56,7 +58,87 @@ function ccc() {
 	    console.log(responseObj);
 	},
 	onComplete:function(responseObj){
+	    content = responseObj.result.data[0].data;
 	    console.log(responseObj);
 	}
     });
+}
+
+
+
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 1024;
+
+    function charCodeFromCharacter(c) {
+        return c.charCodeAt(0);
+    }
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+        var byteNumbers = Array.prototype.map.call(slice, charCodeFromCharacter);
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+
+function ddd() {
+    blob = b64toBlob(content, "application/gzip");
+    a = new zip.BlobReader(blob);
+    zip.createReader(new zip.BlobReader(blob), function(reader) {
+	reader.getEntries(function(entries) {
+	});
+    }, function(error) {
+	// onerror callback
+    });
+    // a.init(function() {
+    // 	console.log(a.size);
+    // 	a.readUint8Array(0, a.size,
+    // 		function(d){
+    // 		    console.log("ok")
+    // 		    console.log(d);
+    // 		    var bb = new Blob([d]);
+    // 		    var f = new FileReader();
+    // 		    f.onload = function(e) {
+    // 			console.log(e.target.result);
+    // 		    };
+    // 		    f.readAsText(bb);
+    // 		}, function() {
+    // 		    console.log("error")
+    // 		});
+    // }, function () {
+    // });
+		    // var reader = new FileReader();
+		    // reader.onloadend = function(evt) {
+		    // 	// parse the loaded file
+		    // 	var d = evt.target.result;
+		    // 	if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
+		    // 	    track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
+		    // 	} else {	
+		    // 	    track.entries = mejs.TrackFormatParser.webvvt.parse(d);
+		    // 	}
+		    // 	after();
+		    // 	if (track.kind == 'chapters') {
+		    // 	    t.media.addEventListener('play', function(e) {
+		    // 		if (t.media.duration > 0) {
+		    // 		    t.displayChapters(track);
+		    // 		}
+		    // 	    }, false);
+		    // 	}
+		    // 	if (track.kind == 'slides') {
+		    // 	    t.setupSlides(track);
+		    // 	}					
+		    // };
+		    // reader.onerror = function() {
+		    // 	t.loadNextTrack();
+		    // };
+		    // reader.readAsText(track.file, t.captionEncodingSelect.value);
 }
