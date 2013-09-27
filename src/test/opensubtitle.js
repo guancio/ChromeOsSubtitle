@@ -21,6 +21,7 @@ function aaa() {
 	      onComplete:function(responseObj){
 		  console.log(responseObj);
 		  token = responseObj.result.token;
+		  bbb();
 	      }
 	  });
       }
@@ -43,6 +44,7 @@ function bbb() {
 	onComplete:function(responseObj){
 	    console.log(responseObj);
 	    subtitle = responseObj.result.data[0];
+	    ccc();
 	}
     });
 }
@@ -60,12 +62,13 @@ function ccc() {
 	onComplete:function(responseObj){
 	    content = responseObj.result.data[0].data;
 	    console.log(responseObj);
+	    ddd();
 	}
     });
 }
 
 
-
+var res = null;
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 1024;
@@ -86,16 +89,34 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     }
 
     var blob = new Blob(byteArrays, {type: contentType});
+    res = byteArrays;
     return blob;
 }
 
-
+var blob = null;
 function ddd() {
-    blob = b64toBlob(content, "application/gzip");
+    blob = b64toBlob(content, "text/plain");
+    eee();
+    return;
+    chrome.fileSystem.chooseEntry({type: 'saveFile'}, function(theFileEntry) {
+	theFileEntry.createWriter(function(writer) {
+	    writer.onwriteend = function(trunc) {
+		writer.onwriteend = null;
+		writer.write(blob);
+	    };
+	    writer.seek(0);
+	    writer.truncate(0);
+	}, function(writer) {
+	    console.log("error 1");
+	});
+    });
+}
+
+var zipReader = null;
+function eee() {
     a = new zip.BlobReader(blob);
     zip.createReader(new zip.BlobReader(blob), function(reader) {
-	reader.getEntries(function(entries) {
-	});
+	zipReader = reader;
     }, function(error) {
 	// onerror callback
     });
