@@ -112,54 +112,11 @@ function ddd() {
     });
 }
 
-var zipReader = null;
+var xxx;
 function eee() {
-    a = new zip.BlobReader(blob);
     zip.createReader(new zip.BlobReader(blob), function(reader) {
-	zipReader = reader;
-    }, function(error) {
-	// onerror callback
+	reader.gunzip(new zip.TextWriter(), function(writer){
+	    xxxx = writer;
+	});
     });
-    // a.init(function() {
-    // 	console.log(a.size);
-    // 	a.readUint8Array(0, a.size,
-    // 		function(d){
-    // 		    console.log("ok")
-    // 		    console.log(d);
-    // 		    var bb = new Blob([d]);
-    // 		    var f = new FileReader();
-    // 		    f.onload = function(e) {
-    // 			console.log(e.target.result);
-    // 		    };
-    // 		    f.readAsText(bb);
-    // 		}, function() {
-    // 		    console.log("error")
-    // 		});
-    // }, function () {
-    // });
-		    // var reader = new FileReader();
-		    // reader.onloadend = function(evt) {
-		    // 	// parse the loaded file
-		    // 	var d = evt.target.result;
-		    // 	if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
-		    // 	    track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
-		    // 	} else {	
-		    // 	    track.entries = mejs.TrackFormatParser.webvvt.parse(d);
-		    // 	}
-		    // 	after();
-		    // 	if (track.kind == 'chapters') {
-		    // 	    t.media.addEventListener('play', function(e) {
-		    // 		if (t.media.duration > 0) {
-		    // 		    t.displayChapters(track);
-		    // 		}
-		    // 	    }, false);
-		    // 	}
-		    // 	if (track.kind == 'slides') {
-		    // 	    t.setupSlides(track);
-		    // 	}					
-		    // };
-		    // reader.onerror = function() {
-		    // 	t.loadNextTrack();
-		    // };
-		    // reader.readAsText(track.file, t.captionEncodingSelect.value);
 }
