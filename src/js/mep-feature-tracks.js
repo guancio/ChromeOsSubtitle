@@ -104,7 +104,7 @@ zip.workerScriptsPath = "/lib/";
 			"shift_jis",
 			"euc-kr"];
 
-		    var encodingText = '<li><select id="encoding-selector">';
+		    var encodingText = '<li><select id="encoding-selector" disabled="disabled">';
 		    for (i=0; i<encodings.length; i++) {
 			encodingText = encodingText + '<option value="'+encodings[i]+'">'+encoding_labels[i]+'</option>';
 		    }
@@ -254,6 +254,9 @@ zip.workerScriptsPath = "/lib/";
 			    t.captionsButton
 				.find('input[value=enabled]')
 				.prop('disabled',true);
+			    t.captionsButton
+				.find('#encoding-selector')
+				.prop('disabled',true);
 			}
 		    });
 
@@ -387,6 +390,10 @@ zip.workerScriptsPath = "/lib/";
 			t.captionsButton
 				.find('input[value=enabled]')
 					.prop('disabled',false);
+		        t.captionsButton
+			.find('#encoding-selector')
+			.prop('disabled',false);
+
 
 		        $('#' + t.id + '_captions_enabled').click();
 
