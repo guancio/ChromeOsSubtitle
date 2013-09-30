@@ -35,7 +35,7 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
     var line =
 	$('<li class="mejs-captionsize"></li>')
 	.append(dec)
-	.append($('<label>Caption size</label>'))
+	.append($('<label style="width:74px;float: left;padding: 0px 0px 0px 16px;">Caption size</label>'))
 	.append(inc);
     captionSelector.find('ul').prepend(line);
 };
@@ -46,7 +46,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     var
     t = this;
     var value =
-	$('<input style="background-color: transparent; width: 52px; color: white; font-size: 10px;clear: none"></input>').
+	$('<input style="background-color: transparent; width: 82px; color: white; font-size: 10px;clear: none"></input>').
 	on('input',function(e){
 	    t.capDelayValue = Number(t.capDelayInput.value);
 	}
