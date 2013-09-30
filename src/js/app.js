@@ -189,7 +189,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    };
 
 	    var open  = 
-		$('<div class="mejs-button mejs-source-button mejs-source" >' +
+		$('<div class="mejs-button mejs-info-button mejs-info" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button>' +
 		  '</div>')
 		.appendTo(controls)
