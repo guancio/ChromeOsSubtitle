@@ -166,23 +166,36 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    var 
 	    t = this,
 	    info = $(
-		'<div style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/><h2>Subtitle Videoplayer v1.3.0</h2>Developed by Guancio.<br><br>A small Chrome video player that supports external subtitles.<br><br>The main madia player component is a fork of <a href="http://mediaelementjs.com/" target="_blank">MediaelEment.js</a>, developed by John Dyer<br><br>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a><br><br></div>'
+		'<div style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/><h2>Subtitle Videoplayer v1.3.0</h2>Developed by Guancio.<br><br>A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>The main madia player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer<br><br>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a><br><br>[Click the box to close the info window]</div>'
 	    ).appendTo(controls[0].parentElement);
+
+	    info.find("a").click(function (e) {
+		window.open(this.href,'_blank');
+		event.stopPropagation();
+		return false;
+	    });
 
 	    info.click(function(e) {
 		// e.preventDefault();
 		info.css('visibility','hidden');
+		if (player.media.paused)
+		    $(".mejs-overlay-play").show();
 		// return false;
 	    });
 
-	    open  = 
+	    t.openInfoWindow = function() {
+		info.css('visibility','visible');
+		$(".mejs-overlay-play").hide();
+	    };
+
+	    var open  = 
 		$('<div class="mejs-button mejs-source-button mejs-source" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button>' +
 		  '</div>')
 		.appendTo(controls)
 		.click(function(e) {
 		    e.preventDefault();
-		    info.css('visibility','visible');
+		    t.openInfoWindow();
 		    return false;
 		});
 	}
@@ -232,20 +245,29 @@ $('#player').mediaelementplayer({
 
 	t.setControlsSize();
 
-	if (!window.launchData)
-	    return;
-	if (!window.launchData.items)
-	    return;
-	if (window.launchData.items.length != 1)
-	    return;
-	entry = window.launchData.items[0].entry;
-	if (entry == null)
-	    return;
-	mainMediaElement.stop();
-	entry.file(function fff(file) {
-	    var path = window.URL.createObjectURL(file);
-	    mainMediaElement.setSrc(path);
-	    mainMediaElement.play();
-	});
+
+	function openCmdLineVideo() {
+	    if (!window.launchData)
+		return false;
+	    if (!window.launchData.items)
+		return false;
+	    if (window.launchData.items.length != 1)
+		return false;
+	    entry = window.launchData.items[0].entry;
+	    if (entry == null)
+		return false;
+
+	    mainMediaElement.stop();
+	    entry.file(function fff(file) {
+		var path = window.URL.createObjectURL(file);
+		mainMediaElement.setSrc(path);
+		mainMediaElement.play();
+	    });
+	    return true;
+	}
+
+	if (!openCmdLineVideo())
+	    mediaElement.player.openInfoWindow();
+
     }
 });
