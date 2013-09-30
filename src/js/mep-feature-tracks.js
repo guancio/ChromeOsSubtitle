@@ -124,8 +124,11 @@ zip.workerScriptsPath = "/lib/";
 								'<li class="mejs-captionload">'+
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
 					  '<div class="mejs-button  mejs-captionload" >' +
-					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' + 
- '</div>'+								'</li>'	+
+					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
+ '</div>'+
+// '<select style="width:83px"><option>hello.srt</option><option>hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</option></select>'+ 
+'<label style="width:83px;">hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</label>'+
+'</li>'	+
 					  encodingText +
 
 							'</ul>'+
