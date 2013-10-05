@@ -104,7 +104,9 @@ zip.workerScriptsPath = "/lib/";
 			"shift_jis",
 			"euc-kr"];
 
-		    var encodingText = '<li><select id="encoding-selector" disabled="disabled">';
+		    var encodingText = '<li>'+
+			'<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>'+
+			'<select style="width:70px" id="encoding-selector" disabled="disabled">';
 		    for (i=0; i<encodings.length; i++) {
 			encodingText = encodingText + '<option value="'+encodings[i]+'">'+encoding_labels[i]+'</option>';
 		    }
@@ -124,8 +126,12 @@ zip.workerScriptsPath = "/lib/";
 								'<li class="mejs-captionload">'+
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
 					  '<div class="mejs-button  mejs-captionload" >' +
-					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' + 
- '</div>'+								'</li>'	+
+					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
+ '</div>'+
+'<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'+
+// '<select style="width:83px"><option>hello.srt</option><option>hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</option></select>'+ 
+'<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'+
+'</li>'	+
 					  encodingText +
 
 							'</ul>'+
@@ -257,6 +263,15 @@ zip.workerScriptsPath = "/lib/";
 			    t.captionsButton
 				.find('#encoding-selector')
 				.prop('disabled',true);
+			    t.captionsButton
+				.find('#label_srtname')[0]
+				.textContent = "No subtitle";
+			}
+			$('#label_srtname').css('visibility','inherit');
+			$('#select_srtname').css('visibility','hidden');
+			if (player.tracks.length > 1) {
+			    $('#label_srtname').css('visibility','hidden');
+			    $('#select_srtname').css('visibility','inherit');
 			}
 		    });
 
@@ -276,8 +291,11 @@ zip.workerScriptsPath = "/lib/";
 		    entries: [],
 		    isLoaded: false
 		});
-				
+		$('#label_srtname').css('visibility','inherit');
+		$('#select_srtname').css('visibility','hidden');
+
 		if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
+		    $('#label_srtname')[0].textContent = file.name;
 		    t.loadTrack(0);
 		    return;
 		}
@@ -286,12 +304,42 @@ zip.workerScriptsPath = "/lib/";
 		zip.createReader(new zip.BlobReader(file), function(reader) {
 		    // get all entries from the zip
 		    reader.getEntries(function(entries) {
-			if (entries.length) {
+			if (entries.length == 0) {
+			    return;
+			}
+			var srt_entries = [];
+			for (var i=0; i<entries.length; i++) {
+			    if (entries[i].filename.lastIndexOf(".srt") == entries[i].filename.length - 4)
+				srt_entries.push(entries[i]);
+			}
+			if (srt_entries.length == 0) {
+			    return;
+			}
+			if (srt_entries.length > 1) {
+			    $('#label_srtname').css('visibility','hidden');
+			    $('#select_srtname').css('visibility','inherit');
+			    $('#select_srtname')
+				.find('option')
+				.remove()
+				.end();
+			    for (var i=0; i<srt_entries.length; i++) {
+				$('#select_srtname')
+				    .append('<option value="'+
+					    i+'">'+
+					    srt_entries[i].filename+
+					    '</option>');
+			    }
+			    $('#select_srtname').val('0');
+			}
+
+			function loadZippedSrt(entry) {
 			    // get first entry content as text
-			    entries[0].getData(new zip.BlobWriter(), function(data) {
+			    entry.getData(new zip.BlobWriter(), function(data) {
 				// text contains the entry data as a blob
 				t.tracks[0].file = data;
+				t.tracks[0].isLoaded = false;
 				
+				$('#label_srtname')[0].textContent = entry;
 				t.loadTrack(0);
 				
 				// close the zip reader
@@ -300,8 +348,16 @@ zip.workerScriptsPath = "/lib/";
 				});
 			    }, function(current, total) {
 				// onprogress callback
-			    });
-			}
+			    })
+			};
+			loadZippedSrt(srt_entries[0]);
+			
+			$('#select_srtname').off( "change");
+			$('#select_srtname').change(function(e) {
+			    loadZippedSrt(
+				srt_entries[Number($('#select_srtname')[0].value)]
+			    );
+			});
 		    });
 		}, function(error) {
 		    // onerror callback

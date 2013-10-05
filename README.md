@@ -8,6 +8,9 @@ It is basically a simple wrapper for http://mediaelementjs.com/
 Please, if possible submit bug and feature request at https://github.com/guancio/ChromeOsSubtitle/issues
 
 Change log:
+- Version 1.3.0
+  - Restyle of the subtitle interface
+  - Allows to select the subtitle from a zip file containing several entries
 - Version 1.2.0
   - Drag and Drop:
     - drop a video file to the player to open it

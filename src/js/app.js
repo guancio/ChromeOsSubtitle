@@ -4,40 +4,53 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
     var captionSelector = player.captionsButton.find('.mejs-captions-selector');
     var
     t = this;
+
+    function updateCaptionSize(value) {
+	$('.mejs-captions-layer').css({
+	    "line-height":function( index, oldValue ) {
+		return value + "px";
+	    },
+	    "font-size":function( index, oldValue ) {
+		return value + "px";
+	    }
+	});
+    };
+
+    var value =
+	$('<input style="background-color: transparent; width: 41px; color: white; font-size: 10px;clear: none; margin:0px 0px 0px 0px;"></input>').
+	on('input',function(e){
+	    updateCaptionSize(Number(t.capSizeInput.value));
+	});
+
+
+    t.capSizeInput = value[0];
+    t.capSizeInput.value = 22;
+    updateCaptionSize(Number(t.capSizeInput.value));
+
     // create the buttons
     var dec =
         $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption size') + '" aria-label="' + mejs.i18n.t('Decrease caption size') + '"></button>' +  '</div>')
 	.click(function() {
-	    $('.mejs-captions-layer').css({
-		"line-height":function( index, value ) {
-		    return ( parseFloat( value )/ 1.2) + "px";
-		},
-		"font-size":function( index, value ) {
-		    return ( parseFloat( value )/1.2) + "px";
-		}
-	    });
+	    t.capSizeInput.value = (Number(t.capSizeInput.value) / 1.2).toFixed(0);
+	    updateCaptionSize(Number(t.capSizeInput.value));
 	}); 
     var inc = 
 	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption size') + '" aria-label="' + mejs.i18n.t('Increase caption size') + '"></button>' +  '</div>')
 	.click(function() {
-	    $('.mejs-captions-layer').css({
-		"line-height":function( index, value ) {
-		    return ( parseFloat( value )* 1.2) + "px";
-		},
-		"font-size":function( index, value ) {
-		    return ( parseFloat( value )*1.2) + "px";
-		}
-	    });
+	    t.capSizeInput.value = (Number(t.capSizeInput.value) * 1.2).toFixed(0);
+	    updateCaptionSize(Number(t.capSizeInput.value));
 	});  
 
     var line =
 	$('<li class="mejs-captionsize"></li>')
+	.append($('<label style="width:74px;float: left;padding: 0px 0px 0px 5px;">Caption size</label>'))
 	.append(dec)
-	.append($('<label>Caption size</label>'))
+	.append(value)
 	.append(inc);
-    captionSelector.find('ul').prepend(line);
+    captionSelector.find('ul').append(line);
+
 };
 
 
@@ -46,7 +59,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     var
     t = this;
     var value =
-	$('<input style="background-color: transparent; width: 52px; color: white; font-size: 10px;clear: none"></input>').
+	$('<input style="background-color: transparent; width: 41px; color: white; font-size: 10px;clear: none; margin:0px 0px 0px 0px;"></input>').
 	on('input',function(e){
 	    t.capDelayValue = Number(t.capDelayInput.value);
 	}
@@ -73,10 +86,11 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 
     var line =
 	$('<li class="mejs-captionsize"></li>')
+	.append($('<label style="width:74px;float: left;padding: 0px 0px 0px 5px;">Caption delay</label>'))
 	.append(dec)
 	.append(value)
 	.append(inc);
-    captionSelector.find('ul').prepend(line);
+    captionSelector.find('ul').append(line);
 
     media.addEventListener('loadeddata',function() {
 	t.capDelayInput.value = 0;
