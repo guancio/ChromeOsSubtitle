@@ -587,9 +587,7 @@
 
 		return {
 		    gunzip : function(writer, callback) {
-			console.log("gunzip");
 			reader.readUint8Array(0, 10, function(data){
-			    console.log(data);
     			    if (data[0] != 31 && data[1]!=139) {
     				console.log("Unsupported file");
     				return;
@@ -602,9 +600,8 @@
     				console.log("Unsupported flags");
     				return;
     			    }
-   			    writer = new zip.TextWriter();
     			    writer.init(function() {
-    				worker = inflate(reader, writer, 10, blob.size-10-8, true, function(aaa){
+    				worker = inflate(reader, writer, 10, reader.size-10-8, true, function(aaa){
 				    writer.getData(function(data) {
 					callback(data);
 				    });

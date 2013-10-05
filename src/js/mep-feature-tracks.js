@@ -104,7 +104,7 @@ zip.workerScriptsPath = "/lib/";
 			"shift_jis",
 			"euc-kr"];
 
-		    var encodingText = '<li>'+
+		    var encodingText = '<li id="li_encoding">'+
 			'<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>'+
 			'<select style="width:70px" id="encoding-selector" disabled="disabled">';
 		    for (i=0; i<encodings.length; i++) {

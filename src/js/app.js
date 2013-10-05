@@ -104,8 +104,9 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     $.extend(MediaElementPlayer.prototype, {
 	buildsource: function(player, controls, layers, media) {
 	    var 
-	    t = this,
-	    open  = 
+	    t = this;
+	    t.openedFile = null;
+	    var open  = 
 		$('<div class="mejs-button mejs-source-button mejs-source" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
 		  '</div>')
@@ -119,6 +120,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 			mainMediaElement.stop();
 			player.tracks = [];
 			theFileEntry.file(function fff(file) {
+			    t.openedFile = file;
 			    var path = window.URL.createObjectURL(file);
 			    mainMediaElement.setSrc(path);
 			});
@@ -161,6 +163,8 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		}
 		if (draggedVideo != null) {
 		    mainMediaElement.stop();
+		    t.openedFile = draggedVideo;
+
 		    var path = window.URL.createObjectURL(draggedVideo);
 		    mainMediaElement.setSrc(path);
 		}
@@ -228,7 +232,8 @@ $('#player').mediaelementplayer({
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'],
+    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen',
+	       'drop', 'opensubtitle'],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
@@ -273,6 +278,8 @@ $('#player').mediaelementplayer({
 
 	    mainMediaElement.stop();
 	    entry.file(function fff(file) {
+		mainMediaElement.openedFile = file;
+
 		var path = window.URL.createObjectURL(file);
 		mainMediaElement.setSrc(path);
 		mainMediaElement.play();
