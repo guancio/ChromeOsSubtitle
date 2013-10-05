@@ -124,7 +124,7 @@ zip.workerScriptsPath = "/lib/";
 									'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') +'</label>'+
 								'</li>'	+
 								'<li class="mejs-captionload">'+
-									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
+									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_fromfile" value="fromfile" disabled="disabled"/>' +
 					  '<div class="mejs-button  mejs-captionload" >' +
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
  '</div>'+
@@ -258,7 +258,7 @@ zip.workerScriptsPath = "/lib/";
 			if (player.tracks.length == 0) {
 			    $('#' + t.id + '_captions_none').click();
 			    t.captionsButton
-				.find('input[value=enabled]')
+				.find('input[value=fromfile]')
 				.prop('disabled',true);
 			    t.captionsButton
 				.find('#encoding-selector')
@@ -266,12 +266,8 @@ zip.workerScriptsPath = "/lib/";
 			    t.captionsButton
 				.find('#label_srtname')[0]
 				.textContent = "No subtitle";
-			}
-			$('#label_srtname').css('visibility','inherit');
-			$('#select_srtname').css('visibility','hidden');
-			if (player.tracks.length > 1) {
-			    $('#label_srtname').css('visibility','hidden');
-			    $('#select_srtname').css('visibility','inherit');
+			    $('#label_srtname').css('visibility','inherit');
+			    $('#select_srtname').css('visibility','hidden');
 			}
 		    });
 
@@ -284,10 +280,10 @@ zip.workerScriptsPath = "/lib/";
 		$('#encoding-selector').val("UTF-8");
 		t.tracks = [];
 		t.tracks.push({
-		    srclang: 'enabled',
+		    srclang: 'fromfile',
 		    file: file,
 		    kind: 'subtitles',
-		    label: 'Enabled',
+		    label: 'FromFile',
 		    entries: [],
 		    isLoaded: false
 		});
@@ -444,14 +440,14 @@ zip.workerScriptsPath = "/lib/";
 			}			
 
 			t.captionsButton
-				.find('input[value=enabled]')
+				.find('input[value='+lang+']')
 					.prop('disabled',false);
 		        t.captionsButton
 			.find('#encoding-selector')
 			.prop('disabled',false);
 
 
-		        $('#' + t.id + '_captions_enabled').click();
+		        $('#' + t.id + '_captions_'+lang).click();
 
 			t.adjustLanguageBox();
 		},
