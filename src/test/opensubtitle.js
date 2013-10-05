@@ -36,7 +36,10 @@ var subtitle = null;
 function bbb() {
     service.SearchSubtitles({
 	params: [token, [
-	    {query: "Dexter"}
+	    // {query: "Dexter.S08E08.HDTV.x264-ASAP.mp4",
+	    //  sublanguageid: "eng"}
+	    {query: "DexterS08E08.HDTV.x264.mkv",
+	     sublanguageid: "eng"}
 	], {limit:100}],
 	onException:function(errorObj){
 	    console.log(responseObj);
