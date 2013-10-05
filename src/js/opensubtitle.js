@@ -39,7 +39,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 
 	    var prec = $('#li_encoding');
 	    $('<li class="mejs-captionload"/>')
-		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_opensubtitle_enabled" value="opensubtitle" disabled="disabled"/>'))
+		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
 		.append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download from opensubtitle.org...') + '" aria-label="' + mejs.i18n.t('Download from opensubtitle.org...') + '"></button></div>'))
 		.append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
 		.insertBefore(prec);
@@ -49,7 +49,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    };
 
 	    function openSubtitle(content, sub) {
-		info("Opening...");
+		info("4/5 Opening...");
 		var blob = b64toBlob(content, "text/plain");
 		zip.createReader(new zip.BlobReader(blob),function(reader) {
 		    reader.gunzip(new zip.BlobWriter(), function(data){
@@ -57,10 +57,10 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 			$('#encoding-selector').val("UTF-8");
 			t.tracks = [];
 			t.tracks.push({
-			    srclang: 'enabled',
+			    srclang: 'opensubtitle',
 			    file: data,
 			    kind: 'subtitles',
-			    label: 'Enabled',
+			    label: 'OpenSubtitle',
 			    entries: [],
 			    isLoaded: false
 			});
@@ -72,7 +72,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    }
 
 	    function downloadSubtitle(sub) {
-		info("Downloading...");
+		info("3/5 Downloading...");
 		service.DownloadSubtitles({
 		    params: [t.opensubtitleService.token, [
 			sub.IDSubtitleFile
@@ -88,7 +88,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    }
 
 	    function searchSubtitle() {
-		info("Searching...");
+		info("2/5 Searching...");
 		service.SearchSubtitles({
 		    params: [t.opensubtitleService.token, [
 			{query: t.openedFile.name,
@@ -105,7 +105,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    };
 
 	    function logIn() {
-		info("Authenticating...");
+		info("1/5 Authenticating...");
 		service.LogIn({
 		    params: ["", "", "", "ChromeSubtitleVideoplayer"],
 		    onException:function(errorObj){
@@ -120,6 +120,13 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 
 	    $('#opensubtitle_button').click(function (e) {
 		logIn();
+	    });
+
+	    media.addEventListener('loadeddata',function() {
+		t.captionsButton
+		    .find('input[value=opensubtitle]')
+		    .prop('disabled',true);
+		info("No subtitle");
 	    });
 	}
     });
