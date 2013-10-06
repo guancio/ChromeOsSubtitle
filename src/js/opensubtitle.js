@@ -62,7 +62,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 			$('#encoding-selector').val("UTF-8");
 
 			t.tracks = t.tracks.filter(function (el) {
-			    el.srclang != 'opensubtitle';
+			    return el.srclang != 'opensubtitle';
 			});
 			t.tracks.push({
 			    srclang: 'opensubtitle',

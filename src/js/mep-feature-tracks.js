@@ -296,7 +296,7 @@ zip.workerScriptsPath = "/lib/";
 		$('#encoding-selector').val("UTF-8");
 
 		t.tracks = t.tracks.filter(function (el) {
-		    el.srclang != 'fromfile';
+		    return el.srclang != 'fromfile';
 		});
 
 
@@ -317,7 +317,7 @@ zip.workerScriptsPath = "/lib/";
 		    return;
 		}
 				
-		t.tracks[0].zipFile = file;
+		t.tracks[t.findTrackIdx("fromfile")].zipFile = file;
 		zip.createReader(new zip.BlobReader(file), function(reader) {
 		    // get all entries from the zip
 		    reader.getEntries(function(entries) {
