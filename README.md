@@ -11,6 +11,7 @@ Change log:
 - Version 1.3.0
   - Restyle of the subtitle interface
   - Allows to select the subtitle from a zip file containing several entries
+  - Implemented the info window to credit the other projects
 - Version 1.2.0
   - Drag and Drop:
     - drop a video file to the player to open it

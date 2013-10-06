@@ -335,7 +335,7 @@ zip.workerScriptsPath = "/lib/";
 				t.tracks[0].file = data;
 				t.tracks[0].isLoaded = false;
 				
-				$('#label_srtname')[0].textContent = entry;
+				$('#label_srtname')[0].textContent = entry.filename;
 				t.loadTrack(0);
 				
 				// close the zip reader
