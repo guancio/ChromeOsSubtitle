@@ -1,3 +1,6 @@
+
+zip.workerScriptsPath = "lib/";
+
 (function($) {
 
 	// add extra default options 
@@ -22,9 +25,6 @@
 		hasChapters: false,
 
 		buildtracks: function(player, controls, layers, media) {
-			if (player.tracks.length == 0)
-				return;
-
 			var t = this, 
 				i, 
 				options = '';
@@ -36,8 +36,86 @@
 					$('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
 						.prependTo(layers).hide();
 			player.captionsText = player.captions.find('.mejs-captions-text');
+
+		    var encodings = [
+			"utf-8",
+			"ibm866",
+			"iso-8859-2",
+			"iso-8859-3",
+			"iso-8859-4",
+			"iso-8859-5",
+			"iso-8859-6",
+			"iso-8859-7",
+			"iso-8859-8",
+			"iso-8859-10",
+			"iso-8859-13 ",
+			"iso-8859-14",
+			"iso-8859-15",
+			"iso-8859-16",
+			"koi8-r",
+			"koi8-u",
+			"windows-874",
+			"windows-1250",
+			"windows-1251",
+			"windows-1252",
+			"windows-1253",
+			"windows-1254",
+			"windows-1255",
+			"windows-1256",
+			"windows-1257",
+			"windows-1258",
+			"gbk",
+			"gb18030",
+			"euc-jp",
+			"iso-2022-jp",
+			"shift_jis",
+			"euc-kr"];
+		    var encoding_labels = [
+			"UTF-8",
+			"ibm866 Cyrillic",
+			"iso-8859-2 Latin-2",
+			"iso-8859-3 Latin-3",
+			"iso-8859-4 Latin-4",
+			"iso-8859-5 Cyrillic",
+			"iso-8859-6 Arabic",
+			"iso-8859-7 Greek",
+			"iso-8859-8 Hebrew",
+			"iso-8859-10 Latin-6",
+			"iso-8859-13 ",
+			"iso-8859-14",
+			"iso-8859-15",
+			"iso-8859-16",
+			"koi8-r",
+			"koi8-u",
+			"windows-874",
+			"windows-1250",
+			"windows-1251",
+			"windows-1252 US-ascii",
+			"windows-1253",
+			"windows-1254 Latin-5",
+			"windows-1255",
+			"windows-1256",
+			"windows-1257",
+			"windows-1258",
+			"gbk Chinese",
+			"gb18030",
+			"euc-jp",
+			"iso-2022-jp",
+			"shift_jis",
+			"euc-kr"];
+
+		    var encodingText = '<li>'+
+			'<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>'+
+			'<select style="width:70px" id="encoding-selector" disabled="disabled">';
+		    for (i=0; i<encodings.length; i++) {
+			encodingText = encodingText + '<option value="'+encodings[i]+'">'+encoding_labels[i]+'</option>';
+		    }
+		    encodingText = encodingText +'</select></il>';
+
+
+
 			player.captionsButton = 
-					$('<div class="mejs-button mejs-captions-button">'+
+					$('<div class="mejs-button mejs-captions-button mejs-captions-enabled">'+
 						'<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>'+
 						'<div class="mejs-captions-selector">'+
 							'<ul>'+
@@ -45,34 +123,50 @@
 									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
 									'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') +'</label>'+
 								'</li>'	+
+								'<li class="mejs-captionload">'+
+									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
+					  '<div class="mejs-button  mejs-captionload" >' +
+					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
+ '</div>'+
+'<input style="display:none" type="file" id="opensrtfile_input"/>' +
+'<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'+
+// '<select style="width:83px"><option>hello.srt</option><option>hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</option></select>'+ 
+'<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'+
+'</li>'	+
+					  encodingText +
+
 							'</ul>'+
 						'</div>'+
 					'</div>')
 						.appendTo(controls);
-			
-						
-			var subtitleCount = 0;
-			for (i=0; i<player.tracks.length; i++) {
-				if (player.tracks[i].kind == 'subtitles') {
-					subtitleCount++;
-				}
-			}
 
-			// if only one language then just make the button a toggle
-			if (t.options.toggleCaptionsButtonWhenOnlyOne && subtitleCount == 1){
-				// click
-				player.captionsButton.on('click',function() {
-					if (player.selectedTrack == null) {
-						var lang = player.tracks[0].srclang;
-					} else {
-						var lang = 'none';
-					}
-					player.setTrack(lang);
-				});
-			} else {
+		    
+		    player.captionEncodingSelect = player.captionsButton.find('#encoding-selector')[0];
+		    player.captionsButton.find('#encoding-selector').change(function(e) {
+			if (player.tracks.length == 0)
+			    return;
+			player.tracks[0].isLoaded = false;
+			player.loadTrack(0);
+		    });
+		    var srtFileInputs = player.captionsButton.find('#opensrtfile_input');
+		    srtFileInputs.change(function (e) {
+			e.preventDefault();
+			if (srtFileInputs[0].files.length != 1)
+			    return false;
+			
+			player.openSrtEntry(srtFileInputs[0].files[0]);
+			return false;
+		    });
+		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
+			e.preventDefault();
+			srtFileInputs[0].click();
+			return false;
+		    });
+
 				// hover
 				player.captionsButton.hover(function() {
 					$(this).find('.mejs-captions-selector').css('visibility','visible');
+
 				}, function() {
 					$(this).find('.mejs-captions-selector').css('visibility','hidden');
 				})
@@ -82,8 +176,14 @@
 					lang = this.value;
 					player.setTrack(lang);
 				});
+		    
+		    player.captionsButton.find('.mejs-captions-selector').bind('mouseenter mouseover mousemove',  function(event) {
+			player.killControlsTimer('enter');
+			event.stopPropagation();
+		    });
 
-			}
+
+		    
 
 			if (!player.options.alwaysShowControls) {
 				// move with controls
@@ -108,7 +208,6 @@
 			player.isLoadingTrack = false;
 
 			
-
 			// add to list
 			for (i=0; i<player.tracks.length; i++) {
 				if (player.tracks[i].kind == 'subtitles') {
@@ -158,7 +257,112 @@
 			if (player.node.getAttribute('autoplay') !== null) {
 				player.chapters.css('visibility','hidden');
 			}
+
+		    media.addEventListener('loadeddata',function() {
+			if (player.tracks.length == 0) {
+			    $('#' + t.id + '_captions_none').click();
+			    t.captionsButton
+				.find('input[value=enabled]')
+				.prop('disabled',true);
+			    t.captionsButton
+				.find('#encoding-selector')
+				.prop('disabled',true);
+			    t.captionsButton
+				.find('#label_srtname')[0]
+				.textContent = "No subtitle";
+			    $('#label_srtname').css('visibility','inherit');
+			    $('#select_srtname').css('visibility','hidden');
+			}
+		    });
+
+		    player.adjustLanguageBox();
+		    player.capDelayValue = 0;
 		},
+
+	    openSrtEntry: function(file) {
+		var t = this;
+		$('#encoding-selector').val("UTF-8");
+		t.tracks = [];
+		t.tracks.push({
+		    srclang: 'enabled',
+		    file: file,
+		    kind: 'subtitles',
+		    label: 'Enabled',
+		    entries: [],
+		    isLoaded: false
+		});
+		$('#label_srtname').css('visibility','inherit');
+		$('#select_srtname').css('visibility','hidden');
+
+		if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
+		    $('#label_srtname')[0].textContent = file.name;
+		    t.loadTrack(0);
+		    return;
+		}
+				
+		t.tracks[0].zipFile = file;
+		zip.createReader(new zip.BlobReader(file), function(reader) {
+		    // get all entries from the zip
+		    reader.getEntries(function(entries) {
+			if (entries.length == 0) {
+			    return;
+			}
+			var srt_entries = [];
+			for (var i=0; i<entries.length; i++) {
+			    if (entries[i].filename.lastIndexOf(".srt") == entries[i].filename.length - 4)
+				srt_entries.push(entries[i]);
+			}
+			if (srt_entries.length == 0) {
+			    return;
+			}
+			if (srt_entries.length > 1) {
+			    $('#label_srtname').css('visibility','hidden');
+			    $('#select_srtname').css('visibility','inherit');
+			    $('#select_srtname')
+				.find('option')
+				.remove()
+				.end();
+			    for (var i=0; i<srt_entries.length; i++) {
+				$('#select_srtname')
+				    .append('<option value="'+
+					    i+'">'+
+					    srt_entries[i].filename+
+					    '</option>');
+			    }
+			    $('#select_srtname').val('0');
+			}
+
+			function loadZippedSrt(entry) {
+			    // get first entry content as text
+			    entry.getData(new zip.BlobWriter(), function(data) {
+				// text contains the entry data as a blob
+				t.tracks[0].file = data;
+				t.tracks[0].isLoaded = false;
+				
+				$('#label_srtname')[0].textContent = entry.filename;
+				t.loadTrack(0);
+				
+				// close the zip reader
+				reader.close(function() {
+				    // onclose callback
+				});
+			    }, function(current, total) {
+				// onprogress callback
+			    })
+			};
+			loadZippedSrt(srt_entries[0]);
+			
+			$('#select_srtname').off( "change");
+			$('#select_srtname').change(function(e) {
+			    loadZippedSrt(
+				srt_entries[Number($('#select_srtname')[0].value)]
+			    );
+			});
+		    });
+		}, function(error) {
+		    // onerror callback
+		});
+	    },
 		
 		setTrack: function(lang){
 		
@@ -167,12 +371,9 @@
 		
 			if (lang == 'none') {
 				t.selectedTrack = null;
-				t.captionsButton.removeClass('mejs-captions-enabled');
 			} else {
 				for (i=0; i<t.tracks.length; i++) {
 					if (t.tracks[i].srclang == lang) {
-						if (t.selectedTrack == null)
-						    t.captionsButton.addClass('mejs-captions-enabled');
 						t.selectedTrack = t.tracks[i];
 						t.captions.attr('lang', t.selectedTrack.srclang);
 						t.displayCaptions();
@@ -202,48 +403,37 @@
 				t = this,
 				track = t.tracks[index],
 				after = function() {
-
 					track.isLoaded = true;
-
 					// create button
 					//t.addTrackButton(track.srclang);
 					t.enableTrackButton(track.srclang, track.label);
-
 					t.loadNextTrack();
-
 				};
-
-
-			$.ajax({
-				url: track.src,
-				dataType: "text",
-				success: function(d) {
-
-					// parse the loaded file
-					if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
-						track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
-					} else {	
-						track.entries = mejs.TrackFormatParser.webvvt.parse(d);
-					}
-					
-					after();
-
-					if (track.kind == 'chapters') {
-						t.media.addEventListener('play', function(e) {
-							if (t.media.duration > 0) {
-								t.displayChapters(track);
-							}
-						}, false);
-					}
-					
-					if (track.kind == 'slides') {
-						t.setupSlides(track);
-					}					
-				},
-				error: function() {
-					t.loadNextTrack();
+		    var reader = new FileReader();
+		    reader.onloadend = function(evt) {
+			// parse the loaded file
+			var d = evt.target.result;
+			if (typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
+			    track.entries = mejs.TrackFormatParser.dfxp.parse(d);					
+			} else {	
+			    track.entries = mejs.TrackFormatParser.webvvt.parse(d);
+			}
+			after();
+			if (track.kind == 'chapters') {
+			    t.media.addEventListener('play', function(e) {
+				if (t.media.duration > 0) {
+				    t.displayChapters(track);
 				}
-			});
+			    }, false);
+			}
+			if (track.kind == 'slides') {
+			    t.setupSlides(track);
+			}					
+		    };
+		    reader.onerror = function() {
+			t.loadNextTrack();
+		    };
+		    reader.readAsText(track.file, t.captionEncodingSelect.value);
 		},
 
 		enableTrackButton: function(lang, label) {
@@ -254,15 +444,14 @@
 			}			
 
 			t.captionsButton
-				.find('input[value=' + lang + ']')
-					.prop('disabled',false)
-				.siblings('label')
-					.html( label );
+				.find('input[value=enabled]')
+					.prop('disabled',false);
+		        t.captionsButton
+			.find('#encoding-selector')
+			.prop('disabled',false);
 
-			// auto select
-			if (t.options.startLanguage == lang) {
-				$('#' + t.id + '_captions_' + lang).click();
-			}
+
+		        $('#' + t.id + '_captions_enabled').click();
 
 			t.adjustLanguageBox();
 		},
@@ -287,6 +476,7 @@
 		},
 
 		adjustLanguageBox:function() {
+		    return;
 			var t = this;
 			// adjust the size of the outer box
 			t.captionsButton.find('.mejs-captions-selector').height(
@@ -326,9 +516,11 @@
 				i,
 				track = t.selectedTrack;
 
+		    var currTime = t.media.currentTime - t.capDelayValue;
+
 			if (track != null && track.isLoaded) {
 				for (i=0; i<track.entries.times.length; i++) {
-					if (t.media.currentTime >= track.entries.times[i].start && t.media.currentTime <= track.entries.times[i].stop){
+					if (currTime >= track.entries.times[i].start && currTime <= track.entries.times[i].stop){
 						t.captionsText.html(track.entries.text[i]);
 						t.captions.show().height(0);
 						return; // exit out if one is visible;
@@ -552,11 +744,6 @@
 			pattern_timecode: /^([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/,
 
 			parse: function(trackText) {
-			    var bytes = [];
-			    for (var i = 0; i < trackText.length; ++i) {
-				bytes.push(trackText.charCodeAt(i));
-			    }
-			    var res = iconv.convert(bytes, 'ISO8859-7', 'UTF-8');
 				var 
 					i = 0,
 					lines = mejs.TrackFormatParser.split2(trackText, /\r?\n/),

@@ -287,7 +287,10 @@ mejs.HtmlMediaElementShim = {
 					result.url = mediaFiles[i].url;
 					break;
 				}
-			}			
+			}
+		    if (mediaFiles.length == 0) {
+			result.method = 'native';
+		    }
 			
 			if (result.method === 'native') {
 				if (result.url !== null) {

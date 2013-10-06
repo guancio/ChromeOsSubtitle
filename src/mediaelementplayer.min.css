@@ -1,3 +1,11 @@
+
+a:link {
+    color: #ffffff
+}
+a:visited {
+    color: #ffffff
+}
+
 .mejs-container {
 	position: relative;
 	background: #000;
@@ -204,6 +212,46 @@
 	background-position: 0 -16px;
 }
 /* End: Play/pause */
+
+/* Start: Play/pause */
+.mejs-controls .mejs-source button {
+	background-position: -144px 0;
+}
+.mejs-controls .mejs-info button {
+	background-position: -176px 0;
+}
+
+.mejs-container .mejs-captionsize  div {
+	width: 20px;
+	height: 20px;
+	font-size: 11px;
+	line-height: 11px;
+	background: 0;
+	font-family: Helvetica, Arial;
+	border: 0;
+}
+
+.mejs-controls .mejs-captionsize .mejs-reduce button {
+	margin: 2px 2px;
+	background-position: -160px 0;
+}
+.mejs-controls .mejs-captionsize .mejs-increase button {
+	margin: 2px 2px;
+	background-position: -160px -16px;
+}
+.mejs-controls .mejs-captionload .mejs-captionload button {
+	margin: 2px 2px;
+	background-position: -144px 0px;
+}
+.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize  label {
+	width: 60px;
+	float: left;
+	padding: 0px 0 0 0;
+	line-height: 20px;
+	/* font-family: helvetica, arial; */
+	/* font-size: 10px; */
+}
+
 
 
 /* Stop */
@@ -529,8 +577,8 @@
 	position: absolute;
 	bottom: 26px;
 	right: -10px;
-	width: 130px;
-	height: 100px;
+	width: 160px;
+	height: 130px;
 	background: url(background.png);
 	background: rgba(50,50,50,0.7);
 	border: solid 1px transparent;

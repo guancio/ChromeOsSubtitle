@@ -1,4 +1,5 @@
-<html>
+<html style="overflow: hidden;">
+<!-- <html manifest="appcache" style="overflow: hidden;"> -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Subtitle Videoplayer</title>
@@ -6,24 +7,13 @@
 </head>
 <body>
 
-<h1>Subtitle Videoplayer Guancio</h1>
-
-Video Path:
-<input type="file" id="choose_video_file">
-
-SRT Path:
-<input type="file" id="choose_srt_file">
-
-<button id="start_button">Open</button>
-<br>
-
 <div id="main">
 </div>
 
-<script src="js/utf8.min.js"></script>	
-<script src="js/iconv.js"></script>	
-
 <script src="js/jquery.js"></script>	
+
+<script src="lib/zip.js"></script>	
+
 <script src="js/me-header.js"></script>
 <script src="js/me-namespace.js"></script>
 <script src="js/me-utility.js"></script>

@@ -16,7 +16,9 @@
 				.appendTo(controls)
 				.click(function(e) {
 					e.preventDefault();
-				
+				    if (media.readyState != 4)
+					return;
+
 					if (media.paused) {
 						media.play();
 					} else {

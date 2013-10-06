@@ -79,6 +79,9 @@
 								179 // GOOGLE play/pause button
 							  ],
 						action: function(player, media) {
+						    if (media.readyState != 4)
+							return;
+
 								if (media.paused || media.ended) {
 										media.play();	
 								} else {
@@ -331,7 +334,7 @@
 				}
 
 				// set the size, while we wait for the plugins to load below
-				t.setPlayerSize(t.width, t.height);
+				// t.setPlayerSize(t.width, t.height);
 				
 				// create MediaElementShim
 				meOptions.pluginWidth = t.height;
@@ -340,7 +343,10 @@
 			
 			// create callback during init since it needs access to current
 			// MEP object
-			mejs.MediaElementPlayer.prototype.clickToPlayPauseCallback = function() {
+			mejs.MediaElementPlayer.prototype.clickToPlayPauseCallback = function(e) {
+			    e.preventDefault();
+			    if (t.media.readyState != 4)
+				return;
         if (t.options.clickToPlayPause) {
             if (t.media.paused) {
               t.media.play();
@@ -729,6 +735,7 @@
 		},
 
 		setPlayerSize: function(width,height) {
+		    return;
 			var t = this;
 
 			if (typeof width != 'undefined')
@@ -898,6 +905,9 @@
 				'</div>')
 				.appendTo(layers)
 				.click(function() {
+  		   if (t.media.readyState != 4)
+			return;
+
                     if (t.options.clickToPlayPause) {
                         if (media.paused) {
                             media.play();
@@ -1036,7 +1046,9 @@
 			this.setControlsSize();
 		},
 		play: function() {
-			this.media.play();
+		    if (this.media.readyState != 4)
+			return;
+		this.media.play();
 		},
 		pause: function() {
 			this.media.pause();
