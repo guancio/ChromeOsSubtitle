@@ -144,8 +144,15 @@ zip.workerScriptsPath = "/lib/";
 		    player.captionsButton.find('#encoding-selector').change(function(e) {
 			if (player.tracks.length == 0)
 			    return;
-			player.tracks[0].isLoaded = false;
-			player.loadTrack(0);
+			var radios = player.controls.find('input[name="'+t.id+'_captions"]');
+			var selectedRadio = radios.filter(function (e) {return radios[e].checked})[0];
+			var srcSelected = selectedRadio.value;
+			if (srcSelected == 'none')
+			    return;
+			var selectedIdx = t.findTrackIdx(srcSelected);
+
+			player.tracks[selectedIdx].isLoaded = false;
+			player.loadTrack(selectedIdx);
 		    });
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
@@ -275,10 +282,24 @@ zip.workerScriptsPath = "/lib/";
 		    player.capDelayValue = 0;
 		},
 
+	    findTrackIdx: function(srclang) {
+		var t = this;
+		for (var i=0; i<t.tracks.length; i++) {
+		    if (t.tracks[i].srclang == srclang)
+			return i
+		}
+		return -1;
+	    },
+
 	    openSrtEntry: function(file) {
 		var t = this;
 		$('#encoding-selector').val("UTF-8");
-		t.tracks = [];
+
+		t.tracks = t.tracks.filter(function (el) {
+		    el.srclang != 'fromfile';
+		});
+
+
 		t.tracks.push({
 		    srclang: 'fromfile',
 		    file: file,
@@ -292,7 +313,7 @@ zip.workerScriptsPath = "/lib/";
 
 		if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
 		    $('#label_srtname')[0].textContent = file.name;
-		    t.loadTrack(0);
+		    t.loadTrack(t.findTrackIdx("fromfile"));
 		    return;
 		}
 				
@@ -332,11 +353,12 @@ zip.workerScriptsPath = "/lib/";
 			    // get first entry content as text
 			    entry.getData(new zip.BlobWriter(), function(data) {
 				// text contains the entry data as a blob
-				t.tracks[0].file = data;
-				t.tracks[0].isLoaded = false;
+				var trackId = t.findTrackIdx("fromfile");
+				t.tracks[trackId].file = data;
+				t.tracks[trackId].isLoaded = false;
 				
 				$('#label_srtname')[0].textContent = entry.filename;
-				t.loadTrack(0);
+				t.loadTrack(trackId);
 				
 				// close the zip reader
 				reader.close(function() {
