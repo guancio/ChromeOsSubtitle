@@ -193,17 +193,21 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		return false;
 	    });
 
-	    info.click(function(e) {
-		// e.preventDefault();
+	    function hideInfo(e) {
 		info.css('visibility','hidden');
 		if (player.media.paused)
 		    $(".mejs-overlay-play").show();
-		// return false;
-	    });
+		
+		e.preventDefault();
+		e.stopPropagation();
+		player.container.off("click", hideInfo);
+		return false;
+	    }
 
 	    t.openInfoWindow = function() {
 		info.css('visibility','visible');
 		$(".mejs-overlay-play").hide();
+		player.container.click(hideInfo);
 	    };
 
 	    var open  = 
