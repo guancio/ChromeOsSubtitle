@@ -193,12 +193,3 @@
     exports.i18n = i18n;
 }(document, mejs));
 
-// ;(function(exports, undefined) {
-
-// 	"use strict";
-
-// 	if ( mejs.locale.language && mejs.locale.strings ) {
-// 		exports[mejs.locale.language] = mejs.locale.strings;
-// 	}
-
-// }(mejs.i18n.locale.strings));
