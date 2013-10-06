@@ -35,14 +35,19 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    });
 	    t.opensubtitleService = {token:null, service:service};
 	    
-
-
 	    var prec = $('#li_encoding');
 	    $('<li class="mejs-captionload"/>')
 		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
 		.append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download from opensubtitle.org...') + '" aria-label="' + mejs.i18n.t('Download from opensubtitle.org...') + '"></button></div>'))
 		.append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
 		.insertBefore(prec);
+
+	    player.controls.find
+	    ('input[id="'+player.id + '_captions_opensubtitle"]').click(function() {
+		lang = this.value;
+		player.setTrack(lang);
+	    });
+
 
 	    function info(text) {
 		$('#label_opensubtitle')[0].textContent=text;
@@ -55,7 +60,10 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		    reader.gunzip(new zip.BlobWriter(), function(data){
 			info(sub.SubFileName);
 			$('#encoding-selector').val("UTF-8");
-			t.tracks = [];
+
+			t.tracks = t.tracks.filter(function (el) {
+			    el.srclang != 'opensubtitle';
+			});
 			t.tracks.push({
 			    srclang: 'opensubtitle',
 			    file: data,
@@ -64,9 +72,11 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 			    entries: [],
 			    isLoaded: false
 			});
-			t.tracks[0].file = data;
-			t.tracks[0].isLoaded = false;
-			t.loadTrack(0);
+
+			var trackIdx = t.findTrackIdx("opensubtitle")
+			t.tracks[trackIdx].file = data;
+			t.tracks[trackIdx].isLoaded = false;
+			t.loadTrack(trackIdx);
 		    });
 		});
 	    }
