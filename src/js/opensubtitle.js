@@ -54,7 +54,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    };
 
 	    function openSubtitle(content, sub) {
-		info("4/5 Opening...");
+		info("5/6 Opening...");
 		var blob = b64toBlob(content, "text/plain");
 		zip.createReader(new zip.BlobReader(blob),function(reader) {
 		    reader.gunzip(new zip.BlobWriter(), function(data){
@@ -82,7 +82,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    }
 
 	    function downloadSubtitle(sub) {
-		info("3/5 Downloading...");
+		info("4/6 Downloading...");
 		service.DownloadSubtitles({
 		    params: [t.opensubtitleService.token, [
 			sub.IDSubtitleFile
@@ -97,12 +97,17 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		});
 	    }
 
-	    function searchSubtitle() {
-		info("2/5 Searching...");
+	    function searchSubtitle(hash) {
+		// var lang = "ita";
+		var lang = "eng";
+		info("3/6 Searching...");
 		service.SearchSubtitles({
 		    params: [t.opensubtitleService.token, [
 			{query: t.openedFile.name,
-			 sublanguageid: "eng"}
+			 sublanguageid: lang},
+			{moviehash: hash,
+			 moviebytesize: t.openedFile.size,
+			 sublanguageid: lang}
 		    ], {limit:100}],
 		    onException:function(errorObj){
 			info("Search failed");
@@ -114,8 +119,15 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		});
 	    };
 
+	    function movieHash() {
+		info("2/6 Hashing...");
+		OpenSubtitlesHash(t.openedFile, function(hash){
+		    searchSubtitle(hash);
+		});
+	    };
+
 	    function logIn() {
-		info("1/5 Authenticating...");
+		info("1/6 Authenticating...");
 		service.LogIn({
 		    params: ["", "", "", "ChromeSubtitleVideoplayer"],
 		    onException:function(errorObj){
@@ -123,7 +135,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		    },
 		    onComplete:function(responseObj){
 			t.opensubtitleService.token = responseObj.result.token;
-			searchSubtitle();
+			movieHash();
 		    }
 		});
 	    };
