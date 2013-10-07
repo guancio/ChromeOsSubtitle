@@ -100,6 +100,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    function searchSubtitle(hash) {
 		// var lang = "ita";
 		var lang = "eng";
+		// var lang = "ell";
 		info("3/6 Searching...");
 		service.SearchSubtitles({
 		    params: [t.opensubtitleService.token, [
@@ -114,6 +115,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		    },
 		    onComplete:function(responseObj){
 			// Check that at leat a subtitle has been found
+			console.log(responseObj);
 			downloadSubtitle(responseObj.result.data[0]);
 		    }
 		});
