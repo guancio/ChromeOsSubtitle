@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version 1.4.0.a
+# version 1.4.0.e
    background.png
    index.html
    mediaelementplayer.min.css
@@ -35,3 +35,9 @@ CACHE MANIFEST
    controls-ted.png
    bigplay.svg
    icon.png
+   lib/Long.min.js
+   lib/opensubtitlehash.js
+   js/opensubtitle.js
+   opensubtitle.gif
+   lib/rpc.js
+  
