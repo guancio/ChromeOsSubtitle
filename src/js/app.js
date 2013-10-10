@@ -1,5 +1,7 @@
 var myURL = window.URL || window.webkitURL;
 
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+
 MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, media) {
     var captionSelector = player.captionsButton.find('.mejs-captions-selector');
     var
@@ -107,7 +109,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    t = this,
 	    openFileInput = $('<input style="display:none" type="file" id="openfile_input"/>')
 		.appendTo(controls);
-
+	    t.openedFile = null;
 	    var open  = 
 		$('<div class="mejs-button mejs-source-button mejs-source" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
@@ -119,13 +121,10 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		return false;
 	    });
 	    openFileInput.change(function (e) {
-		e.preventDefault();
-		if (openFileInput[0].files.length != 1)
-		    return false;
-		
 		mainMediaElement.stop();
 		player.tracks = [];
 		var path = window.URL.createObjectURL(openFileInput[0].files[0]);
+		t.openedFile = openFileInput[0].files[0];
 		mainMediaElement.setSrc(path);
 		return false;
 	    });
@@ -165,6 +164,8 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		}
 		if (draggedVideo != null) {
 		    mainMediaElement.stop();
+		    t.openedFile = draggedVideo;
+
 		    var path = window.URL.createObjectURL(draggedVideo);
 		    mainMediaElement.setSrc(path);
 		}
@@ -184,7 +185,14 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    var 
 	    t = this,
 	    info = $(
-		'<div style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/><h2>Subtitle Videoplayer v1.3.0</h2>Developed by Guancio.<br><br>A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>The main madia player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer<br><br>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a><br><br>[Click the box to close the info window]</div>'
+		'<div style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/>'+
+		    '<h2>Subtitle Videoplayer v1.4.0</h2>' +
+		    'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>'+
+		    'This software is possible thanks to several open source projects:<ul>'+
+		    '<li>The main madia player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer</li>'+
+		    '<li>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a></li>' + 
+		    '<li>Subtitles service powered by <a href="http://www.OpenSubtitles.org" target="_blank">www.OpenSubtitles.org</a>. More uploaded subs means more subs available. Please opload <a href="http://www.opensubtitles.org/upload" target="_blank">here</a> jour subs.<br/><a href="http://www.OpenSubtitles.org" target="_blank"><img src="opensubtitle.gif"/></a></li>'+
+		    '</ul>[Click the box to close the info window]</div>'
 	    ).appendTo(controls[0].parentElement);
 
 	    info.find("a").click(function (e) {
@@ -231,12 +239,17 @@ var mainMediaElement = null;
 
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
+
+    var features = ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'];
+    if (packaged_app)
+	features.push('opensubtitle');
+
 $('#player').mediaelementplayer({
     startLanguage:'en',
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'],
+    features: features,
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
@@ -281,6 +294,8 @@ $('#player').mediaelementplayer({
 
 	    mainMediaElement.stop();
 	    entry.file(function fff(file) {
+		mainMediaElement.openedFile = file;
+
 		var path = window.URL.createObjectURL(file);
 		mainMediaElement.setSrc(path);
 		mainMediaElement.play();
