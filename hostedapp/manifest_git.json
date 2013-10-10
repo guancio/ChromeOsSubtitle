@@ -8,10 +8,10 @@
   },
   "app": {
     "urls": [
-        "https://rawgithub.com/guancio/ChromeOsSubtitle/v1.4.0/src/"
+        "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/"
     ],
     "launch": {
-      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/v1.4.0/src/index.html"
+      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/src/index.html"
     }
   },
   "offline_enabled": true
