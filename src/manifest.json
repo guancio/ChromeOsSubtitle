@@ -19,6 +19,9 @@
 	    "types": ["video/*"]
 	}
     },
-  "permissions":["fileSystem", "fullscreen"],
+  "permissions":["fileSystem", "fullscreen",
+    "http://api.opensubtitles.org/xml-rpc",
+    {"fileSystem": ["write"]} 
+  ],
   "offline_enabled": true
 }
