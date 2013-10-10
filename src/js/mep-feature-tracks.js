@@ -104,7 +104,7 @@ zip.workerScriptsPath = "/lib/";
 			"shift_jis",
 			"euc-kr"];
 
-		    var encodingText = '<li>'+
+		    var encodingText = '<li id="li_encoding">'+
 			'<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>'+
 			'<select style="width:70px" id="encoding-selector" disabled="disabled">';
 		    for (i=0; i<encodings.length; i++) {
@@ -124,12 +124,11 @@ zip.workerScriptsPath = "/lib/";
 									'<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') +'</label>'+
 								'</li>'	+
 								'<li class="mejs-captionload">'+
-									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_enabled" value="enabled" disabled="disabled"/>' +
+									'<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_fromfile" value="fromfile" disabled="disabled"/>' +
 					  '<div class="mejs-button  mejs-captionload" >' +
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
  '</div>'+
 '<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'+
-// '<select style="width:83px"><option>hello.srt</option><option>hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</option></select>'+ 
 '<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'+
 '</li>'	+
 					  encodingText +
@@ -144,8 +143,15 @@ zip.workerScriptsPath = "/lib/";
 		    player.captionsButton.find('#encoding-selector').change(function(e) {
 			if (player.tracks.length == 0)
 			    return;
-			player.tracks[0].isLoaded = false;
-			player.loadTrack(0);
+			var radios = player.controls.find('input[name="'+t.id+'_captions"]');
+			var selectedRadio = radios.filter(function (e) {return radios[e].checked})[0];
+			var srcSelected = selectedRadio.value;
+			if (srcSelected == 'none')
+			    return;
+			var selectedIdx = t.findTrackIdx(srcSelected);
+
+			player.tracks[selectedIdx].isLoaded = false;
+			player.loadTrack(selectedIdx);
 		    });
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
@@ -258,7 +264,7 @@ zip.workerScriptsPath = "/lib/";
 			if (player.tracks.length == 0) {
 			    $('#' + t.id + '_captions_none').click();
 			    t.captionsButton
-				.find('input[value=enabled]')
+				.find('input[value=fromfile]')
 				.prop('disabled',true);
 			    t.captionsButton
 				.find('#encoding-selector')
@@ -275,15 +281,29 @@ zip.workerScriptsPath = "/lib/";
 		    player.capDelayValue = 0;
 		},
 
+	    findTrackIdx: function(srclang) {
+		var t = this;
+		for (var i=0; i<t.tracks.length; i++) {
+		    if (t.tracks[i].srclang == srclang)
+			return i
+		}
+		return -1;
+	    },
+
 	    openSrtEntry: function(file) {
 		var t = this;
 		$('#encoding-selector').val("UTF-8");
-		t.tracks = [];
+
+		t.tracks = t.tracks.filter(function (el) {
+		    return el.srclang != 'fromfile';
+		});
+
+
 		t.tracks.push({
-		    srclang: 'enabled',
+		    srclang: 'fromfile',
 		    file: file,
 		    kind: 'subtitles',
-		    label: 'Enabled',
+		    label: 'FromFile',
 		    entries: [],
 		    isLoaded: false
 		});
@@ -292,11 +312,11 @@ zip.workerScriptsPath = "/lib/";
 
 		if (file.name.lastIndexOf(".zip") != file.name.length - 4) {
 		    $('#label_srtname')[0].textContent = file.name;
-		    t.loadTrack(0);
+		    t.loadTrack(t.findTrackIdx("fromfile"));
 		    return;
 		}
 				
-		t.tracks[0].zipFile = file;
+		t.tracks[t.findTrackIdx("fromfile")].zipFile = file;
 		zip.createReader(new zip.BlobReader(file), function(reader) {
 		    // get all entries from the zip
 		    reader.getEntries(function(entries) {
@@ -332,11 +352,12 @@ zip.workerScriptsPath = "/lib/";
 			    // get first entry content as text
 			    entry.getData(new zip.BlobWriter(), function(data) {
 				// text contains the entry data as a blob
-				t.tracks[0].file = data;
-				t.tracks[0].isLoaded = false;
+				var trackId = t.findTrackIdx("fromfile");
+				t.tracks[trackId].file = data;
+				t.tracks[trackId].isLoaded = false;
 				
 				$('#label_srtname')[0].textContent = entry.filename;
-				t.loadTrack(0);
+				t.loadTrack(trackId);
 				
 				// close the zip reader
 				reader.close(function() {
@@ -440,14 +461,14 @@ zip.workerScriptsPath = "/lib/";
 			}			
 
 			t.captionsButton
-				.find('input[value=enabled]')
+				.find('input[value='+lang+']')
 					.prop('disabled',false);
 		        t.captionsButton
 			.find('#encoding-selector')
 			.prop('disabled',false);
 
 
-		        $('#' + t.id + '_captions_enabled').click();
+		        $('#' + t.id + '_captions_'+lang).click();
 
 			t.adjustLanguageBox();
 		},
