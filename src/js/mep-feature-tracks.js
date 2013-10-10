@@ -129,7 +129,6 @@ zip.workerScriptsPath = "/lib/";
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
  '</div>'+
 '<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'+
-// '<select style="width:83px"><option>hello.srt</option><option>hjgfdshfjsdghfsjgfdsjgfsdjgfh.srt</option></select>'+ 
 '<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'+
 '</li>'	+
 					  encodingText +
