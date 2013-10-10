@@ -1,5 +1,7 @@
 var myURL = window.URL || window.webkitURL;
 
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+
 MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, media) {
     var captionSelector = player.captionsButton.find('.mejs-captions-selector');
     var
@@ -104,29 +106,28 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     $.extend(MediaElementPlayer.prototype, {
 	buildsource: function(player, controls, layers, media) {
 	    var 
-	    t = this;
+	    t = this,
+	    openFileInput = $('<input style="display:none" type="file" id="openfile_input"/>')
+		.appendTo(controls);
 	    t.openedFile = null;
 	    var open  = 
 		$('<div class="mejs-button mejs-source-button mejs-source" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
 		  '</div>')
-		.appendTo(controls)
-		.click(function(e) {
-		    e.preventDefault();
-		    
-		    chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
-			if (theFileEntry == null)
-			    return;
-			mainMediaElement.stop();
-			player.tracks = [];
-			theFileEntry.file(function fff(file) {
-			    t.openedFile = file;
-			    var path = window.URL.createObjectURL(file);
-			    mainMediaElement.setSrc(path);
-			});
-		    });
-		    return false;
-		});
+		.appendTo(controls);
+	    open.click(function(e) {
+		e.preventDefault();
+		openFileInput[0].click();
+		return false;
+	    });
+	    openFileInput.change(function (e) {
+		mainMediaElement.stop();
+		player.tracks = [];
+		var path = window.URL.createObjectURL(openFileInput[0].files[0]);
+		t.openedFile = openFileInput[0].files[0];
+		mainMediaElement.setSrc(path);
+		return false;
+	    });
 	}
     });
 })(mejs.$);
@@ -238,13 +239,17 @@ var mainMediaElement = null;
 
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
+
+    var features = ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'];
+    if (packaged_app)
+	features.push('opensubtitle');
+
 $('#player').mediaelementplayer({
     startLanguage:'en',
     isVideo:true,
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
-    features: ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen',
-	       'drop', 'opensubtitle'],
+    features: features,
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 

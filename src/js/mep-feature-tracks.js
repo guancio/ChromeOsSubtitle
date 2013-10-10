@@ -1,5 +1,5 @@
 
-zip.workerScriptsPath = "/lib/";
+zip.workerScriptsPath = "lib/";
 
 (function($) {
 
@@ -128,6 +128,7 @@ zip.workerScriptsPath = "/lib/";
 					  '<div class="mejs-button  mejs-captionload" >' +
 					  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
  '</div>'+
+'<input style="display:none" type="file" id="opensrtfile_input"/>' +
 '<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'+
 '<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'+
 '</li>'	+
@@ -153,15 +154,18 @@ zip.workerScriptsPath = "/lib/";
 			player.tracks[selectedIdx].isLoaded = false;
 			player.loadTrack(selectedIdx);
 		    });
+		    var srtFileInputs = player.captionsButton.find('#opensrtfile_input');
+		    srtFileInputs.change(function (e) {
+			e.preventDefault();
+			if (srtFileInputs[0].files.length != 1)
+			    return false;
+			
+			player.openSrtEntry(srtFileInputs[0].files[0]);
+			return false;
+		    });
 		    player.captionsButton.find('.mejs-captionload button').click(function(e) {
 			e.preventDefault();
-			chrome.fileSystem.chooseEntry({type: 'openFile'}, function(theFileEntry) {
-			    if (theFileEntry == null)
-				return;
-			    theFileEntry.file(function fff(file) {
-				player.openSrtEntry(file);
-			    });
-			});
+			srtFileInputs[0].click();
 			return false;
 		    });
 
