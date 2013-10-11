@@ -21,6 +21,57 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return blob;
 }
 
+var openSubsLang = [
+    ["alb", "Albanian"],
+    ["ara", "Arabic"],
+    ["baq", "Basque"],
+    ["pob", "Brazilian"],
+    ["bul", "Bulgarian"],
+    ["cat", "Catalan"],
+    ["chi", "Chinese"],
+    ["cze", "Czech"],
+    ["dan", "Danish"],
+    ["dut", "Dutch"],
+    ["eng", "English"],
+    ["est", "Estonian"],
+    ["fin", "Finnish"],
+    ["fre", "French"],
+    ["geo", "Georgian"],
+    ["ger", "German"],
+    ["glg", "Galician"],
+    ["ell", "Greek"],
+    ["heb", "Hebrew"],
+    ["hin", "Hindi"],
+    ["hrv", "Croatian"],
+    ["hun", "Hungarian"],
+    ["ice", "Icelandic"],
+    ["ind", "Indonesian"],
+    ["ita", "Italian"],
+    ["jpn", "Japanese"],
+    ["khm", "Khmer"],
+    ["kor", "Korean"],
+    ["mac", "Macedonian"],
+    ["may", "Malay"],
+    ["nor", "Norwegian"],
+    ["oci", "Occitan"],
+    ["per", "Persian"],
+    ["pol", "Polish"],
+    ["por", "Portuguese"],
+    ["rum", "Romanian"],
+    ["rus", "Russian"],
+    ["scc", "Serbian"],
+    ["sin", "Sinhalese"],
+    ["slo", "Slovak"],
+    ["slv", "Slovenian"],
+    ["spa", "Spanish"],
+    ["swe", "Swedish"],
+    ["tgl", "Tagalog"],
+    ["tha", "Thai"],
+    ["tur", "Turkish"],
+    ["ukr", "Ukrainian"],
+    ["vie", "Vietnamese"]
+];
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	buildopensubtitle: function(player, controls, layers, media) {
@@ -40,8 +91,14 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		$('<li class="mejs-captionload"/>')
 		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
 		.append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
-	    	.append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"><option value="eng">English</option><option value="ita">Italian</option><option value="ell">Greek</option></select>'));
+	    	.append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"/>'));
 	    line1.insertBefore(prec)
+
+	    var selectLang = $('#select_opensubtitle_lang')[0];
+	    openSubsLang.forEach(function (e) {
+		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectLang);
+	    });
+
 
 	    var line2 =
 		$('<li class="mejs-captionload"/>')
@@ -205,11 +262,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     		.append($('<label style="width:250px; float:left;">Default opensubtitle.org language</label>'))
     		.append($('<select id="defaultOpenSubtitleLang" style="width:100px"/>'));
 	    var selectDefault = $('#defaultOpenSubtitleLang')[0];
-	    var langs = [["eng", "English"],
-			 ["ita", "Italian"],
-			 ["ell", "Greek"]
-			];
-	    langs.forEach(function (e) {
+	    openSubsLang.forEach(function (e) {
 		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectDefault);
 	    });
 
