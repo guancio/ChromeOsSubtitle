@@ -240,7 +240,7 @@ var mainMediaElement = null;
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
 
-    var features = ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'fullscreen', 'drop'];
+var features = ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'settings', 'fullscreen', 'drop'];
     if (packaged_app)
 	features.push('opensubtitle');
 
