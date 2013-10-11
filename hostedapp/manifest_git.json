@@ -8,10 +8,10 @@
   },
   "app": {
     "urls": [
-        "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/"
+        "https://subtitlevideoplayer.appspot.com/static/ChromeOsSubtitle/src/"
     ],
     "launch": {
-      "web_url": "https://rawgithub.com/guancio/ChromeOsSubtitle/hosted/src/index.html"
+      "web_url": "https://subtitlevideoplayer.appspot.com/static/ChromeOsSubtitle/src/index.html"
     }
   },
   "offline_enabled": true
