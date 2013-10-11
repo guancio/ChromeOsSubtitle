@@ -21,7 +21,7 @@
     },
   "permissions":["fileSystem", "fullscreen",
     "http://api.opensubtitles.org/xml-rpc",
-    {"fileSystem": ["write"]} 
+    "storage"
   ],
   "offline_enabled": true
 }
