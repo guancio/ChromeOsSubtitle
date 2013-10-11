@@ -13,6 +13,7 @@ Change log:
 - Version 1.4.0
   - Experimental support of opensubtitles.org (currently allowing to
     download only english subtitles)
+  - Renable the hosted version (no support for opensubtitles due to cross domain)
 - Version 1.3.0
   - Restyle of the subtitle interface
   - Allows to select the subtitle from a zip file containing several entries

@@ -1,6 +1,6 @@
 {
   "name": "Subtitle Videoplayer",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "manifest_version": 2,
   "minimum_chrome_version": "28",
   "icons": {
@@ -20,8 +20,7 @@
 	}
     },
   "permissions":["fileSystem", "fullscreen",
-    "http://api.opensubtitles.org/xml-rpc",
-    {"fileSystem": ["write"]} 
+    "http://api.opensubtitles.org/xml-rpc" 
   ],
   "offline_enabled": true
 }
