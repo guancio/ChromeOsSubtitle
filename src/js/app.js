@@ -26,8 +26,6 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 
 
     t.capSizeInput = value[0];
-    t.capSizeInput.value = 22;
-    updateCaptionSize(Number(t.capSizeInput.value));
 
     // create the buttons
     var dec =
@@ -53,6 +51,27 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 	.append(inc);
     captionSelector.find('ul').append(line);
 
+    var settingsList = $('#settings_list')[0];
+    $('<li/>')
+    	.appendTo(settingsList)
+    	.append($('<label style="width:250px; float:left;">Default subtitle font size</label>'))
+    	.append($('<input id="defaultSubSize" style="width:100px;background-color: transparent; color: white;"/>'));
+
+    t.capSizeInput.value = 22;
+    updateCaptionSize(Number(t.capSizeInput.value));
+    chrome.storage.sync.get({'default_sub_size': 22}, function(obj) {
+	t.capSizeInput.value = obj['default_sub_size'];
+	$("#defaultSubSize")[0].value = obj['default_sub_size'];
+	updateCaptionSize(Number(t.capSizeInput.value));
+    });
+
+    $(document).bind("settingsClosed", function() { 
+	var defaultValue = $("#defaultSubSize")[0].value;
+	chrome.storage.sync.set({
+	    'default_sub_size': defaultValue
+	}, function(obj) {
+	});
+    });
 };
 
 
@@ -240,7 +259,7 @@ var mainMediaElement = null;
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
 
-var features = ['source', 'playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'settings', 'fullscreen', 'drop'];
+var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'settingsbutton', 'fullscreen', 'drop'];
     if (packaged_app)
 	features.push('opensubtitle');
 
