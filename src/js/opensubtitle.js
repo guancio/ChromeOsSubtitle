@@ -36,12 +36,21 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    t.opensubtitleService = {token:null, service:service, lastSubtitles : []};
 	    
 	    var prec = $('#li_encoding');
-	    $('<li class="mejs-captionload"/>')
+	    var line1 =
+		$('<li class="mejs-captionload"/>')
 		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
 		.append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+	    	.append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"><option value="eng">English</option><option value="ita">Italian</option><option value="ell">Greek</option></select>'));
+	    line1.insertBefore(prec)
+
+	    var line2 =
+		$('<li class="mejs-captionload"/>')
+		.append($('<div class="mejs-button  mejs-captionload"/>'))
 		.append($('<select id="select_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'))
 		.append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
-		.insertBefore(prec);
+		.insertAfter(line1);
+
+	    $('#select_opensubtitle_lang').val("eng");
 
 	    player.controls.find
 	    ('input[id="'+player.id + '_captions_opensubtitle"]').click(function() {
@@ -106,8 +115,8 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    }
 
 	    function searchSubtitle(hash) {
-		// var lang = "ita";
 		var lang = "eng";
+		lang = $('#select_opensubtitle_lang')[0].value;
 		// var lang = "ell";
 		info("3/6 Searching...");
 		service.SearchSubtitles({
