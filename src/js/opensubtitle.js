@@ -21,6 +21,57 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return blob;
 }
 
+var openSubsLang = [
+    ["alb", "Albanian"],
+    ["ara", "Arabic"],
+    ["baq", "Basque"],
+    ["pob", "Brazilian"],
+    ["bul", "Bulgarian"],
+    ["cat", "Catalan"],
+    ["chi", "Chinese"],
+    ["cze", "Czech"],
+    ["dan", "Danish"],
+    ["dut", "Dutch"],
+    ["eng", "English"],
+    ["est", "Estonian"],
+    ["fin", "Finnish"],
+    ["fre", "French"],
+    ["geo", "Georgian"],
+    ["ger", "German"],
+    ["glg", "Galician"],
+    ["ell", "Greek"],
+    ["heb", "Hebrew"],
+    ["hin", "Hindi"],
+    ["hrv", "Croatian"],
+    ["hun", "Hungarian"],
+    ["ice", "Icelandic"],
+    ["ind", "Indonesian"],
+    ["ita", "Italian"],
+    ["jpn", "Japanese"],
+    ["khm", "Khmer"],
+    ["kor", "Korean"],
+    ["mac", "Macedonian"],
+    ["may", "Malay"],
+    ["nor", "Norwegian"],
+    ["oci", "Occitan"],
+    ["per", "Persian"],
+    ["pol", "Polish"],
+    ["por", "Portuguese"],
+    ["rum", "Romanian"],
+    ["rus", "Russian"],
+    ["scc", "Serbian"],
+    ["sin", "Sinhalese"],
+    ["slo", "Slovak"],
+    ["slv", "Slovenian"],
+    ["spa", "Spanish"],
+    ["swe", "Swedish"],
+    ["tgl", "Tagalog"],
+    ["tha", "Thai"],
+    ["tur", "Turkish"],
+    ["ukr", "Ukrainian"],
+    ["vie", "Vietnamese"]
+];
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	buildopensubtitle: function(player, controls, layers, media) {
@@ -36,12 +87,27 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    t.opensubtitleService = {token:null, service:service, lastSubtitles : []};
 	    
 	    var prec = $('#li_encoding');
-	    $('<li class="mejs-captionload"/>')
+	    var line1 =
+		$('<li class="mejs-captionload"/>')
 		.append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
 		.append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+	    	.append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"/>'));
+	    line1.insertBefore(prec)
+
+	    var selectLang = $('#select_opensubtitle_lang')[0];
+	    openSubsLang.forEach(function (e) {
+		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectLang);
+	    });
+
+
+	    var line2 =
+		$('<li class="mejs-captionload"/>')
+		.append($('<div class="mejs-button  mejs-captionload"/>'))
 		.append($('<select id="select_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'))
 		.append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
-		.insertBefore(prec);
+		.insertAfter(line1);
+
+	    $('#select_opensubtitle_lang').val("eng");
 
 	    player.controls.find
 	    ('input[id="'+player.id + '_captions_opensubtitle"]').click(function() {
@@ -106,8 +172,8 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	    }
 
 	    function searchSubtitle(hash) {
-		// var lang = "ita";
 		var lang = "eng";
+		lang = $('#select_opensubtitle_lang')[0].value;
 		// var lang = "ell";
 		info("3/6 Searching...");
 		service.SearchSubtitles({
@@ -123,7 +189,6 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		    },
 		    onComplete:function(responseObj){
 			// Check that at leat a subtitle has been found
-			console.log(responseObj);
 			$('#select_opensubtitle')
 				.find('option')
 				.remove()
@@ -189,6 +254,38 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		$('#select_opensubtitle').css('visibility','hidden');
 		t.opensubtitleService.lastSubtitles = [];
 	    });
+
+
+	    var settingsList = $('#settings_list')[0];
+	    $('<li/>')
+    		.appendTo(settingsList)
+    		.append($('<label style="width:250px; float:left;">Default opensubtitle.org language</label>'))
+    		.append($('<select id="defaultOpenSubtitleLang" style="width:100px"/>'));
+	    var selectDefault = $('#defaultOpenSubtitleLang')[0];
+	    openSubsLang.forEach(function (e) {
+		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectDefault);
+	    });
+
+	    chrome.storage.sync.get({'default_opensubtitle_lang': "eng"}, function(obj) {
+		$(selectDefault).val(obj['default_opensubtitle_lang']);
+		$('#select_opensubtitle_lang').val(obj['default_opensubtitle_lang']);
+	    });
+
+	    $(document).bind("settingsClosed", function() { 
+		var defaultValue = selectDefault.value;
+		$('#select_opensubtitle_lang').val(defaultValue);
+		chrome.storage.sync.set({
+		    'default_opensubtitle_lang': defaultValue
+		}, function(obj) {
+		});
+	    });
+	    
+	    // on load a new video
+	    media.addEventListener('loadeddata',function() {
+		var defaultValue = selectDefault.value;
+		$('#select_opensubtitle_lang').val(defaultValue);
+	    });
+
 	}
     });
 })(mejs.$);
