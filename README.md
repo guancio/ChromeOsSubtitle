@@ -10,6 +10,12 @@ Please, if possible submit bug and feature request at https://github.com/guancio
 The subtitle service is provided by <a href="http://www.opensubtitles.org">www.opensubtitles.org</a>
 
 Change log:
+- Version 1.5.0
+  - Mutlilingual download of opensubtitles.org subtitles
+  - Settings windows to configure:
+    - the default subtitle font size
+    - the default opensubtitle language
+  - Minor changes to the subtitle menu
 - Version 1.4.0
   - Experimental support of opensubtitles.org (currently allowing to
     download only english subtitles)
