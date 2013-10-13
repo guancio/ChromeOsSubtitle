@@ -1,0 +1,3 @@
+[submodule "src/lib/zip.js"]
+	path = src/lib/zip.js
+	url = git@github.com:guancio/zip.js.git
