@@ -1,5 +1,5 @@
 
-zip.workerScriptsPath = "lib/";
+zip.workerScriptsPath = "lib/zip.js/WebContent/";
 
 (function($) {
 
