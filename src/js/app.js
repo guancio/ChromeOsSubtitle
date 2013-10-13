@@ -202,16 +202,26 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     $.extend(MediaElementPlayer.prototype, {
 	buildinfo: function(player, controls, layers, media) {
 	    var 
-	    t = this,
-	    info = $(
+	    t = this;
+	    var infoText = 
 		'<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/>'+
-		    '<h2>Subtitle Videoplayer v1.4.0</h2>' +
-		    'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>'+
-		    'This software is possible thanks to several open source projects:<ul>'+
-		    '<li>The main madia player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer</li>'+
-		    '<li>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a></li>' + 
-		    '<li>Subtitles service powered by <a href="http://www.OpenSubtitles.org" target="_blank">www.OpenSubtitles.org</a>. More uploaded subs means more subs available. Please opload <a href="http://www.opensubtitles.org/upload" target="_blank">here</a> jour subs.<br/><a href="http://www.OpenSubtitles.org" target="_blank"><img src="opensubtitle.gif"/></a></li>'+
-		    '</ul>[Click the box to close the info window]</div>'
+		    '<h2>Subtitle Videoplayer v1.5.0</h2>' +
+		'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>';
+	    if (!packaged_app) {
+		infoText = infoText +
+		    'Plase install the <a href="https://chrome.google.com/webstore/detail/subtitle-videoplayer/naikohapihpbhficdpbddmgbhiccijca?hl=en-GB" target="_blank">packaged app</a> version of this application, that also integrate with opensubtitles.org<br><br>'; 
+	    }
+
+	    infoText = infoText +
+		'This software is possible thanks to several open source projects:<ul>'+
+		'<li>The main madia player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer</li>'+
+		'<li>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a></li>';
+	    if (packaged_app) { 
+		infoText = infoText + '<li>Subtitles service powered by <a href="http://www.OpenSubtitles.org" target="_blank">www.OpenSubtitles.org</a>. More uploaded subs means more subs available. Please opload <a href="http://www.opensubtitles.org/upload" target="_blank">here</a> jour subs.<br/><a href="http://www.OpenSubtitles.org" target="_blank"><img src="opensubtitle.gif"/></a></li>';
+	    }
+	    infoText = infoText + '</ul>[Click the box to close the info window]</div>'
+
+	    var info = $(infoText
 	    ).appendTo(controls[0].parentElement);
 
 	    info.find("a").click(function (e) {

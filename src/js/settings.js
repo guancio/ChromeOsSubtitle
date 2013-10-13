@@ -13,16 +13,6 @@
 		    '[Click outside the box to close the settings]</div>'
 	    ).appendTo(controls[0].parentElement);
 
-	    // var settingsList = $('#settings_list')[0];
-	    // $('<li/>')
-	    // 	.appendTo(settingsList)
-	    // 	.append($('<label style="width:250px; float:left;">Default subtitle font size</label>'))
-	    // 	.append($('<input style="width:100px"/>'));
-	    // $('<li/>')
-	    // 	.appendTo(settingsList)
-	    // 	.append($('<label style="width:250px; float:left;">Default opensubtitle.org language</label>'))
-	    // 	.append($('<select style="width:100px"><option>English</option></select>'));
-
 	    function hide(e) {
 		settingsPanel.css('visibility','hidden');
 		if (player.media.paused)
