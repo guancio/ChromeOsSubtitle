@@ -115,17 +115,36 @@ var openSubsLang = [
 		player.setTrack(lang);
 	    });
 
+	    $('<div><div class="opensubtitleBanner" style="width: 100%;color: white; background: rgba(20, 20, 20, 0.8); text-align:center; font-size: 16px; padding-top:20px; padding-bottom:20px; z-index:999; position:absolute; cursor: pointer;visibility:hidden;">Click here to download subtitles from OpenSubtitles.org</div></div>')
+		.appendTo(layers);
+	    player.opensubtitleBanner = $('.opensubtitleBanner');
+
 
 	    function info(text) {
 		$('#label_opensubtitle')[0].textContent=text;
 	    };
+	    function infoBanner(text) {
+		player.opensubtitleBanner[0].textContent=text;
+	    };
+	    function infoBoth(text) {
+		info(text);
+		infoBanner(text);
+	    };
 
 	    function openSubtitle(content, sub) {
-		info("5/6 Opening...");
+		infoBoth("5/6 Opening...");
 		var blob = b64toBlob(content, "text/plain");
 		zip.createReader(new zip.BlobReader(blob),function(reader) {
 		    reader.gunzip(new zip.BlobWriter(), function(data){
 			info(sub.SubFileName);
+			infoBanner(sub.SubFileName + ' downloaded');
+			t.subtitleBannerTimer = setTimeout(function() {
+			    player.opensubtitleBanner.css('visibility','hidden');
+			    clearTimeout(t.subtitleBannerTimer);
+			    delete t.subtitleBannerTimer;
+			    t.subtitleBannerTimer = null;
+			}, 2000);
+
 
 			if (t.opensubtitleService.lastSubtitles.length > 1) {
 			    $('#select_opensubtitle').css('visibility','inherit');
@@ -156,13 +175,13 @@ var openSubsLang = [
 	    }
 
 	    function downloadSubtitle(sub) {
-		info("4/6 Downloading...");
+		infoBoth("4/6 Downloading...");
 		service.DownloadSubtitles({
 		    params: [t.opensubtitleService.token, [
 			sub.IDSubtitleFile
 		    ]],
 		    onException:function(errorObj){
-			info("Download failed...");
+			infoBoth("Download failed...");
 		    },
 		    onComplete:function(responseObj){
 			var content = responseObj.result.data[0].data;
@@ -175,7 +194,7 @@ var openSubsLang = [
 		var lang = "eng";
 		lang = $('#select_opensubtitle_lang')[0].value;
 		// var lang = "ell";
-		info("3/6 Searching...");
+		infoBoth("3/6 Searching...");
 		service.SearchSubtitles({
 		    params: [t.opensubtitleService.token, [
 			{query: t.openedFile.name,
@@ -185,7 +204,7 @@ var openSubsLang = [
 			 sublanguageid: lang}
 		    ], {limit:100}],
 		    onException:function(errorObj){
-			info("Search failed");
+			infoBoth("Search failed");
 		    },
 		    onComplete:function(responseObj){
 			// Check that at leat a subtitle has been found
@@ -219,18 +238,18 @@ var openSubsLang = [
 	    };
 
 	    function movieHash() {
-		info("2/6 Hashing...");
+		infoBoth("2/6 Hashing...");
 		OpenSubtitlesHash(t.openedFile, function(hash){
 		    searchSubtitle(hash);
 		});
 	    };
 
 	    function logIn() {
-		info("1/6 Authenticating...");
+		infoBoth("1/6 Authenticating...");
 		service.LogIn({
 		    params: ["", "", "", "ChromeSubtitleVideoplayer"],
 		    onException:function(errorObj){
-			info("Authentiation failed");
+			infoBoth("Authentiation failed");
 		    },
 		    onComplete:function(responseObj){
 			t.opensubtitleService.token = responseObj.result.token;
@@ -239,20 +258,46 @@ var openSubsLang = [
 		});
 	    };
 
+	    player.opensubtitleBanner.click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		logIn();
+		return false;
+	    });
+
 	    $('#opensubtitle_button').click(function (e) {
 		$('#label_opensubtitle').css('visibility','inherit');
 		$('#select_opensubtitle').css('visibility','hidden');
+		t.subtitleBannerTimer = setTimeout(function() {
+		    clearTimeout(t.subtitleBannerTimer);
+		    delete t.subtitleBannerTimer;
+		    t.subtitleBannerTimer = null;
+		}, 10000);
+
 		logIn();
 	    });
 
+	    // on load a new video
 	    media.addEventListener('loadeddata',function() {
 		t.captionsButton
 		    .find('input[value=opensubtitle]')
 		    .prop('disabled',true);
 		info("No subtitle");
+		infoBanner("Click here to download subtitles from OpenSubtitles.org");
 		$('#label_opensubtitle').css('visibility','inherit');
 		$('#select_opensubtitle').css('visibility','hidden');
 		t.opensubtitleService.lastSubtitles = [];
+		var defaultValue = selectDefault.value;
+		$('#select_opensubtitle_lang').val(defaultValue);
+
+		player.opensubtitleBanner.css('visibility','inherit');
+
+		t.subtitleBannerTimer = setTimeout(function() {
+		    player.opensubtitleBanner.css('visibility','hidden');
+		    clearTimeout(t.subtitleBannerTimer);
+		    delete t.subtitleBannerTimer;
+		    t.subtitleBannerTimer = null;
+		}, 10000);
 	    });
 
 
@@ -280,12 +325,6 @@ var openSubsLang = [
 		});
 	    });
 	    
-	    // on load a new video
-	    media.addEventListener('loadeddata',function() {
-		var defaultValue = selectDefault.value;
-		$('#select_opensubtitle_lang').val(defaultValue);
-	    });
-
 	}
     });
 })(mejs.$);
