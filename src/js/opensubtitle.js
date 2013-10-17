@@ -258,6 +258,8 @@ var openSubsLang = [
 		});
 	    };
 
+	    player.openSubtitleLogIn = logIn;
+
 	    player.opensubtitleBanner.click(function(e) {
 		e.preventDefault();
 		e.stopPropagation();
