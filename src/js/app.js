@@ -134,9 +134,12 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
 		  '</div>')
 		.appendTo(controls);
+	    player.openFileForm = function () {
+		openFileInput[0].click();
+	    };
 	    open.click(function(e) {
 		e.preventDefault();
-		openFileInput[0].click();
+		player.openFileForm();
 		return false;
 	    });
 	    openFileInput.change(function (e) {
@@ -280,6 +283,39 @@ $('#player').mediaelementplayer({
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
     features: features,
+    keyActions: [
+	{
+	    keys: [79], // O
+	    action: function(player, media) {
+		player.openFileForm();
+	    }
+	},
+	{
+	    keys: [
+		32, // SPACE
+		179 // GOOGLE play/pause button
+	    ],
+	    action: function(player, media) {
+		if (media.readyState != 4)
+		    return;
+		
+		if (media.paused || media.ended) {
+		    media.play();	
+		} else {
+		    media.pause();
+		}										
+	    }
+	},
+	{
+	    keys: [68],  // D
+	    action: function(player, media) {
+		if (!player.openedFile)
+		    return;
+		player.openSubtitleLogIn();
+	    }
+	}
+
+    ],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
