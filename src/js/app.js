@@ -27,20 +27,27 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
 
     t.capSizeInput = value[0];
 
+    t.decCaptionSize = function() {
+	t.capSizeInput.value = (Number(t.capSizeInput.value) / 1.2).toFixed(0);
+	updateCaptionSize(Number(t.capSizeInput.value));
+    }
+    t.incCaptionSize = function() {
+	t.capSizeInput.value = (Number(t.capSizeInput.value) * 1.2).toFixed(0);
+	updateCaptionSize(Number(t.capSizeInput.value));
+    }
+
     // create the buttons
     var dec =
         $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption size') + '" aria-label="' + mejs.i18n.t('Decrease caption size') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capSizeInput.value = (Number(t.capSizeInput.value) / 1.2).toFixed(0);
-	    updateCaptionSize(Number(t.capSizeInput.value));
+	    t.decCaptionSize();
 	}); 
     var inc = 
 	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption size') + '" aria-label="' + mejs.i18n.t('Increase caption size') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capSizeInput.value = (Number(t.capSizeInput.value) * 1.2).toFixed(0);
-	    updateCaptionSize(Number(t.capSizeInput.value));
+	    t.incCaptionSize();
 	});  
 
     var line =
@@ -89,20 +96,27 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     t.capDelayInput = value[0];
     t.capDelayInput.value = 0;
 
+    t.decCaptionDelay = function() {
+	t.capDelayInput.value = (Number(t.capDelayInput.value) - 0.1).toFixed(1);
+	t.capDelayValue = Number(t.capDelayInput.value);
+    };
+    t.incCaptionDelay = function() {
+	t.capDelayInput.value = (Number(t.capDelayInput.value) + 0.1).toFixed(1);
+	t.capDelayValue = Number(t.capDelayInput.value);
+    };
+
     // create the buttons
     var dec =
         $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption delay') + '" aria-label="' + mejs.i18n.t('Decrease caption delay') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capDelayInput.value = (Number(t.capDelayInput.value) - 0.1).toFixed(1);
-	    t.capDelayValue = Number(t.capDelayInput.value);
+	    t.decCaptionDelay();
 	}); 
     var inc = 
 	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption delay') + '" aria-label="' + mejs.i18n.t('Increase caption delay') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capDelayInput.value = (Number(t.capDelayInput.value) + 0.1).toFixed(1);
-	    t.capDelayValue = Number(t.capDelayInput.value);
+	    t.incCaptionDelay();
 	});
 
     var line =
@@ -285,12 +299,6 @@ $('#player').mediaelementplayer({
     features: features,
     keyActions: [
 	{
-	    keys: [79], // O
-	    action: function(player, media) {
-		player.openFileForm();
-	    }
-	},
-	{
 	    keys: [
 		32, // SPACE
 		179 // GOOGLE play/pause button
@@ -307,14 +315,117 @@ $('#player').mediaelementplayer({
 	    }
 	},
 	{
+	    keys: [38], // UP
+	    action: function(player, media) {
+		var newVolume = Math.min(media.volume + 0.1, 1);
+		media.setVolume(newVolume);
+	    }
+	},
+	{
+	    keys: [40], // DOWN
+	    action: function(player, media) {
+		var newVolume = Math.max(media.volume - 0.1, 0);
+		media.setVolume(newVolume);
+	    }
+	},
+	{
+	    keys: [
+		37, // LEFT
+		227 // Google TV rewind
+	    ],
+	    action: function(player, media) {
+		if (!isNaN(media.duration) && media.duration > 0) {
+		    if (player.isVideo) {
+			player.showControls();
+			player.startControlsTimer();
+		    }
+		    
+		    // 5%
+		    var newTime = Math.max(media.currentTime - player.options.defaultSeekBackwardInterval(media), 0);
+		    media.setCurrentTime(newTime);
+		}
+	    }
+	},
+	{
+	    keys: [
+		39, // RIGHT
+		228 // Google TV forward
+	    ], 
+	    action: function(player, media) {
+		if (!isNaN(media.duration) && media.duration > 0) {
+		    if (player.isVideo) {
+			player.showControls();
+			player.startControlsTimer();
+		    }
+		    
+		    // 5%
+		    var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);										
+		    media.setCurrentTime(newTime);
+		}
+	    }
+	},
+	{
+	    keys: [70], // f
+	    action: function(player, media) {
+		if (typeof player.enterFullScreen != 'undefined') {
+		    if (player.isFullScreen) {
+			player.exitFullScreen();
+		    } else {
+			player.enterFullScreen();
+		    }
+		}
+	    }
+	},
+	{
+	    keys: [79], // O
+	    action: function(player, media) {
+		player.openFileForm();
+	    }
+	},
+	{
 	    keys: [68],  // D
 	    action: function(player, media) {
 		if (!player.openedFile)
 		    return;
 		player.openSubtitleLogIn();
 	    }
-	}
-
+	},
+	{
+	    keys: [73],  // I
+	    action: function(player, media) {
+		player.openInfoWindow();
+	    }
+	},
+	{
+	    keys: [83],  // S
+	    action: function(player, media) {
+		player.openSettingsWindow();
+	    }
+	},
+	{
+	    keys: [109],  // -
+	    action: function(player, media) {
+		player.decCaptionSize();
+	    }
+	},
+	{
+	    keys: [107],  // +
+	    action: function(player, media) {
+		player.incCaptionSize();
+	    }
+	},
+	{
+	    keys: [90],  // z
+	    action: function(player, media) {
+		player.decCaptionDelay();
+	    }
+	},
+	{
+	    keys: [88],  // x
+	    action: function(player, media) {
+		player.incCaptionDelay();
+	    }
+	},
     ],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;

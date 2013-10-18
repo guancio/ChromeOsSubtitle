@@ -991,8 +991,6 @@
 	    
 	    // listen for key presses
 	    t.globalBind('keydown', function(e) {
-		
-		
 		// find a matching key
 		console.log(e.keyCode);
 		for (var i=0, il=player.options.keyActions.length; i<il; i++) {
