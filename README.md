@@ -9,6 +9,8 @@ Please, if possible submit bug and feature request at https://github.com/guancio
 
 The subtitle service is provided by <a href="http://www.opensubtitles.org">www.opensubtitles.org</a>
 
+<script id='fbmk0hr'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=guancio&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbmk0hr');</script>
+
 Change log:
 - Version 1.5.0
   - Mutlilingual download of opensubtitles.org subtitles
