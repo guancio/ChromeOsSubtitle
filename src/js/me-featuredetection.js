@@ -71,7 +71,7 @@ mejs.MediaFeatures = {
 			t.requestFullScreen = function(el) {
 		
 				if (t.hasWebkitNativeFullScreen) {
-					el.webkitRequestFullScreen();
+					el.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
 				} else if (t.hasMozNativeFullScreen) {
 					el.mozRequestFullScreen();
 				}
