@@ -223,6 +223,9 @@ a:visited {
 .mejs-controls .mejs-settings button {
 	background-position: -128px 0;
 }
+.mejs-controls .mejs-help button {
+	background-position: -176px -16px;
+}
 
 .mejs-container .mejs-captionsize  div {
 	width: 20px;

@@ -115,7 +115,7 @@ var openSubsLang = [
 		player.setTrack(lang);
 	    });
 
-	    $('<div><div class="opensubtitleBanner" style="width: 100%;color: white; background: rgba(20, 20, 20, 0.8); text-align:center; font-size: 16px; padding-top:20px; padding-bottom:20px; z-index:999; position:absolute; cursor: pointer;visibility:hidden;">Click here to download subtitles from OpenSubtitles.org</div></div>')
+	    $('<div><div class="opensubtitleBanner" style="width: 100%;color: white; background: rgba(20, 20, 20, 0.8); text-align:center; font-size: 16px; padding-top:20px; padding-bottom:20px; z-index:999; position:absolute; cursor: pointer;visibility:hidden;">Click here (or press [d]) to download subtitles from OpenSubtitles.org</div></div>')
 		.appendTo(layers);
 	    player.opensubtitleBanner = $('.opensubtitleBanner');
 
@@ -258,6 +258,8 @@ var openSubsLang = [
 		});
 	    };
 
+	    player.openSubtitleLogIn = logIn;
+
 	    player.opensubtitleBanner.click(function(e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -283,7 +285,7 @@ var openSubsLang = [
 		    .find('input[value=opensubtitle]')
 		    .prop('disabled',true);
 		info("No subtitle");
-		infoBanner("Click here to download subtitles from OpenSubtitles.org");
+		infoBanner("Click here (or press [d]) to download subtitles from OpenSubtitles.org");
 		$('#label_opensubtitle').css('visibility','inherit');
 		$('#select_opensubtitle').css('visibility','hidden');
 		t.opensubtitleService.lastSubtitles = [];
