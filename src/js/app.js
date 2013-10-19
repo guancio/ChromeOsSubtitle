@@ -2,7 +2,6 @@ var myURL = window.URL || window.webkitURL;
 
 var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
 
-
 MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, media) {
     var captionSelector = player.captionsButton.find('.mejs-captions-selector');
     var
@@ -17,20 +16,27 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
     t.capDelayInput = value[0];
     t.capDelayInput.value = 0;
 
+    t.decCaptionDelay = function() {
+	t.capDelayInput.value = (Number(t.capDelayInput.value) - 0.1).toFixed(1);
+	t.capDelayValue = Number(t.capDelayInput.value);
+    };
+    t.incCaptionDelay = function() {
+	t.capDelayInput.value = (Number(t.capDelayInput.value) + 0.1).toFixed(1);
+	t.capDelayValue = Number(t.capDelayInput.value);
+    };
+
     // create the buttons
     var dec =
         $('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption delay') + '" aria-label="' + mejs.i18n.t('Decrease caption delay') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capDelayInput.value = (Number(t.capDelayInput.value) - 0.1).toFixed(1);
-	    t.capDelayValue = Number(t.capDelayInput.value);
+	    t.decCaptionDelay();
 	}); 
     var inc = 
 	$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
 	  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption delay') + '" aria-label="' + mejs.i18n.t('Increase caption delay') + '"></button>' +  '</div>')
 	.click(function() {
-	    t.capDelayInput.value = (Number(t.capDelayInput.value) + 0.1).toFixed(1);
-	    t.capDelayValue = Number(t.capDelayInput.value);
+	    t.incCaptionDelay();
 	});
 
     var line =
@@ -62,9 +68,12 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
 		  '</div>')
 		.appendTo(controls);
+	    player.openFileForm = function () {
+		openFileInput[0].click();
+	    };
 	    open.click(function(e) {
 		e.preventDefault();
-		openFileInput[0].click();
+		player.openFileForm();
 		return false;
 	    });
 	    openFileInput.change(function (e) {
@@ -133,8 +142,10 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    t = this;
 	    var infoText = 
 		'<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/>'+
-		    '<h2>Subtitle Videoplayer v1.5.0</h2>' +
+		    '<h2>Subtitle Videoplayer v1.6.0</h2>' +
 		'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>';
+	    infoText = infoText + 'You can donate to this project via <a href="https://flattr.com/submit/auto?user_id=guancio&url=https://github.com/guancio/ChromeOsSubtitle&title=ChromeOsSubtitle&language=&tags=github&category=software"><img src="flattr.png"></a><br><br>';
+
 	    if (!packaged_app) {
 		infoText = infoText +
 		    'Plase install the <a href="https://chrome.google.com/webstore/detail/subtitle-videoplayer/naikohapihpbhficdpbddmgbhiccijca?hl=en-GB" target="_blank">packaged app</a> version of this application, that also integrate with opensubtitles.org<br><br>'; 
@@ -198,7 +209,7 @@ var mainMediaElement = null;
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
 
-var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'settingsbutton', 'fullscreen', 'drop'];
+var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
     if (packaged_app)
 	features.push('opensubtitle');
 
@@ -208,6 +219,142 @@ $('#player').mediaelementplayer({
     hideCaptionsButtonWhenEmpty:false,
     mode:"native",
     features: features,
+    keyActions: [
+	{
+	    keys: [
+		32, // SPACE
+		179 // GOOGLE play/pause button
+	    ],
+	    action: function(player, media) {
+		if (media.readyState != 4)
+		    return;
+		
+		if (media.paused || media.ended) {
+		    media.play();	
+		} else {
+		    media.pause();
+		}										
+	    }
+	},
+	{
+	    keys: [38], // UP
+	    action: function(player, media) {
+		var newVolume = Math.min(media.volume + 0.1, 1);
+		media.setVolume(newVolume);
+	    }
+	},
+	{
+	    keys: [40], // DOWN
+	    action: function(player, media) {
+		var newVolume = Math.max(media.volume - 0.1, 0);
+		media.setVolume(newVolume);
+	    }
+	},
+	{
+	    keys: [
+		37, // LEFT
+		227 // Google TV rewind
+	    ],
+	    action: function(player, media) {
+		if (!isNaN(media.duration) && media.duration > 0) {
+		    if (player.isVideo) {
+			player.showControls();
+			player.startControlsTimer();
+		    }
+		    
+		    // 5%
+		    var newTime = Math.max(media.currentTime - player.options.defaultSeekBackwardInterval(media), 0);
+		    media.setCurrentTime(newTime);
+		}
+	    }
+	},
+	{
+	    keys: [
+		39, // RIGHT
+		228 // Google TV forward
+	    ], 
+	    action: function(player, media) {
+		if (!isNaN(media.duration) && media.duration > 0) {
+		    if (player.isVideo) {
+			player.showControls();
+			player.startControlsTimer();
+		    }
+		    
+		    // 5%
+		    var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);										
+		    media.setCurrentTime(newTime);
+		}
+	    }
+	},
+	{
+	    keys: [70], // f
+	    action: function(player, media) {
+		if (typeof player.enterFullScreen != 'undefined') {
+		    if (player.isFullScreen) {
+			player.exitFullScreen();
+		    } else {
+			player.enterFullScreen();
+		    }
+		}
+	    }
+	},
+	{
+	    keys: [79], // O
+	    action: function(player, media) {
+		player.openFileForm();
+	    }
+	},
+	{
+	    keys: [68],  // D
+	    action: function(player, media) {
+		if (!player.openedFile)
+		    return;
+		player.openSubtitleLogIn();
+	    }
+	},
+	{
+	    keys: [73],  // I
+	    action: function(player, media) {
+		player.openInfoWindow();
+	    }
+	},
+	{
+	    keys: [83],  // S
+	    action: function(player, media) {
+		player.openSettingsWindow();
+	    }
+	},
+	{
+	    keys: [72],  // H
+	    action: function(player, media) {
+		player.openHelpWindow();
+	    }
+	},
+	{
+	    keys: [109],  // -
+	    action: function(player, media) {
+		player.decCaptionSize();
+	    }
+	},
+	{
+	    keys: [107],  // +
+	    action: function(player, media) {
+		player.incCaptionSize();
+	    }
+	},
+	{
+	    keys: [90],  // z
+	    action: function(player, media) {
+		player.decCaptionDelay();
+	    }
+	},
+	{
+	    keys: [88],  // x
+	    action: function(player, media) {
+		player.incCaptionDelay();
+	    }
+	},
+    ],
     success: function (mediaElement, domObject) { 
 	mainMediaElement = mediaElement;
 
