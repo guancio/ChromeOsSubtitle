@@ -12,6 +12,10 @@ The subtitle service is provided by <a href="http://www.opensubtitles.org">www.o
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=guancio&url=https://github.com/guancio/ChromeOsSubtitle&title=ChromeOsSubtitle&language=&tags=github&category=software) 
 
 Change log:
+- Version 1.6.0
+  - Banner for automatic download of subtitles
+  - Keyboard shortcuts
+  - Minimal help window
 - Version 1.5.0
   - Mutlilingual download of opensubtitles.org subtitles
   - Settings windows to configure:
