@@ -222,7 +222,7 @@ MediaElementPlayer.prototype.buildsubdelay = function(player, controls, layers, 
 	    t = this;
 	    var infoText = 
 		'<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="icon.png" style="width:80px;height: auto;"/>'+
-		    '<h2>Subtitle Videoplayer v1.5.0</h2>' +
+		    '<h2>Subtitle Videoplayer v1.6.0</h2>' +
 		'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>';
 	    if (!packaged_app) {
 		infoText = infoText +
@@ -287,7 +287,7 @@ var mainMediaElement = null;
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
 
-var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'info', 'settingsbutton', 'fullscreen', 'drop'];
+var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
     if (packaged_app)
 	features.push('opensubtitle');
 
@@ -400,6 +400,12 @@ $('#player').mediaelementplayer({
 	    keys: [83],  // S
 	    action: function(player, media) {
 		player.openSettingsWindow();
+	    }
+	},
+	{
+	    keys: [72],  // H
+	    action: function(player, media) {
+		player.openHelpWindow();
 	    }
 	},
 	{
