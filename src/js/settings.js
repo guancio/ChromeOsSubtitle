@@ -34,6 +34,7 @@
 	    });
 
 	    t.openSettingsWindow = function() {
+		$('.me-window').css('visibility','hidden');
 		settingsPanel.css('visibility','visible');
 		$(".mejs-overlay-play").hide();
 		player.container.click(hide);
@@ -54,7 +55,6 @@
 		  '</div>')
 		.appendTo(controls)
 		.click(function(e) {
-		    $('.me-window').css('visibility','hidden');
 		    e.preventDefault();
 		    t.openSettingsWindow();
 		    return false;

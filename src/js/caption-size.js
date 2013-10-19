@@ -23,21 +23,28 @@
 
 
 	    t.capSizeInput = value[0];
+	    
+	    t.decCaptionSize = function() {
+		t.capSizeInput.value = (Number(t.capSizeInput.value) / 1.2).toFixed(0);
+		updateCaptionSize(Number(t.capSizeInput.value));
+	    }
+	    t.incCaptionSize = function() {
+		t.capSizeInput.value = (Number(t.capSizeInput.value) * 1.2).toFixed(0);
+		updateCaptionSize(Number(t.capSizeInput.value));
+	    }
 
 	    // create the buttons
 	    var dec =
 		$('<div class="mejs-button mejs-reduce-button mejs-reduce" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Decrease caption size') + '" aria-label="' + mejs.i18n.t('Decrease caption size') + '"></button>' +  '</div>')
 		.click(function() {
-		    t.capSizeInput.value = (Number(t.capSizeInput.value) / 1.2).toFixed(0);
-		    updateCaptionSize(Number(t.capSizeInput.value));
+		    t.decCaptionSize();
 		}); 
 	    var inc = 
 		$('<div class="mejs-button mejs-increase-button mejs-increase" >' +
 		  '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Increase caption size') + '" aria-label="' + mejs.i18n.t('Increase caption size') + '"></button>' +  '</div>')
 		.click(function() {
-		    t.capSizeInput.value = (Number(t.capSizeInput.value) * 1.2).toFixed(0);
-		    updateCaptionSize(Number(t.capSizeInput.value));
+		    t.incCaptionSize();
 		});  
 
 	    var line =
