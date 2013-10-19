@@ -701,7 +701,48 @@
    x2="184.60329"
    y2="11.375051"
    gradientUnits="userSpaceOnUse"
-   gradientTransform="translate(0,0.93055349)" /></defs>
+   gradientTransform="translate(0,0.93055349)" /><linearGradient
+   inkscape:collect="always"
+   xlink:href="#linearGradient3930-1"
+   id="linearGradient3928-7"
+   x1="184.8586"
+   y1="1.6707071"
+   x2="184.60329"
+   y2="11.375051"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(0,0.93055349)" /><linearGradient
+   id="linearGradient3930-1"><stop
+     id="stop3932-0"
+     offset="0"
+     style="stop-color:#ffffff;stop-opacity:1;" /><stop
+     id="stop3934-4"
+     offset="1"
+     style="stop-color:#969696;stop-opacity:1;" /></linearGradient><linearGradient
+   inkscape:collect="always"
+   xlink:href="#linearGradient3930-1"
+   id="linearGradient3166"
+   x1="184.8586"
+   y1="1.6707071"
+   x2="184.60329"
+   y2="11.375051"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(0,0.93055349)" /><linearGradient
+   id="linearGradient3168"><stop
+     id="stop3170"
+     offset="0"
+     style="stop-color:#ffffff;stop-opacity:1;" /><stop
+     id="stop3172"
+     offset="1"
+     style="stop-color:#969696;stop-opacity:1;" /></linearGradient><linearGradient
+   y2="11.375051"
+   x2="184.60329"
+   y1="1.6707071"
+   x1="184.8586"
+   gradientTransform="translate(-2.9648344,17.377703)"
+   gradientUnits="userSpaceOnUse"
+   id="linearGradient3176"
+   xlink:href="#linearGradient3930-1"
+   inkscape:collect="always" /></defs>
 	<g
    id="BG">
 	</g>
@@ -813,6 +854,7 @@
    style="font-size:10px;text-align:center;color:#ffffff;fill:#ffffff;visibility:hidden;font-family:Arial"
    id="text140"><tspan
      id="tspan142">cc</tspan></text>
+
 
 
 
@@ -1009,4 +1051,17 @@
      x="182.25554"
      y="12.458377"
      style="font-size:16px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:url(#linearGradient3928);fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif Bold Italic">i</tspan></text>
+
+<text
+   xml:space="preserve"
+   style="font-size:16px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient3176);fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif Bold Italic"
+   x="179.29071"
+   y="28.905527"
+   id="text3142-8"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     id="tspan3144-2"
+     x="179.29071"
+     y="28.905527"
+     style="font-size:16px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;fill:url(#linearGradient3176);fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif Bold Italic">?</tspan></text>
 </svg>
