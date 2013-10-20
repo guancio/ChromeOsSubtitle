@@ -64,20 +64,17 @@ MediaElementPlayer.prototype.buildsubsize = function(player, controls, layers, m
     	.append($('<label style="width:250px; float:left;">Default subtitle font size</label>'))
     	.append($('<input id="defaultSubSize" style="width:100px;background-color: transparent; color: white;"/>'));
 
-    t.capSizeInput.value = 22;
+    var settingsSize = 22;
+    if (localStorage.getItem('default_sub_size')) {
+	settingsSize = localStorage.getItem('default_sub_size');
+    }
+    t.capSizeInput.value = settingsSize;
+    $("#defaultSubSize")[0].value = settingsSize;
     updateCaptionSize(Number(t.capSizeInput.value));
-    chrome.storage.sync.get({'default_sub_size': 22}, function(obj) {
-	t.capSizeInput.value = obj['default_sub_size'];
-	$("#defaultSubSize")[0].value = obj['default_sub_size'];
-	updateCaptionSize(Number(t.capSizeInput.value));
-    });
-
+    
     $(document).bind("settingsClosed", function() { 
 	var defaultValue = $("#defaultSubSize")[0].value;
-	chrome.storage.sync.set({
-	    'default_sub_size': defaultValue
-	}, function(obj) {
-	});
+	localStorage.setItem('default_sub_size', defaultValue);
     });
 };
 
