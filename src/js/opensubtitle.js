@@ -1,3 +1,5 @@
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 1024;
@@ -78,7 +80,10 @@ var openSubsLang = [
 	    var 
 	    t = this;
 
-	    var service = new rpc.ServiceProxy("http://api.opensubtitles.org/xml-rpc", {
+	    var host = "http://api.opensubtitles.org/xml-rpc";
+	    if (!packaged_app)
+		host = "http://localhost:8080/xml-rpc";
+	    var service = new rpc.ServiceProxy(host, {
 		sanitize: false,
 		protocol: "XML-RPC",
 		asynchronous: true,
@@ -313,18 +318,18 @@ var openSubsLang = [
 		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectDefault);
 	    });
 
-	    chrome.storage.sync.get({'default_opensubtitle_lang': "eng"}, function(obj) {
-		$(selectDefault).val(obj['default_opensubtitle_lang']);
-		$('#select_opensubtitle_lang').val(obj['default_opensubtitle_lang']);
-	    });
+	    var settingsLang = "eng";
+	    if (localStorage.getItem('default_opensubtitle_lang')) {
+		settingsLang = localStorage.getItem('default_opensubtitle_lang');
+	    }
+	    
+	    $(selectDefault).val(settingsLang);
+	    $('#select_opensubtitle_lang').val(settingsLang);
 
 	    $(document).bind("settingsClosed", function() { 
 		var defaultValue = selectDefault.value;
+		localStorage.setItem('default_opensubtitle_lang', defaultValue);
 		$('#select_opensubtitle_lang').val(defaultValue);
-		chrome.storage.sync.set({
-		    'default_opensubtitle_lang': defaultValue
-		}, function(obj) {
-		});
 	    });
 	    
 	}
