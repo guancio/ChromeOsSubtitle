@@ -1,5 +1,5 @@
 
-zip.workerScriptsPath = "lib/";
+zip.workerScriptsPath = mediaelement_url + "/lib/";
 
 (function($) {
 
