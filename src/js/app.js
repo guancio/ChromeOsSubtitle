@@ -408,13 +408,13 @@ $('#player').mediaelementplayer({
 	    }
 	},
 	{
-	    keys: [109],  // -
+	    keys: [189],  // -
 	    action: function(player, media) {
 		player.decCaptionSize();
 	    }
 	},
 	{
-	    keys: [107],  // +
+	    keys: [187],  // +
 	    action: function(player, media) {
 		player.incCaptionSize();
 	    }
