@@ -390,6 +390,8 @@ zip.workerScriptsPath = mediaelement_url + "/lib/";
 			var t = this,
 				i;
 		
+		    $(document).trigger("subtitleChanged"); 
+
 			if (lang == 'none') {
 				t.selectedTrack = null;
 			} else {
@@ -430,6 +432,7 @@ zip.workerScriptsPath = mediaelement_url + "/lib/";
 					t.enableTrackButton(track.srclang, track.label);
 					t.loadNextTrack();
 				};
+
 		    var reader = new FileReader();
 		    reader.onloadend = function(evt) {
 			// parse the loaded file
@@ -440,6 +443,8 @@ zip.workerScriptsPath = mediaelement_url + "/lib/";
 			    track.entries = mejs.TrackFormatParser.webvvt.parse(d);
 			}
 			after();
+
+			$(document).trigger("subtitleChanged"); 
 			if (track.kind == 'chapters') {
 			    t.media.addEventListener('play', function(e) {
 				if (t.media.duration > 0) {

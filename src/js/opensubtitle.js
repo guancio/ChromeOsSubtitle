@@ -87,7 +87,7 @@ var openSubsLang = [
 		sanitize: false,
 		protocol: "XML-RPC",
 		asynchronous: true,
-		methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles"]
+		methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB"]
 	    });
 	    t.opensubtitleService = {token:null, service:service, lastSubtitles : []};
 	    

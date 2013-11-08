@@ -103,13 +103,13 @@
 			media.addEventListener('progress', function (e) {
 				player.setProgressRail(e);
 				player.setCurrentRail(e);
-			}, false);
+			});
 
 			// current time
 			media.addEventListener('timeupdate', function(e) {
 				player.setProgressRail(e);
 				player.setCurrentRail(e);
-			}, false);
+			});
 			
 			
 			// store for later use
