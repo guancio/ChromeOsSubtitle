@@ -1,0 +1,9 @@
+[submodule "src/lib/zip.js"]
+	path = src/lib/zip.js
+	url = git@github.com:guancio/zip.js.git
+[submodule "src/lib/json-xml-rpc"]
+	path = src/lib/json-xml-rpc
+	url = git@github.com:guancio/json-xml-rpc.git
+[submodule "src/lib/Long.js"]
+	path = src/lib/Long.js
+	url = git@github.com:guancio/Long.js.git

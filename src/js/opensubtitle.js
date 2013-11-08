@@ -134,9 +134,10 @@ var openSubsLang = [
 	    function openSubtitle(content, sub) {
 		infoBoth("5/6 Opening...");
 		var blob = b64toBlob(content, "text/plain");
-		zip.createReader(new zip.BlobReader(blob),function(reader) {
+		zip.createGZipReader(new zip.BlobReader(blob),function(reader) {
 		    reader.gunzip(new zip.BlobWriter(), function(data){
 			info(sub.SubFileName);
+
 			infoBanner(sub.SubFileName + ' downloaded');
 			t.subtitleBannerTimer = setTimeout(function() {
 			    player.opensubtitleBanner.css('visibility','hidden');
@@ -170,7 +171,16 @@ var openSubsLang = [
 			t.tracks[trackIdx].file = data;
 			t.tracks[trackIdx].isLoaded = false;
 			t.loadTrack(trackIdx);
-		    });
+		    }, 
+				  function(data){
+				      console.log(data);
+				  },
+				  function(data){
+				      console.log(data);
+				  },
+				  function(data){
+				      console.log(data);
+				  })
 		});
 	    }
 
