@@ -280,8 +280,8 @@ var mainMediaElement = null;
 $('#main').append('<video id="player" controls="controls"></video>');
 
 var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
-    //if (packaged_app)
-	features.push('opensubtitle');
+features.push('opensubtitle');
+features.push('opensubtitle_uploader');
 
 $('#player').mediaelementplayer({
     startLanguage:'en',
