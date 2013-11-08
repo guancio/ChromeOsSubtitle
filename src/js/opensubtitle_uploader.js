@@ -23,6 +23,88 @@
 		});
 	    }
 
+	    function finalizeUpload(
+		idmovieimdb,
+		subhash,
+		subfilename,
+		moviehash,
+		moviebytesize,
+		moviefilename,
+		subcontent
+	    ) {
+		t.opensubtitleService.service.UploadSubtitles({
+		    params: [
+    t.opensubtitleService.token,
+    {
+	baseinfo: {
+	    idmovieimdb: idmovieimdb
+	},
+	cd1: {
+	    subhash: subhash,
+	    subfilename: subfilename,
+	    moviehash: moviehash,
+	    moviebytesize: moviebytesize,
+	    moviefilename: moviefilename,
+	    subcontent : subcontent
+	}
+    }
+		    ],
+		    onException:function(errorObj){
+			console.log(errorObj);
+			console.log("Upload failed");
+		    },
+		    onComplete:function(responseObj){
+			console.log(responseObj)
+			console.log("Upload Succes");
+		    }
+		});
+	    }
+
+	    function gzipSub(subhash, idmovieimdb, moviehash) {
+		// var r = new zip.TextReader("hello");
+		var r = new zip.BlobReader(player.selectedTrack.file);
+		var w = new zip.BlobWriter("application/gzip");
+
+		function empty(data) {
+		}
+
+		zip.createGZipWriter(w, function(writer) {
+		    writer.gzip(
+			r,
+			function(data){
+
+    var reader = new FileReader();
+    reader.onload = function(event){
+
+	console.log(data);
+	console.log(event.target.result);
+	finalizeUpload(
+	    idmovieimdb,
+	    subhash,
+	    player.selectedTrack.file.name,
+	    moviehash,
+	    0, //moviebytesize,
+	    "", //moviefilename,
+	    event.target.result.split(',')[1]
+	);
+
+var downloadLink = document.createElement("a");
+downloadLink.download = "aaa.gz";
+downloadLink.innerHTML = "Download File";
+downloadLink.href = window.webkitURL.createObjectURL(new Blob([event.target.result.split(',')[1]]));
+document.body.appendChild(downloadLink);
+	downloadLink.click();
+
+
+    };
+    reader.readAsDataURL(data);
+			},
+			empty,
+			empty,
+			empty)
+		});
+	    }
+
 	    function checkMovieHash(subhash, hash) {
 		t.opensubtitleService.service.CheckMovieHash({
 		    params: [
@@ -41,7 +123,10 @@
 			    return;
 			}
 			movieID = responseObj.result.data[hash].MovieImdbID;
-			console.log(movieID);
+			gzipSub(
+			    subhash,
+			    movieID,
+			    hash);
 		    }
 		});
 	    }
@@ -79,6 +164,7 @@
 		var reader = new FileReader();
 		reader.onloadend = function(evt) {
 		    var d = evt.target.result;
+		    console.log(md5(d));
 		    tryUpload(md5(d), hash);
 		}
 		//reader.readAsText(selectedTrack.file, t.captionEncodingSelect.value);
