@@ -1,0 +1,57 @@
+<html>
+<body>
+<script src="../lib/zip.js/WebContent/zip.js">
+</script>
+
+
+<script>
+zip.workerScriptsPath = "../lib/zip.js/WebContent/";
+
+function test() {
+    r = new zip.TextReader("hello");
+    w = new zip.BlobWriter("application/gzip");
+
+    function empty(data) {
+    }
+
+    zip.createGZipWriter(w, function(writer) {
+	writer.gzip(r,
+	  function(data){
+
+    var reader = new FileReader();
+    reader.onload = function(event){
+
+var downloadLink = document.createElement("div");
+<!-- downloadLink.download = "aaa.gz"; -->
+<!-- downloadLink.innerHTML = "Download File"; -->
+<!-- downloadLink.href = window.webkitURL.createObjectURL(new Blob(event.target.result.split(',')[1])); -->
+downloadLink.innerHTML = event.target.result.split(',')[1];
+document.body.appendChild(downloadLink);
+
+    };
+    reader.readAsDataURL(data);
+
+
+	      r1 = new zip.BlobReader(data);
+	      w1 = new zip.TextWriter();
+	      zip.createGZipReader(r1, function(reader) {
+		  reader.gunzip(
+		      w1,
+		      function(data){
+			  console.log(data);
+		      },
+		      empty,
+		      empty,
+		      empty
+		  );
+	      });
+	  },
+	  empty,
+          empty,
+	  empty)
+    });
+}
+</script>
+
+</body>
+</html>
