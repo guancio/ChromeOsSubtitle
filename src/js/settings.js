@@ -50,6 +50,11 @@ function setIntoSettings(name, value, cb) {
 		    '[Click outside the box to close the settings]</div>'
 	    ).appendTo(controls[0].parentElement);
 
+	    settingsPanel.keydown(function (e) {
+		e.stopPropagation();
+		return true;
+	    });
+
 	    function hide(e) {
 		settingsPanel.css('visibility','hidden');
 		if (player.media.paused)
