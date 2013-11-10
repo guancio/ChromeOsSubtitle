@@ -16,6 +16,7 @@ Change log:
   - Banner for automatic download of subtitles
   - Keyboard shortcuts
   - Minimal help window
+  - Internal restructure for libs
 - Version 1.5.0
   - Mutlilingual download of opensubtitles.org subtitles
   - Settings windows to configure:
