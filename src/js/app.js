@@ -110,8 +110,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
 })(mejs.$);
 
 
-var myURL = window.URL || window.webkitURL;
-
 var mainMediaElement = null;
 
 // $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
@@ -119,7 +117,6 @@ $('#main').append('<video id="player" controls="controls"></video>');
 
 var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
 features.push('opensubtitle');
-features.push('opensubtitle_uploader');
 
 $('#player').mediaelementplayer({
     startLanguage:'en',

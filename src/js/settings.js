@@ -1,3 +1,40 @@
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+
+
+function getFromSettings(name, def_value, cb) {
+    if (packaged_app) {
+	var obj = {};
+	obj[name] = def_value;
+	chrome.storage.sync.get(
+	    obj,
+	    function (obj) {
+		res = obj[name];
+		cb(res);
+	    });
+    }
+    else {
+	if (localStorage.getItem(name))
+	    cb(localStorage.getItem(name));
+	else
+	    cb(def_value);
+    }
+}
+
+function setIntoSettings(name, value, cb) {
+    if (packaged_app) {
+	var obj = {};
+	obj[name] = value;
+	chrome.storage.sync.set(
+	    obj,
+	    cb);
+    }
+    else {
+	localStorage.setItem(name, value);
+	cb();
+    }
+}
+
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	buildsettings: function(player, controls, layers, media) {
