@@ -61,19 +61,22 @@
     		.append($('<label style="width:250px; float:left;">Default subtitle font size</label>'))
     		.append($('<input id="defaultSubSize" style="width:100px;background-color: transparent; color: white;"/>'));
 
-	    t.capSizeInput.value = 22;
-	    updateCaptionSize(Number(t.capSizeInput.value));
-	    chrome.storage.sync.get({'default_sub_size': 22}, function(obj) {
-		t.capSizeInput.value = obj['default_sub_size'];
-		$("#defaultSubSize")[0].value = obj['default_sub_size'];
-		updateCaptionSize(Number(t.capSizeInput.value));
-	    });
+	    getFromSettings(
+		'default_sub_size',
+		22,
+		function (value) {
+		    t.capSizeInput.value = value;
+		    $("#defaultSubSize")[0].value = value;
+		    updateCaptionSize(Number(t.capSizeInput.value));
+		});
+
 
 	    $(document).bind("settingsClosed", function() { 
 		var defaultValue = $("#defaultSubSize")[0].value;
-		chrome.storage.sync.set({
-		    'default_sub_size': defaultValue
-		}, function(obj) {
+		setIntoSettings(
+		    "default_sub_size",
+		    defaultValue,
+		    function(obj) {
 		});
 	    });
 	}

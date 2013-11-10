@@ -329,18 +329,23 @@ var openSubsLang = [
 		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectDefault);
 	    });
 
-	    var settingsLang = "eng";
-	    if (localStorage.getItem('default_opensubtitle_lang')) {
-		settingsLang = localStorage.getItem('default_opensubtitle_lang');
-	    }
-	    
-	    $(selectDefault).val(settingsLang);
-	    $('#select_opensubtitle_lang').val(settingsLang);
+	    getFromSettings(
+		'default_opensubtitle_lang',
+		"eng",
+		function (value) {
+		    $(selectDefault).val(value);
+		    $('#select_opensubtitle_lang').val(value);
+		}
+	    );
 
 	    $(document).bind("settingsClosed", function() { 
 		var defaultValue = selectDefault.value;
-		localStorage.setItem('default_opensubtitle_lang', defaultValue);
 		$('#select_opensubtitle_lang').val(defaultValue);
+		setIntoSettings(
+		    'default_opensubtitle_lang',
+		    defaultValue,
+		    function () {}
+		);
 	    });
 	    
 	}
