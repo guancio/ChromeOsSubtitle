@@ -1,6 +1,6 @@
 {
   "name": "Subtitle Videoplayer Hosted",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "manifest_version": 2,
   "icons": {
     "16": "camera.png",
@@ -8,10 +8,10 @@
   },
   "app": {
     "urls": [
-        "http://localhost"
+        "http://localhost:8080/static/ChromeOsSubtitle/src/"
     ],
     "launch": {
-      "web_url": "http://localhost:8000/content/index.html"
+      "web_url": "http://localhost:8080/static/ChromeOsSubtitle/src/index.html"
     }
   },
   "offline_enabled": true

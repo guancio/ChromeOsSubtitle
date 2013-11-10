@@ -1,1 +1,18 @@
-manifest_git.json
+{
+  "name": "Subtitle Videoplayer Hosted",
+  "version": "1.6.0",
+  "manifest_version": 2,
+  "icons": {
+    "16": "camera.png",
+    "128": "camera.png"
+  },
+  "app": {
+    "urls": [
+        "https://subtitlevideoplayer.appspot.com/static/ChromeOsSubtitle/src/"
+    ],
+    "launch": {
+      "web_url": "https://subtitlevideoplayer.appspot.com/static/ChromeOsSubtitle/src/index.html"
+    }
+  },
+  "offline_enabled": true
+}

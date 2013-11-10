@@ -1,5 +1,5 @@
 
-zip.workerScriptsPath = mediaelement_url + "/lib/zip.js/WebContent/";
+zip.workerScriptsPath = mediaelement_url + "lib/zip.js/WebContent/";
 
 (function($) {
 
