@@ -7,3 +7,6 @@
 [submodule "src/lib/Long.js"]
 	path = src/lib/Long.js
 	url = git@github.com:guancio/Long.js.git
+[submodule "src/lib/JavaScript-MD5"]
+	path = src/lib/JavaScript-MD5
+	url = https://github.com/guancio/JavaScript-MD5
