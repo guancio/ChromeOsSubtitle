@@ -21,7 +21,8 @@
     },
   "permissions":["fileSystem", "fullscreen",
     "http://api.opensubtitles.org/xml-rpc",
-    "storage"
+    "storage",
+    {"socket":["tcp-connect", "tcp-listen"]}
   ],
   "offline_enabled": true
 }
