@@ -58,8 +58,6 @@ Change log:
   - first published release
 
 Missing features/bug:
-- fix subtitle stored in non-UTF8 files (e.g. greek)
-- file type association to open video and subtitle togheter
-- restyle caption interface
+- file type association to open video and subtitle together
 - better code style/integration with me player
 - integration of an android remote control app
