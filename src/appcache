@@ -34,6 +34,8 @@ CACHE MANIFEST
     js/caption-delay.js  
     js/settings.js  
     js/help.js  
+    js/info.js  
+    js/dnd.js  
     conf.js  
     controls-wmp-bg.png
     controls.png
