@@ -93,7 +93,11 @@ var openSubsLang = [
 		asynchronous: true,
 		methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB", "UploadSubtitles"]
 	    });
-	    t.opensubtitleService = {token:null, service:service, lastSubtitles : []};
+	    t.opensubtitleService = {
+		token:null, service:service, lastSubtitles : [],
+		username: "",
+		pwd: ""
+	    };
 	    
 	    var prec = $('#li_encoding');
 	    var line1 =
@@ -117,6 +121,7 @@ var openSubsLang = [
 		.insertAfter(line1);
 
 	    $('#select_opensubtitle_lang').val("eng");
+
 
 	    player.controls.find
 	    ('input[id="'+player.id + '_captions_opensubtitle"]').click(function() {
@@ -267,7 +272,7 @@ var openSubsLang = [
 	    function logIn() {
 		infoBoth("1/6 Authenticating...");
 		service.LogIn({
-		    params: ["", "", "", "ChromeSubtitleVideoplayer"],
+		    params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
 		    onException:function(errorObj){
 			infoBoth("Authentiation failed");
 		    },
@@ -329,6 +334,25 @@ var openSubsLang = [
     		.append($('<label style="width:250px; float:left;">Default opensubtitle.org language</label>'))
     		.append($('<select id="defaultOpenSubtitleLang" style="width:100px"/>'));
 	    var selectDefault = $('#defaultOpenSubtitleLang')[0];
+
+	    $('<li/>')
+    		.appendTo(settingsList)
+    		.append($('<label style="width:250px; float:left;">Opensubtitls.org username</label>'))
+    		.append($('<input id="usernameOpenSubtitle" style="width:100px;background-color: transparent; color: white;"/>'));
+	    $('#usernameOpenSubtitle').keydown(function (e) {
+		e.stopPropagation();
+		return true;
+	    });
+
+	    $('<li/>')
+    		.appendTo(settingsList)
+    		.append($('<label style="width:250px; float:left;">Opensubtitls.org password</label>'))
+    		.append($('<input id="pwdOpenSubtitle" type="password" style="width:100px;background-color: transparent; color: white;"/>'));
+	    $('#pwdOpenSubtitle').keydown(function (e) {
+		e.stopPropagation();
+		return true;
+	    });
+
 	    openSubsLang.forEach(function (e) {
 		$('<option value="'+e[0]+'">'+e[1]+'</option>').appendTo(selectDefault);
 	    });
@@ -341,6 +365,22 @@ var openSubsLang = [
 		    $('#select_opensubtitle_lang').val(value);
 		}
 	    );
+	    getFromSettings(
+		'opensubtitle_username',
+		"",
+		function (value) {
+		    t.opensubtitleService.username = value;
+		    $("#usernameOpenSubtitle")[0].value = value
+		}
+	    );
+	    getFromSettings(
+		'opensubtitle_pwd',
+		"",
+		function (value) {
+		    t.opensubtitleService.pwd = value;
+		    $("#pwdOpenSubtitle")[0].value = value
+		}
+	    );
 
 	    $(document).bind("settingsClosed", function() { 
 		var defaultValue = selectDefault.value;
@@ -348,6 +388,22 @@ var openSubsLang = [
 		setIntoSettings(
 		    'default_opensubtitle_lang',
 		    defaultValue,
+		    function () {}
+		);
+
+		t.opensubtitleService.username =
+		    $("#usernameOpenSubtitle")[0].value;
+		setIntoSettings(
+		    'opensubtitle_username',
+		    t.opensubtitleService.username,
+		    function () {}
+		);
+
+		t.opensubtitleService.pwd =
+		    $("#pwdOpenSubtitle")[0].value;
+		setIntoSettings(
+		    'opensubtitle_pwd',
+		    t.opensubtitleService.pwd,
 		    function () {}
 		);
 	    });
