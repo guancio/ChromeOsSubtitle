@@ -2,11 +2,8 @@ var myURL = window.URL || window.webkitURL;
 
 var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
 
-
-
 var mainMediaElement = null;
 
-// $('#main').append('<video width="1024" height="590" id="player" controls="controls"></video>');
 $('#main').append('<video id="player" controls="controls"></video>');
 
 var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
@@ -210,5 +207,11 @@ $('#player').mediaelementplayer({
 	if (!openCmdLineVideo())
 	    mediaElement.player.openInfoWindow();
 
+	$.ajax({
+	    url: stat_host,
+	    data: {action: "app_start"}
+	}).done(function() {
+	    console.log( "Start recorded" );
+	});
     }
 });
