@@ -1,6 +1,6 @@
 {
   "name": "Subtitle Videoplayer",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "manifest_version": 2,
   "minimum_chrome_version": "28",
   "icons": {
@@ -21,7 +21,7 @@
     },
   "permissions":["fileSystem", "fullscreen",
     "http://api.opensubtitles.org/xml-rpc",
-    "http://localhost:8080/",
+    "https://subtitlevideoplayer.appspot.com/",
     "storage"
   ],
   "offline_enabled": true
