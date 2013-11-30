@@ -142,6 +142,12 @@ zip.workerScriptsPath = mediaelement_url + "lib/zip.js/WebContent/";
 		    
 		    player.captionEncodingSelect = player.captionsButton.find('#encoding-selector')[0];
 		    player.captionsButton.find('#encoding-selector').change(function(e) {
+
+			$(document).trigger(
+			    "subtitleEncodingChanged",
+			    player.captionEncodingSelect.value
+			);
+
 			if (player.tracks.length == 0)
 			    return;
 			var radios = player.controls.find('input[name="'+t.id+'_captions"]');
@@ -149,6 +155,7 @@ zip.workerScriptsPath = mediaelement_url + "lib/zip.js/WebContent/";
 			var srcSelected = selectedRadio.value;
 			if (srcSelected == 'none')
 			    return;
+
 			var selectedIdx = t.findTrackIdx(srcSelected);
 
 			player.tracks[selectedIdx].isLoaded = false;
@@ -295,6 +302,11 @@ zip.workerScriptsPath = mediaelement_url + "lib/zip.js/WebContent/";
 	    },
 
 	    openSrtEntry: function(file) {
+		$(document).trigger(
+		    "subtitleFileOpened",
+		    file.name
+		);
+
 		var t = this;
 		$('#encoding-selector').val("UTF-8");
 

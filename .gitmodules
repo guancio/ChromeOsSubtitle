@@ -10,3 +10,6 @@
 [submodule "src/lib/JavaScript-MD5"]
 	path = src/lib/JavaScript-MD5
 	url = https://github.com/guancio/JavaScript-MD5
+[submodule "src/lib/analytics"]
+	path = src/lib/analytics
+	url = https://github.com/GoogleChrome/chrome-platform-analytics

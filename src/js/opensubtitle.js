@@ -270,6 +270,8 @@ var openSubsLang = [
 	    };
 
 	    function logIn() {
+		$(document).trigger("opensubtitlesDownload"); 
+
 		infoBoth("1/6 Authenticating...");
 		service.LogIn({
 		    params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
