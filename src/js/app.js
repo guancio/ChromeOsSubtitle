@@ -8,6 +8,8 @@ $('#main').append('<video id="player" controls="controls"></video>');
 
 var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats'];
 features.push('opensubtitle');
+if (packaged_app)
+    features.push('autosrt');
 
 $('#player').mediaelementplayer({
     startLanguage:'en',
