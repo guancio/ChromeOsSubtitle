@@ -1,4 +1,4 @@
-#!/bin/sh
+B#!/bin/sh
 
 rm -rf app
 mkdir app
@@ -23,6 +23,9 @@ cp src/lib/json-xml-rpc/rpc.js app/lib/json-xml-rpc
 
 mkdir -p app/lib/zip.js/WebContent
 cp src/lib/zip.js/WebContent/*.js app/lib/zip.js/WebContent/
+
+mkdir -p app/lib/analytics/
+cp src/lib/analytics/*.js app/lib/analytics/
 
 rm -rf app.zip
 

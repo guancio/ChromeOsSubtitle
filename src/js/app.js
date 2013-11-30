@@ -6,7 +6,7 @@ var mainMediaElement = null;
 
 $('#main').append('<video id="player" controls="controls"></video>');
 
-var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop'];
+var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats'];
 features.push('opensubtitle');
 
 $('#player').mediaelementplayer({
@@ -204,14 +204,9 @@ $('#player').mediaelementplayer({
 	    return true;
 	}
 
+	$(document).trigger("appStarted"); 
+
 	if (!openCmdLineVideo())
 	    mediaElement.player.openInfoWindow();
-
-	$.ajax({
-	    url: stat_host,
-	    data: {action: "app_start"}
-	}).done(function() {
-	    console.log( "Start recorded" );
-	});
     }
 });

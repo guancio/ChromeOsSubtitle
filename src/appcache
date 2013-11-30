@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version 1.6.1
+# version 1.6.5
     background.png
     index.html
     mediaelementplayer.min.css
@@ -36,6 +36,7 @@ CACHE MANIFEST
     js/help.js  
     js/info.js  
     js/dnd.js  
+    js/stats.js  
     conf.js  
     controls-wmp-bg.png
     controls.png
@@ -49,6 +50,7 @@ CACHE MANIFEST
     lib/zip.js/WebContent/zip.js
     lib/zip.js/WebContent/inflate.js
     lib/Long.js/Long.min.js
+    lib/analytics/google-analytics-bundle.js
   
 NETWORK:
 *

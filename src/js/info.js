@@ -5,7 +5,7 @@
 	    t = this;
 	    var infoText = 
 		'<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="'+mediaelement_url+'icon.png" style="width:80px;height: auto;"/>'+
-		    '<h2>Subtitle Videoplayer v1.6.1</h2>' +
+		    '<h2>Subtitle Videoplayer v1.6.5</h2>' +
 		'A small Chrome video player that supports external subtitles. Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br><br>';
 	    infoText = infoText + 'You can donate to this project via <a href="https://flattr.com/submit/auto?user_id=guancio&url=https://github.com/guancio/ChromeOsSubtitle&title=ChromeOsSubtitle&language=&tags=github&category=software"><img src="'+mediaelement_url+'flattr.png"></a><br><br>';
 
