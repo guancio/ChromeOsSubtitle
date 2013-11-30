@@ -19,7 +19,9 @@
 	    "types": ["video/*"]
 	}
     },
-  "permissions":["fileSystem", "fullscreen",
+  "permissions":[
+    {"fileSystem": ["retainEntries", "directory"]} ,
+    "fullscreen",
     "http://api.opensubtitles.org/xml-rpc",
     "https://subtitlevideoplayer.appspot.com/",
     "https://www.google-analytics.com/",
