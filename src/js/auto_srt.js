@@ -7,6 +7,29 @@
 	    var entries = [];
 	    var dirs = [];
 
+	    media.addEventListener('loadeddata',function() {
+		chrome.fileSystem.getDisplayPath(player.openedFileEntry, function (path) {
+		    var dirEntry = null;
+		    var subPath = "";
+		    for (var i=0; i<dirs.length; i++) {
+			var dir = dirs[i];
+			if (path.indexOf(dir.path) != 0)
+			    continue;
+
+			dirEntry = dir.entry;
+			subPath = path.substr(dir.path.length);
+		    }
+		    if (dirEntry == null)
+			return;
+
+		    subPath = subPath.substr(1, subPath.lastIndexOf(".")-1);
+		    dirEntry.getFile(subPath+".srt", {},function(fileEntry) {
+			fileEntry.file(function (file) {
+			    player.openSrtEntry(file);
+			});
+		    });
+		});
+	    });
 
 	    var settingsList = $('#settings_list')[0];
 	    $('<li/>')
