@@ -1,3 +1,5 @@
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+
 (function($) {
     $.extend(MediaElementPlayer.prototype, {
 	buildsource: function(player, controls, layers, media) {
@@ -12,7 +14,24 @@
 		  '</div>')
 		.appendTo(controls);
 	    player.openFileForm = function () {
-		openFileInput[0].click();
+		if (packaged_app) {
+		    chrome.fileSystem.chooseEntry({
+			type: "openFile"
+		    }, function (entry) {
+			entry.file(function fff(file) {
+			    media.stop();
+			    player.tracks = [];			    
+			    var path = window.URL.createObjectURL(file);
+			    t.openedFile = file;
+			    t.openedFileEntry = entry;
+			    mainMediaElement.setSrc(path);
+			    mainMediaElement.play();
+			});
+		    });
+		}
+		else {
+		    openFileInput[0].click();
+		}
 	    };
 	    open.click(function(e) {
 		e.preventDefault();
