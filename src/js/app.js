@@ -197,10 +197,11 @@ $('#player').mediaelementplayer({
 
 	    mainMediaElement.stop();
 	    entry.file(function fff(file) {
-		mainMediaElement.openedFile = file;
+		mainMediaElement.player.openedFile = file;
+		mainMediaElement.player.openedFileEntry = entry;
 
 		var path = window.URL.createObjectURL(file);
-		mainMediaElement.setSrc(path);
+		mainMediaElement.setSrc(path);		
 		mainMediaElement.play();
 	    });
 	    return true;

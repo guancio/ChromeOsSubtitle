@@ -403,7 +403,7 @@ zip.workerScriptsPath = mediaelement_url + "lib/zip.js/WebContent/";
 				i;
 		
 		    $(document).trigger("subtitleChanged"); 
-		    $('#' + this.id + '_captions_fromfile')[0].checked = true;
+		    $('#' + this.id + '_captions_' + lang)[0].checked = true;
 			if (lang == 'none') {
 				t.selectedTrack = null;
 			} else {
