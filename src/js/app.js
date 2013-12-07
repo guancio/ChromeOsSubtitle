@@ -8,6 +8,8 @@ $('#main').append('<video id="player" controls="controls"></video>');
 
 var features = ['source', 'settings','playpause','progress','current','duration', 'tracks','subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats'];
 features.push('opensubtitle');
+if (packaged_app)
+    features.push('autosrt');
 
 $('#player').mediaelementplayer({
     startLanguage:'en',
@@ -195,10 +197,11 @@ $('#player').mediaelementplayer({
 
 	    mainMediaElement.stop();
 	    entry.file(function fff(file) {
-		mainMediaElement.openedFile = file;
+		mainMediaElement.player.openedFile = file;
+		mainMediaElement.player.openedFileEntry = entry;
 
 		var path = window.URL.createObjectURL(file);
-		mainMediaElement.setSrc(path);
+		mainMediaElement.setSrc(path);		
 		mainMediaElement.play();
 	    });
 	    return true;
