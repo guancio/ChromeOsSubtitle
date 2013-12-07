@@ -12,6 +12,10 @@ The subtitle service is provided by <a href="http://www.opensubtitles.org">www.o
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=guancio&url=https://github.com/guancio/ChromeOsSubtitle&title=ChromeOsSubtitle&language=&tags=github&category=software) 
 
 Change log:
+- Version 1.7
+  - Integration with google analytics
+  - Automaticaly load srt files matching the video file name
+  - The subtitle auto load functionality must be enabled by allowing in the settings window the VideoPlayer to access a parent of the directory containing your files. 
 - Version 1.6.1
   - Minor big fix for srt zip
   - Authentication on Opensubtitle.org

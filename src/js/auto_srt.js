@@ -8,6 +8,10 @@
 	    var dirs = [];
 
 	    media.addEventListener('loadeddata',function() {
+		if (player.openedFileEntry == null)
+		    return;
+		// TODO avoid to search the srt if ona has been alreade specified by the user
+		
 		chrome.fileSystem.getDisplayPath(player.openedFileEntry, function (path) {
 		    var dirEntry = null;
 		    var subPath = "";
