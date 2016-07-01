@@ -41,15 +41,16 @@
  *  - exports - CommonJS, window ..
  *
  */
-;(function(context, exports, undefined) {
+;
+(function(context, exports, undefined) {
     "use strict";
     var i18n = {
         "locale": {
-            "strings" : {}
+            "strings": {}
         },
-        "methods" : {}
+        "methods": {}
     };
-// start i18n
+    // start i18n
 
 
     /**
@@ -57,9 +58,9 @@
      *
      * @see: i18n.methods.t()
      */
-    i18n.locale.getLanguage = function () {
+    i18n.locale.getLanguage = function() {
         return mejs.locale || {
-            "language" : navigator.language
+            "language": navigator.language
         };
     };
 
@@ -72,17 +73,17 @@
     /**
      * Encode special characters in a plain-text string for display as HTML.
      */
-    i18n.methods.checkPlain = function (str) {
+    i18n.methods.checkPlain = function(str) {
         var character, regex,
-        replace = {
-            '&': '&amp;',
-            '"': '&quot;',
-            '<': '&lt;',
-            '>': '&gt;'
-        };
+            replace = {
+                '&': '&amp;',
+                '"': '&quot;',
+                '<': '&lt;',
+                '>': '&gt;'
+            };
         str = String(str);
-        for (character in replace) {
-            if (replace.hasOwnProperty(character)) {
+        for(character in replace) {
+            if(replace.hasOwnProperty(character)) {
                 regex = new RegExp(character, 'g');
                 str = str.replace(regex, replace[character]);
             }
@@ -108,16 +109,16 @@
      */
     i18n.methods.formatString = function(str, args) {
         // Transform arguments before inserting them.
-        for (var key in args) {
-            switch (key.charAt(0)) {
+        for(var key in args) {
+            switch(key.charAt(0)) {
                 // Escaped only.
                 case '@':
                     args[key] = i18n.methods.checkPlain(args[key]);
                     break;
-                // Pass-through.
+                    // Pass-through.
                 case '!':
                     break;
-                // Escaped and placeholder.
+                    // Escaped and placeholder.
                 case '%':
                 default:
                     args[key] = '<em class="placeholder">' + i18n.methods.checkPlain(args[key]) + '</em>';
@@ -147,14 +148,14 @@
      * @return
      *   The translated string.
      */
-    i18n.methods.t = function (str, args, options) {
+    i18n.methods.t = function(str, args, options) {
 
         // Fetch the localized version of the string.
-        if (i18n.locale.strings && i18n.locale.strings[options.context] && i18n.locale.strings[options.context][str]) {
+        if(i18n.locale.strings && i18n.locale.strings[options.context] && i18n.locale.strings[options.context][str]) {
             str = i18n.locale.strings[options.context][str];
         }
 
-        if (args) {
+        if(args) {
             str = i18n.methods.formatString(str, args);
         }
         return str;
@@ -169,27 +170,25 @@
      */
     i18n.t = function(str, args, options) {
 
-        if (typeof str === 'string' && str.length > 0) {
+        if(typeof str === 'string' && str.length > 0) {
 
             // check every time due languge can change for
             // different reasons (translation, lang switcher ..)
             var lang = i18n.locale.getLanguage();
 
             options = options || {
-                "context" : lang.language
+                "context": lang.language
             };
 
             return i18n.methods.t(str, args, options);
-        }
-        else {
+        } else {
             throw {
-                "name" : 'InvalidArgumentException',
-                "message" : 'First argument is either not a string or empty.'
+                "name": 'InvalidArgumentException',
+                "message": 'First argument is either not a string or empty.'
             }
         }
     };
 
-// end i18n
+    // end i18n
     exports.i18n = i18n;
 }(document, mejs));
-
