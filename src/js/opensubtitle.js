@@ -1,11 +1,11 @@
 var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
-var host = "http://api.opensubtitles.org/xml-rpc";
-if(!packaged_app) {
-    if(window.location.origin.indexOf("localhost") == 0)
-        host = "http://localhost:8080/xml-rpc";
-    else
-        host = window.location.origin + "/xml-rpc";
-}
+var host = "https://api.opensubtitles.org/xml-rpc";
+// if(!packaged_app) {
+//     if(window.location.origin.indexOf("localhost") == 0)
+//         host = "http://localhost:8080/xml-rpc";
+//     else
+//         host = window.location.origin + "/xml-rpc";
+// }
 
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
