@@ -972,3 +972,17 @@ a:visited {
 }
 
 /* End: Time (current / duration) */
+
+/* Start: Notification */
+.mejs-notification {
+    height: 3vw;
+    width: 15vw;
+    margin: 1%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    font-size: 2vw;
+    text-align: center;
+}
+/* End: Notifcation */
