@@ -16,7 +16,6 @@
                 var draggedVideo = null;
                 var draggedSrt = null;
                 if(e.dataTransfer.types.indexOf('Files') >= 0) {
-                    console.log(e.dataTransfer);
                     var files = e.dataTransfer.files;
                     for(var i = 0; i < files.length; i++) {
                         var file = files[i];
@@ -32,7 +31,7 @@
                     mainMediaElement.stop();
                     t.openedFile = draggedVideo;
                     t.openedFileEntry = null;
-
+                    
                     var path = window.URL.createObjectURL(draggedVideo);
                     mainMediaElement.setSrc(path);
                 }
