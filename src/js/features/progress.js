@@ -2,7 +2,6 @@
     // progress/loaded bar
     $.extend(MediaElementPlayer.prototype, {
         buildprogress: function(player, controls, layers, media) {
-
             $('<div class="mejs-time-rail">' +
                     '<span class="mejs-time-total">' +
                     '<span class="mejs-time-buffering"></span>' +
@@ -17,7 +16,7 @@
                     '</div>')
                 .appendTo(controls);
             controls.find('.mejs-time-buffering').hide();
-
+            
             var
                 t = this,
                 total = controls.find('.mejs-time-total'),
@@ -34,24 +33,23 @@
                         percentage = 0,
                         newTime = 0,
                         pos = 0;
-
-
+                    
                     if(media.duration) {
                         if(x < offset.left) {
                             x = offset.left;
                         } else if(x > width + offset.left) {
                             x = width + offset.left;
                         }
-
+                        
                         pos = x - offset.left;
                         percentage = (pos / width);
-                        newTime = (percentage <= 0.02) ? 0 : percentage * media.duration;
-
+                        newTime = percentage * media.duration;
+                        
                         // seek to where the mouse is
                         if(mouseIsDown && newTime !== media.currentTime) {
                             media.setCurrentTime(newTime);
                         }
-
+                        
                         // position floating time box
                         if(!mejs.MediaFeatures.hasTouch) {
                             timefloat.css('left', pos);
@@ -62,7 +60,7 @@
                 },
                 mouseIsDown = false,
                 mouseIsOver = false;
-
+            
             // handle clicks
             //controls.find('.mejs-time-rail').delegate('span', 'click', handleMouseMove);
             total
@@ -98,20 +96,19 @@
                         timefloat.hide();
                     }
                 });
-
+            
             // loading
             media.addEventListener('progress', function(e) {
                 player.setProgressRail(e);
                 player.setCurrentRail(e);
             });
-
+            
             // current time
             media.addEventListener('timeupdate', function(e) {
                 player.setProgressRail(e);
                 player.setCurrentRail(e);
             });
-
-
+            
             // store for later use
             t.loaded = loaded;
             t.total = total;
@@ -119,12 +116,11 @@
             t.handle = handle;
         },
         setProgressRail: function(e) {
-
             var
                 t = this,
                 target = (e != undefined) ? e.target : t.media,
                 percent = null;
-
+            
             // newest HTML5 spec has buffered array (FF4, Webkit)
             if(target && target.buffered && target.buffered.length > 0 && target.buffered.end && target.duration) {
                 // TODO: account for a real array with multiple values (only Firefox 4 has this so far) 
@@ -141,7 +137,7 @@
             else if(e && e.lengthComputable && e.total != 0) {
                 percent = e.loaded / e.total;
             }
-
+            
             // finally update the progress bar
             if(percent !== null) {
                 percent = Math.min(1, Math.max(0, percent));
@@ -152,22 +148,21 @@
             }
         },
         setCurrentRail: function() {
-
+            
             var t = this;
-
+            
             if(t.media.currentTime != undefined && t.media.duration) {
-
+                
                 // update bar and handle
                 if(t.total && t.handle) {
                     var
                         newWidth = Math.round(t.total.width() * t.media.currentTime / t.media.duration),
                         handlePos = newWidth - Math.round(t.handle.outerWidth(true) / 2);
-
+                    
                     t.current.width(newWidth);
                     t.handle.css('left', handlePos);
                 }
             }
-
         }
     });
 })(mejs.$);
