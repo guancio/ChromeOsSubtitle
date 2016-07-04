@@ -30,11 +30,6 @@
         // forces the hour marker (##:00:00)
         alwaysShowHours: false,
         
-        // show framecount in timecode (##:00:00:00)
-        showTimecodeFrameCount: false,
-        // used when showTimecodeFrameCount is set to true
-        framesPerSecond: 25,
-        
         // automatically calculate the width of the progress bar based on the sizes of other elements
         autosizeProgress: true,
         // Hide controls when playing and mouse is not over the video
@@ -50,15 +45,13 @@
         // force Android's native controls
         AndroidUseNativeControls: false,
         // features to show
-        features: ['source', 'settings', 'playpause', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'notification'],
+        features: ['source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'notification', 'shortcuts'],
+        
         // only for dynamic
         isVideo: true,
         
         // turns keyboard support on and off for this instance
         enableKeyboard: true,
-        
-        // whenthis player starts, it will pause other players
-        pauseOtherPlayers: true,
         
         // array of keyboard actions such as play pause
         keyActions: [
@@ -116,15 +109,13 @@
                     if(!isNaN(media.duration) && media.duration > 0) {
                         var seekDuration = activeModifiers.shift ? 3 : (activeModifiers.alt ? 10 : (activeModifiers.ctrl ? 60 : undefined))
                         
-                        if(!seekDuration)
-                            return;
+                        if(seekDuration)
+                            player.seek(seekDuration);
                         
                         if(player.isVideo) {
                             player.showControls();
                             player.startControlsTimer();
                         }
-                        
-                        player.seek(seekDuration);
                     }
                 }
             },
@@ -195,7 +186,7 @@
                 keys: [191],  // /
                 action: function(player, media, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
-                        player.setPlaybackRate(1.0);
+                        player.resetPlaybackRate();
                 }
             },
             {

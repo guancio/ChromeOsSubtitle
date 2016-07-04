@@ -1,5 +1,8 @@
 (function($) {
     MediaElementPlayer.prototype.buildautosrt = function(player, controls, layers, media) {
+        if(!packaged_app)
+            return;
+        
         var t = this;
         
         var entries = [];
