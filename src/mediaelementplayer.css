@@ -792,28 +792,6 @@ a:visited {
 
 /* End: ERROR */
 
-/* Start: Loop */
-.mejs-controls .mejs-loop-off button {
-    background-position: -64px -16px;
-}
-
-.mejs-controls .mejs-loop-on button {
-    background-position: -64px 0;
-}
-
-/* End: Loop */
-
-/* Start: backlight */
-.mejs-controls .mejs-backlight-off button {
-    background-position: -80px -16px;
-}
-
-.mejs-controls .mejs-backlight-on button {
-    background-position: -80px 0;
-}
-
-/* End: backlight */
-
 /* Start: picture controls */
 .mejs-controls .mejs-picturecontrols-button {
     background-position: -96px 0;
@@ -976,13 +954,10 @@ a:visited {
 /* Start: Notification */
 .mejs-notification {
     height: 3vw;
-    width: 15vw;
-    margin: 1%;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
     color: white;
     font-size: 2vw;
-    text-align: center;
 }
 /* End: Notifcation */

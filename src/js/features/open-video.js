@@ -1,14 +1,10 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
-
 (function($) {
     MediaElementPlayer.prototype.buildsource = function(player, controls, layers, media) {
-        var
-            t = this,
+        var t = this,
             openFileInput = $('<input style="display:none" type="file" id="openfile_input"/>')
             .appendTo(controls);
         t.openedFile = null;
-        var open =
-            $('<div class="mejs-button mejs-source-button mejs-source" >' +
+        var open = $('<div class="mejs-button mejs-source-button mejs-source" >' +
                 '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
                 '</div>')
             .appendTo(controls);

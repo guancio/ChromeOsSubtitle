@@ -1,4 +1,3 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
 var host = "https://api.opensubtitles.org/xml-rpc";
 // if(!packaged_app) {
 //     if(window.location.origin.indexOf("localhost") == 0)

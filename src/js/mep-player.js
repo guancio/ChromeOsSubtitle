@@ -46,15 +46,12 @@
     
     // actual player
     mejs.MediaElementPlayer.prototype = {
-    
         hasFocus: false,
         
         controlsAreVisible: true,
         
         init: function() {
-        
-            var
-                t = this,
+            var t = this,
                 mf = mejs.MediaFeatures,
                 // options for MediaElement (shim)
                 meOptions = $.extend(true, {}, t.options, {
@@ -70,7 +67,7 @@
             t.isDynamic = (tagName !== 'audio' && tagName !== 'video');
             
             if(t.isDynamic) {
-                // get video from src or href?				
+                // get video from src or href?
                 t.isVideo = t.options.isVideo;
             } else {
                 t.isVideo = (tagName !== 'audio' && t.options.isVideo);
@@ -138,7 +135,6 @@
                     t.node = t.media = $newMedia[0]
                     
                 } else {
-                
                     // normal way of moving it into place (doesn't work on iOS)
                     t.container.find('.mejs-mediaelement').append(t.$media);
                 }
@@ -158,7 +154,7 @@
                 
                 var tagType = (t.isVideo ? 'video' : 'audio'),
                     capsTagName = tagType.substring(0, 1).toUpperCase() + tagType.substring(1);
-                    
+                
                 if(t.options[tagType + 'Width'] > 0 || t.options[tagType + 'Width'].toString().indexOf('%') > -1) {
                     t.width = t.options[tagType + 'Width'];
                 } else if(t.media.style.width !== '' && t.media.style.width !== null) {
@@ -278,7 +274,7 @@
                         .css('display', 'block');
                 });
             } else {
-            
+                
                 // hide main controls
                 t.controls
                     .css('visibility', 'hidden')
@@ -297,7 +293,6 @@
         controlsTimer: null,
         
         startControlsTimer: function(timeout) {
-        
             var t = this;
             
             timeout = typeof timeout != 'undefined' ? timeout : 1500;
@@ -312,7 +307,6 @@
         },
         
         killControlsTimer: function(src) {
-        
             var t = this;
             
             if(t.controlsTimer !== null) {
@@ -335,14 +329,12 @@
         enableControls: function() {
             var t = this;
             
-            t.showControls(false);
-            
+            t.showControls(false)
             t.controlsEnabled = true;
         },
         
         // Sets up all controls and events
         meReady: function(media, domNode) {
-        
             var t = this,
                 mf = mejs.MediaFeatures,
                 autoplayAttr = domNode.getAttribute('autoplay'),
@@ -363,7 +355,6 @@
             
                 // two built in features
                 t.buildposter(t, t.controls, t.layers, t.media);
-                t.buildkeyboard(t, t.controls, t.layers, t.media);
                 t.buildoverlays(t, t.controls, t.layers, t.media);
                 
                 // grab for use by features
@@ -472,22 +463,6 @@
                 
                 // EVENTS
                 
-                // FOCUS: when a video starts playing, it takes focus from other players (possibily pausing them)
-                media.addEventListener('play', function() {
-                    var playerIndex;
-                    
-                    // go through all other players
-                    for(playerIndex in mejs.players) {
-                        var p = mejs.players[playerIndex];
-                        if(p.id != t.id && t.options.pauseOtherPlayers && !p.paused && !p.ended) {
-                            p.pause();
-                        }
-                        p.hasFocus = false;
-                    }
-                    
-                    t.hasFocus = true;
-                }, false);
-                
                 // ended for all
                 t.media.addEventListener('ended', function(e) {
                     if(t.options.autoRewind) {
@@ -534,8 +509,7 @@
                 
                 // adjust controls whenever window sizes (used to be in fullscreen only)
                 t.globalBind('resize', function() {
-                
-                    // don't resize for fullscreen mode				
+                    // don't resize for fullscreen mode
                     if(!(t.isFullScreen || (mejs.MediaFeatures.hasTrueNativeFullScreen && document.webkitIsFullScreen))) {
                         t.setPlayerSize(t.width, t.height);
                     }
@@ -557,7 +531,6 @@
             }
             
             if(t.options.success) {
-            
                 if(typeof t.options.success == 'string') {
                     window[t.options.success](t.media, t.domNode, t);
                 } else {
@@ -825,36 +798,6 @@
             }, false);
         },
         
-        buildkeyboard: function(player, controls, layers, media) {
-            var t = this;
-            
-            // listen for key presses
-            t.globalBind('keydown', function(e) {
-                // find a matching key
-                for(var i = 0, il = player.options.keyActions.length; i < il; i++) {
-                    var keyAction = player.options.keyActions[i];
-                    
-                    for(var j = 0, jl = keyAction.keys.length; j < jl; j++) {
-                        if(e.keyCode == keyAction.keys[j]) {
-                            e.preventDefault();
-                            keyAction.action(player, media, e.keyCode, { 'shift': e.shiftKey, 'alt': e.altKey, 'ctrl': e.ctrlKey });
-                            return false;
-                        }
-                    }
-                }
-                
-                return true;
-            });
-            
-            // check if someone clicked outside a player region, then kill its focus
-            t.globalBind('click', function(event) {
-                if($(event.target).closest('.mejs-container').length == 0) {
-                    player.hasFocus = false;
-                }
-            });
-            
-        },
-        
         findTracks: function() {
             var t = this,
                 tracktags = t.$media.find('track');
@@ -875,6 +818,7 @@
                 });
             });
         },
+        
         changeSkin: function(className) {
             this.container[0].className = 'mejs-container ' + className;
             this.setPlayerSize(this.width, this.height);
@@ -946,64 +890,18 @@
         
         incPlaybackRate: function() {
             this.media.playbackRate += 0.05;
-            this.setNotification('Playback Rate: x' + this.media.playbackRate.toPrecision(2));
+            this.setNotification('Playback Rate: x' + this.media.playbackRate.toPrecision(3));
         },
         
         decPlaybackRate: function() {
-            this.media.playbackRate -= 0.05;
-            this.setNotification('Playback Rate: x' + this.media.playbackRate.toPrecision(2));
+            this.media.playbackRate = Math.max(0.05, this.media.playbackRate - 0.05);
+            this.setNotification('Playback Rate: x' + this.media.playbackRate.toPrecision(3));
         },
         
         toggleLoop: function() {
             this.options.loop = !this.options.loop;
             this.setNotification('Loop O' + (this.options.loop ? 'n.' : 'ff.'));
         },
-        
-        remove: function() {
-            var t = this,
-                featureIndex, feature;
-                
-            // invoke features cleanup
-            for(featureIndex in t.options.features) {
-                feature = t.options.features[featureIndex];
-                if(t['clean' + feature]) {
-                    try {
-                        t['clean' + feature](t);
-                    } catch(e) {
-                        // TODO: report control error
-                        //throw e;
-                        //console.log('error building ' + feature);
-                        //console.log(e);
-                    }
-                }
-            }
-            
-            if(t.media.pluginType === 'native') {
-                t.$media.prop('controls', true);
-            } else {
-                t.media.remove();
-            }
-            
-            // grab video and put it back in place
-            if(!t.isDynamic) {
-                if(t.media.pluginType === 'native') {
-                    // detach events from the video
-                    // TODO: detach event listeners better than this;
-                    //       also detach ONLY the events attached by this plugin!
-                    //t.$node.clone().insertBefore(t.container);
-                    //t.$node.remove();
-                }
-                /*else*/
-                t.$node.insertBefore(t.container)
-            }
-            
-            // Remove the player from the mejs.players object so that pauseOtherPlayers doesn't blow up when trying to pause a non existance flash api.
-            delete mejs.players[t.id];
-            
-            t.container.remove();
-            t.globalUnbind();
-            delete t.node.player;
-        }
     };
     
     (function() {
