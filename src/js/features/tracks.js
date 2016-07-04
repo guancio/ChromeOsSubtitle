@@ -1,7 +1,6 @@
 zip.useWebWorkers = false;
 
 (function($) {
-
     // add extra default options 
     $.extend(mejs.MepDefaults, {
         // this will automatically turn on a <track>
@@ -25,7 +24,7 @@ zip.useWebWorkers = false;
         var t = this,
             i,
             options = '';
-            
+        
         player.chapters =
             $('<div class="mejs-chapters mejs-layer"></div>')
             .prependTo(layers).hide();
@@ -106,13 +105,13 @@ zip.useWebWorkers = false;
         var encodingText = '<li id="li_encoding">' +
             '<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>' +
             '<select style="width:70px" id="encoding-selector" disabled="disabled">';
+        
         for(i = 0; i < encodings.length; i++) {
             encodingText = encodingText + '<option value="' + encodings[i] + '">' + encoding_labels[i] + '</option>';
         }
-        encodingText = encodingText + '</select></il>';
         
-        player.captionsButton =
-            $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
+        encodingText = encodingText + '</select></il>';
+        player.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector">' +
                 '<ul>' +
@@ -130,15 +129,13 @@ zip.useWebWorkers = false;
                 '<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>' +
                 '</li>' +
                 encodingText +
-                
                 '</ul>' +
                 '</div>' +
                 '</div>')
             .appendTo(controls);
-            
+        
         player.captionEncodingSelect = player.captionsButton.find('#encoding-selector')[0];
         player.captionsButton.find('#encoding-selector').change(function(e) {
-        
             $(document).trigger(
                 "subtitleEncodingChanged",
                 player.captionEncodingSelect.value
@@ -146,11 +143,14 @@ zip.useWebWorkers = false;
             
             if(player.tracks.length == 0)
                 return;
+            
             var radios = player.controls.find('input[name="' + t.id + '_captions"]');
             var selectedRadio = radios.filter(function(e) {
                 return radios[e].checked
             })[0];
+            
             var srcSelected = selectedRadio.value;
+            
             if(srcSelected == 'none')
                 return;
                 
@@ -159,7 +159,9 @@ zip.useWebWorkers = false;
             player.tracks[selectedIdx].isLoaded = false;
             player.loadTrack(selectedIdx);
         });
+        
         var srtFileInputs = player.captionsButton.find('#opensrtfile_input');
+        
         srtFileInputs.change(function(e) {
             e.preventDefault();
             if(srtFileInputs[0].files.length != 1)
@@ -168,6 +170,7 @@ zip.useWebWorkers = false;
             player.openSrtEntry(srtFileInputs[0].files[0]);
             return false;
         });
+        
         player.captionsButton.find('.mejs-captionload button').click(function(e) {
             e.preventDefault();
             srtFileInputs[0].click();
@@ -181,7 +184,6 @@ zip.useWebWorkers = false;
         }, function() {
             $(this).find('.mejs-captions-selector').css('visibility', 'hidden');
         })
-        
         // handle clicks to the language radio buttons
         .on('click', 'input[type=radio]', function() {
             lang = this.value;

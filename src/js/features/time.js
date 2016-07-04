@@ -1,5 +1,4 @@
 (function($) {
-
     // options
     $.extend(mejs.MepDefaults, {
         duration: -1,
@@ -27,7 +26,7 @@
         var t = this;
         
         if(controls.children().last().find('.mejs-currenttime').length > 0) {
-            $(t.options.timeAndDurationSeparator +
+            $('<span>' + t.options.timeAndDurationSeparator + '</span>' + 
                     '<span class="mejs-duration">' +
                     (t.options.duration > 0 ?
                         mejs.Utility.secondsToTimeCode(t.options.duration, t.options.alwaysShowHours || t.media.duration > 3600) :

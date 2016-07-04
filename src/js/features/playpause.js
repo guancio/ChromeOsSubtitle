@@ -5,38 +5,34 @@
     
     // PLAY/pause BUTTON
     MediaElementPlayer.prototype.buildplaypause = function(player, controls, layers, media) {
-        var
-            t = this,
-            play =
-            $('<div class="mejs-button mejs-playpause-button mejs-play" >' +
+        var t = this,
+            play = $('<div class="mejs-button mejs-playpause-button mejs-play" >' +
                 '<button type="button" aria-controls="' + t.id + '" title="' + t.options.playpauseText + '" aria-label="' + t.options.playpauseText + '"></button>' +
                 '</div>')
             .appendTo(controls)
             .click(function(e) {
                 e.preventDefault();
-                if(media.readyState != 4)
+                if(media.readyState !== 4) {
+                    player.openFileForm();
                     return;
-                    
+                }
+                
                 if(media.paused) {
-                    media.play();
+                    player.play();
                 } else {
-                    media.pause();
+                    player.pause();
                 }
                 
                 return false;
             });
-            
+        
         media.addEventListener('play', function() {
-            play.removeClass('mejs-play').addClass('mejs-pause');
-        }, false);
-        media.addEventListener('playing', function() {
+            player.setNotification('▶');
             play.removeClass('mejs-play').addClass('mejs-pause');
         }, false);
         
         media.addEventListener('pause', function() {
-            play.removeClass('mejs-pause').addClass('mejs-play');
-        }, false);
-        media.addEventListener('paused', function() {
+            player.setNotification('￰⏸');
             play.removeClass('mejs-pause').addClass('mejs-play');
         }, false);
     }

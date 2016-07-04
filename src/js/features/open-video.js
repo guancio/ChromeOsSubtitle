@@ -9,18 +9,21 @@
                 '</div>')
             .appendTo(controls);
         player.openFileForm = function() {
+            if(media.duration && !media.paused)
+                player.pause();
+            
             if(packaged_app) {
                 chrome.fileSystem.chooseEntry({
                     type: "openFile"
                 }, function(entry) {
                     entry.file(function fff(file) {
-                        media.stop();
+                        player.stop();
                         player.tracks = [];
-                        var path = window.URL.createObjectURL(file);
+                        
                         t.openedFile = file;
                         t.openedFileEntry = entry;
-                        mainMediaElement.setSrc(path);
-                        mainMediaElement.play();
+                        player.setSrc(window.URL.createObjectURL(file));
+                        player.play();
                     });
                 });
             } else {
@@ -33,12 +36,12 @@
             return false;
         });
         openFileInput.change(function(e) {
-            media.stop();
+            player.stop();
             player.tracks = [];
             var path = window.URL.createObjectURL(openFileInput[0].files[0]);
             t.openedFile = openFileInput[0].files[0];
-            media.setSrc(path);
-            return false;
+            player.setSrc(path);
+            player.play()
         });
     }
 })(mejs.$);

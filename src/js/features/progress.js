@@ -28,8 +28,7 @@
                 // mouse position relative to the object
                 var x = e.pageX,
                     offset = total.offset(),
-                    width = total.outerWidth(true),
-                    percentage = 0,
+                    width = total.outerWidth(),
                     newTime = 0,
                     pos = 0;
                 
@@ -41,8 +40,7 @@
                     }
                     
                     pos = x - offset.left;
-                    percentage = (pos / width);
-                    newTime = percentage * media.duration;
+                    newTime = (pos / width) * media.duration;
                     
                     // seek to where the mouse is
                     if(mouseIsDown && newTime !== media.currentTime) {
@@ -98,12 +96,18 @@
         
         // loading
         media.addEventListener('progress', function(e) {
+            if(!player.controlsAreVisible)
+                return;
+            
             player.setProgressRail(e);
             player.setCurrentRail(e);
         });
         
         // current time
         media.addEventListener('timeupdate', function(e) {
+            if(!player.controlsAreVisible)
+                return;
+            
             player.setProgressRail(e);
             player.setCurrentRail(e);
         });
@@ -152,12 +156,11 @@
         var t = this;
         
         if(t.media.currentTime != undefined && t.media.duration) {
-            
             // update bar and handle
             if(t.total && t.handle) {
                 var
-                    newWidth = Math.round(t.total.width() * t.media.currentTime / t.media.duration),
-                    handlePos = newWidth - Math.round(t.handle.outerWidth(true) / 2);
+                    newWidth = t.total.width() * t.media.currentTime / t.media.duration,
+                    handlePos = newWidth - t.handle.outerWidth(true) / 2;
                 
                 t.current.width(newWidth);
                 t.handle.css('left', handlePos);

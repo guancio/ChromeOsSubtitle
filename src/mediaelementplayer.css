@@ -425,13 +425,6 @@ a:visited {
 .mejs-long-video .mejs-controls .mejs-time-rail .mejs-time-float-corner {
     left: 18px;
 }
-
-/*
-.mejs-controls .mejs-time-rail:hover .mejs-time-handle {
-    visibility:visible;
-}
-
-*/
 /* End: Progress bar */
 
 /* Start: Fullscreen */
@@ -614,12 +607,6 @@ a:visited {
     -moz-border-radius: 0;
     border-radius: 0;
 }
-
-/*
-.mejs-controls .mejs-captions-button:hover  .mejs-captions-selector {
-    visibility: visible;
-}
-*/
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector ul {
     margin: 0;
