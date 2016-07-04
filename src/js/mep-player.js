@@ -720,14 +720,11 @@
                     '</div>')
                 .appendTo(layers)
                 .click(function() {
-                    if(t.media.readyState != 4)
-                        return;
-                        
                     if(t.options.clickToPlayPause) {
                         if(media.paused) {
-                            media.play();
+                            player.play();
                         } else {
-                            media.pause();
+                            player.pause();
                         }
                     }
                 });
@@ -775,7 +772,7 @@
                 controls.find('.mejs-time-buffering').show();
             }, false);
             
-            // show/hide loading			
+            // show/hide loading
             media.addEventListener('loadeddata', function() {
                 // for some reason Chrome is firing this event
                 //if (mejs.MediaFeatures.isChrome && media.getAttribute && media.getAttribute('preload') === 'none')
@@ -832,18 +829,17 @@
             }
             
             this.setNotification('▶');
-            this.controls.find('.mejs-play').removeClass('mejs-play').addClass('mejs-pause');
             this.media.play();
         },
         
         pause: function() {
-            this.setNotification('￰⏸');
-            this.controls.find('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
             this.media.pause();
         },
         
         stop: function() {
-            this.media.stop();
+            this.setNotification('￰■');
+            this.pause();
+            this.setCurrentTime(0);
         },
         
         load: function() {
@@ -899,8 +895,8 @@
         },
         
         toggleLoop: function() {
-            this.options.loop = !this.options.loop;
-            this.setNotification('Loop O' + (this.options.loop ? 'n.' : 'ff.'));
+            this.media.loop = !this.media.loop;
+            this.setNotification('Loop O' + (this.media.loop ? 'n.' : 'ff.'));
         },
     };
     
@@ -963,5 +959,4 @@
     
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;
-    
 })(mejs.$);

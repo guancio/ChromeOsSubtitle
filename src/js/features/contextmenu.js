@@ -9,7 +9,6 @@
             // demo of a fullscreen option
             {
                 render: function(player) {
-                
                     // check for fullscreen plugin
                     if(typeof player.enterFullScreen == 'undefined')
                         return null;

@@ -26,6 +26,5 @@
                 player.hasFocus = false;
             }
         });
-        
     }
 })(mejs.$);
