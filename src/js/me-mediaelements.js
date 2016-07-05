@@ -4,40 +4,39 @@ extension methods to <video> or <audio> object to bring it into parity with Plug
 mejs.HtmlMediaElement = {
     pluginType: 'native',
     isFullScreen: false,
-
+    
     setCurrentTime: function(time) {
         this.currentTime = time;
     },
-
+    
     setMuted: function(muted) {
         this.muted = muted;
     },
-
+    
     setVolume: function(volume) {
         this.volume = volume;
     },
-
+    
     // for parity with the plugin versions
     stop: function() {
         this.pause();
     },
-
+    
     // This can be a url string
     // or an array [{src:'file.mp4',type:'video/mp4'},{src:'file.webm',type:'video/webm'}]
     setSrc: function(url) {
-
         // Fix for IE9 which can't set .src when there are <source> elements. Awesome, right?
         var
             existingSources = this.getElementsByTagName('source');
         while(existingSources.length > 0) {
             this.removeChild(existingSources[0]);
         }
-
+        
         if(typeof url == 'string') {
             this.src = url;
         } else {
             var i, media;
-
+            
             for(i = 0; i < url.length; i++) {
                 media = url[i];
                 if(this.canPlayType(media.type)) {
@@ -47,7 +46,7 @@ mejs.HtmlMediaElement = {
             }
         }
     },
-
+    
     setVideoSize: function(width, height) {
         this.width = width;
         this.height = height;
@@ -69,18 +68,17 @@ mejs.PluginMediaElement = function(pluginid, pluginType, mediaUrl) {
 // http://www.adobe.com/livedocs/flash/9.0/ActionScriptLangRefV3/fl/video/FLVPlayback.html
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html
 mejs.PluginMediaElement.prototype = {
-
     // special
     pluginElement: null,
     pluginType: '',
     isFullScreen: false,
-
+    
     // not implemented :(
     playbackRate: -1,
     defaultPlaybackRate: -1,
     seekable: [],
     played: [],
-
+    
     // HTML5 read-only properties
     paused: true,
     ended: false,
@@ -88,12 +86,12 @@ mejs.PluginMediaElement.prototype = {
     duration: 0,
     error: null,
     tagName: '',
-
+    
     // HTML5 get/set properties, but only set (updated by event handlers)
     muted: false,
     volume: 1,
     currentTime: 0,
-
+    
     // HTML5 methods
     play: function() {
         if(this.pluginApi != null) {
@@ -110,7 +108,7 @@ mejs.PluginMediaElement.prototype = {
             if(this.pluginType == 'youtube') {} else {
                 this.pluginApi.loadMedia();
             }
-
+            
             this.paused = false;
         }
     },
@@ -121,8 +119,7 @@ mejs.PluginMediaElement.prototype = {
             } else {
                 this.pluginApi.pauseMedia();
             }
-
-
+            
             this.paused = true;
         }
     },
@@ -141,13 +138,12 @@ mejs.PluginMediaElement.prototype = {
             j,
             pluginInfo,
             pluginVersions = mejs.plugins[this.pluginType];
-
+            
         for(i = 0; i < pluginVersions.length; i++) {
             pluginInfo = pluginVersions[i];
-
+            
             // test if user has the correct plugin version
             if(mejs.PluginDetector.hasPluginVersion(this.pluginType, pluginInfo.version)) {
-
                 // test for plugin playback types
                 for(j = 0; j < pluginInfo.types.length; j++) {
                     // find plugin that can play the type
@@ -157,25 +153,24 @@ mejs.PluginMediaElement.prototype = {
                 }
             }
         }
-
+        
         return '';
     },
-
+    
     positionFullscreenButton: function(x, y, visibleAndAbove) {
         if(this.pluginApi != null && this.pluginApi.positionFullscreenButton) {
             this.pluginApi.positionFullscreenButton(x, y, visibleAndAbove);
         }
     },
-
+    
     hideFullscreenButton: function() {
         if(this.pluginApi != null && this.pluginApi.hideFullscreenButton) {
             this.pluginApi.hideFullscreenButton();
         }
     },
-
-
+    
     // custom methods since not all JavaScript implementations support get/set
-
+    
     // This can be a url string
     // or an array [{src:'file.mp4',type:'video/mp4'},{src:'file.webm',type:'video/webm'}]
     setSrc: function(url) {
@@ -184,7 +179,7 @@ mejs.PluginMediaElement.prototype = {
             this.src = mejs.Utility.absolutizeUrl(url);
         } else {
             var i, media;
-
+            
             for(i = 0; i < url.length; i++) {
                 media = url[i];
                 if(this.canPlayType(media.type)) {
@@ -194,8 +189,8 @@ mejs.PluginMediaElement.prototype = {
                 }
             }
         }
-
     },
+    
     setCurrentTime: function(time) {
         if(this.pluginApi != null) {
             if(this.pluginType == 'youtube') {
@@ -203,12 +198,11 @@ mejs.PluginMediaElement.prototype = {
             } else {
                 this.pluginApi.setCurrentTime(time);
             }
-
-
-
+            
             this.currentTime = time;
         }
     },
+    
     setVolume: function(volume) {
         if(this.pluginApi != null) {
             // same on YouTube and MEjs
@@ -220,6 +214,7 @@ mejs.PluginMediaElement.prototype = {
             this.volume = volume;
         }
     },
+    
     setMuted: function(muted) {
         if(this.pluginApi != null) {
             if(this.pluginType == 'youtube') {
@@ -236,10 +231,9 @@ mejs.PluginMediaElement.prototype = {
             this.muted = muted;
         }
     },
-
+    
     // additional non-HTML5 methods
     setVideoSize: function(width, height) {
-
         //if (this.pluginType == 'flash' || this.pluginType == 'silverlight') {
         if(this.pluginElement.style) {
             this.pluginElement.style.width = width + 'px';
@@ -250,31 +244,31 @@ mejs.PluginMediaElement.prototype = {
         }
         //}
     },
-
+    
     setFullscreen: function(fullscreen) {
         if(this.pluginApi != null && this.pluginApi.setFullscreen) {
             this.pluginApi.setFullscreen(fullscreen);
         }
     },
-
+    
     enterFullScreen: function() {
         if(this.pluginApi != null && this.pluginApi.setFullscreen) {
             this.setFullscreen(true);
         }
-
     },
-
+    
     exitFullScreen: function() {
         if(this.pluginApi != null && this.pluginApi.setFullscreen) {
             this.setFullscreen(false);
         }
     },
-
+    
     // start: fake events
     addEventListener: function(eventName, callback, bubble) {
         this.events[eventName] = this.events[eventName] || [];
         this.events[eventName].push(callback);
     },
+    
     removeEventListener: function(eventName, callback) {
         if(!eventName) {
             this.events = {};
@@ -294,6 +288,7 @@ mejs.PluginMediaElement.prototype = {
         }
         return false;
     },
+    
     dispatchEvent: function(eventName) {
         var i,
             args,
@@ -307,24 +302,27 @@ mejs.PluginMediaElement.prototype = {
         }
     },
     // end: fake events
-
+    
     // fake DOM attribute methods
     hasAttribute: function(name) {
         return(name in this.attributes);
     },
+    
     removeAttribute: function(name) {
         delete this.attributes[name];
     },
+    
     getAttribute: function(name) {
         if(this.hasAttribute(name)) {
             return this.attributes[name];
         }
         return '';
     },
+    
     setAttribute: function(name, value) {
         this.attributes[name] = value;
     },
-
+    
     remove: function() {
         mejs.Utility.removeSwf(this.pluginElement.id);
         mejs.MediaPluginBridge.unregisterPluginElement(this.pluginElement.id);

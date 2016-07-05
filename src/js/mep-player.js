@@ -73,28 +73,11 @@
                 t.isVideo = (tagName !== 'audio' && t.options.isVideo);
             }
             
-            // use native controls in iPad, iPhone, and Android	
-            if((mf.isiPad && t.options.iPadUseNativeControls) || (mf.isiPhone && t.options.iPhoneUseNativeControls)) {
-            
-                // add controls and stop
-                t.$media.attr('controls', 'controls');
-                
-                // attempt to fix iOS 3 bug
-                //t.$media.removeAttr('poster');
-                // no Issue found on iOS3 -ttroxell
-                
-                // override Apple's autoplay override for iPads
-                if(mf.isiPad && t.media.getAttribute('autoplay') !== null) {
-                    t.media.load();
-                    t.media.play();
-                }
-                
-            } else if(mf.isAndroid && t.options.AndroidUseNativeControls) {
-            
+            // use native controls in Android	
+            if(mf.isAndroid && t.options.AndroidUseNativeControls) {
                 // leave default player
                 
             } else {
-            
                 // DESKTOP: use MediaElementPlayer controls
                 
                 // remove native controls 			
@@ -116,28 +99,11 @@
                 // add classes for user and content
                 t.container.addClass(
                     (mf.isAndroid ? 'mejs-android ' : '') +
-                    (mf.isiOS ? 'mejs-ios ' : '') +
-                    (mf.isiPad ? 'mejs-ipad ' : '') +
-                    (mf.isiPhone ? 'mejs-iphone ' : '') +
                     (t.isVideo ? 'mejs-video ' : 'mejs-audio ')
                 );
                 
                 // move the <video/video> tag into the right spot
-                if(mf.isiOS) {
-                
-                    // sadly, you can't move nodes in iOS, so we have to destroy and recreate it!
-                    var $newMedia = t.$media.clone();
-                    
-                    t.container.find('.mejs-mediaelement').append($newMedia);
-                    
-                    t.$media.remove();
-                    t.$node = t.$media = $newMedia;
-                    t.node = t.media = $newMedia[0]
-                    
-                } else {
-                    // normal way of moving it into place (doesn't work on iOS)
-                    t.container.find('.mejs-mediaelement').append(t.$media);
-                }
+                t.container.find('.mejs-mediaelement').append(t.$media);
                 
                 // find parts
                 t.controls = t.container.find('.mejs-controls');
@@ -174,9 +140,6 @@
                 } else {
                     t.height = t.options['default' + capsTagName + 'Height'];
                 }
-                
-                // set the size, while we wait for the plugins to load below
-                // t.setPlayerSize(t.width, t.height);
                 
                 // create MediaElementShim
                 meOptions.pluginWidth = t.height;
@@ -274,7 +237,6 @@
                         .css('display', 'block');
                 });
             } else {
-                
                 // hide main controls
                 t.controls
                     .css('visibility', 'hidden')
@@ -347,12 +309,11 @@
                 return;
             else
                 t.created = true;
-                
+            
             t.media = media;
             t.domNode = domNode;
             
-            if(!(mf.isAndroid && t.options.AndroidUseNativeControls) && !(mf.isiPad && t.options.iPadUseNativeControls) && !(mf.isiPhone && t.options.iPhoneUseNativeControls)) {
-            
+            if(!(mf.isAndroid && t.options.AndroidUseNativeControls)) {
                 // two built in features
                 t.buildposter(t, t.controls, t.layers, t.media);
                 t.buildoverlays(t, t.controls, t.layers, t.media);
@@ -380,19 +341,15 @@
                 t.container.trigger('controlsready');
                 
                 // reset all layers and controls
-                t.setPlayerSize(t.width, t.height);
                 t.setControlsSize();
                 
                 // controls fade
                 if(t.isVideo) {
-                
                     if(mejs.MediaFeatures.hasTouch) {
-                    
                         // for touch devices (iOS, Android)
                         // show/hide without animation on touch
                         
                         t.$media.bind('touchstart', function() {
-                        
                             // toggle controls
                             if(t.controlsAreVisible) {
                                 t.hideControls(false);
@@ -402,7 +359,6 @@
                                 }
                             }
                         });
-                        
                     } else {
                         // click to play/pause
                         t.media.addEventListener('click', t.clickToPlayPauseCallback);
@@ -453,7 +409,6 @@
                             // if the <video height> was not set and the options.videoHeight was not set
                             // then resize to the real dimensions
                             if(t.options.videoHeight <= 0 && t.domNode.getAttribute('height') === null && !isNaN(e.target.videoHeight)) {
-                                t.setPlayerSize(e.target.videoWidth, e.target.videoHeight);
                                 t.setControlsSize();
                                 t.media.setVideoSize(e.target.videoWidth, e.target.videoHeight);
                             }
@@ -496,24 +451,17 @@
                     }
                     
                     if(!t.isFullScreen) {
-                        t.setPlayerSize(t.width, t.height);
                         t.setControlsSize();
                     }
                 }, false);
                 
                 // webkit has trouble doing this without a delay
                 setTimeout(function() {
-                    t.setPlayerSize(t.width, t.height);
                     t.setControlsSize();
                 }, 50);
                 
                 // adjust controls whenever window sizes (used to be in fullscreen only)
                 t.globalBind('resize', function() {
-                    // don't resize for fullscreen mode
-                    if(!(t.isFullScreen || (mejs.MediaFeatures.hasTrueNativeFullScreen && document.webkitIsFullScreen))) {
-                        t.setPlayerSize(t.width, t.height);
-                    }
-                    
                     // always adjust controls
                     t.setControlsSize();
                 });
@@ -547,68 +495,6 @@
             // Tell user that the file cannot be played
             if(t.options.error) {
                 t.options.error(e);
-            }
-        },
-        
-        setPlayerSize: function(width, height) {
-            return;
-            var t = this;
-            
-            if(typeof width != 'undefined')
-                t.width = width;
-                
-            if(typeof height != 'undefined')
-                t.height = height;
-                
-            // detect 100% mode - use currentStyle for IE since css() doesn't return percentages
-            if(t.height.toString().indexOf('%') > 0 || t.$node.css('max-width') === '100%' || (t.$node[0].currentStyle && t.$node[0].currentStyle.maxWidth === '100%')) {
-            
-                // do we have the native dimensions yet?
-                var
-                    nativeWidth = t.isVideo ? ((t.media.videoWidth && t.media.videoWidth > 0) ? t.media.videoWidth : t.options.defaultVideoWidth) : t.options.defaultAudioWidth,
-                    nativeHeight = t.isVideo ? ((t.media.videoHeight && t.media.videoHeight > 0) ? t.media.videoHeight : t.options.defaultVideoHeight) : t.options.defaultAudioHeight,
-                    parentWidth = t.container.parent().closest(':visible').width(),
-                    newHeight = t.isVideo || !t.options.autosizeProgress ? parseInt(parentWidth * nativeHeight / nativeWidth, 10) : nativeHeight;
-                    
-                if(t.container.parent()[0].tagName.toLowerCase() === 'body') { // && t.container.siblings().count == 0) {
-                    parentWidth = $(window).width();
-                    newHeight = $(window).height();
-                }
-                
-                if(newHeight != 0 && parentWidth != 0) {
-                    // set outer container size
-                    t.container
-                        .width(parentWidth)
-                        .height(newHeight);
-                        
-                    // set native <video> or <audio> and shims
-                    t.$media.add(t.container.find('.mejs-shim'))
-                        .width('100%')
-                        .height('100%');
-                        
-                    // if shim is ready, send the size to the embeded plugin	
-                    if(t.isVideo) {
-                        if(t.media.setVideoSize) {
-                            t.media.setVideoSize(parentWidth, newHeight);
-                        }
-                    }
-                    
-                    // set the layers
-                    t.layers.children('.mejs-layer')
-                        .width('100%')
-                        .height('100%');
-                }
-                
-            } else {
-            
-                t.container
-                    .width(t.width)
-                    .height(t.height);
-                    
-                t.layers.children('.mejs-layer')
-                    .width(t.width)
-                    .height(t.height);
-                    
             }
         },
         
@@ -728,13 +614,6 @@
                         }
                     }
                 });
-                
-            /*
-              if (mejs.MediaFeatures.isiOS || mejs.MediaFeatures.isAndroid) {
-              bigPlay.remove();
-              loading.remove();
-              }
-            */
             
             // show/hide big play button
             media.addEventListener('play', function() {
@@ -762,9 +641,7 @@
             }, false);
             
             media.addEventListener('pause', function() {
-                if(!mejs.MediaFeatures.isiPhone) {
-                    bigPlay.show();
-                }
+                bigPlay.show();
             }, false);
             
             media.addEventListener('waiting', function() {
@@ -818,7 +695,6 @@
         
         changeSkin: function(className) {
             this.container[0].className = 'mejs-container ' + className;
-            this.setPlayerSize(this.width, this.height);
             this.setControlsSize();
         },
         

@@ -68,15 +68,14 @@ mejs.Utility = {
         var hours = Math.floor(time / 3600) % 24,
             minutes = Math.floor(time / 60) % 60,
             seconds = Math.floor(time % 60),
-            result =
-            ((forceHours || hours > 0) ? (hours < 10 ? '0' + hours : hours) + ':' : '') +
-            (minutes < 10 ? '0' + minutes : minutes) + ':' +
-            (seconds < 10 ? '0' + seconds : seconds);
+            result = ((forceHours || hours > 0) ? (hours < 10 ? '0' + hours : hours) + ':' : '') +
+                (minutes < 10 ? '0' + minutes : minutes) + ':' +
+                (seconds < 10 ? '0' + seconds : seconds);
         
         return result;
     },
     
-    timeCodeToSeconds: function(hh_mm_ss_ff, forceHours) {
+    timeCodeToSeconds: function(hh_mm_ss_ff) {
         var tc_array = hh_mm_ss_ff.split(":"),
             tc_hh = parseInt(tc_array[0], 10),
             tc_mm = parseInt(tc_array[1], 10),
@@ -105,36 +104,5 @@ mejs.Utility = {
             secs += Number(SMPTE[i]) * multiplier;
         }
         return Number(secs.toFixed(decimalLen));
-    },
-    
-    /* borrowed from SWFObject: http://code.google.com/p/swfobject/source/browse/trunk/swfobject/src/swfobject.js#474 */
-    removeSwf: function(id) {
-        var obj = document.getElementById(id);
-        if(obj && /object|embed/i.test(obj.nodeName)) {
-            if(mejs.MediaFeatures.isIE) {
-                obj.style.display = "none";
-                (function() {
-                    if(obj.readyState == 4) {
-                        mejs.Utility.removeObjectInIE(id);
-                    } else {
-                        setTimeout(arguments.callee, 10);
-                    }
-                })();
-            } else {
-                obj.parentNode.removeChild(obj);
-            }
-        }
-    },
-    
-    removeObjectInIE: function(id) {
-        var obj = document.getElementById(id);
-        if(obj) {
-            for(var i in obj) {
-                if(typeof obj[i] == "function") {
-                    obj[i] = null;
-                }
-            }
-            obj.parentNode.removeChild(obj);
-        }
     }
 };

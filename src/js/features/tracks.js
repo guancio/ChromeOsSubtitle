@@ -392,10 +392,9 @@ zip.useWebWorkers = false;
     },
     
     MediaElementPlayer.prototype.setTrack = function(lang) {
-    
         var t = this,
             i;
-            
+        
         $(document).trigger("subtitleChanged");
         $('#' + this.id + '_captions_' + lang)[0].checked = true;
         if(lang == 'none') {
