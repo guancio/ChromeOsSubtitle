@@ -1,25 +1,23 @@
 // Handles calls from Flash/Silverlight and reports them as native <video/audio> events and properties
 mejs.MediaPluginBridge = {
-
     pluginMediaElements: {},
     htmlMediaElements: {},
-
+    
     registerPluginElement: function(id, pluginMediaElement, htmlMediaElement) {
         this.pluginMediaElements[id] = pluginMediaElement;
         this.htmlMediaElements[id] = htmlMediaElement;
     },
-
+    
     unregisterPluginElement: function(id) {
         delete this.pluginMediaElements[id];
         delete this.htmlMediaElements[id];
     },
-
+    
     // when Flash/Silverlight is ready, it calls out to this method
     initPlugin: function(id) {
-
         var pluginMediaElement = this.pluginMediaElements[id],
             htmlMediaElement = this.htmlMediaElements[id];
-
+        
         if(pluginMediaElement) {
             // find the javascript bridge
             switch(pluginMediaElement.pluginType) {
@@ -31,41 +29,39 @@ mejs.MediaPluginBridge = {
                     pluginMediaElement.pluginApi = pluginMediaElement.pluginElement.Content.MediaElementJS;
                     break;
             }
-
+            
             if(pluginMediaElement.pluginApi != null && pluginMediaElement.success) {
                 pluginMediaElement.success(pluginMediaElement, htmlMediaElement);
             }
         }
     },
-
+    
     // receives events from Flash/Silverlight and sends them out as HTML5 media events
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html
     fireEvent: function(id, eventName, values) {
-
-        var
-            e,
+        var e,
             i,
             bufferedTime,
             pluginMediaElement = this.pluginMediaElements[id];
-
+        
         pluginMediaElement.ended = false;
         pluginMediaElement.paused = true;
-
+        
         // fake event object to mimic real HTML media event.
         e = {
             type: eventName,
             target: pluginMediaElement
         };
-
+        
         // attach all values to element and event object
         for(i in values) {
             pluginMediaElement[i] = values[i];
             e[i] = values[i];
         }
-
+        
         // fake the newer W3C buffered TimeRange (loaded and total have been removed)
         bufferedTime = values.bufferedTime || 0;
-
+        
         e.target.buffered = e.buffered = {
             start: function(index) {
                 return 0;
@@ -75,7 +71,7 @@ mejs.MediaPluginBridge = {
             },
             length: 1
         };
-
+        
         pluginMediaElement.dispatchEvent(e.type, e);
     }
 };
@@ -140,7 +136,6 @@ mejs.MediaElement = function(el, o) {
 };
 
 mejs.HtmlMediaElementShim = {
-
     create: function(el, o) {
         var
             options = mejs.MediaElementDefaults,
@@ -154,23 +149,23 @@ mejs.HtmlMediaElementShim = {
             controls = htmlMediaElement.getAttribute('controls'),
             playback,
             prop;
-
+        
         // extend options
         for(prop in o) {
             options[prop] = o[prop];
         }
-
+        
         // clean up attributes
         src = (typeof src == 'undefined' || src === null || src == '') ? null : src;
         poster = (typeof poster == 'undefined' || poster === null) ? '' : poster;
         preload = (typeof preload == 'undefined' || preload === null || preload === 'false') ? 'none' : preload;
         autoplay = !(typeof autoplay == 'undefined' || autoplay === null || autoplay === 'false');
         controls = !(typeof controls == 'undefined' || controls === null || controls === 'false');
-
+        
         // test for HTML5 and plugin capabilities
         playback = this.determinePlayback(htmlMediaElement, options, mejs.MediaFeatures.supportsMediaTag, isMediaTag, src);
         playback.url = (playback.url !== null) ? mejs.Utility.absolutizeUrl(playback.url) : '';
-
+        
         if(playback.method == 'native') {
             // second fix for android
             if(mejs.MediaFeatures.isBustedAndroid) {
@@ -179,21 +174,20 @@ mejs.HtmlMediaElementShim = {
                     htmlMediaElement.play();
                 }, false);
             }
-
             // add methods to native HTMLMediaElement
             return this.updateNative(playback, options, autoplay, preload);
         } else if(playback.method !== '') {
             // create plugin to mimic HTMLMediaElement
-
+            
             return this.createPlugin(playback, options, poster, autoplay, preload, controls);
         } else {
             // boo, no HTML5, no Flash, no Silverlight.
             this.createErrorMessage(playback, options, poster);
-
+            
             return this;
         }
     },
-
+    
     determinePlayback: function(htmlMediaElement, options, supportsMediaTag, isMediaTag, src) {
         var
             mediaFiles = [],

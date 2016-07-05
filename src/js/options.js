@@ -87,7 +87,7 @@
                     227 // Google TV rewind
                 ],
                 action: function(player, media, keyCode, activeModifiers) {
-                    if(!isNaN(media.duration) && media.duration > 0) {
+                    if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
                         if(player.isVideo) {
                             player.showControls();
                             player.startControlsTimer();
@@ -106,7 +106,7 @@
                     228 // Google TV forward
                 ], 
                 action: function(player, media, keyCode, activeModifiers) {
-                    if(!isNaN(media.duration) && media.duration > 0) {
+                    if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
                         var seekDuration = activeModifiers.shift ? 3 : (activeModifiers.alt ? 10 : (activeModifiers.ctrl ? 60 : undefined))
                         
                         if(seekDuration)

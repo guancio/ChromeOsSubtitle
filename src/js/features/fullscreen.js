@@ -27,10 +27,8 @@
         
         // native events
         if(mejs.MediaFeatures.hasTrueNativeFullScreen) {
-        
             // chrome doesn't alays fire this in an iframe
             var func = function(e) {
-            
                 if(mejs.MediaFeatures.isFullScreen()) {
                     player.isNativeFullScreen = true;
                     // reset the controls once we are fully in full screen
@@ -71,9 +69,7 @@
                     player.enterFullScreen();
                 }
             });
-            
         } else {
-        
             var hideTimeout = null,
                 supportsPointerEvents = (function() {
                     // TAKEN FROM MODERNIZR
@@ -92,11 +88,8 @@
                     documentElement.removeChild(element);
                     return !!supports;
                 })();
-                
-            //console.log('supportsPointerEvents', supportsPointerEvents);
             
             if(supportsPointerEvents && !mejs.MediaFeatures.isOpera) { // opera doesn't allow this :(
-            
                 // allows clicking through the fullscreen button and controls down directly to Flash
                 
                 /*
@@ -105,7 +98,6 @@
                  that caputre mouse movement
                  and restore the controls once the mouse moves outside of the fullscreen button
                 */
-                
                 var fullscreenIsDisabled = false,
                     restoreControls = function() {
                         if(fullscreenIsDisabled) {
@@ -225,37 +217,10 @@
                     }
                     restoreControls();
                 });
-                
-                // the mouseout event doesn't work on the fullscren button, because we already killed the pointer-events
-                // so we use the document.mousemove event to restore controls when the mouse moves outside the fullscreen button
-                /*
-                t.globalBind('mousemove', function(e) {
-                
-                	// if the mouse is anywhere but the fullsceen button, then restore it all
-                	if (fullscreenIsDisabled) {
-                
-                		var fullscreenBtnPos = fullscreenBtn.offset();
-                
-                		if (e.pageY < fullscreenBtnPos.top || e.pageY > fullscreenBtnPos.top + fullscreenBtn.outerHeight(true) ||
-                			e.pageX < fullscreenBtnPos.left || e.pageX > fullscreenBtnPos.left + fullscreenBtn.outerWidth(true)
-                			) {
-                
-                			fullscreenBtn.css('pointer-events', '');
-                			t.controls.css('pointer-events', '');
-                
-                			fullscreenIsDisabled = false;
-                		}
-                	}
-                });
-                */
-                
             } else {
-            
                 // the hover state will show the fullscreen button in Flash to hover up and click
-                
                 fullscreenBtn
                     .mouseover(function() {
-                    
                         if(hideTimeout !== null) {
                             clearTimeout(hideTimeout);
                             delete hideTimeout;
@@ -265,10 +230,8 @@
                             containerPos = player.container.offset();
                             
                         media.positionFullscreenButton(buttonPos.left - containerPos.left, buttonPos.top - containerPos.top, true);
-                        
                     })
                     .mouseout(function() {
-                    
                         if(hideTimeout !== null) {
                             clearTimeout(hideTimeout);
                             delete hideTimeout;
