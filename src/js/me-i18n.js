@@ -51,8 +51,6 @@
         "methods": {}
     };
     // start i18n
-
-
     /**
      * Get the current browser's language
      *
@@ -63,13 +61,10 @@
             "language": navigator.language
         };
     };
-
     /**
      * Store the language the locale object was initialized with
      */
     i18n.locale.INIT_LANGUAGE = i18n.locale.getLanguage();
-
-
     /**
      * Encode special characters in a plain-text string for display as HTML.
      */
@@ -90,7 +85,7 @@
         }
         return str;
     };
-
+    
     /**
      * Replace placeholders with sanitized values in a string.
      *
@@ -149,19 +144,17 @@
      *   The translated string.
      */
     i18n.methods.t = function(str, args, options) {
-
         // Fetch the localized version of the string.
         if(i18n.locale.strings && i18n.locale.strings[options.context] && i18n.locale.strings[options.context][str]) {
             str = i18n.locale.strings[options.context][str];
         }
-
+        
         if(args) {
             str = i18n.methods.formatString(str, args);
         }
         return str;
     };
-
-
+    
     /**
      * Wrapper for i18n.methods.t()
      *
@@ -169,9 +162,7 @@
      * @throws InvalidArgumentException
      */
     i18n.t = function(str, args, options) {
-
         if(typeof str === 'string' && str.length > 0) {
-
             // check every time due languge can change for
             // different reasons (translation, lang switcher ..)
             var lang = i18n.locale.getLanguage();
@@ -188,7 +179,7 @@
             }
         }
     };
-
+    
     // end i18n
     exports.i18n = i18n;
 }(document, mejs));

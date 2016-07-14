@@ -23,7 +23,6 @@
                         t.openedFile = file;
                         t.openedFileEntry = entry;
                         player.setSrc(window.URL.createObjectURL(file));
-                        player.play();
                     });
                 });
             } else {
@@ -41,7 +40,6 @@
             var path = window.URL.createObjectURL(openFileInput[0].files[0]);
             t.openedFile = openFileInput[0].files[0];
             player.setSrc(path);
-            player.play()
         });
     }
 })(mejs.$);

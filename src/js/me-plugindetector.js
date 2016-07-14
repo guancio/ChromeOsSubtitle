@@ -1,34 +1,34 @@
 // Core detector, plugins are added below
 mejs.PluginDetector = {
-
     // main public function to test a plug version number PluginDetector.hasPluginVersion('flash',[9,0,125]);
     hasPluginVersion: function(plugin, v) {
         var pv = this.plugins[plugin];
+        
         v[1] = v[1] || 0;
         v[2] = v[2] || 0;
+        
         return(pv[0] > v[0] || (pv[0] == v[0] && pv[1] > v[1]) || (pv[0] == v[0] && pv[1] == v[1] && pv[2] >= v[2])) ? true : false;
     },
-
+    
     // cached values
     nav: window.navigator,
     ua: window.navigator.userAgent.toLowerCase(),
-
+    
     // stored version numbers
     plugins: [],
-
+    
     // runs detectPlugin() and stores the version number
     addPlugin: function(p, pluginName, mimeType, activeX, axDetect) {
         this.plugins[p] = this.detectPlugin(pluginName, mimeType, activeX, axDetect);
     },
-
+    
     // get the version number from the mimetype (all but IE) or ActiveX (IE)
     detectPlugin: function(pluginName, mimeType, activeX, axDetect) {
-
         var version = [0, 0, 0],
             description,
             i,
             ax;
-
+        
         // Firefox, Webkit, Opera
         if(typeof(this.nav.plugins) != 'undefined' && typeof this.nav.plugins[pluginName] == 'object') {
             description = this.nav.plugins[pluginName].description;
@@ -83,18 +83,6 @@ mejs.PluginDetector.addPlugin('silverlight', 'Silverlight Plug-In', 'application
     loopMatch(ax, v, 2, 10);
     loopMatch(ax, v, 2, 1);
     loopMatch(ax, v, 3, 1);
-
+    
     return v;
 });
-// add adobe acrobat
-/*
-PluginDetector.addPlugin('acrobat','Adobe Acrobat','application/pdf','AcroPDF.PDF', function (ax) {
-	var version = [],
-		d = ax.GetVersions().split(',')[0].split('=')[1].split('.');
-
-	if (d) {
-		version = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
-	}
-	return version;
-});
-*/

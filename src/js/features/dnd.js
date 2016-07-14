@@ -13,15 +13,16 @@
             e.preventDefault();
             e.stopPropagation();
             
-            var draggedVideo = null,
+            var draggedMedia = null,
                 draggedSrt = null;
             
             if(e.dataTransfer.types.indexOf('Files') >= 0) {
                 var files = e.dataTransfer.files;
                 for(var i = 0; i < files.length; i++) {
                     var file = files[i];
-                    if(file.type.indexOf("video") >= 0)
-                        draggedVideo = file;
+                    console.log(file);
+                    if(file.type.startsWith("video") || file.type.startsWith("audio"))
+                        draggedMedia = file;
                     else if(file.type.indexOf("subrip") >= 0)
                         draggedSrt = file;
                     else if(file.type.indexOf("application/zip") >= 0)
@@ -29,12 +30,12 @@
                 }
             }
             
-            if(draggedVideo != null) {
+            if(draggedMedia != null) {
                 mainMediaElement.stop();
-                t.openedFile = draggedVideo;
+                t.openedFile = draggedMedia;
                 t.openedFileEntry = null;
                 
-                mainMediaElement.setSrc(window.URL.createObjectURL(draggedVideo));
+                mainMediaElement.setSrc(window.URL.createObjectURL(draggedMedia));
             }
             
             player.tracks = [];

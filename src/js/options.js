@@ -38,10 +38,6 @@
         hideVideoControlsOnLoad: false,
         // Enable click video element to toggle play/pause
         clickToPlayPause: true,
-        // force iPad's native controls
-        iPadUseNativeControls: false,
-        // force iPhone's native controls
-        iPhoneUseNativeControls: false,
         // force Android's native controls
         AndroidUseNativeControls: false,
         // features to show
@@ -60,8 +56,8 @@
                     32, // SPACE
                     179 // GOOGLE play/pause button
                 ],
-                action: function(player, media, keyCode, activeModifiers) {
-                    if(media.paused || media.ended)
+                action: function(player, keyCode, activeModifiers) {
+                    if(player.isPaused() || player.isEnded())
                         player.play();
                     else
                         player.pause();
@@ -69,16 +65,16 @@
             },
             {
                 keys: [38], // UP
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
-                        player.setVolume(Math.min(media.volume + 0.1, 1));
+                        player.setVolume(Math.min(player.getVolume() + 0.1, 1));
                 }
             },
             {
                 keys: [40], // DOWN
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
-                        player.setVolume(Math.max(media.volume - 0.1, 0));
+                        player.setVolume(Math.max(player.getVolume() - 0.1, 0));
                 }
             },
             {
@@ -86,7 +82,7 @@
                     37, // LEFT
                     227 // Google TV rewind
                 ],
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
                         if(player.isVideo) {
                             player.showControls();
@@ -105,7 +101,7 @@
                     39, // RIGHT
                     228 // Google TV forward
                 ], 
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
                         var seekDuration = activeModifiers.shift ? 3 : (activeModifiers.alt ? 10 : (activeModifiers.ctrl ? 60 : undefined))
                         
@@ -121,7 +117,7 @@
             },
             {
                 keys: [70], // f
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(!activeModifiers.ctrl)
                         return;
                     
@@ -135,70 +131,70 @@
             },
             {
                 keys: [79], // O
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.openFileForm();
                 }
             },
             {
                 keys: [189],  // -
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.decCaptionSize();
                 }
             },
             {
                 keys: [187],  // +
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.incCaptionSize();
                 }
             },
             {
                 keys: [90],  // z
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.decCaptionDelay();
                 }
             },
             {
                 keys: [88],  // x
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.incCaptionDelay();
                 }
             },
             {
                 keys: [190],  // ,
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.incPlaybackRate();
                 }
             },
             {
                 keys: [188],  // .
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.decPlaybackRate();
                 }
             },
             {
                 keys: [191],  // /
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.resetPlaybackRate();
                 }
             },
             {
                 keys: [76],  // l
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl)
                         player.toggleLoop();
                 }
             },
             {
                 keys: [68], // D
-                action: function(player, media, keyCode, activeModifiers) {
+                action: function(player, keyCode, activeModifiers) {
                     if(!activeModifiers.ctrl || !player.openedFile)
                         return;
                     

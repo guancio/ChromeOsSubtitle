@@ -150,13 +150,12 @@
             // MEP object
             mejs.MediaElementPlayer.prototype.clickToPlayPauseCallback = function(e) {
                 e.preventDefault();
-                if(t.media.readyState != 4)
-                    return;
+                
                 if(t.options.clickToPlayPause) {
                     if(t.media.paused) {
-                        t.media.play();
+                        t.play();
                     } else {
-                        t.media.pause();
+                        t.pause();
                     }
                 }
             };
@@ -435,7 +434,7 @@
                         t.setCurrentRail();
                         
                     if(t.options.loop) {
-                        t.media.play();
+                        t.player.play();
                     } else if(!t.options.alwaysShowControls && t.controlsEnabled) {
                         t.showControls();
                     }
@@ -475,7 +474,7 @@
             // force autoplay for HTML5
             if(autoplay && media.pluginType == 'native') {
                 media.load();
-                media.play();
+                player.play();
             }
             
             if(t.options.success) {
@@ -527,7 +526,7 @@
                 });
                 
                 // fit the rail into the remaining space
-                railWidth = t.controls.width() - usedWidth - (rail.outerWidth(true) - rail.width());
+                railWidth = t.controls.width() - usedWidth - (rail.outerWidth(true) - rail.width()) - 1;
             }
             
             // outer area
@@ -585,17 +584,11 @@
             var t = this;
             if(!player.isVideo)
                 return;
-                
+            
             var
                 loading =
                 $('<div class="mejs-overlay mejs-layer">' +
                     '<div class="mejs-overlay-loading"><span></span></div>' +
-                    '</div>')
-                .hide() // start out hidden
-                .appendTo(layers),
-                error =
-                $('<div class="mejs-overlay mejs-layer">' +
-                    '<div class="mejs-overlay-error"></div>' +
                     '</div>')
                 .hide() // start out hidden
                 .appendTo(layers),
@@ -620,14 +613,12 @@
                 bigPlay.hide();
                 loading.hide();
                 controls.find('.mejs-time-buffering').hide();
-                error.hide();
             }, false);
             
             media.addEventListener('playing', function() {
                 bigPlay.hide();
                 loading.hide();
                 controls.find('.mejs-time-buffering').hide();
-                error.hide();
             }, false);
             
             media.addEventListener('seeking', function() {
@@ -657,6 +648,7 @@
                 
                 loading.show();
                 controls.find('.mejs-time-buffering').show();
+                player.play();
             }, false);
             media.addEventListener('canplay', function() {
                 loading.hide();
@@ -664,22 +656,23 @@
             }, false);
             
             // error handling
-            media.addEventListener('error', function() {
+            media.addEventListener('error', function(e) {
+                if(media.currentSrc === "")
+                    return;
+                
                 loading.hide();
                 controls.find('.mejs-time-buffering').hide();
-                error.show();
-                error.find('mejs-overlay-error').html("Error loading this resource");
+                player.setNotification('Cannot play the given file!', 3000);
             }, false);
         },
         
         findTracks: function() {
             var t = this,
                 tracktags = t.$media.find('track');
-                
+            
             // store for use by plugins
             t.tracks = [];
             tracktags.each(function(index, track) {
-            
                 track = $(track);
                 
                 t.tracks.push({
@@ -698,6 +691,14 @@
             this.setControlsSize();
         },
         
+        isEnded: function() {
+            return this.media.ended;
+        },
+        
+        isPaused: function() {
+            return this.media.paused;
+        },
+        
         play: function() {
             if(this.media.readyState !== 4) {
                 this.openFileForm();
@@ -705,16 +706,23 @@
             }
             
             this.setNotification('▶');
+            $('.mejs-play').removeClass('mejs-play').addClass('mejs-pause');
             this.media.play();
         },
         
         pause: function() {
+            this.setNotification('￰⏸');
+            $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
             this.media.pause();
         },
         
         stop: function() {
             this.setNotification('￰■');
-            this.pause();
+            if(!this.media.paused) {
+                this.media.pause();
+                $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
+            }
+            
             this.setCurrentTime(0);
         },
         
