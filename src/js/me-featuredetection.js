@@ -9,7 +9,7 @@ mejs.MediaFeatures = {
             i,
             v,
             html5Elements = ['source', 'track', 'audio', 'video'];
-
+        
         // detect browsers (only the ones that have some kind of quirk we need to work around)
         t.isAndroid = (ua.match(/android/i) !== null);
         t.isBustedAndroid = (ua.match(/android 2\.[12]/) !== null);

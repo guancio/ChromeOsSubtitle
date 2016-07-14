@@ -11,7 +11,7 @@
         // Android and iOS don't support volume controls
         if(mejs.MediaFeatures.hasTouch && this.hideVolumeOnTouchDevices)
             return;
-            
+        
         var t = this,
             mode = (t.isVideo) ? t.options.videoVolume : t.options.audioVolume,
             mute = (mode == 'horizontal') ?

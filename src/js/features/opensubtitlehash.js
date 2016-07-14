@@ -12,17 +12,11 @@ var OpenSubtitlesHash = function(file, onComplete) {
     
     // sum chunk long values
     var sumChunk = function(arrayBuffer) {
-        
         var view = new DataView(arrayBuffer);
         var hNumber = new dcodeIO.Long();
         
-        for(var i = 0; i < arrayBuffer.byteLength; i += 8) {
-            var low = view.getUint32(i, true);
-            var high = view.getUint32(i + 4, true);
-            
-            var n = new dcodeIO.Long(low, high);
-            hNumber = hNumber.add(n);
-        }
+        for(var i = 0; i < arrayBuffer.byteLength; i += 8)
+            hNumber = hNumber.add(new dcodeIO.Long(view.getUint32(i, true), view.getUint32(i + 4, true)));
         
         return hNumber;
     };

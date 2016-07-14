@@ -12,10 +12,6 @@
             .appendTo(controls)
             .click(function(e) {
                 e.preventDefault();
-                if(media.readyState !== 4) {
-                    player.openFileForm();
-                    return;
-                }
                 
                 if(media.paused) {
                     player.play();
@@ -25,15 +21,5 @@
                 
                 return false;
             });
-        
-        media.addEventListener('play', function() {
-            player.setNotification('▶');
-            play.removeClass('mejs-play').addClass('mejs-pause');
-        }, false);
-        
-        media.addEventListener('pause', function() {
-            player.setNotification('￰⏸');
-            play.removeClass('mejs-pause').addClass('mejs-play');
-        }, false);
     }
 })(mejs.$);

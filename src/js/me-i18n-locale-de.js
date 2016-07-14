@@ -14,14 +14,12 @@
  */
 ;
 (function(exports, undefined) {
-
     "use strict";
-
+    
     exports.de = {
         "Fullscreen": "Vollbild",
         "Go Fullscreen": "Vollbild an",
         "Turn off Fullscreen": "Vollbild aus",
         "Close": "Schließen"
     };
-
 }(mejs.i18n.locale.strings));

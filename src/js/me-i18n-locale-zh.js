@@ -14,14 +14,12 @@
  */
 ;
 (function(exports, undefined) {
-
     "use strict";
-
+    
     exports.zh = {
         "Fullscreen": "全螢幕",
         "Go Fullscreen": "全屏模式",
         "Turn off Fullscreen": "退出全屏模式",
         "Close": "關閉"
     };
-
 }(mejs.i18n.locale.strings));
