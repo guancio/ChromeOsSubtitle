@@ -4,25 +4,24 @@
             t = this;
             
         var helpPanel = $(
-            '<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:360px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;">' +
+            '<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:500px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;">' +
             '<h2>Help</h2>' +
             '<div>' +
             '<table style="color:#fff">' +
             '<tr><td style="width:60px">space</td><td style="width:100px">play/pause</td></tr>' +
-            '<tr><td>up</td><td>volume up</td>' +
-            '<td style="width:60px">down</td><td style="width:100px">volume down</td></tr>' +
-            '<tr><td>left</td><td>rewind</td>' +
-            '<td>right</td><td>forward</td></tr>' +
-            '<tr><td>i</td><td>info</td>' +
-            '<td>s</td><td>settings</td></tr>' +
-            '<tr><td>h</td><td>help</td></tr>' +
-            '<tr><td>f</td><td>fullscreen</td></tr>' +
-            '<tr><td>o</td><td>open video</td></tr>' +
-            '<tr><td>d</td><td>download subtitle</td></tr>' +
-            '<tr><td>-</td><td>decrease subtitle size</td>' +
-            '<td>+</td><td>increase subtitle size</td></tr>' +
-            '<tr><td>z</td><td>decrease subtitle delay</td>' +
-            '<td>x</td><td>increase subtitle delay</td></tr>' +
+            '<tr><td>[ctrl]up</td><td>volume up</td>' +
+            '<td style="width:60px">[ctrl]down</td><td style="width:100px">volume down</td></tr>' +
+            '<tr><td>[shift|alt|ctrl]left</td><td>rewind</td>' +
+            '<td>[shift|alt|ctrl]right</td><td>forward</td></tr>' +
+            '<tr><td>[ctrl]f</td><td>fullscreen</td></tr>' +
+            '<tr><td>[ctrl]o</td><td>open video</td></tr>' +
+            '<tr><td>[ctrl]d</td><td>download subtitle</td></tr>' +
+            '<tr><td>[ctrl]-</td><td>decrease subtitle size</td>' +
+            '<td>[ctrl]+</td><td>increase subtitle size</td></tr>' +
+            '<tr><td>[ctrl],</td><td>increase playback speed</td>' +
+            '<td>[ctrl].</td><td>decrease subtitle delay</td></tr>' +
+            '<tr><td>[ctrl]/</td><td>reset playback speed</td>' +
+            '<td>[ctrl]l</td><td>toggle loop</td></tr>' +
             '</table>' +
             '</div><br/>' +
             '[Click outside the box to close the help page]</div>'
