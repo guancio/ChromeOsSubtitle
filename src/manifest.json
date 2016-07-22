@@ -1,6 +1,6 @@
 {
   "name": "Subtitle Videoplayer",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "manifest_version": 2,
   "minimum_chrome_version": "28",
   "icons": {
@@ -13,9 +13,7 @@
 	 }
   },
     "file_handlers": {
-	"text": {
-	    "title": "Watch",
-	    "icons": {"16": "camera.png"},
+	"video": {
 	    "types": ["video/*"]
 	}
     },
