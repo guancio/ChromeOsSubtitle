@@ -1,4 +1,4 @@
-B#!/bin/sh
+#!/bin/sh
 
 rm -rf app
 mkdir app
@@ -13,19 +13,15 @@ cp src/*.css app
 mkdir app/js
 cp src/js/*.js app/js
 
+mkdir app/js/features
+cp src/js/features/*.js app/js/features
+
 mkdir app/lib
 
-mkdir app/lib/Long.js
-cp src/lib/Long.js/Long.min.js app/lib/Long.js
+cp src/lib/*.js app/lib
 
-mkdir app/lib/json-xml-rpc
-cp src/lib/json-xml-rpc/rpc.js app/lib/json-xml-rpc
-
-mkdir -p app/lib/zip.js/WebContent
-cp src/lib/zip.js/WebContent/*.js app/lib/zip.js/WebContent/
-
-mkdir -p app/lib/analytics/
-cp src/lib/analytics/*.js app/lib/analytics/
+mkdir -p app/lib/zipjs/WebContent
+cp src/lib/zipjs/WebContent/*.js app/lib/zipjs/WebContent/
 
 rm -rf app.zip
 
