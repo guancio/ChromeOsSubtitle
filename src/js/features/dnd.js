@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.builddrop = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.builddrop = function() {
         var t = this;
         
         document.body.addEventListener('dragover', function(e) {
@@ -20,7 +20,7 @@
                 var files = e.dataTransfer.files;
                 for(var i = 0; i < files.length; i++) {
                     var file = files[i];
-                    console.log(file);
+                    
                     if(file.type.startsWith("video") || file.type.startsWith("audio"))
                         draggedMedia = file;
                     else if(file.type.indexOf("subrip") >= 0)
@@ -30,18 +30,18 @@
                 }
             }
             
-            if(draggedMedia != null) {
-                mainMediaElement.stop();
+            if(draggedMedia !== null) {
+                t.stop();
                 t.openedFile = draggedMedia;
                 t.openedFileEntry = null;
                 
-                mainMediaElement.setSrc(window.URL.createObjectURL(draggedMedia));
+                t.setSrc(window.URL.createObjectURL(draggedMedia));
             }
             
-            player.tracks = [];
+            t.tracks = [];
             
-            if(draggedSrt != null) {
-                player.openSrtEntry(draggedSrt);
+            if(draggedSrt !== null) {
+                t.openSrtEntry(draggedSrt);
             }
         }, false);
     }

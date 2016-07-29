@@ -1,29 +1,29 @@
 (function($) {
     // progress/loaded bar
-    MediaElementPlayer.prototype.buildprogress = function(player, controls, layers, media) {
-        $('<div class="mejs-time-rail">' +
-                '<span class="mejs-time-total">' +
-                '<span class="mejs-time-buffering"></span>' +
-                '<span class="mejs-time-loaded"></span>' +
-                '<span class="mejs-time-current"></span>' +
-                '<span class="mejs-time-handle"></span>' +
-                '<span class="mejs-time-float">' +
-                '<span class="mejs-time-float-current">00:00</span>' +
-                '<span class="mejs-time-float-corner"></span>' +
-                '</span>' +
-                '</span>' +
-                '</div>')
-            .appendTo(controls);
-        controls.find('.mejs-time-buffering').hide();
+    MediaElementPlayer.prototype.buildprogress = function() {
+        var t = this;
         
-        var
-            t = this,
-            total = controls.find('.mejs-time-total'),
-            loaded = controls.find('.mejs-time-loaded'),
-            current = controls.find('.mejs-time-current'),
-            handle = controls.find('.mejs-time-handle'),
-            timefloat = controls.find('.mejs-time-float'),
-            timefloatcurrent = controls.find('.mejs-time-float-current'),
+        t.controls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail">' +
+                '<span class="mejs-time-total">' +
+                    '<span class="mejs-time-buffering"></span>' +
+                    '<span class="mejs-time-loaded"></span>' +
+                    '<span class="mejs-time-current"></span>' +
+                    '<span class="mejs-time-handle"></span>' +
+                    '<span class="mejs-time-float">' +
+                        '<span class="mejs-time-float-current">00:00</span>' +
+                        '<span class="mejs-time-float-corner"></span>' +
+                    '</span>' +
+                '</span>' +
+            '</div>'));
+        
+        t.controls.find('.mejs-time-buffering').hide();
+        
+        var total = t.controls.find('.mejs-time-total'),
+            loaded = t.controls.find('.mejs-time-loaded'),
+            current = t.controls.find('.mejs-time-current'),
+            handle = t.controls.find('.mejs-time-handle'),
+            timefloat = t.controls.find('.mejs-time-float'),
+            timefloatcurrent = t.controls.find('.mejs-time-float-current'),
             handleMouseMove = function(e) {
                 // mouse position relative to the object
                 var x = e.pageX,
@@ -32,7 +32,7 @@
                     newTime = 0,
                     pos = 0;
                 
-                if(media.duration) {
+                if(t.getDuration()) {
                     if(x < offset.left) {
                         x = offset.left;
                     } else if(x > width + offset.left) {
@@ -40,17 +40,17 @@
                     }
                     
                     pos = x - offset.left;
-                    newTime = (pos / width) * media.duration;
+                    newTime = (pos / width) * t.getDuration();
                     
                     // seek to where the mouse is
-                    if(mouseIsDown && newTime !== media.currentTime) {
-                        media.setCurrentTime(newTime);
+                    if(mouseIsDown && newTime !== t.getCurrentTime()) {
+                        t.setCurrentTime(newTime);
                     }
                     
                     // position floating time box
                     if(!mejs.MediaFeatures.hasTouch) {
-                        timefloat.css('left', pos);
-                        timefloatcurrent.html(mejs.Utility.secondsToTimeCode(newTime));
+                        timefloat[0].style.left = pos;
+                        timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
                         timefloat.show();
                     }
                 }
@@ -95,21 +95,21 @@
             });
         
         // loading
-        media.addEventListener('progress', function(e) {
-            if(!player.controlsAreVisible)
+        t.media.addEventListener('progress', function(e) {
+            if(!t.controlsAreVisible)
                 return;
             
-            player.setProgressRail(e);
-            player.setCurrentRail(e);
+            t.setProgressRail(e);
+            t.setCurrentRail(e);
         });
         
         // current time
-        media.addEventListener('timeupdate', function(e) {
-            if(!player.controlsAreVisible)
+        t.media.addEventListener('timeupdate', function(e) {
+            if(!t.controlsAreVisible)
                 return;
             
-            player.setProgressRail(e);
-            player.setCurrentRail(e);
+            t.setProgressRail(e);
+            t.setCurrentRail(e);
         });
         
         // store for later use
@@ -130,24 +130,13 @@
             // TODO: account for a real array with multiple values (only Firefox 4 has this so far) 
             percent = target.buffered.end(0) / target.duration;
         }
-        // Some browsers (e.g., FF3.6 and Safari 5) cannot calculate target.bufferered.end()
-        // to be anything other than 0. If the byte count is available we use this instead.
-        // Browsers that support the else if do not seem to have the bufferedBytes value and
-        // should skip to there. Tested in Safari 5, Webkit head, FF3.6, Chrome 6, IE 7/8.
-        else if(target && target.bytesTotal != undefined && target.bytesTotal > 0 && target.bufferedBytes != undefined) {
-            percent = target.bufferedBytes / target.bytesTotal;
-        }
-        // Firefox 3 with an Ogg file seems to go this way
-        else if(e && e.lengthComputable && e.total != 0) {
-            percent = e.loaded / e.total;
-        }
         
         // finally update the progress bar
         if(percent !== null) {
             percent = Math.min(1, Math.max(0, percent));
             // update loaded bar
             if(t.loaded && t.total) {
-                t.loaded.width(t.total.width() * percent);
+                t.loaded[0].style.width = (parseFloat(t.total[0].style.width) || 0) * percent;
             }
         }
     }
@@ -155,15 +144,14 @@
     MediaElementPlayer.prototype.setCurrentRail = function() {
         var t = this;
         
-        if(t.media.currentTime != undefined && t.media.duration) {
+        if(t.getCurrentTime() != undefined && t.getDuration()) {
             // update bar and handle
             if(t.total && t.handle) {
-                var
-                    newWidth = t.total.width() * t.media.currentTime / t.media.duration,
+                var newWidth = (parseFloat(t.total[0].style.width) || 0) * t.getCurrentTime() / t.getDuration(),
                     handlePos = newWidth - t.handle.outerWidth(true) / 2;
                 
-                t.current.width(newWidth);
-                t.handle.css('left', handlePos);
+                t.current[0].style.width = newWidth;
+                t.handle[0].style.left = handlePos;
             }
         }
     }
