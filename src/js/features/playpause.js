@@ -4,22 +4,16 @@
     });
     
     // PLAY/pause BUTTON
-    MediaElementPlayer.prototype.buildplaypause = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildplaypause = function() {
         var t = this,
-            play = $('<div class="mejs-button mejs-playpause-button mejs-play" >' +
-                '<button type="button" aria-controls="' + t.id + '" title="' + t.options.playpauseText + '" aria-label="' + t.options.playpauseText + '"></button>' +
-                '</div>')
-            .appendTo(controls)
-            .click(function(e) {
-                e.preventDefault();
-                
-                if(media.paused) {
-                    player.play();
-                } else {
-                    player.pause();
-                }
-                
-                return false;
-            });
+            playpause = mejs.Utility.createNestedElement('<div class="mejs-button mejs-playpause-button mejs-play" >' +
+            '<button type="button" title="' + t.options.playpauseText + '" aria-label="' + t.options.playpauseText + '"></button>' +
+        '</div>');
+        
+        playpause.addEventListener('click', function(e) {
+            e.preventDefault();
+            t.isPaused() ? t.play() : t.pause();
+        });
+        t.controls[0].appendChild(playpause);
     }
 })(mejs.$);

@@ -1,77 +1,58 @@
 (function($) {
-    // options
-    $.extend(mejs.MepDefaults, {
-        duration: -1,
-        timeAndDurationSeparator: ' / '
-    });
+    var showRemaining = false;
     
     // current and duration 00:00 / 00:00
-    MediaElementPlayer.prototype.buildcurrent = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildcurrent = function() {
         var t = this;
         
         $('<div class="mejs-time">' +
-                '<span class="mejs-currenttime">' + (player.options.alwaysShowHours ? '00:' : '') +
-                '00:00' + '</span>' +
-                '</div>')
-            .appendTo(controls);
-            
+            '<span class="mejs-currenttime">00:00</span>' +
+        '</div>')
+            .appendTo(t.controls);
+        
         t.currenttime = t.controls.find('.mejs-currenttime');
         
-        media.addEventListener('timeupdate', function() {
-            player.updateCurrent();
+        t.media.addEventListener('timeupdate', function() {
+            if(!t.controlsAreVisible)
+                return;
+            
+            t.updateCurrent();
         }, false);
+        
+        t.currenttime[0].addEventListener('click', function() {
+            showRemaining = !showRemaining;
+            
+            if(t.isPaused())
+                t.updateCurrent();
+            
+            t.setControlsSize();
+        })
     }
     
-    MediaElementPlayer.prototype.buildduration = function(player, controls, layers, media) {
-        var t = this;
+    MediaElementPlayer.prototype.buildduration = function() {
+        $('<span>/</span><span class="mejs-duration">00:00</span>')
+            .appendTo(this.controls.find('.mejs-time'));
         
-        if(controls.children().last().find('.mejs-currenttime').length > 0) {
-            $('<span>' + t.options.timeAndDurationSeparator + '</span>' + 
-                    '<span class="mejs-duration">' +
-                    (t.options.duration > 0 ?
-                        mejs.Utility.secondsToTimeCode(t.options.duration, t.options.alwaysShowHours || t.media.duration > 3600) :
-                        ((player.options.alwaysShowHours ? '00:' : '') + '00:00')
-                    ) +
-                    '</span>')
-                .appendTo(controls.find('.mejs-time'));
-        } else {
-            // add class to current time
-            controls.find('.mejs-currenttime').parent().addClass('mejs-currenttime-container');
-            
-            $('<div class="mejs-time mejs-duration-container">' +
-                    '<span class="mejs-duration">' +
-                    (t.options.duration > 0 ?
-                        mejs.Utility.secondsToTimeCode(t.options.duration, t.options.alwaysShowHours || t.media.duration > 3600) :
-                        ((player.options.alwaysShowHours ? '00:' : '') + '00:00')
-                    ) +
-                    '</span>' +
-                    '</div>')
-                .appendTo(controls);
-        }
-        
-        t.durationD = t.controls.find('.mejs-duration');
-        
-        media.addEventListener('timeupdate', function() {
-            player.updateDuration();
-        }, false);
+        this.durationD = this.controls.find('.mejs-duration');
     }
     
     MediaElementPlayer.prototype.updateCurrent = function() {
-        var t = this;
-        
-        if(t.currenttime) {
-            t.currenttime.html(mejs.Utility.secondsToTimeCode(t.media.currentTime, t.options.alwaysShowHours || t.media.duration > 3600));
+        if(this.currenttime) {
+            if(showRemaining) {
+                this.currenttime.html('-' + mejs.Utility.secondsToTimeCode(this.getDuration() - this.getCurrentTime()));
+            }
+            else {
+                this.currenttime.html(mejs.Utility.secondsToTimeCode(this.getCurrentTime()));
+            }
         }
     }
     
     MediaElementPlayer.prototype.updateDuration = function() {
-        var t = this;
-        
         //Toggle the long video class if the video is longer than an hour.
-        t.container.toggleClass("mejs-long-video", t.media.duration > 3600);
+        this.container.toggleClass("mejs-long-video", this.getDuration() > 3600);
         
-        if(t.durationD && (t.options.duration > 0 || t.media.duration)) {
-            t.durationD.html(mejs.Utility.secondsToTimeCode(t.options.duration > 0 ? t.options.duration : t.media.duration, t.options.alwaysShowHours));
+        if(this.durationD && this.getDuration()) {
+            this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
     }
 })(mejs.$);

@@ -4,17 +4,17 @@
     });
     
     // STOP BUTTON
-    MediaElementPlayer.prototype.buildstop = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildstop = function() {
         var t = this,
-            stop = $('<div class="mejs-button mejs-stop-button mejs-stop">' +
-                '<button type="button" aria-controls="' + t.id + '" title="' + t.options.stopText + '" aria-label="' + t.options.stopText + '"></button>' +
-                '</div>')
-            .appendTo(controls)
-            .click(function() {
-                if(media.currentTime > 0) {
-                    player.stop();
-                    layers.find('.mejs-poster').show();
+            stop = mejs.Utility.createNestedElement('<div class="mejs-button mejs-stop-button mejs-stop">' +
+                '<button type="button" title="' + t.options.stopText + '" aria-label="' + t.options.stopText + '"></button>' +
+                '</div>');
+            
+            stop.addEventListener('click', function() {
+                if(t.getCurrentTime() > 0) {
+                    t.stop();
                 }
             });
+            t.controls[0].appendChild(stop);
     }
 })(mejs.$);
