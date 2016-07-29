@@ -3,7 +3,7 @@ Utility methods
 */
 mejs.Utility = {
     encodeUrl: function(url) {
-        return encodeURIComponent(url); //.replace(/\?/gi,'%3F').replace(/=/gi,'%3D').replace(/&/gi,'%26');
+        return encodeURIComponent(url);
     },
     
     escapeHTML: function(s) {
@@ -17,62 +17,14 @@ mejs.Utility = {
         return el.firstChild.href;
     },
     
-    getScriptPath: function(scriptNames) {
-        var
-            i = 0,
-            j,
-            codePath = '',
-            testname = '',
-            slashPos,
-            filenamePos,
-            scriptUrl,
-            scriptPath,
-            scriptFilename,
-            scripts = document.getElementsByTagName('script'),
-            il = scripts.length,
-            jl = scriptNames.length;
-        
-        // go through all <script> tags
-        for(; i < il; i++) {
-            scriptUrl = scripts[i].src;
-            slashPos = scriptUrl.lastIndexOf('/');
-            if(slashPos > -1) {
-                scriptFilename = scriptUrl.substring(slashPos + 1);
-                scriptPath = scriptUrl.substring(0, slashPos + 1);
-            } else {
-                scriptFilename = scriptUrl;
-                scriptPath = '';
-            }
-            
-            // see if any <script> tags have a file name that matches the 
-            for(j = 0; j < jl; j++) {
-                testname = scriptNames[j];
-                filenamePos = scriptFilename.indexOf(testname);
-                if(filenamePos > -1) {
-                    codePath = scriptPath;
-                    break;
-                }
-            }
-            
-            // if we found a path, then break and return it
-            if(codePath !== '') {
-                break;
-            }
-        }
-        
-        // send the best path back
-        return codePath;
-    },
-    
-    secondsToTimeCode: function(time, forceHours) {
+    secondsToTimeCode: function(time) {
         var hours = Math.floor(time / 3600) % 24,
             minutes = Math.floor(time / 60) % 60,
-            seconds = Math.floor(time % 60),
-            result = ((forceHours || hours > 0) ? (hours < 10 ? '0' + hours : hours) + ':' : '') +
-                (minutes < 10 ? '0' + minutes : minutes) + ':' +
-                (seconds < 10 ? '0' + seconds : seconds);
+            seconds = Math.floor(time % 60);
         
-        return result;
+        return (hours ? ('0' + hours).slice(-2) + ':' : '') +
+                ('0' + minutes).slice(-2) + ':' +
+                ('0' + seconds).slice(-2);
     },
     
     timeCodeToSeconds: function(hh_mm_ss_ff) {
@@ -104,5 +56,16 @@ mejs.Utility = {
             secs += Number(SMPTE[i]) * multiplier;
         }
         return Number(secs.toFixed(decimalLen));
+    },
+    
+    addToPixel: function(pixelString, addValue) {
+        return (parseFloat(pixelString) || 0) + addValue;
+    },
+    
+    createNestedElement: function(content) {
+        var temp = document.createElement('div');
+        temp.innerHTML = content;
+        
+        return temp.firstChild;
     }
 };

@@ -1,4 +1,5 @@
-zip.useWebWorkers = false;
+zip.workerScriptsPath = 'lib/zipjs/WebContent/'
+zip.useWebWorkers = packaged_app;
 
 (function($) {
     // add extra default options 
@@ -14,24 +15,24 @@ zip.useWebWorkers = false;
         // If true and we only have one track, change captions to popup
         toggleCaptionsButtonWhenOnlyOne: false,
         
-        // #id or .class		
+        // #id or .class
         slidesSelector: '',
         
         hasChapters: false,
     });
     
-    MediaElementPlayer.prototype.buildtracks = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildtracks = function() {
         var t = this,
             i,
             options = '';
         
-        player.chapters =
+        t.chapters =
             $('<div class="mejs-chapters mejs-layer"></div>')
-            .prependTo(layers).hide();
-        player.captions =
+            .prependTo(t.layers).hide();
+        t.captions =
             $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
-            .prependTo(layers).hide();
-        player.captionsText = player.captions.find('.mejs-captions-text');
+            .prependTo(t.layers).hide();
+        t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodings = [
             "utf-8",
@@ -91,7 +92,7 @@ zip.useWebWorkers = false;
             "windows-1253",
             "windows-1254 Latin-5",
             "windows-1255",
-            "windows-1256",
+            "windows-1256 Arabic",
             "windows-1257",
             "windows-1258",
             "gbk Chinese",
@@ -111,18 +112,18 @@ zip.useWebWorkers = false;
         }
         
         encodingText = encodingText + '</select></il>';
-        player.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
-                '<button type="button" aria-controls="' + t.id + '" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
+        t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
+                '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector">' +
                 '<ul>' +
                 '<li>' +
-                '<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_none" value="none" checked="checked" />' +
-                '<label for="' + player.id + '_captions_none">' + mejs.i18n.t('None') + '</label>' +
+                '<input type="radio" name="_captions" id="_captions_none" value="none" checked="checked" />' +
+                '<label for="_captions_none">' + mejs.i18n.t('None') + '</label>' +
                 '</li>' +
                 '<li class="mejs-captionload">' +
-                '<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_fromfile" value="fromfile" disabled="disabled"/>' +
+                '<input type="radio" name="_captions" id="_captions_fromfile" value="fromfile" disabled="disabled"/>' +
                 '<div class="mejs-button  mejs-captionload" >' +
-                '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
+                '<button type="button" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
                 '</div>' +
                 '<input style="display:none" type="file" id="opensrtfile_input"/>' +
                 '<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>' +
@@ -132,19 +133,21 @@ zip.useWebWorkers = false;
                 '</ul>' +
                 '</div>' +
                 '</div>')
-            .appendTo(controls);
+            .appendTo(t.controls);
         
-        player.captionEncodingSelect = player.captionsButton.find('#encoding-selector')[0];
-        player.captionsButton.find('#encoding-selector').change(function(e) {
+        t.captionEncodingSelect = t.captionsButton.find('#encoding-selector')[0];
+        t.captionsButton.find('#encoding-selector').change(function(e) {
             $(document).trigger(
                 "subtitleEncodingChanged",
-                player.captionEncodingSelect.value
+                t.captionEncodingSelect.value
             );
             
-            if(player.tracks.length == 0)
+            setIntoSettings("default_encoding", t.captionEncodingSelect.value, function(obj) {});
+            
+            if(t.tracks.length == 0)
                 return;
             
-            var radios = player.controls.find('input[name="' + t.id + '_captions"]');
+            var radios = t.controls.find('input[name="_captions"]');
             var selectedRadio = radios.filter(function(e) {
                 return radios[e].checked
             })[0];
@@ -156,29 +159,29 @@ zip.useWebWorkers = false;
                 
             var selectedIdx = t.findTrackIdx(srcSelected);
             
-            player.tracks[selectedIdx].isLoaded = false;
-            player.loadTrack(selectedIdx);
+            t.tracks[selectedIdx].isLoaded = false;
+            t.loadTrack(selectedIdx);
         });
         
-        var srtFileInputs = player.captionsButton.find('#opensrtfile_input');
+        var srtFileInputs = t.captionsButton.find('#opensrtfile_input');
         
         srtFileInputs.change(function(e) {
             e.preventDefault();
             if(srtFileInputs[0].files.length != 1)
                 return false;
                 
-            player.openSrtEntry(srtFileInputs[0].files[0]);
+            t.openSrtEntry(srtFileInputs[0].files[0]);
             return false;
         });
         
-        player.captionsButton.find('.mejs-captionload button').click(function(e) {
+        t.captionsButton.find('.mejs-captionload button').click(function(e) {
             e.preventDefault();
             srtFileInputs[0].click();
             return false;
         });
         
         // hover
-        player.captionsButton.hover(function() {
+        t.captionsButton.hover(function() {
             $(this).find('.mejs-captions-selector').css('visibility', 'visible');
             
         }, function() {
@@ -187,74 +190,74 @@ zip.useWebWorkers = false;
         // handle clicks to the language radio buttons
         .on('click', 'input[type=radio]', function() {
             lang = this.value;
-            player.setTrack(lang);
+            t.setTrack(lang);
         });
         
-        player.captionsButton.find('.mejs-captions-selector').bind('mouseenter mouseover mousemove', function(event) {
-            player.killControlsTimer('enter');
+        t.captionsButton.find('.mejs-captions-selector').bind('mouseenter mouseover mousemove', function(event) {
+            t.killControlsTimer('enter');
             event.stopPropagation();
         });
         
-        if(!player.options.alwaysShowControls) {
+        if(!t.options.alwaysShowControls) {
             // move with controls
-            player.container
+            t.container
                 .bind('controlsshown', function() {
                     // push captions above controls
-                    player.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
+                    t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
                     
                 })
                 .bind('controlshidden', function() {
-                    if(!media.paused) {
+                    if(!t.isPaused()) {
                         // move back to normal place
-                        player.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
+                        t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
                     }
                 });
         } else {
-            player.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
+            t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
         }
         
-        player.trackToLoad = -1;
-        player.selectedTrack = null;
-        player.isLoadingTrack = false;
+        t.trackToLoad = -1;
+        t.selectedTrack = null;
+        t.isLoadingTrack = false;
         
         // add to list
-        for(i = 0; i < player.tracks.length; i++) {
-            if(player.tracks[i].kind == 'subtitles') {
-                player.addTrackButton(player.tracks[i].srclang, player.tracks[i].label);
+        for(i = 0; i < t.tracks.length; i++) {
+            if(t.tracks[i].kind == 'subtitles') {
+                t.addTrackButton(t.tracks[i].srclang, t.tracks[i].label);
             }
         }
         
         // start loading tracks
-        player.loadNextTrack();
+        t.loadNextTrack();
         
-        media.addEventListener('timeupdate', function(e) {
-            player.displayCaptions();
+        t.media.addEventListener('timeupdate', function(e) {
+            t.displayCaptions();
         }, false);
         
-        if(player.options.slidesSelector != '') {
-            player.slidesContainer = $(player.options.slidesSelector);
+        if(t.options.slidesSelector != '') {
+            t.slidesContainer = $(t.options.slidesSelector);
             
-            media.addEventListener('timeupdate', function(e) {
-                player.displaySlides();
+            t.media.addEventListener('timeupdate', function(e) {
+                t.displaySlides();
             }, false);
             
         }
         
-        media.addEventListener('loadedmetadata', function(e) {
-            player.displayChapters();
+        t.media.addEventListener('loadedmetadata', function(e) {
+            t.displayChapters();
         }, false);
         
-        player.container.hover(
+        t.container.hover(
             function() {
                 // chapters
-                if(player.hasChapters) {
-                    player.chapters.css('visibility', 'visible');
-                    player.chapters.fadeIn(200).height(player.chapters.find('.mejs-chapter').outerHeight());
+                if(t.hasChapters) {
+                    t.chapters.css('visibility', 'visible');
+                    t.chapters.fadeIn(200).height(t.chapters.find('.mejs-chapter').outerHeight());
                 }
             },
             function() {
-                if(player.hasChapters && !media.paused) {
-                    player.chapters.fadeOut(200, function() {
+                if(t.hasChapters && !t.isPaused()) {
+                    t.chapters.fadeOut(200, function() {
                         $(this).css('visibility', 'hidden');
                         $(this).css('display', 'block');
                     });
@@ -262,13 +265,13 @@ zip.useWebWorkers = false;
             });
             
         // check for autoplay
-        if(player.node.getAttribute('autoplay') !== null) {
-            player.chapters.css('visibility', 'hidden');
+        if(t.node.getAttribute('autoplay') !== null) {
+            t.chapters.css('visibility', 'hidden');
         }
         
-        media.addEventListener('loadeddata', function() {
-            if(player.tracks.length == 0) {
-                $('#' + t.id + '_captions_none').click();
+        t.media.addEventListener('loadeddata', function() {
+            if(t.tracks.length == 0) {
+                $('#_captions_none').click();
                 t.captionsButton
                     .find('input[value=fromfile]')
                     .prop('disabled', true);
@@ -283,8 +286,8 @@ zip.useWebWorkers = false;
             }
         });
         
-        player.adjustLanguageBox();
-        player.capDelayValue = 0;
+        t.adjustLanguageBox();
+        t.capDelayValue = 0;
     },
     
     MediaElementPlayer.prototype.findTrackIdx = function(srclang) {
@@ -396,7 +399,7 @@ zip.useWebWorkers = false;
             i;
         
         $(document).trigger("subtitleChanged");
-        $('#' + this.id + '_captions_' + lang)[0].checked = true;
+        $('#_captions_' + lang)[0].checked = true;
         if(lang == 'none') {
             t.selectedTrack = null;
         } else {
@@ -452,7 +455,7 @@ zip.useWebWorkers = false;
             $(document).trigger("subtitleChanged");
             if(track.kind == 'chapters') {
                 t.media.addEventListener('play', function(e) {
-                    if(t.media.duration > 0) {
+                    if(t.getDuration() > 0) {
                         t.displayChapters(track);
                     }
                 }, false);
@@ -464,7 +467,11 @@ zip.useWebWorkers = false;
         reader.onerror = function() {
             t.loadNextTrack();
         };
-        reader.readAsText(track.file, t.captionEncodingSelect.value);
+        
+         getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
+                t.captionEncodingSelect.value = value;
+                reader.readAsText(track.file, value);
+            });
     },
     
     MediaElementPlayer.prototype.enableTrackButton = function(lang, label) {
@@ -481,7 +488,7 @@ zip.useWebWorkers = false;
             .find('#encoding-selector')
             .prop('disabled', false);
             
-        $('#' + t.id + '_captions_' + lang).click();
+        $('#_captions_' + lang).click();
         
         t.adjustLanguageBox();
     },
@@ -494,8 +501,8 @@ zip.useWebWorkers = false;
         
         t.captionsButton.find('ul').append(
             $('<li>' +
-                '<input type="radio" name="' + t.id + '_captions" id="' + t.id + '_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
-                '<label for="' + t.id + '_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
+                '<input type="radio" name="_captions" id="_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
+                '<label for="_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
                 '</li>')
         );
         
@@ -546,7 +553,7 @@ zip.useWebWorkers = false;
             i,
             track = t.selectedTrack;
             
-        var currTime = t.media.currentTime - t.capDelayValue;
+        var currTime = t.getCurrentTime() - t.capDelayValue;
         
         if(track != null && track.isLoaded) {
             for(i = 0; i < track.entries.times.length; i++) {
@@ -617,7 +624,7 @@ zip.useWebWorkers = false;
             i;
             
         for(i = 0; i < slides.entries.times.length; i++) {
-            if(t.media.currentTime >= slides.entries.times[i].start && t.media.currentTime <= slides.entries.times[i].stop) {
+            if(t.getCurrentTime() >= slides.entries.times[i].start && t.getCurrentTime() <= slides.entries.times[i].stop) {
             
                 t.showSlide(i);
                 
@@ -654,7 +661,7 @@ zip.useWebWorkers = false;
         
         for(i = 0; i < chapters.entries.times.length; i++) {
             dur = chapters.entries.times[i].stop - chapters.entries.times[i].start;
-            percent = Math.floor(dur / t.media.duration * 100);
+            percent = Math.floor(dur / t.getDuration() * 100);
             if(percent + usedPercent > 100 || // too large
                 i == chapters.entries.times.length - 1 && percent + usedPercent < 100) // not going to fill it in
             {
@@ -677,9 +684,9 @@ zip.useWebWorkers = false;
         }
         
         t.chapters.find('div.mejs-chapter').click(function() {
-            t.media.setCurrentTime(parseFloat($(this).attr('rel')));
-            if(t.media.paused) {
-                t.media.play();
+            t.setCurrentTime(parseFloat($(this).attr('rel')));
+            if(t.isPaused()) {
+                t.play();
             }
         });
         
