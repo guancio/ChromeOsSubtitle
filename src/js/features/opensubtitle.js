@@ -74,16 +74,15 @@ var openSubsLang = [
 ];
 
 (function($) {
-    MediaElementPlayer.prototype.buildopensubtitle = function(player, controls, layers, media) {
-        var
-            t = this;
-            
-        var service = new rpc.ServiceProxy(host, {
+    MediaElementPlayer.prototype.buildopensubtitle = function() {
+        var t = this,
+            service = new rpc.ServiceProxy(host, {
             sanitize: false,
             protocol: "XML-RPC",
             asynchronous: true,
             methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB", "UploadSubtitles"]
         });
+        
         t.opensubtitleService = {
             token: null,
             service: service,
@@ -92,15 +91,17 @@ var openSubsLang = [
             pwd: ""
         };
         
-        var prec = $('#li_encoding');
-        var line1 =
+        var prec = $('#li_encoding'),
+            line1 =
             $('<li class="mejs-captionload"/>')
-            .append($('<input type="radio" name="' + player.id + '_captions" id="' + player.id + '_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
-            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+            .append($('<input type="radio" name="_captions" id="_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
+            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
             .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"/>'));
+        
         line1.insertBefore(prec)
         
         var selectLang = $('#select_opensubtitle_lang')[0];
+        
         openSubsLang.forEach(function(e) {
             $('<option value="' + e[0] + '">' + e[1] + '</option>').appendTo(selectLang);
         });
@@ -114,9 +115,9 @@ var openSubsLang = [
         
         $('#select_opensubtitle_lang').val("eng");
         
-        player.controls.find('input[id="' + player.id + '_captions_opensubtitle"]').click(function() {
+        t.controls.find('input[id="_captions_opensubtitle"]').click(function() {
             lang = this.value;
-            player.setTrack(lang);
+            t.setTrack(lang);
         });
         
         function info(text) {
@@ -130,14 +131,14 @@ var openSubsLang = [
                 reader.gunzip(new zip.BlobWriter(), function(data) {
                         info(sub.SubFileName);
                         
-                        player.setNotification(sub.SubFileName + ' downloaded.');
+                        t.setNotification(sub.SubFileName + ' downloaded.', 3000);
                         
                         if(t.opensubtitleService.lastSubtitles.length > 1) {
                             $('#select_opensubtitle').css('visibility', 'inherit');
                             $('#label_opensubtitle').css('visibility', 'hidden');
                         }
                         
-                        $('#encoding-selector').val("UTF-8");
+                        $('#encoding-selector').val("iso-8859-16");
                         
                         t.tracks = t.tracks.filter(function(el) {
                             return el.srclang != 'opensubtitle';
@@ -176,7 +177,7 @@ var openSubsLang = [
                 ]],
                 onException: function(errorObj) {
                     info("Download failed...");
-                    player.setNotification('Subtitle download Failed.');
+                    t.setNotification('Subtitle download Failed.');
                 },
                 onComplete: function(responseObj) {
                     var content = responseObj.result.data[0].data;
@@ -259,7 +260,7 @@ var openSubsLang = [
             });
         }
         
-        player.openSubtitleLogIn = logIn;
+        t.openSubtitleLogIn = logIn;
         
         $('#opensubtitle_button').click(function(e) {
             $('#label_opensubtitle').css('visibility', 'inherit');
@@ -269,7 +270,7 @@ var openSubsLang = [
         });
         
         // on load a new video
-        media.addEventListener('loadeddata', function() {
+        t.media.addEventListener('loadeddata', function() {
             t.captionsButton
                 .find('input[value=opensubtitle]')
                 .prop('disabled', true);

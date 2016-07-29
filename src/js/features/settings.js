@@ -32,9 +32,9 @@ function setIntoSettings(name, value, cb) {
 }
 
 (function($) {
-    MediaElementPlayer.prototype.buildsettings = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildsettings = function() {
         var t = this;
-            
+        
         t.settings = {};
         
         var settingsPanel = $(
@@ -43,7 +43,7 @@ function setIntoSettings(name, value, cb) {
                 '<div><ul id="settings_list" style="list-style-type: none !important;padding-left:0px"></ul></div>' +
                 '[Click outside the box to close the settings]</div>'
             )
-            .appendTo(controls[0].parentElement);
+            .appendTo(t.controls[0].parentElement);
             
         settingsPanel.keydown(function(e) {
             e.stopPropagation();
@@ -52,13 +52,10 @@ function setIntoSettings(name, value, cb) {
         
         function hide(e) {
             settingsPanel.css('visibility', 'hidden');
-            if(player.media.paused)
-                $(".mejs-overlay-play")
-                .show();
-                
+            
             e.preventDefault();
             e.stopPropagation();
-            player.container.off("click", hide);
+            t.container.off("click", hide);
             
             $(document)
                 .trigger("settingsClosed");
@@ -76,20 +73,18 @@ function setIntoSettings(name, value, cb) {
             $('.me-window')
                 .css('visibility', 'hidden');
             settingsPanel.css('visibility', 'visible');
-            $(".mejs-overlay-play")
-                .hide();
-            player.container.click(hide);
+            
+            t.container.click(hide);
         };
     }
     
-    MediaElementPlayer.prototype.buildsettingsbutton = function(player, controls, layers, media) {
-        var
-            t = this;
-        var open =
+    MediaElementPlayer.prototype.buildsettingsbutton = function() {
+        var t = this,
+            open =
             $('<div class="mejs-button mejs-settings-button mejs-settings" >' +
-                '<button type="button" aria-controls="' + t.id + '" title="' + mejs.i18n.t('Settings...') + '" aria-label="' + mejs.i18n.t('Settings...') + '"></button>' +
+                '<button type="button" title="' + mejs.i18n.t('Settings...') + '" aria-label="' + mejs.i18n.t('Settings...') + '"></button>' +
                 '</div>')
-            .appendTo(controls)
+            .appendTo(t.controls)
             .click(function(e) {
                 e.preventDefault();
                 t.openSettingsWindow();

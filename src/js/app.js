@@ -1,7 +1,5 @@
 var myURL = window.URL || window.webkitURL;
 
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
-
 var mainMediaElement = null;
 
 $('#main').append('<video id="player" controls="controls"></video>');
@@ -29,10 +27,6 @@ $('#player').mediaelementplayer({
             t.container.find('.mejs-shim')
                 .width('100%')
                 .height('100%');
-            
-            //if (!mejs.MediaFeatures.hasTrueNativeFullScreen) {
-            t.media.setVideoSize($(window).width(), $(window).height());
-            //}
         }
         
         t.layers.children('div')
@@ -42,31 +36,26 @@ $('#player').mediaelementplayer({
         t.setControlsSize();
         
         function openCmdLineVideo() {
-            if(!window.launchData)
-                return false;
-            if(!window.launchData.items)
-                return false;
-            if(window.launchData.items.length != 1)
-                return false;
-            entry = window.launchData.items[0].entry;
-            if(entry == null)
+            if(!window.launchData || !window.launchData.items || window.launchData.items.length != 1)
                 return false;
             
-            mainMediaElement.stop();
+            entry = window.launchData.items[0].entry;
+            
+            if(entry === null)
+                return false;
+            
+            mainMediaElement.pause();
             entry.file(function fff(file) {
                 mainMediaElement.player.openedFile = file;
                 mainMediaElement.player.openedFileEntry = entry;
-            
-                var path = window.URL.createObjectURL(file);
-                mainMediaElement.setSrc(path);
-                mainMediaElement.play();
+                
+                mainMediaElement.player.setSrc(window.URL.createObjectURL(file));
             });
-            return true;
         }
         
         $(document).trigger("appStarted");
         
         if(!openCmdLineVideo())
-            mediaElement.player.openInfoWindow();
+            t.toggleInfo();
     }
 });
