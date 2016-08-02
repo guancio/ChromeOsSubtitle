@@ -191,13 +191,14 @@ var openSubsLang = [
             lang = $('#select_opensubtitle_lang')[0].value;
             // var lang = "ell";
             info("3/6 Searching...");
+            
             service.SearchSubtitles({
                 params: [t.opensubtitleService.token, [{
-                    query: t.openedFile.name,
+                    query: t.playlist[t.playIndex].name,
                     sublanguageid: lang
                 }, {
                     moviehash: hash,
-                    moviebytesize: t.openedFile.size,
+                    moviebytesize: t.playlist[t.playIndex].size,
                     sublanguageid: lang
                 }], {
                     limit: 100
