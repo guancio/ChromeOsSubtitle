@@ -138,7 +138,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.container.trigger('controlshidden');
             });
             
-             t.media.addEventListener('timeupdate', t.timeupdate, false);
+             t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
         
         controlsTimer: null,
