@@ -4,33 +4,19 @@
     });
     
     MediaElementPlayer.prototype.buildfullscreen = function() {
-        if(!this.isVideo)
-            return;
-        
         var t = this,
             fullscreenBtn = mejs.Utility.createNestedElement('<div class="mejs-button mejs-fullscreen-button">' +
-                '<button type="button" title="' + this.options.fullscreenText + '" aria-label="' + this.options.fullscreenText + '"></button>' +
+                    '<button type="button" title="' + this.options.fullscreenText + '" aria-label="' + this.options.fullscreenText + '"></button>' +
                 '</div>');
         
         fullscreenBtn.addEventListener('click', function() {
-            if(document.webkitIsFullScreen) {
-                t.exitFullScreen();
-            } else {
-                t.enterFullScreen();
-            }
+            t[document.webkitIsFullScreen ? 'exitFullScreen' : 'enterFullScreen']();
         });
         
         t.controls[0].appendChild(fullscreenBtn);
         
         document.addEventListener("webkitfullscreenchange", function() {
-            if(document.webkitIsFullScreen) {
-                fullscreenBtn.className = 'mejs-button mejs-fullscreen-button mejs-unfullscreen';
-            }
-            else {
-                fullscreenBtn.className = 'mejs-button mejs-fullscreen-button';
-            }
-            
-            t.setControlsSize();
+            fullscreenBtn.classList[document.webkitIsFullScreen ? 'add' : 'remove']('mejs-fullscreen-button');
         }, false);
     }
     
