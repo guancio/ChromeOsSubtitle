@@ -176,7 +176,7 @@
             {
                 keys: [68], // d
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl || !player.openedFile) {
+                    if(!activeModifiers.ctrl && player.getSrc()) {
                         return;
                     }
                     
@@ -186,7 +186,7 @@
             {
                 keys: [65], // a
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl || !player.openedFile) {
+                    if(!activeModifiers.ctrl) {
                         return;
                     }
                     
@@ -198,6 +198,30 @@
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
                         player.toggleInfo();
+                    }
+                }
+            },
+            {
+                keys: [221],  // ]
+                action: function(player, keyCode, activeModifiers) {
+                    if(activeModifiers.ctrl) {
+                        player.next();
+                    }
+                }
+            },
+            {
+                keys: [219],  // [
+                action: function(player, keyCode, activeModifiers) {
+                    if(activeModifiers.ctrl) {
+                        player.previous();
+                    }
+                }
+            },
+            {
+                keys: [81],  // q
+                action: function(player, keyCode, activeModifiers) {
+                    if(activeModifiers.ctrl) {
+                        player.changePlayType();
                     }
                 }
             }
