@@ -1,5 +1,3 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
-
 function getFromSettings(name, def_value, cb) {
     if(packaged_app) {
         var obj = {};
