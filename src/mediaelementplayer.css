@@ -385,19 +385,6 @@ a:visited {
     cursor: pointer;
 }
 
-.mejs-controls .mejs-time-rail .mejs-time-handle {
-    display: none;
-    position: absolute;
-    margin: 0;
-    width: 10px;
-    background: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    border: solid 2px #333;
-    top: -2px;
-    text-align: center;
-}
-
 .mejs-controls .mejs-time-rail .mejs-time-float {
     position: absolute;
     display: none;
