@@ -152,20 +152,11 @@ var openSubsLang = [
                             isLoaded: false
                         });
                         
-                        var trackIdx = t.findTrackIdx("opensubtitle")
+                        var trackIdx = t.findTrackIdx("opensubtitle");
                         t.tracks[trackIdx].file = data;
                         t.tracks[trackIdx].isLoaded = false;
                         t.loadTrack(trackIdx);
-                    },
-                    function(data) {
-                        console.log(data);
-                    },
-                    function(data) {
-                        console.log(data);
-                    },
-                    function(data) {
-                        console.log(data);
-                    })
+                    });
             });
         }
         
@@ -240,10 +231,10 @@ var openSubsLang = [
         
         function movieHash() {
             info("2/6 Hashing...");
-            OpenSubtitlesHash(t.openedFile, function(hash) {
+            OpenSubtitlesHash(t.playlist[t.playIndex], function(hash) {
                 searchSubtitle(hash);
             });
-        };
+        }
         
         function logIn() {
             $(document).trigger("opensubtitlesDownload");
