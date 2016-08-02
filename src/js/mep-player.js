@@ -476,7 +476,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         
         setSrc: function(file) {
             this.media.src = window.URL.createObjectURL(file);
-            document.title = this.file.name;
+            document.title = file.name;
         },
         
         getSrc: function() {
