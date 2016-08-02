@@ -8,6 +8,10 @@
     };
     
     MediaElementPlayer.prototype.next = function() {
+        if(this.playIndex === null) {
+            return;
+        }
+        
         if(playType === 0) {
             if(this.playIndex === this.playlist.length - 1) {
                 return;
@@ -26,6 +30,10 @@
     };
     
     MediaElementPlayer.prototype.previous = function() {
+        if(this.playIndex === null) {
+            return;
+        }
+        
         if(playType === 0) {
             if(this.playIndex === 0) {
                 return;
