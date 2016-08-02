@@ -19,15 +19,6 @@ $('#player').mediaelementplayer({
             .height('100%');
         
         var t = mainMediaElement.player;
-        if(mainMediaElement.player.pluginType === 'native') {
-            t.$media
-                .width('100%')
-                .height('100%');
-        } else {
-            t.container.find('.mejs-shim')
-                .width('100%')
-                .height('100%');
-        }
         
         t.layers.children('div')
             .width('100%')
