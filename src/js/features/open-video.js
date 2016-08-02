@@ -8,7 +8,6 @@
         
         t.controls[0].appendChild(openFileInput);
         t.controls[0].appendChild(open);
-        t.openedFile = null;
         
         t.openFileForm = function() {
             if(t.getDuration() && !t.isPaused())
@@ -17,14 +16,27 @@
             if(packaged_app) {
                 chrome.fileSystem.chooseEntry({
                     type: "openFile"
-                }, function(entry) {
-                    entry.file(function fff(file) {
-                        t.stop();
-                        t.tracks = [];
-                        
-                        t.openedFile = file;
-                        t.openedFileEntry = entry;
-                        t.setSrc(window.URL.createObjectURL(file));
+                acceptsMultiple: true
+                }, function(entries) {
+                    if(typeof entries === 'undefined') {
+                        return;
+                    }
+                    
+                    t.playlist = [];
+                    t.playIndex = 0;
+                    
+                    
+                    entries.forEach(function(entry, i) {
+                        entry.file(function(file) {
+                            t.playlist.push(file);
+                            
+                            if(i === entries.length - 1) {
+                                t.stop();
+                                t.tracks = [];
+                                
+                                t.setSrc(t.playlist[t.playIndex]);
+                            }
+                        });
                     });
                 });
             } else {
@@ -39,10 +51,11 @@
         });
         
         openFileInput.addEventListener('change', function(e) {
-            if(openFileInput.length > 0) {
-                t.stop();    
+            if(openFileInput.length === 0) {
+                return;
             }
             
+            t.stop();
             t.tracks = [];
             
             t.playlist = openFileInput.files;
