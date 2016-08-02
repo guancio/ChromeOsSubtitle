@@ -39,11 +39,15 @@
         });
         
         openFileInput.addEventListener('change', function(e) {
-            t.stop();
+            if(openFileInput.length > 0) {
+                t.stop();    
+            }
+            
             t.tracks = [];
             
-            t.openedFile = openFileInput.files[0];
-            t.setSrc(window.URL.createObjectURL(t.openedFile));
+            t.playlist = openFileInput.files;
+            t.playIndex = 0;
+            t.setSrc(t.playlist[t.playIndex]);
         });
     }
 })(mejs.$);
