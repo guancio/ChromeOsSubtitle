@@ -77,6 +77,7 @@ a:visited {
     margin: -40px 0 0 -40px;
 }
 
+/* From https://github.com/tobiasahlin/SpinKit */
 .sk-circle {
     display: block;
 }
