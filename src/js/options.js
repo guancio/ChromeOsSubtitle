@@ -1,33 +1,9 @@
 (function() {
     mejs.MepDefaults = {
-        // default if the <video width> is not specified
-        defaultVideoWidth: 480,
-        // default if the <video height> is not specified
-        defaultVideoHeight: 270,
-        // if set, overrides <video width>
-        videoWidth: -1,
-        // if set, overrides <video height>
-        videoHeight: -1,
-        // default if the user doesn't specify
-        defaultAudioWidth: 400,
-        // default if the user doesn't specify
-        defaultAudioHeight: 30,
-        
-        // width of audio player
-        audioWidth: -1,
-        // height of audio player
-        audioHeight: -1,
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
         // useful for <audio> player loops
         loop: false,
-        // rewind to beginning when media ends
-        autoRewind: true,
-        // resize to media dimensions
-        enableAutosize: true,
-        
-        // automatically calculate the width of the progress bar based on the sizes of other elements
-        autosizeProgress: true,
         // Hide controls when playing and mouse is not over the video
         alwaysShowControls: false,
         // force Android's native controls
@@ -59,7 +35,7 @@
             {
                 keys: [38], // UP
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.alt && activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(38);
                     }
                     else if(activeModifiers.ctrl) {
@@ -70,7 +46,7 @@
             {
                 keys: [40], // DOWN
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.alt && activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(40);
                     }
                     else if(activeModifiers.ctrl) {
@@ -84,7 +60,7 @@
                     227 // Google TV rewind
                 ],
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.alt && activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(37);
                     }
                     else if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
@@ -106,7 +82,7 @@
                     228 // Google TV forward
                 ], 
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.alt && activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(39);
                     }
                     else if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
@@ -120,85 +96,89 @@
             {
                 keys: [70], // f
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl)
-                        return;
-                    
-                    if(document.webkitIsFullScreen) {
-                        player.exitFullScreen();
-                    }
-                    else {
-                        player.enterFullScreen();
+                    if(activeModifiers.ctrl) {
+                        player[document.webkitIsFullScreen ? 'exitFullScreen' : 'enterFullScreen']();
                     }
                 }
             },
             {
                 keys: [79], // o
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.openFileForm();
+                    }
                 }
             },
             {
                 keys: [189],  // -
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.decCaptionSize();
+                    }
                 }
             },
             {
                 keys: [187],  // +
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.incCaptionSize();
+                    }
                 }
             },
             {
                 keys: [90],  // z
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.decCaptionDelay();
+                    }
                 }
             },
             {
                 keys: [88],  // x
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.incCaptionDelay();
+                    }
                 }
             },
             {
                 keys: [190],  // ,
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.incPlaybackRate();
+                    }
                 }
             },
             {
                 keys: [188],  // .
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.decPlaybackRate();
+                    }
                 }
             },
             {
                 keys: [191],  // /
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.resetPlaybackRate();
+                    }
                 }
             },
             {
                 keys: [76],  // l
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl)
+                    if(activeModifiers.ctrl) {
                         player.toggleLoop();
+                    }
                 }
             },
             {
                 keys: [68], // d
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl || !player.openedFile)
+                    if(!activeModifiers.ctrl || !player.openedFile) {
                         return;
+                    }
                     
                     player.openSubtitleLogIn();
                 }
@@ -206,8 +186,9 @@
             {
                 keys: [65], // a
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl || !player.openedFile)
+                    if(!activeModifiers.ctrl || !player.openedFile) {
                         return;
+                    }
                     
                     player.changeAspectRatio();
                 }
@@ -215,10 +196,9 @@
             {
                 keys: [73], // i
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl)
-                        return;
-                    
-                    player.toggleInfo();
+                    if(activeModifiers.ctrl) {
+                        player.toggleInfo();
+                    }
                 }
             }
         ]
