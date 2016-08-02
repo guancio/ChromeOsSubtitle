@@ -90,42 +90,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 // find parts
                 t.controls = t.container.find('.mejs-controls');
                 t.layers = t.container.find('.mejs-layers');
-                
-                // determine the size
-                
-                /* size priority:
-                   (1) videoWidth (forced), 
-                   (2) style="width;height;"
-                   (3) width attribute,
-                   (4) defaultVideoWidth (for unspecified cases)
-                */
-                
-                var tagType = (t.isVideo ? 'video' : 'audio'),
-                    capsTagName = tagType.substring(0, 1).toUpperCase() + tagType.substring(1);
-                
-                if(t.options[tagType + 'Width'] > 0 || t.options[tagType + 'Width'].toString().indexOf('%') > -1) {
-                    t.width = t.options[tagType + 'Width'];
-                } else if(t.media.style.width !== '' && t.media.style.width !== null) {
-                    t.width = t.media.style.width;
-                } else if(t.media.getAttribute('width') !== null) {
-                    t.width = t.$media.attr('width');
-                } else {
-                    t.width = t.options['default' + capsTagName + 'Width'];
-                }
-                
-                if(t.options[tagType + 'Height'] > 0 || t.options[tagType + 'Height'].toString().indexOf('%') > -1) {
-                    t.height = t.options[tagType + 'Height'];
-                } else if(t.media.style.height !== '' && t.media.style.height !== null) {
-                    t.height = t.media.style.height;
-                } else if(t.$media[0].getAttribute('height') !== null) {
-                    t.height = t.$media.attr('height');
-                } else {
-                    t.height = t.options['default' + capsTagName + 'Height'];
-                }
-                
-                // create MediaElementShim
-                meOptions.pluginWidth = t.height;
-                meOptions.pluginHeight = t.width;
             }
             
             // create MediaElement shim
