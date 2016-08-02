@@ -166,10 +166,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         // Sets up all controls and events
-        meReady: function(media, domNode) {
+        meReady: function(media) {
             var t = this,
                 mf = mejs.MediaFeatures,
-                autoplayAttr = domNode.getAttribute('autoplay'),
+                autoplayAttr = media.getAttribute('autoplay'),
                 autoplay = !(typeof autoplayAttr == 'undefined' || autoplayAttr === null || autoplayAttr === 'false'),
                 featureIndex,
                 feature;
@@ -291,7 +291,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 });
             }
             
-            t.options.success(t.media, t.domNode, t);
+            t.options.success(t.media);
         },
         
         setControlsSize: function() {
