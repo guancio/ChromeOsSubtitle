@@ -132,7 +132,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // fade out main controls
             t.controls.stop(true, true).fadeOut(200, function() {
                 $(this)
-                    .css('visibility', 'hidden');
+                    .css('visibility', 'hidden')
+                    .css('display', 'block');
                     
                 t.controlsAreVisible = false;
                 t.container.trigger('controlshidden');
@@ -300,7 +301,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 railWidth = 0;
             
             // find the size of all the other controls besides the rail
-            usedWidth = 8 * 26 + t.time.outerWidth();
+            usedWidth = 9 * 26 + t.time.outerWidth();
             
             // fit the rail into the remaining space
             railWidth = t.controls.width() - usedWidth - (t.rail.outerWidth(true) - t.rail.width()) - 1;
@@ -310,7 +311,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // dark space
             t.total.width(railWidth - 10);
             
-            if(t.getDuration()) {
+            if(t.getSrc()) {
                 t.loaded[0].style.width = railWidth - 10;
             }
             
@@ -467,12 +468,20 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         setVolume: function(volume) {
-            this.media.volume = volume;
-            this.setMuted(volume === 0);
+            if(volume <= 1) {
+                this.media.volume = volume;
+                this.gainNode.gain.value = 1;
+                this.setMuted(volume === 0);
+            }
+            else {
+                this.media.volume = 1;
+                this.gainNode.gain.value = volume;
+                console.log(this.gainNode.value);
+            }
         },
         
         getVolume: function() {
-            return this.media.volume;
+            return this.gainNode.gain.value > 1 ? this.gainNode.gain.value : this.media.volume;
         },
         
         setSrc: function(file) {

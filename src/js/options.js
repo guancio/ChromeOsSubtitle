@@ -39,7 +39,7 @@
                         player.moveCaptions(38);
                     }
                     else if(activeModifiers.ctrl) {
-                        player.setVolume(Math.min(player.getVolume() + 0.1, 1));
+                        player.setVolume(Math.min(player.getVolume() + 0.1, 2));
                         player.notify('Volume: ' + (player.getVolume() * 100).toFixed() + '%');
                     }
                     else if(activeModifiers.shift) {
