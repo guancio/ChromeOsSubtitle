@@ -506,45 +506,6 @@ a:visited {
     border-radius: 1px;
     margin: 0;
 }
-
-/* horizontal version */
-
-.mejs-controls div.mejs-horizontal-volume-slider {
-    height: 26px;
-    width: 60px;
-    position: relative;
-}
-
-.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total {
-    position: absolute;
-    left: 0;
-    top: 11px;
-    width: 50px;
-    height: 8px;
-    margin: 0;
-    padding: 0;
-    font-size: 1px;
-    border-radius: 2px;
-    background: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8));
-}
-
-.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current {
-    position: absolute;
-    left: 0;
-    top: 11px;
-    width: 50px;
-    height: 8px;
-    margin: 0;
-    padding: 0;
-    font-size: 1px;
-    border-radius: 2px;
-    background: linear-gradient(rgba(255,255,255,0.9), rgba(200,200,200,0.8));
-}
-
-.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-handle {
-    display: none;
-}
-
 /* End: Mute/Volume */
 
 /* Start: TRACK (Captions and Chapters) */
