@@ -20,7 +20,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return new Blob(byteArrays, {
         type: contentType
     });
-}
+}e
 
 var openSubsLang = [
     ["alb", "Albanian"],
@@ -168,7 +168,7 @@ var openSubsLang = [
                 ]],
                 onException: function(errorObj) {
                     info("Download failed...");
-                    t.notify('Subtitle download Failed.');
+                    t.setNotification('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
                     var content = responseObj.result.data[0].data;
@@ -196,6 +196,7 @@ var openSubsLang = [
                 }],
                 onException: function(errorObj) {
                     info("Search failed");
+                    t.setNotification('Subtitle search failed. Please try later.', 2000);
                 },
                 onComplete: function(responseObj) {
                     console.log(responseObj);
@@ -244,6 +245,7 @@ var openSubsLang = [
                 params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
                 onException: function(errorObj) {
                     info("Authentiation failed");
+                    t.setNotification('Opensubtitles.org authentication failed!', 2000);
                 },
                 onComplete: function(responseObj) {
                     t.opensubtitleService.token = responseObj.result.token;
