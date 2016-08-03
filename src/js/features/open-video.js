@@ -15,7 +15,7 @@
             
             if(packaged_app) {
                 chrome.fileSystem.chooseEntry({
-                    type: "openFile"
+                    type: "openFile",
                     acceptsMultiple: true
                 }, function(entries) {
                     if(typeof entries === 'undefined') {

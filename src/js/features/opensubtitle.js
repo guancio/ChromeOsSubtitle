@@ -131,7 +131,7 @@ var openSubsLang = [
                 reader.gunzip(new zip.BlobWriter(), function(data) {
                         info(sub.SubFileName);
                         
-                        t.setNotification(sub.SubFileName + ' downloaded.', 3000);
+                        t.notify(sub.SubFileName + ' downloaded.', 3000);
                         
                         if(t.opensubtitleService.lastSubtitles.length > 1) {
                             $('#select_opensubtitle').css('visibility', 'inherit');
@@ -168,7 +168,7 @@ var openSubsLang = [
                 ]],
                 onException: function(errorObj) {
                     info("Download failed...");
-                    t.setNotification('Subtitle download Failed.');
+                    t.notify('Subtitle download Failed.');
                 },
                 onComplete: function(responseObj) {
                     var content = responseObj.result.data[0].data;

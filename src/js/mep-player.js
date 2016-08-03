@@ -377,7 +377,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 
                 loading.hide();
                 t.controls.find('.mejs-time-buffering').hide();
-                t.setNotification('Cannot play the given file!', 3000);
+                t.notify('Cannot play the given file!', 3000);
             }, false);
         },
         
@@ -415,19 +415,19 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 return;
             }
             
-            this.setNotification('▶');
+            this.notify('▶');
             $('.mejs-play').removeClass('mejs-play').addClass('mejs-pause');
             this.media.play();
         },
         
         pause: function() {
-            this.setNotification('￰⏸');
+            this.notify('￰⏸');
             $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
             this.media.pause();
         },
         
         stop: function() {
-            this.setNotification('￰■');
+            this.notify('￰■');
             
             if(!this.isPaused()) {
                 this.media.pause();
@@ -458,7 +458,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         seek: function(duration) {
-            this.setNotification('Seeking ' + duration + 's.');
+            this.notify('Seeking ' + duration + 's.');
             this.setCurrentTime(Math.max(0, Math.min(this.getCurrentTime() + duration, this.getDuration())))
         },
         
@@ -485,22 +485,22 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         
         resetPlaybackRate: function() {
             this.media.playbackRate = 1.0;
-            this.setNotification('Playback Rate: x1.00');
+            this.notify('Playback Rate: x1.00');
         },
         
         incPlaybackRate: function() {
             this.media.playbackRate += 0.05;
-            this.setNotification('Playback Rate: x' + this.media.playbackRate.toFixed(2));
+            this.notify('Playback Rate: x' + this.media.playbackRate.toFixed(2));
         },
         
         decPlaybackRate: function() {
             this.media.playbackRate = Math.max(0.05, this.media.playbackRate - 0.05);
-            this.setNotification('Playback Rate: x' + this.media.playbackRate.toFixed(2));
+            this.notify('Playback Rate: x' + this.media.playbackRate.toFixed(2));
         },
         
         toggleLoop: function() {
             this.media.loop = !this.media.loop;
-            this.setNotification('Loop O' + (this.media.loop ? 'n.' : 'ff.'));
+            this.notify('Loop O' + (this.media.loop ? 'n.' : 'ff.'));
         },
         
         currentAspectRatio: 0,
@@ -533,7 +533,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         changeAspectRatio: function() {
             this.currentAspectRatio = (this.currentAspectRatio + 1) % this.options.aspectRatios.length;
             this.resizeVideo();
-            this.setNotification('Aspect Ratio: ' + this.options.aspectRatiosText[this.currentAspectRatio]);
+            this.notify('Aspect Ratio: ' + this.options.aspectRatiosText[this.currentAspectRatio]);
         },
         
         moveCaptions: function(keyCode) {
@@ -561,7 +561,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         changeBrightness: function(inc) {
             this.brightness = Math.min(Math.max(0.5, this.brightness + (inc ? 0.1 : -0.1)), 2);
             this.media.style.webkitFilter = 'brightness(' + this.brightness + ')';
-            this.setNotification('Brightness x' + this.brightness.toFixed(1));
+            this.notify('Brightness x' + this.brightness.toFixed(1));
         }
     };
     

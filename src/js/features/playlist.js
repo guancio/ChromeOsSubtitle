@@ -53,6 +53,6 @@
     
     MediaElementPlayer.prototype.changePlayType = function() {
         playType = (playType + 1) % 3;
-        this.setNotification('Playlist Navigation: ' + playTypes[playType]);
+        this.notify('Playlist Navigation: ' + playTypes[playType]);
     };
 })();

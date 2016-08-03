@@ -40,6 +40,7 @@
                     }
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.min(player.getVolume() + 0.1, 1));
+                        player.notify('Volume: ' + (player.getVolume() * 100).toFixed() + '%');
                     }
                     else if(activeModifiers.shift) {
                         player.changeBrightness(true);
@@ -54,6 +55,7 @@
                     }
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.max(player.getVolume() - 0.1, 0));
+                        player.notify('Volume: ' + (player.getVolume() * 100).toFixed() + '%');
                     }
                     else if(activeModifiers.shift) {
                         player.changeBrightness(false);
