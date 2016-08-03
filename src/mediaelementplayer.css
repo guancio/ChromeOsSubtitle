@@ -18,6 +18,8 @@ a:visited {
     text-align: left;
     vertical-align: top;
     text-indent: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .mejs-container-fullscreen {
@@ -40,6 +42,11 @@ a:visited {
 }
 
 /* Start: LAYERS */
+.mejs-layer {
+    width: 100%;
+    height: 100%;
+}
+
 .mejs-background {
     position: absolute;
     top: 0;

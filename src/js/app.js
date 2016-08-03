@@ -14,20 +14,13 @@ $('#player').mediaelementplayer({
         
         mainMediaElement.player.container
             .addClass('mejs-container-fullscreen');
-        mainMediaElement.player.container
-            .width('100%')
-            .height('100%');
         
         var t = mainMediaElement.player;
-        
-        t.layers.children('div')
-            .width('100%')
-            .height('100%');
         
         t.setControlsSize();
         
         function openCmdLineVideo() {
-            if(!window.launchData || !window.launchData.items || window.launchData.items.length != 1)
+            if(!window.launchData || !window.launchData.items || !window.launchData.items.length)
                 return false;
             
             entry = window.launchData.items[0].entry;
@@ -35,13 +28,15 @@ $('#player').mediaelementplayer({
             if(entry === null)
                 return false;
             
-            mainMediaElement.pause();
+            t.pause();
             entry.file(function fff(file) {
-                mainMediaElement.player.openedFile = file;
-                mainMediaElement.player.openedFileEntry = entry;
+                t.playlist = [file];
+                t.playIndex = 0;
                 
-                mainMediaElement.player.setSrc(window.URL.createObjectURL(file));
+                t.setSrc(t.playlist[t.playIdex]);
             });
+            
+            return true;
         }
         
         $(document).trigger("appStarted");
