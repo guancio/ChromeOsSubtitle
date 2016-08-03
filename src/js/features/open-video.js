@@ -10,8 +10,9 @@
         t.controls[0].appendChild(open);
         
         t.openFileForm = function() {
-            if(t.getDuration() && !t.isPaused())
+            if(t.getDuration() && !t.isPaused()) {
                 t.pause();
+            }
             
             if(packaged_app) {
                 chrome.fileSystem.chooseEntry({
@@ -24,7 +25,6 @@
                     
                     t.playlist = [];
                     t.playIndex = 0;
-                    
                     
                     entries.forEach(function(entry, i) {
                         entry.file(function(file) {
