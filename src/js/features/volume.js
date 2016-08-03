@@ -31,34 +31,13 @@
             volumeCurrent = t.container.find('.mejs-volume-current'),
             volumeHandle = t.container.find('.mejs-volume-handle'),
             
-            positionVolumeHandle = function(volume, secondTry) {
-                if(!volumeSlider.is(':visible') && typeof secondTry == 'undefined') {
-                    volumeSlider.show();
-                    positionVolumeHandle(volume, true);
-                    volumeSlider.hide()
-                    return;
-                }
-                
-                // position slider 
-                
-                var
-                
-                // height of the full size volume slider background
-                    totalHeight = volumeTotal.height(),
-                    
-                    // top/left of full size volume slider background
-                    totalPosition = volumeTotal.position(),
-                    
-                    // the new top position based on the current volume
-                    // 70% volume on 100px height == top:30px
-                    newTop = totalHeight - (totalHeight * volume);
+            positionVolumeHandle = function(volume) {
+                // show the current visibility
+                volumeCurrent.height(100 * volume / 2);
+                volumeCurrent.css('top', 100 - volumeCurrent.height() + 8);
                 
                 // handle
-                volumeHandle.css('top', Math.round(totalPosition.top + newTop - (volumeHandle.height() / 2)));
-                
-                // show the current visibility
-                volumeCurrent.height(totalHeight - newTop);
-                volumeCurrent.css('top', totalPosition.top + newTop);
+                volumeHandle.css('top', parseFloat(volumeCurrent.css('top')) - 3);
             },
             handleVolumeMove = function(e) {
                 var volume = null,
@@ -76,7 +55,7 @@
                     return;
                 
                 // ensure the volume isn't outside 0-2
-                volume = Math.max(0, Math.min(volume, 2));
+                volume = Math.max(0, Math.min(volume * 2, 2));
                 // set the media object (this will trigger the volumechanged event)
                 t.setVolume(volume);
             },
