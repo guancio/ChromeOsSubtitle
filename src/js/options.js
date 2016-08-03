@@ -41,6 +41,9 @@
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.min(player.getVolume() + 0.1, 1));
                     }
+                    else if(activeModifiers.shift) {
+                        player.changeBrightness(true);
+                    }
                 }
             },
             {
@@ -51,6 +54,9 @@
                     }
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.max(player.getVolume() - 0.1, 0));
+                    }
+                    else if(activeModifiers.shift) {
+                        player.changeBrightness(false);
                     }
                 }
             },
