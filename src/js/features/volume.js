@@ -32,16 +32,6 @@
                     return;
                 }
                 
-                // correct to 0-1
-                volume = Math.min(Math.max(0, volume), 1);
-                
-                // ajust mute button style
-                if(volume == 0) {
-                    mute.removeClass('mejs-mute').addClass('mejs-unmute');
-                } else {
-                    mute.removeClass('mejs-unmute').addClass('mejs-mute');
-                }
-                
                 // position slider 
                 
                 var
@@ -69,7 +59,7 @@
                     
                 // calculate the new volume based on the moust position
                 var railHeight = volumeTotal.height(),
-                    totalTop = parseInt(volumeTotal.css('top').replace(/px/, ''), 10),
+                    totalTop = parseInt(volumeTotal.css('top')),
                     newY = e.pageY - totalOffset.top;
                     
                 volume = (railHeight - newY) / railHeight;
@@ -80,12 +70,7 @@
                 
                 // ensure the volume isn't outside 0-1
                 volume = Math.max(0, Math.min(volume, 1));
-                
-                // position the slider and handle
-                positionVolumeHandle(volume);
-                
                 // set the media object (this will trigger the volumechanged event)
-                t.setMuted(volume === 0);
                 t.setVolume(volume);
             },
             mouseIsDown = false,
@@ -132,30 +117,17 @@
         
         // listen for volume change events from other sources
         t.media.addEventListener('volumechange', function(e) {
-            if(!mouseIsDown) {
-                if(t.isMuted() || t.getVolume() === 0) {
-                    positionVolumeHandle(0);
-                    mute.removeClass('mejs-mute').addClass('mejs-unmute');
-                } else {
-                    positionVolumeHandle(t.getVolume());
-                    mute.removeClass('mejs-unmute').addClass('mejs-mute');
-                }
+            if(t.isMuted()) {
+                positionVolumeHandle(0);
+                mute.removeClass('mejs-mute').addClass('mejs-unmute');
+            } else {
+                positionVolumeHandle(t.getVolume());
+                mute.removeClass('mejs-unmute').addClass('mejs-mute');
             }
         }, false);
         
         if(t.container.is(':visible')) {
-            // set initial volume
-            positionVolumeHandle(t.options.startVolume);
-            
-            // mutes the media and sets the volume icon muted if the initial volume is set to 0
-            if(t.options.startVolume === 0) {
-                t.setMuted(true);
-            }
-            
-            // shim gets the startvolume as a parameter, but we have to set it on the native <video> and <audio> elements
-            if(t.media.pluginType === 'native') {
-                t.setVolume(t.options.startVolume);
-            }
+            t.setVolume(t.options.startVolume);
         }
     }
 })(mejs.$);

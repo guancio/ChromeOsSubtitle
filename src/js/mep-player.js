@@ -468,6 +468,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         
         setVolume: function(volume) {
             this.media.volume = volume;
+            this.setMuted(volume === 0);
         },
         
         getVolume: function() {
