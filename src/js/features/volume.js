@@ -5,6 +5,13 @@
     });
     
     MediaElementPlayer.prototype.buildvolume = function() {
+        var audioContext = new window.AudioContext(),
+            source = audioContext.createMediaElementSource(this.media);
+        
+        this.gainNode = audioContext.createGain();
+        source.connect(this.gainNode);
+        this.gainNode.connect(audioContext.destination);
+        
         // Android and iOS don't support volume controls
         if(mejs.MediaFeatures.hasTouch && this.hideVolumeOnTouchDevices)
             return;
@@ -68,8 +75,8 @@
                 if(totalOffset.top == 0 || totalOffset.left == 0)
                     return;
                 
-                // ensure the volume isn't outside 0-1
-                volume = Math.max(0, Math.min(volume, 1));
+                // ensure the volume isn't outside 0-2
+                volume = Math.max(0, Math.min(volume, 2));
                 // set the media object (this will trigger the volumechanged event)
                 t.setVolume(volume);
             },
