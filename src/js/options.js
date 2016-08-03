@@ -69,16 +69,19 @@
                     if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(37);
                     }
-                    else if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
+                    else if(player.getSrc()) {
                         if(player.isVideo) {
                             player.showControls();
                             player.startControlsTimer();
                         }
                         
-                        var seekDuration = activeModifiers.shift ? -3 : (activeModifiers.alt ? -10 : (activeModifiers.ctrl ? -60 : undefined))
+                        var seekDuration = (activeModifiers.shift && -3) ||
+                                           (activeModifiers.alt && -10) ||
+                                           (activeModifiers.ctrl && -60);
                         
-                        if(seekDuration)
+                        if(seekDuration) {
                             player.seek(seekDuration);
+                        }
                     }
                 }
             },
@@ -91,11 +94,14 @@
                     if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(39);
                     }
-                    else if(!isNaN(player.getDuration()) && player.getDuration() > 0) {
-                        var seekDuration = activeModifiers.shift ? 3 : (activeModifiers.alt ? 10 : (activeModifiers.ctrl ? 60 : undefined))
+                    else if(player.getSrc()) {
+                        var seekDuration = (activeModifiers.shift && 3) ||
+                                           (activeModifiers.alt && 10) ||
+                                           (activeModifiers.ctrl && 60);
                         
-                        if(seekDuration)
+                        if(seekDuration) {
                             player.seek(seekDuration);
+                        }
                     }
                 }
             },
@@ -182,21 +188,17 @@
             {
                 keys: [68], // d
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl && player.getSrc()) {
-                        return;
+                    if(activeModifiers.ctrl && player.getSrc()) {
+                        player.openSubtitleLogIn();
                     }
-                    
-                    player.openSubtitleLogIn();
                 }
             },
             {
                 keys: [65], // a
                 action: function(player, keyCode, activeModifiers) {
-                    if(!activeModifiers.ctrl) {
-                        return;
+                    if(activeModifiers.ctrl) {
+                        player.changeAspectRatio();
                     }
-                    
-                    player.changeAspectRatio();
                 }
             },
             {
