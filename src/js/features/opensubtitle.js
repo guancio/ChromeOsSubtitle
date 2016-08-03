@@ -20,7 +20,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return new Blob(byteArrays, {
         type: contentType
     });
-}e
+}
 
 var openSubsLang = [
     ["alb", "Albanian"],
@@ -168,7 +168,7 @@ var openSubsLang = [
                 ]],
                 onException: function(errorObj) {
                     info("Download failed...");
-                    t.setNotification('Subtitle download failed.');
+                    t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
                     var content = responseObj.result.data[0].data;
@@ -196,7 +196,7 @@ var openSubsLang = [
                 }],
                 onException: function(errorObj) {
                     info("Search failed");
-                    t.setNotification('Subtitle search failed. Please try later.', 2000);
+                    t.notify('Subtitle search failed. Please try later.', 2000);
                 },
                 onComplete: function(responseObj) {
                     console.log(responseObj);
