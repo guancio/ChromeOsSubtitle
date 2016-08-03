@@ -476,7 +476,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             else {
                 this.media.volume = 1;
                 this.gainNode.gain.value = volume;
-                console.log(this.gainNode.value);
+                //trigger volume change event.
+                this.media.dispatchEvent(new Event('volumechange'));
             }
         },
         
