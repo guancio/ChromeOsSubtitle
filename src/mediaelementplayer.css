@@ -750,3 +750,23 @@ a:visited {
     font-size: 2vw;
 }
 /* End: Notifcation */
+
+.mejs-window {
+    color:#fff;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width:600px;
+    display: table;
+    height: auto;
+    background: rgba(50,50,50,0.7);
+    border: solid 1px transparent;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 0;
+    font-size: 16px;
+    visibility: hidden;
+}
