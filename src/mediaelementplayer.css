@@ -454,12 +454,28 @@ a:visited {
 .mejs-controls .mejs-volume-button {
 }
 
+/*Thanks to CSSTricks*/
 .mejs-controls .mejs-volume-button progress {
     transform: rotate(-90deg);
     position: absolute;
     bottom: 73px;
     left: -43px;
+    -webkit-appearance: none;
     display: none;
+}
+
+.mejs-controls .mejs-volume-button progress::-webkit-progress-bar {
+    background: #fff;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3) inset;
+    border-radius: 5px;
+}
+
+.mejs-controls .mejs-volume-button progress::-webkit-progress-value {
+    background: #67f;
+    background-image: -webkit-linear-gradient(top, 
+                           rgba(255, 255, 255, .25), 
+                           rgba(0, 0, 0, .25));
+    border-radius: 5px;
 }
 
 .mejs-controls .mejs-mute button {
