@@ -16,7 +16,7 @@
         t.controls[0].appendChild(fullscreenBtn);
         
         document.addEventListener("webkitfullscreenchange", function() {
-            fullscreenBtn.classList[document.webkitIsFullScreen ? 'add' : 'remove']('mejs-fullscreen-button');
+            fullscreenBtn.classList.toggle('mejs-unfullscreen-button');
         }, false);
     }
     
