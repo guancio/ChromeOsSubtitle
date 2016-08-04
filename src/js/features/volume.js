@@ -42,12 +42,11 @@
             handleVolumeMove = function(e) {
                 var volume = null,
                     totalOffset = volumeTotal.offset();
-                    
+                
                 // calculate the new volume based on the moust position
                 var railHeight = volumeTotal.height(),
-                    totalTop = parseInt(volumeTotal.css('top')),
                     newY = e.pageY - totalOffset.top;
-                    
+                
                 volume = (railHeight - newY) / railHeight;
                 
                 // the controls just hide themselves (usually when mouse moves too far up)
@@ -55,15 +54,13 @@
                     return;
                 
                 // ensure the volume isn't outside 0-2
-                volume = Math.max(0, Math.min(volume * 2, 2));
                 // set the media object (this will trigger the volumechanged event)
-                t.setVolume(volume);
+                t.setVolume(Math.max(0, Math.min(volume * 2, 2)));
             },
             mouseIsDown = false,
             mouseIsOver = false;
-            
-        // SLIDER
         
+        // SLIDER
         mute.hover(function() {
                 volumeSlider.show();
                 mouseIsOver = true;
@@ -74,7 +71,7 @@
                     volumeSlider.hide();
                 }
             });
-            
+        
         volumeSlider.bind('mouseover', function() {
                 mouseIsOver = true;
             })
@@ -95,7 +92,7 @@
                 
                 return false;
             });
-            
+        
         // MUTE button
         mute.find('button').click(function() {
             t.setMuted(!t.isMuted());
