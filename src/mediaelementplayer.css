@@ -450,7 +450,16 @@ a:visited {
 /* End: Fullscreen */
 
 /* Start: Mute/Volume */
+
 .mejs-controls .mejs-volume-button {
+}
+
+.mejs-controls .mejs-volume-button progress {
+    transform: rotate(-90deg);
+    position: absolute;
+    bottom: 73px;
+    left: -43px;
+    display: none;
 }
 
 .mejs-controls .mejs-mute button {
