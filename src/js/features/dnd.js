@@ -6,15 +6,17 @@
             e.preventDefault();
             e.stopPropagation();
         }, false);
+        
         document.body.addEventListener('dragleave', function(e) {
             e.preventDefault();
         }, false);
+        
         document.body.addEventListener('drop', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            var draggedMedia = null,
-                draggedSrt = null;
+            var draggedMedia = [],
+                draggedSrt = [];
             
             if(e.dataTransfer.types.indexOf('Files') >= 0) {
                 var files = e.dataTransfer.files;
@@ -22,26 +24,25 @@
                     var file = files[i];
                     
                     if(file.type.startsWith("video") || file.type.startsWith("audio"))
-                        draggedMedia = file;
-                    else if(file.type.indexOf("subrip") >= 0)
-                        draggedSrt = file;
-                    else if(file.type.indexOf("application/zip") >= 0)
-                        draggedSrt = file;
+                        draggedMedia.push(file);
+                    else if(file.type.indexOf("subrip") >= 0 || file.type.indexOf("application/zip") >= 0)
+                        draggedSrt.push(file);
                 }
             }
             
-            if(draggedMedia !== null) {
+            if(draggedMedia !== []) {
                 t.stop();
-                t.openedFile = draggedMedia;
-                t.openedFileEntry = null;
+                t.playlist = draggedMedia;
                 
-                t.setSrc(window.URL.createObjectURL(draggedMedia));
+                t.playIndex = 0;
+                
+                t.setSrc(t.playlist[t.playIndex]);
             }
             
             t.tracks = [];
             
-            if(draggedSrt !== null) {
-                t.openSrtEntry(draggedSrt);
+            if(draggedSrt !== []) {
+                t.openSrtEntry(draggedSrt[0]);
             }
         }, false);
     }
