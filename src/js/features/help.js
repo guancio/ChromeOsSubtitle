@@ -8,23 +8,20 @@
             '<div>' +
             '<table style="color:#fff">' +
             '<tr><td style="width:60px">space</td><td style="width:100px">play/pause</td></tr>' +
-            '<tr><td>[ctrl]up</td><td>increase volume</td>' +
-            '<td style="width:60px">[ctrl]down</td><td style="width:100px">decrease volume</td></tr>' +
-            '<tr><td>[shift|alt|ctrl]left</td><td>rewind 3s/10s/60s</td>' +
-            '<td>[shift|alt|ctrl]right</td><td>forward 3s/10s/60s</td></tr>' +
-            '<tr><td>[ctrl]f</td><td>fullscreen</td></tr>' +
-            '<tr><td>[ctrl]o</td><td>open video</td></tr>' +
-            '<tr><td>[ctrl]d</td><td>download subtitle</td></tr>' +
-            '<tr><td>[ctrl]-</td><td>decrease subtitle size</td>' +
-            '<td>[ctrl]+</td><td>increase subtitle size</td></tr>' +
-            '<tr><td>[ctrl]z</td><td>decrease subtitle delay</td>' +
-            '<td>[ctrl]x</td><td>increase subtitle delay</td></tr>' +
-            '<tr><td>[ctrl],</td><td>increase playback speed</td>' +
-            '<td>[ctrl].</td><td>decrease playback speed</td></tr>' +
-            '<tr><td>[ctrl]/</td><td>reset playback speed</td>' +
-            '<td>[ctrl]l</td><td>toggle loop</td></tr>' +
-            '<tr><td>[ctrl+alt]Arrows</td><td>move captions</td>' +
-            '<td>[ctrl]i</td><td>show info window</td></tr>' +
+            '<tr><td>[ctrl] up|down</td><td>increase/decrease volume</td></tr>' +
+            '<tr><td>[shift|alt|ctrl] left|right</td><td>rewind/forward 3s/10s/60s</td></tr>' +
+            '<tr><td>[ctrl] f</td><td>fullscreen</td></tr>' +
+            '<tr><td>[ctrl] o</td><td>open video</td></tr>' +
+            '<tr><td>[ctrl] d</td><td>download subtitle</td></tr>' +
+            '<tr><td>[ctrl] +|-</td><td>increase/decrease subtitle size</td></tr>' +
+            '<tr><td>[ctrl] x|z</td><td>increase/decrease subtitle delay</td></tr>' +
+            '<tr><td>[ctrl] ,|.</td><td>increase/decrease playback speed</td></tr>' +
+            '<tr><td>[ctrl] /</td><td>reset playback speed</td></tr>' +
+            '<tr><td>[ctrl] l</td><td>toggle loop</td></tr>' +
+            '<tr><td>[ctrl+shift] arrows</td><td>move captions</td></tr>' +
+            '<tr><td>[ctrl] i</td><td>show info window</td></tr>' +
+            '<tr><td>[ctrl] [|]</td><td>previous/next media</td></tr>' +
+            '<tr><td>[ctrl] a</td><td>Change aspect ratio</td></tr>' +
             '</table>' +
             '</div><br/>' +
             '[Click outside the box to close the help page]</div>'
