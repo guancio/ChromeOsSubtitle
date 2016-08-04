@@ -30,10 +30,10 @@ $('#player').mediaelementplayer({
             
             t.pause();
             entry.file(function fff(file) {
-                t.playlist = [file];
+                t.playlist.push(file);
                 t.playIndex = 0;
                 
-                t.setSrc(t.playlist[t.playIdex]);
+                t.setSrc(t.playlist[t.playIndex]);
             });
             
             return true;
