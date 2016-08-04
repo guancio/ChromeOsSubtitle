@@ -8,7 +8,6 @@
                     '<span class="mejs-time-buffering"></span>' +
                     '<span class="mejs-time-loaded"></span>' +
                     '<span class="mejs-time-current"></span>' +
-                    '<span class="mejs-time-handle"></span>' +
                     '<span class="mejs-time-float">' +
                         '<span class="mejs-time-float-current">00:00</span>' +
                         '<span class="mejs-time-float-corner"></span>' +
@@ -16,12 +15,12 @@
                 '</span>' +
             '</div>'));
         
+        t.rail = t.controls.find('.mejs-time-rail');
         t.controls.find('.mejs-time-buffering').hide();
         
         var total = t.controls.find('.mejs-time-total'),
             loaded = t.controls.find('.mejs-time-loaded'),
             current = t.controls.find('.mejs-time-current'),
-            handle = t.controls.find('.mejs-time-handle'),
             timefloat = t.controls.find('.mejs-time-float'),
             timefloatcurrent = t.controls.find('.mejs-time-float-current'),
             handleMouseMove = function(e) {
@@ -32,7 +31,7 @@
                     newTime = 0,
                     pos = 0;
                 
-                if(t.getDuration()) {
+                if(t.getSrc()) {
                     if(x < offset.left) {
                         x = offset.left;
                     } else if(x > width + offset.left) {
@@ -94,65 +93,13 @@
                 }
             });
         
-        // loading
-        t.media.addEventListener('progress', function(e) {
-            if(!t.controlsAreVisible)
-                return;
-            
-            t.setProgressRail(e);
-            t.setCurrentRail(e);
-        });
-        
-        // current time
-        t.media.addEventListener('timeupdate', function(e) {
-            if(!t.controlsAreVisible)
-                return;
-            
-            t.setProgressRail(e);
-            t.setCurrentRail(e);
-        });
-        
         // store for later use
         t.loaded = loaded;
         t.total = total;
         t.current = current;
-        t.handle = handle;
-    }
-    
-    MediaElementPlayer.prototype.setProgressRail = function(e) {
-        var
-            t = this,
-            target = (e != undefined) ? e.target : t.media,
-            percent = null;
-        
-        // newest HTML5 spec has buffered array (FF4, Webkit)
-        if(target && target.buffered && target.buffered.length > 0 && target.buffered.end && target.duration) {
-            // TODO: account for a real array with multiple values (only Firefox 4 has this so far) 
-            percent = target.buffered.end(0) / target.duration;
-        }
-        
-        // finally update the progress bar
-        if(percent !== null) {
-            percent = Math.min(1, Math.max(0, percent));
-            // update loaded bar
-            if(t.loaded && t.total) {
-                t.loaded[0].style.width = (parseFloat(t.total[0].style.width) || 0) * percent;
-            }
-        }
     }
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
-        var t = this;
-        
-        if(t.getCurrentTime() != undefined && t.getDuration()) {
-            // update bar and handle
-            if(t.total && t.handle) {
-                var newWidth = (parseFloat(t.total[0].style.width) || 0) * t.getCurrentTime() / t.getDuration(),
-                    handlePos = newWidth - t.handle.outerWidth(true) / 2;
-                
-                t.current[0].style.width = newWidth;
-                t.handle[0].style.left = handlePos;
-            }
-        }
+        this.current[0].style.width = (parseFloat(this.total[0].style.width) || 0) * this.getCurrentTime() / this.getDuration();
     }
 })(mejs.$);

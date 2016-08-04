@@ -139,42 +139,40 @@ mejs.HtmlMediaElementShim = {
             };
         }
         
-        // test for native playback first
-        if(options.mode === 'auto' || options.mode === 'auto_plugin' || options.mode === 'native') {
-            if(!isMediaTag) {
-                // create a real HTML5 Media Element 
-                dummy = document.createElement(result.isVideo ? 'video' : 'audio');
-                htmlMediaElement.parentNode.insertBefore(dummy, htmlMediaElement);
-                htmlMediaElement.style.display = 'none';
-                
-                // use this one from now on
-                result.htmlMediaElement = htmlMediaElement = dummy;
-            }
+        if(!isMediaTag) {
+            // create a real HTML5 Media Element 
+            dummy = document.createElement(result.isVideo ? 'video' : 'audio');
+            htmlMediaElement.parentNode.insertBefore(dummy, htmlMediaElement);
+            htmlMediaElement.style.display = 'none';
             
-            for(i = 0; i < mediaFiles.length; i++) {
-                // normal check
-                if(htmlMediaElement.canPlayType(mediaFiles[i].type).replace(/no/, '') !== ''
-                    // special case for Mac/Safari 5.0.3 which answers '' to canPlayType('audio/mp3') but 'maybe' to canPlayType('audio/mpeg')
-                    ||
-                    htmlMediaElement.canPlayType(mediaFiles[i].type.replace(/mp3/, 'mpeg')).replace(/no/, '') !== '') {
-                    result.method = 'native';
-                    result.url = mediaFiles[i].url;
-                    break;
-                }
-            }
-            if(mediaFiles.length == 0) {
+            // use this one from now on
+            result.htmlMediaElement = htmlMediaElement = dummy;
+        }
+        
+        for(i = 0; i < mediaFiles.length; i++) {
+            // normal check
+            if(htmlMediaElement.canPlayType(mediaFiles[i].type).replace(/no/, '') !== ''
+                // special case for Mac/Safari 5.0.3 which answers '' to canPlayType('audio/mp3') but 'maybe' to canPlayType('audio/mpeg')
+                ||
+                htmlMediaElement.canPlayType(mediaFiles[i].type.replace(/mp3/, 'mpeg')).replace(/no/, '') !== '') {
                 result.method = 'native';
+                result.url = mediaFiles[i].url;
+                break;
+            }
+        }
+        
+        if(mediaFiles.length == 0) {
+            result.method = 'native';
+        }
+        
+        if(result.method === 'native') {
+            if(result.url !== null) {
+                htmlMediaElement.src = result.url;
             }
             
-            if(result.method === 'native') {
-                if(result.url !== null) {
-                    htmlMediaElement.src = result.url;
-                }
-                
-                // if `auto_plugin` mode, then cache the native result but try plugins.
-                if(options.mode !== 'auto_plugin') {
-                    return result;
-                }
+            // if `auto_plugin` mode, then cache the native result but try plugins.
+            if(options.mode !== 'auto_plugin') {
+                return result;
             }
         }
         
@@ -239,7 +237,7 @@ mejs.HtmlMediaElementShim = {
         }
         
         // fire success code
-        options.success(htmlMediaElement, htmlMediaElement);
+        options.success(htmlMediaElement);
         
         return htmlMediaElement;
     }

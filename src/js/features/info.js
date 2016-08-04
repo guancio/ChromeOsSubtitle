@@ -4,12 +4,12 @@
             t = this;
         var infoText =
             '<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="' + mediaelement_url + 'icon.png" style="width:80px;height: auto;"/>' +
-            '<h2>Subtitle Videoplayer v1.9.0</h2>' +
+            '<h2>Subtitle Videoplayer v1.10.0</h2>' +
             'Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br>Changeset in this release (thanks to vivekannan):';
         infoText = infoText + '<ul>';
-        infoText = infoText + '<li>Some of the settings are now remembered. (encoding, subs language etc.)</li>';
-        infoText = infoText + '<li>Added shortcuts to move captions position on screen</li>';
-        infoText = infoText + '<li>Reworked CSS behind media controls to make it look more modern</li>';
+        infoText = infoText + '<li>Added a very rudimentary playlist function. Can now use shortcuts to navigate through the playlist.</li>';
+        infoText = infoText + '<li>WebAudio API is now used to provided volume levels beyond 100%</li>';
+        infoText = infoText + '<li>Choosing multiple files is now possible in chromeOS as well</li>';
         infoText = infoText + '</ul>';
         infoText = infoText +
             'This software is possible thank to several open source projects:<ul>' +

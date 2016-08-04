@@ -7,7 +7,7 @@
         document.getElementsByClassName('mejs-inner')[0].appendChild(this.notification);
     }
     
-    MediaElementPlayer.prototype.setNotification = function(text, timeout) {
+    MediaElementPlayer.prototype.notify = function(text, timeout) {
         this.notification.innerText = text;
         this.notification.style.visibility = 'visible';
         this.startNotificationTimer(timeout);

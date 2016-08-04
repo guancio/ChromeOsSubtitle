@@ -131,7 +131,7 @@ var openSubsLang = [
                 reader.gunzip(new zip.BlobWriter(), function(data) {
                         info(sub.SubFileName);
                         
-                        t.setNotification(sub.SubFileName + ' downloaded.', 3000);
+                        t.notify(sub.SubFileName + ' downloaded.', 3000);
                         
                         if(t.opensubtitleService.lastSubtitles.length > 1) {
                             $('#select_opensubtitle').css('visibility', 'inherit');
@@ -152,20 +152,11 @@ var openSubsLang = [
                             isLoaded: false
                         });
                         
-                        var trackIdx = t.findTrackIdx("opensubtitle")
+                        var trackIdx = t.findTrackIdx("opensubtitle");
                         t.tracks[trackIdx].file = data;
                         t.tracks[trackIdx].isLoaded = false;
                         t.loadTrack(trackIdx);
-                    },
-                    function(data) {
-                        console.log(data);
-                    },
-                    function(data) {
-                        console.log(data);
-                    },
-                    function(data) {
-                        console.log(data);
-                    })
+                    });
             });
         }
         
@@ -177,7 +168,7 @@ var openSubsLang = [
                 ]],
                 onException: function(errorObj) {
                     info("Download failed...");
-                    t.setNotification('Subtitle download Failed.');
+                    t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
                     var content = responseObj.result.data[0].data;
@@ -191,19 +182,21 @@ var openSubsLang = [
             lang = $('#select_opensubtitle_lang')[0].value;
             // var lang = "ell";
             info("3/6 Searching...");
+            
             service.SearchSubtitles({
                 params: [t.opensubtitleService.token, [{
-                    query: t.openedFile.name,
+                    query: t.playlist[t.playIndex].name,
                     sublanguageid: lang
                 }, {
                     moviehash: hash,
-                    moviebytesize: t.openedFile.size,
+                    moviebytesize: t.playlist[t.playIndex].size,
                     sublanguageid: lang
                 }], {
                     limit: 100
                 }],
                 onException: function(errorObj) {
                     info("Search failed");
+                    t.notify('Subtitle search failed. Please try later.', 2000);
                 },
                 onComplete: function(responseObj) {
                     console.log(responseObj);
@@ -239,10 +232,10 @@ var openSubsLang = [
         
         function movieHash() {
             info("2/6 Hashing...");
-            OpenSubtitlesHash(t.openedFile, function(hash) {
+            OpenSubtitlesHash(t.playlist[t.playIndex], function(hash) {
                 searchSubtitle(hash);
             });
-        };
+        }
         
         function logIn() {
             $(document).trigger("opensubtitlesDownload");
@@ -252,6 +245,7 @@ var openSubsLang = [
                 params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
                 onException: function(errorObj) {
                     info("Authentiation failed");
+                    t.setNotification('Opensubtitles.org authentication failed!', 2000);
                 },
                 onComplete: function(responseObj) {
                     t.opensubtitleService.token = responseObj.result.token;
