@@ -2,6 +2,7 @@
     $.extend(mejs.MepDefaults, {
         muteText: mejs.i18n.t('Mute Toggle'),
         hideVolumeOnTouchDevices: true,
+        maximumVolume: 2
     });
     
     MediaElementPlayer.prototype.buildvolume = function() {
@@ -18,33 +19,21 @@
         
         var t = this,
             mute = $('<div class="mejs-button mejs-volume-button mejs-mute">' +
-                '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
-                '<div class="mejs-volume-slider">' + // outer background
-                '<div class="mejs-volume-total"></div>' + // line background
-                '<div class="mejs-volume-current"></div>' + // current volume
-                '<div class="mejs-volume-handle"></div>' + // handle
-                '</div>' +
+                    '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
+                    '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
                 '</div>')
             .appendTo(t.controls),
-            volumeSlider = t.container.find('.mejs-volume-slider'),
-            volumeTotal = t.container.find('.mejs-volume-total'),
-            volumeCurrent = t.container.find('.mejs-volume-current'),
-            volumeHandle = t.container.find('.mejs-volume-handle'),
-            
+            volumeBar = t.container.find('#volumeBar'),
             positionVolumeHandle = function(volume) {
-                // show the current visibility
-                volumeCurrent.height(100 * volume / 2);
-                volumeCurrent.css('top', 100 - volumeCurrent.height() + 8);
-                
-                // handle
-                volumeHandle.css('top', parseFloat(volumeCurrent.css('top')) - 3);
+                volumeBar[0].value = volume;
             },
             handleVolumeMove = function(e) {
                 var volume = null,
-                    totalOffset = volumeTotal.offset();
+                    totalOffset = volumeBar.offset();
                 
                 // calculate the new volume based on the moust position
-                var railHeight = volumeTotal.height(),
+                // height is width becuase we have rotated the progress bar
+                var railHeight = volumeBar.width(),
                     newY = e.pageY - totalOffset.top;
                 
                 volume = (railHeight - newY) / railHeight;
@@ -55,24 +44,24 @@
                 
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)
-                t.setVolume(Math.max(0, Math.min(volume * 2, 2)));
+                t.setVolume(Math.max(0, Math.min(volume * 2, t.options.maximumVolume)));
             },
             mouseIsDown = false,
             mouseIsOver = false;
         
         // SLIDER
         mute.hover(function() {
-                volumeSlider.show();
+                volumeBar.toggleClass('grow-up');
                 mouseIsOver = true;
             }, function() {
                 mouseIsOver = false;
                 
                 if(!mouseIsDown) {
-                    volumeSlider.hide();
+                    volumeBar.toggleClass('grow-up');
                 }
             });
         
-        volumeSlider.bind('mouseover', function() {
+        volumeBar.bind('mouseover', function() {
                 mouseIsOver = true;
             })
             .bind('mousedown', function(e) {
@@ -85,7 +74,7 @@
                     t.globalUnbind('.vol');
                     
                     if(!mouseIsOver) {
-                        volumeSlider.hide();
+                        volumeBar.toggleClass('grow-up');
                     }
                 });
                 mouseIsDown = true;
