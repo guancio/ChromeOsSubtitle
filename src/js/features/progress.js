@@ -5,9 +5,7 @@
         
         t.controls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail">' +
                 '<span class="mejs-time-total">' +
-                    '<span class="mejs-time-buffering"></span>' +
-                    '<span class="mejs-time-loaded"></span>' +
-                    '<span class="mejs-time-current"></span>' +
+                    '<progress id="railBar" min="0" max="1"></progress>' +
                     '<span class="mejs-time-float">' +
                         '<span class="mejs-time-float-current">00:00</span>' +
                         '<span class="mejs-time-float-corner"></span>' +
@@ -15,12 +13,9 @@
                 '</span>' +
             '</div>'));
         
-        t.rail = t.controls.find('.mejs-time-rail');
-        t.controls.find('.mejs-time-buffering').hide();
+        t.rail = t.controls.find('#railBar');
         
         var total = t.controls.find('.mejs-time-total'),
-            loaded = t.controls.find('.mejs-time-loaded'),
-            current = t.controls.find('.mejs-time-current'),
             timefloat = t.controls.find('.mejs-time-float'),
             timefloatcurrent = t.controls.find('.mejs-time-float-current'),
             handleMouseMove = function(e) {
@@ -100,6 +95,6 @@
     }
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
-        this.current[0].style.width = (parseFloat(this.total[0].style.width) || 0) * this.getCurrentTime() / this.getDuration();
+        this.rail[0].value = this.getCurrentTime() / this.getDuration();
     }
 })(mejs.$);
