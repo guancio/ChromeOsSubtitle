@@ -376,7 +376,7 @@ a:visited {
     animation: buffering-stripes 2s linear infinite;
 }
 
-@keyframes buffering-stripes { from {background-position: 0 0;} to {background-position: 30px 0;} }
+@keyframes buffering-stripes { from { background-position: 0 0; } to { background-position: 30px 0; } }
 
 .mejs-controls .mejs-time-rail .mejs-time-loaded {
     background: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8));
@@ -450,8 +450,40 @@ a:visited {
 /* End: Fullscreen */
 
 /* Start: Mute/Volume */
+
 .mejs-controls .mejs-volume-button {
 }
+
+/*Thanks to CSSTricks*/
+.mejs-controls .mejs-volume-button progress {
+    transform: rotate(-90deg);
+    transform-origin: left;
+    position: relative;
+    left: 12px;
+    bottom: 5px;
+    width: 0px;
+    -webkit-appearance: none;
+}
+
+.mejs-controls .mejs-volume-button progress::-webkit-progress-bar {
+    background: #fff;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3) inset;
+    border-radius: 5px;
+}
+
+.mejs-controls .mejs-volume-button progress::-webkit-progress-value {
+    background: #67f;
+    background-image: -webkit-linear-gradient(top, 
+                           rgba(255, 255, 255, .25), 
+                           rgba(0, 0, 0, .25));
+    border-radius: 5px;
+}
+
+.grow-up {
+    animation: grow 0.25s ease-in-out forwards;
+}
+
+@keyframes grow { from { width: 0px; } to { width: 110px; } }
 
 .mejs-controls .mejs-mute button {
     background-position: -16px -16px;
@@ -465,53 +497,8 @@ a:visited {
     position: relative;
 }
 
-.mejs-controls .mejs-volume-button .mejs-volume-slider {
-    display: none;
-    height: 115px;
-    width: 25px;
-    background: rgba(50, 50, 50, 0.7);
-    border-radius: 0;
-    top: -115px;
-    left: 0;
-    z-index: 1;
-    position: absolute;
-    margin: 0;
-}
-
 .mejs-controls .mejs-volume-button:hover {
     border-radius: 0 0 4px 4px;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-total {
-    position: absolute;
-    left: 11px;
-    top: 8px;
-    width: 2px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.5);
-    margin: 0;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-current {
-    position: absolute;
-    left: 11px;
-    top: 8px;
-    width: 2px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.9);
-    margin: 0;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-handle {
-    position: absolute;
-    left: 4px;
-    top: -3px;
-    width: 16px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.9);
-    cursor: N-resize;
-    border-radius: 1px;
-    margin: 0;
 }
 /* End: Mute/Volume */
 
