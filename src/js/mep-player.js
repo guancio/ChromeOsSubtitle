@@ -304,18 +304,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             usedWidth = 9 * 26 + t.time.outerWidth();
             
             // fit the rail into the remaining space
-            railWidth = t.controls.width() - usedWidth - (t.rail.outerWidth(true) - t.rail.width()) - 1;
-            
+            railWidth = t.controls.width() - usedWidth - 1;
             // outer area
-            t.rail.width(railWidth);
-            // dark space
-            t.total.width(railWidth - 10);
-            
-            if(t.getSrc()) {
-                t.loaded[0].style.width = railWidth - 10;
-            }
-            
-            t.setCurrentRail();
+            t.rail.width(railWidth)
+            t.railBar.width(railWidth);
         },
         
         buildoverlays: function() {
@@ -341,7 +333,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeking', function() {
                 loading.show();
-                t.controls.find('.mejs-time-buffering').show();
+                t.railBar[0].classList.add('mejs-buffering');
                 
                 t.showControls();
                 t.startControlsTimer();
@@ -349,26 +341,26 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeked', function() {
                 loading.hide();
-                t.controls.find('.mejs-time-buffering').hide();
+                t.railBar[0].classList.remove('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
                 loading.show();
-                t.controls.find('.mejs-time-buffering').show();
+                t.railBar[0].classList.add('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
                 loading.show();
-                t.controls.find('.mejs-time-buffering').show();
-                t.play();
                 t.resizeVideo();
+                t.railBar[0].classList.add('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
+                t.play();
             }, false);
             
-            t.media.addEventListener('canplay', function() {
+            t.media.addEventListener('play', function() {
                 loading.hide();
-                t.controls.find('.mejs-time-buffering').hide();
+                t.railBar[0].classList.remove('mejs-buffering');
             }, false);
             
             // error handling
@@ -377,7 +369,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     return;
                 
                 loading.hide();
-                t.controls.find('.mejs-time-buffering').hide();
+                t.railBar[0].classList.remove('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
         },
