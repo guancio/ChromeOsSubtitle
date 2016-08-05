@@ -6,7 +6,6 @@
                 '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
                 '</div>');
         
-        // t.controls[0].appendChild(openFileInput);
         t.leftControls[0].appendChild(open);
         
         t.openFileForm = function() {
@@ -54,6 +53,7 @@
             if(openFileInput.length === 0) {
                 return;
             }
+            
             if(t.getSrc()) {
                 t.stop();
             }
