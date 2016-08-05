@@ -71,7 +71,11 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                         '<div class="mejs-inner">' +
                             '<div class="mejs-mediaelement"></div>' +
                             '<div class="mejs-layers"></div>' +
-                            '<div class="mejs-controls"></div>' +
+                            '<div class="mejs-controls">' +
+                                '<div class="left skip"></div>' +
+                                '<div class="right skip"></div>' +
+                                '<div class="middle skip"></div>' +
+                            '</div>' +
                             '<div class="mejs-clear"></div>' +
                         '</div>' +
                     '</div>')
@@ -89,6 +93,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 
                 // find parts
                 t.controls = t.container.find('.mejs-controls');
+                t.leftControls = t.controls.find('.left');
+                t.rightControls = t.controls.find('.right');
+                t.middleControls = t.controls.find('.middle');
                 t.layers = t.container.find('.mejs-layers');
             }
             
@@ -296,6 +303,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         setControlsSize: function() {
+            return;
             var t = this,
                 usedWidth = 0,
                 railWidth = 0;

@@ -133,7 +133,7 @@ zip.useWebWorkers = packaged_app;
                 '</ul>' +
                 '</div>' +
                 '</div>')
-            .appendTo(t.controls);
+            .appendTo(t.rightControls);
         
         t.captionEncodingSelect = t.captionsButton.find('#encoding-selector')[0];
         t.captionsButton.find('#encoding-selector').change(function(e) {
