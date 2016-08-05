@@ -191,7 +191,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             if(!(mf.isAndroid && t.options.AndroidUseNativeControls)) {
                 // built in feature
-                t.buildoverlays(t, t.controls, t.layers, t.media);
+                t.buildoverlays();
                 
                 // grab for use by features
                 t.findTracks();
