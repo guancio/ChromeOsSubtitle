@@ -3,7 +3,7 @@
         var
             t = this;
         var infoText =
-            '<div class="me-window" style="color:#fff;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;width:650px;display: table; height: auto;background: url(background.png);background: rgba(50,50,50,0.7);border: solid 1px transparent;padding: 10px;overflow: hidden;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;font-size: 16px;visibility: hidden;"><img src="' + mediaelement_url + 'icon.png" style="width:80px;height: auto;"/>' +
+            '<div class="mejs-window" style="width: 650px;"><img src="' + mediaelement_url + 'icon.png" style="width:80px;height: auto;"/>' +
             '<h2>Subtitle Videoplayer v1.10.0</h2>' +
             'Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br>Changeset in this release (thanks to vivekannan):';
         infoText = infoText + '<ul>';
