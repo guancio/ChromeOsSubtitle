@@ -72,9 +72,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                             '<div class="mejs-mediaelement"></div>' +
                             '<div class="mejs-layers"></div>' +
                             '<div class="mejs-controls">' +
-                                '<div class="left skip"></div>' +
-                                '<div class="right skip"></div>' +
-                                '<div class="middle skip"></div>' +
+                                '<div id="left" class="skip"></div>' +
+                                '<div id="right" class="skip"></div>' +
+                                '<div id="middle" class="skip"></div>' +
                             '</div>' +
                             '<div class="mejs-clear"></div>' +
                         '</div>' +
@@ -93,9 +93,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 
                 // find parts
                 t.controls = t.container.find('.mejs-controls');
-                t.leftControls = t.controls.find('.left');
-                t.rightControls = t.controls.find('.right');
-                t.middleControls = t.controls.find('.middle');
+                t.leftControls = t.controls.find('#left');
+                t.rightControls = t.controls.find('#right');
+                t.middleControls = t.controls.find('#middle');
                 t.layers = t.container.find('.mejs-layers');
             }
             
@@ -111,7 +111,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         timeupdate: function() {
             this.player.updateCurrent();
             this.player.setCurrentRail();
-            this.player.setControlsSize();
         },
         
         showControls: function() {
@@ -216,9 +215,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 
                 t.container.trigger('controlsready');
                 
-                // reset all layers and controls
-                t.setControlsSize();
-                
                 // controls fade
                 if(t.isVideo) {
                     if(mejs.MediaFeatures.hasTouch) {
@@ -280,42 +276,15 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.media.addEventListener('loadedmetadata', function(e) {
                     t.updateDuration();
                     t.updateCurrent();
-                    
-                    if(!t.isFullScreen) {
-                        t.setControlsSize();
-                    }
                 }, false);
-                
-                // webkit has trouble doing this without a delay
-                setTimeout(function() {
-                    t.setControlsSize();
-                }, 50);
                 
                 // adjust controls whenever window sizes (used to be in fullscreen only)
                 t.globalBind('resize', function() {
-                    // always adjust controls
-                    t.setControlsSize();
                     t.resizeVideo();
                 });
             }
             
             t.options.success(t.media);
-        },
-        
-        setControlsSize: function() {
-            return;
-            var t = this,
-                usedWidth = 0,
-                railWidth = 0;
-            
-            // find the size of all the other controls besides the rail
-            usedWidth = 9 * 26 + t.time.outerWidth();
-            
-            // fit the rail into the remaining space
-            railWidth = t.controls.width() - usedWidth - 1;
-            // outer area
-            t.rail.width(railWidth)
-            t.railBar.width(railWidth);
         },
         
         buildoverlays: function() {

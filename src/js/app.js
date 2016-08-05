@@ -17,8 +17,6 @@ $('#player').mediaelementplayer({
         
         var t = mainMediaElement.player;
         
-        t.setControlsSize();
-        
         function openCmdLineVideo() {
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length)
                 return false;

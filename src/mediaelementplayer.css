@@ -235,16 +235,16 @@ a:visited {
     border: 0;
 }
 
-.mejs-container .mejs-controls .left {
+.mejs-container .mejs-controls #left {
     width: 78px;
     float: left;
 }
 
-.mejs-container .mejs-controls .right {
+.mejs-container .mejs-controls #right {
     float: right;
 }
 
-.mejs-container .mejs-controls .middle {
+.mejs-container .mejs-controls #middle {
     overflow: hidden;
     height: 20px;
 }
@@ -272,7 +272,7 @@ a:visited {
 /* End: CONTROL BAR */
 
 /* Start: Time (current / duration) */
-.mejs-container .mejs-controls .right .mejs-time {
+.mejs-container .mejs-controls .mejs-time {
     color: #fff;
     display: block;
     height: 17px;
@@ -282,9 +282,10 @@ a:visited {
     text-align: center;
     padding: auto 4px;
     box-sizing: content-box;
+    float: left;
 }
 
-.mejs-container .mejs-controls .right .mejs-time span {
+.mejs-container .mejs-controls .mejs-time span {
     font-size: 11px;
     color: #fff;
     line-height: 12px;
@@ -364,15 +365,15 @@ a:visited {
 /* End: Play/pause */
 
 /* Start: Progress bar */
-.mejs-controls .middle div.mejs-time-rail {
+.mejs-controls div.mejs-time-rail {
     padding-top: 5px;
 }
 
-.mejs-controls .right .mejs-time .mejs-currenttime {
+.mejs-controls .mejs-time .mejs-currenttime {
     cursor: pointer;
 }
 
-.mejs-controls .middle .mejs-time-rail .mejs-time-float {
+.mejs-controls .mejs-time-rail .mejs-time-float {
     position: absolute;
     display: none;
     background: #eee;
@@ -386,7 +387,7 @@ a:visited {
     font-size: 11px;
 }
 
-.mejs-controls .middle .mejs-time-rail .mejs-time-float-current {
+.mejs-controls .mejs-time-rail .mejs-time-float-current {
     margin: 2px;
     width: 30px;
     display: block;
@@ -394,7 +395,7 @@ a:visited {
     left: 0;
 }
 
-.mejs-controls .middle .mejs-time-rail .mejs-time-float-corner {
+.mejs-controls .mejs-time-rail .mejs-time-float-corner {
     position: absolute;
     display: block;
     width: 0;
@@ -419,21 +420,21 @@ a:visited {
     left: 18px;
 }
 
-.mejs-controls .middle .mejs-time-rail progress {
+.mejs-controls .mejs-time-rail progress {
     -webkit-appearance: none;
     cursor: pointer;
     width: 100%;
     height: 10px;
 }
 
-.mejs-controls .middle .mejs-time-rail progress:not(value)::-webkit-progress-bar {
+.mejs-controls .mejs-time-rail progress:not(value)::-webkit-progress-bar {
     background: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8));
     border-radius: 5px;
     margin-top: 5px;
     display: block;
 }
 
-.mejs-controls .middle .mejs-time-rail progress:not(value).mejs-buffering {
+.mejs-controls .mejs-time-rail progress:not(value).mejs-buffering {
     background-image: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8)),
                       linear-gradient(-45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
     background-size: 15px 15px;
@@ -444,12 +445,12 @@ a:visited {
     display: block;
 }
 
-.mejs-controls .middle .mejs-time-rail progress[value]::-webkit-progress-bar {
+.mejs-controls .mejs-time-rail progress[value]::-webkit-progress-bar {
     background: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8));
     border-radius: 5px;
 }
 
-.mejs-controls .middle .mejs-time-rail progress[value].mejs-buffering {
+.mejs-controls .mejs-time-rail progress[value].mejs-buffering {
     background-image: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8)),
                       linear-gradient(-45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
     background-size: 15px 15px;
@@ -460,7 +461,7 @@ a:visited {
 
 @keyframes buffering-stripes { from {background-position: 0 0;} to {background-position: 30px 0;} }
 
-.mejs-controls .middle .mejs-time-rail progress::-webkit-progress-value {
+.mejs-controls .mejs-time-rail progress::-webkit-progress-value {
     background: linear-gradient(rgba(255,255,255,0.9), rgba(200,200,200,0.8));
     border-radius: 5px;
 }
