@@ -51,13 +51,13 @@
         
         // SLIDER
         mute.hover(function() {
-                volumeBar.show();
+                volumeBar.toggleClass('grow-up');
                 mouseIsOver = true;
             }, function() {
                 mouseIsOver = false;
                 
                 if(!mouseIsDown) {
-                    volumeBar.hide();
+                    volumeBar.toggleClass('grow-up');
                 }
             });
         
@@ -74,7 +74,7 @@
                     t.globalUnbind('.vol');
                     
                     if(!mouseIsOver) {
-                        volumeBar.hide();
+                        volumeBar.toggleClass('grow-up');
                     }
                 });
                 mouseIsDown = true;
