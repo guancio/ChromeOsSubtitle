@@ -497,53 +497,8 @@ a:visited {
     position: relative;
 }
 
-.mejs-controls .mejs-volume-button .mejs-volume-slider {
-    display: none;
-    height: 115px;
-    width: 25px;
-    background: rgba(50, 50, 50, 0.7);
-    border-radius: 0;
-    top: -115px;
-    left: 0;
-    z-index: 1;
-    position: absolute;
-    margin: 0;
-}
-
 .mejs-controls .mejs-volume-button:hover {
     border-radius: 0 0 4px 4px;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-total {
-    position: absolute;
-    left: 11px;
-    top: 8px;
-    width: 2px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.5);
-    margin: 0;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-current {
-    position: absolute;
-    left: 11px;
-    top: 8px;
-    width: 2px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.9);
-    margin: 0;
-}
-
-.mejs-controls .mejs-volume-button .mejs-volume-slider .mejs-volume-handle {
-    position: absolute;
-    left: 4px;
-    top: -3px;
-    width: 16px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.9);
-    cursor: N-resize;
-    border-radius: 1px;
-    margin: 0;
 }
 /* End: Mute/Volume */
 
