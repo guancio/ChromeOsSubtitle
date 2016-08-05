@@ -263,7 +263,7 @@ a:visited {
     display: block;
     height: 17px;
     width: auto;
-    padding: 8px 3px 0 3px ;
+    padding: 8px 3px 0 8px ;
     overflow: hidden;
     text-align: center;
     padding: auto 4px;
@@ -355,39 +355,6 @@ a:visited {
     padding-top: 5px;
 }
 
-.mejs-controls .mejs-time-rail span {
-    display: block;
-    position: absolute;
-    width: 180px;
-    height: 10px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-total {
-    margin: 5px;
-    background: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8));
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-buffering {
-    width: 100%;
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-    background-size: 15px 15px;
-    animation: buffering-stripes 2s linear infinite;
-}
-
-@keyframes buffering-stripes { from {background-position: 0 0;} to {background-position: 30px 0;} }
-
-.mejs-controls .mejs-time-rail .mejs-time-loaded {
-    background: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8));
-    width: 0;
-}
-
-.mejs-controls .mejs-time-rail .mejs-time-current {
-    width: 0;
-    background: linear-gradient(rgba(255,255,255,0.9), rgba(200,200,200,0.8));
-}
-
 .mejs-controls .mejs-time .mejs-currenttime {
     cursor: pointer;
 }
@@ -398,10 +365,11 @@ a:visited {
     background: #eee;
     width: 36px;
     height: 17px;
-    top: -26px;
+    top: -16px;
     margin-left: -24px;
     text-align: center;
     color: #111;
+    border-radius: 2px;
 }
 
 .mejs-controls .mejs-time-rail .mejs-time-float-current {
@@ -435,6 +403,50 @@ a:visited {
 
 .mejs-long-video .mejs-controls .mejs-time-rail .mejs-time-float-corner {
     left: 18px;
+}
+
+.mejs-controls .mejs-time-rail progress {
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.mejs-controls .mejs-time-rail progress:not(value)::-webkit-progress-bar {
+    background: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8));
+    border-radius: 5px;
+    margin-top: 5px;
+    display: block;
+}
+
+.mejs-controls .mejs-time-rail progress:not(value).mejs-buffering {
+    background-image: linear-gradient(rgba(30,30,30,0.8), rgba(60,60,60,0.8)),
+                      linear-gradient(-45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
+    background-size: 15px 15px;
+    animation: buffering-stripes 2s linear infinite;
+    
+    border-radius: 5px;
+    margin-top: 5px;
+    display: block;
+}
+
+.mejs-controls .mejs-time-rail progress[value]::-webkit-progress-bar {
+    background: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8));
+    border-radius: 5px;
+}
+
+.mejs-controls .mejs-time-rail progress[value].mejs-buffering {
+    background-image: linear-gradient(rgba(44,124,145,0.8), rgba(78,183,212,0.8)),
+                      linear-gradient(-45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
+    background-size: 15px 15px;
+    animation: buffering-stripes 2s linear infinite;
+    
+    border-radius: 5px;
+}
+
+@keyframes buffering-stripes { from {background-position: 0 0;} to {background-position: 30px 0;} }
+
+.mejs-controls .mejs-time-rail progress::-webkit-progress-value {
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(200,200,200,0.8));
+    border-radius: 5px;
 }
 /* End: Progress bar */
 
