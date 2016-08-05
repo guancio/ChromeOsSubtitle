@@ -13,7 +13,7 @@
             t[document.webkitIsFullScreen ? 'exitFullScreen' : 'enterFullScreen']();
         });
         
-        t.controls[0].appendChild(fullscreenBtn);
+        t.rightControls[0].appendChild(fullscreenBtn);
         
         document.addEventListener("webkitfullscreenchange", function() {
             fullscreenBtn.classList.toggle('mejs-unfullscreen-button');

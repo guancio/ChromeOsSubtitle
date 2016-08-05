@@ -22,7 +22,7 @@
                     '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
                     '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
                 '</div>')
-            .appendTo(t.controls),
+            .appendTo(t.rightControls),
             volumeBar = t.container.find('#volumeBar'),
             positionVolumeHandle = function(volume) {
                 volumeBar[0].value = volume;

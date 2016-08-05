@@ -3,7 +3,7 @@
     MediaElementPlayer.prototype.buildprogress = function() {
         var t = this;
         
-        t.controls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail">' +
+        t.middleControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail skip">' +
                 '<progress id="railBar" min="0" max="1"></progress>' +
                 '<span class="mejs-time-float">' +
                     '<span class="mejs-time-float-current">00:00</span>' +
@@ -11,11 +11,11 @@
                 '</span>' +
             '</div>'));
         
-        t.rail = t.controls.find('.mejs-time-rail');
-        t.railBar = t.controls.find('#railBar');
+        t.rail = t.middleControls.find('.mejs-time-rail');
+        t.railBar = t.rail.find('#railBar');
         
-        var timefloat = t.controls.find('.mejs-time-float'),
-            timefloatcurrent = t.controls.find('.mejs-time-float-current'),
+        var timefloat = t.rail.find('.mejs-time-float'),
+            timefloatcurrent = timefloat.find('.mejs-time-float-current'),
             handleMouseMove = function(e) {
                 // mouse position relative to the object
                 var x = e.pageX,
