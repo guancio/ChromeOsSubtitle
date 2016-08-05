@@ -5,7 +5,7 @@
     MediaElementPlayer.prototype.buildcurrent = function() {
         var t = this;
         
-        t.rightControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time">' +
+        t.rightControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time skip">' +
             '<span class="mejs-currenttime">00:00</span>' +
         '</div>'));
         
@@ -17,7 +17,6 @@
                 showRemaining = !showRemaining;
                 
                 t.updateCurrent();
-                t.setControlsSize();
             }
         });
     }

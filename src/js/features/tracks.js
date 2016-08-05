@@ -538,7 +538,6 @@ zip.useWebWorkers = packaged_app;
             
             if(!hasSubtitles) {
                 t.captionsButton.hide();
-                t.setControlsSize();
             }
         }
     },
