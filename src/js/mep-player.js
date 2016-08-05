@@ -232,13 +232,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     } else {
                         // show/hide controls
                         t.container
-                            .bind('mouseenter mouseover', function() {
-                                if(!t.options.alwaysShowControls) {
-                                    t.killControlsTimer('enter');
-                                    t.showControls();
-                                    t.startControlsTimer(2500);
-                                }
-                            })
                             .bind('mousemove', function() {
                                 if(!t.controlsAreVisible) {
                                     t.showControls();
