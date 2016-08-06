@@ -41,7 +41,7 @@
             $('<div class="mejs-button mejs-info-button mejs-info" >' +
                 '<button type="button" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button>' +
                 '</div>')
-            .appendTo(t.controls)
+            .appendTo(t.rightControls)
             .click(function(e) {
                 e.preventDefault();
                 t.toggleInfo();

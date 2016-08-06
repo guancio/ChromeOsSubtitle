@@ -22,7 +22,7 @@
                     '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
                     '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
                 '</div>')
-            .appendTo(t.controls),
+            .appendTo(t.rightControls),
             volumeBar = t.container.find('#volumeBar'),
             positionVolumeHandle = function(volume) {
                 volumeBar[0].value = volume;
@@ -51,14 +51,9 @@
         
         // SLIDER
         mute.hover(function() {
-                volumeBar.toggleClass('grow-up');
                 mouseIsOver = true;
             }, function() {
                 mouseIsOver = false;
-                
-                if(!mouseIsDown) {
-                    volumeBar.toggleClass('grow-up');
-                }
             });
         
         volumeBar.bind('mouseover', function() {
@@ -72,10 +67,6 @@
                 t.globalBind('mouseup.vol', function() {
                     mouseIsDown = false;
                     t.globalUnbind('.vol');
-                    
-                    if(!mouseIsOver) {
-                        volumeBar.toggleClass('grow-up');
-                    }
                 });
                 mouseIsDown = true;
                 

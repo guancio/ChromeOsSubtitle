@@ -5,26 +5,25 @@
     MediaElementPlayer.prototype.buildcurrent = function() {
         var t = this;
         
-        t.controls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time">' +
+        t.rightControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time skip">' +
             '<span class="mejs-currenttime">00:00</span>' +
         '</div>'));
         
-        t.time = t.controls.find('.mejs-time');
-        t.currenttime = t.controls.find('.mejs-currenttime');
+        t.time = t.rightControls.find('.mejs-time');
+        t.currenttime = t.time.find('.mejs-currenttime');
         
         t.currenttime[0].addEventListener('click', function() {
             if(t.getDuration()) {
                 showRemaining = !showRemaining;
                 
                 t.updateCurrent();
-                t.setControlsSize();
             }
         });
     }
     
     MediaElementPlayer.prototype.buildduration = function() {
         $('<span>/</span><span class="mejs-duration">00:00</span>')
-            .appendTo(this.controls.find('.mejs-time'));
+            .appendTo(this.time);
         
         this.durationD = this.controls.find('.mejs-duration');
     }

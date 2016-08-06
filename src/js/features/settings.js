@@ -77,7 +77,7 @@ function setIntoSettings(name, value, cb) {
             $('<div class="mejs-button mejs-settings-button mejs-settings" >' +
                 '<button type="button" title="' + mejs.i18n.t('Settings...') + '" aria-label="' + mejs.i18n.t('Settings...') + '"></button>' +
                 '</div>')
-            .appendTo(t.controls)
+            .appendTo(t.rightControls)
             .click(function(e) {
                 e.preventDefault();
                 t.openSettingsWindow();

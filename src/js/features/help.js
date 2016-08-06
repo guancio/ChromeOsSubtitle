@@ -55,7 +55,7 @@
         var open = $('<div class="mejs-button mejs-help-button mejs-help" >' +
                 '<button type="button" title="' + mejs.i18n.t('Help...') + '" aria-label="' + mejs.i18n.t('Help...') + '"></button>' +
                 '</div>')
-            .appendTo(t.controls)
+            .appendTo(t.rightControls)
             .click(function(e) {
                 e.preventDefault();
                 t.openHelpWindow();
