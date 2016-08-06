@@ -302,6 +302,24 @@ a:visited {
     background-position: 0 0;
 }
 
+.mejs-captions-position {
+    position: absolute;
+    width: 100%;
+    bottom: 15px;
+    left: 0;
+}
+
+.mejs-captions-position-hover {
+    bottom: 45px;
+}
+
+.mejs-captions-text {
+    /*padding: 3px 5px;*/
+    background: rgba(20, 20, 20, 0.8);
+    white-space: pre-line;
+    line-height: normal;
+
+}
 .mejs-controls .mejs-pause button {
     background-position: 0 -16px;
 }
@@ -350,7 +368,7 @@ a:visited {
     background-position: -144px 0px;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize  label {
+.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize label {
     width: 60px;
     float: left;
     padding: 0px 0 0 0;
@@ -508,11 +526,13 @@ a:visited {
     border-radius: 5px;
 }
 
-.grow-up {
-    animation: grow 0.25s ease-in-out forwards;
+.mejs-controls .mejs-volume-button:hover progress {
+    animation: growVolume 0.25s ease-in-out forwards;
 }
 
-@keyframes grow { from { width: 0px; } to { width: 110px; } }
+@keyframes growVolume { from { width: 0px; } to { width: 110px; } }
+
+@keyframes growCaptions { from { height: 0px; } to { height: 200px; } }
 
 .mejs-controls .mejs-mute button {
     background-position: -16px -16px;
@@ -536,22 +556,24 @@ a:visited {
     position: relative;
 }
 
+.mejs-controls .mejs-captions-button:hover .mejs-captions-selector {
+    padding: 10px;
+    animation: growCaptions 0.25s ease-in-out forwards;
+}
+
 .mejs-controls .mejs-captions-button button {
     background-position: -48px 0;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector {
-    visibility: hidden;
     position: absolute;
     bottom: 26px;
-    right: -10px;
-    width: 160px;
-    height: 200px;
+    right: -20px;
+    width: 175px;
+    height: 0;
     background: rgba(50,50,50,0.7);
-    border: solid 1px transparent;
-    padding: 10px;
     overflow: hidden;
-    border-radius: 0;
+    border-radius: 10px;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector ul {
