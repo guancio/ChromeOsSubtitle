@@ -14,6 +14,6 @@
             e.preventDefault();
             t.isPaused() ? t.play() : t.pause();
         });
-        t.controls[0].appendChild(playpause);
+        t.leftControls[0].appendChild(playpause);
     }
 })(mejs.$);

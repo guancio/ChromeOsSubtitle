@@ -114,7 +114,7 @@ zip.useWebWorkers = packaged_app;
         encodingText = encodingText + '</select></il>';
         t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
-                '<div class="mejs-captions-selector">' +
+                '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
                 '<li>' +
                 '<input type="radio" name="_captions" id="_captions_none" value="none" checked="checked" />' +
@@ -133,7 +133,7 @@ zip.useWebWorkers = packaged_app;
                 '</ul>' +
                 '</div>' +
                 '</div>')
-            .appendTo(t.controls);
+            .appendTo(t.rightControls);
         
         t.captionEncodingSelect = t.captionsButton.find('#encoding-selector')[0];
         t.captionsButton.find('#encoding-selector').change(function(e) {
@@ -181,12 +181,7 @@ zip.useWebWorkers = packaged_app;
         });
         
         // hover
-        t.captionsButton.hover(function() {
-            $(this).find('.mejs-captions-selector').css('visibility', 'visible');
-            
-        }, function() {
-            $(this).find('.mejs-captions-selector').css('visibility', 'hidden');
-        })
+        t.captionsButton
         // handle clicks to the language radio buttons
         .on('click', 'input[type=radio]', function() {
             lang = this.value;
@@ -538,7 +533,6 @@ zip.useWebWorkers = packaged_app;
             
             if(!hasSubtitles) {
                 t.captionsButton.hide();
-                t.setControlsSize();
             }
         }
     },

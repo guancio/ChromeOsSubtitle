@@ -15,6 +15,6 @@
                     t.stop();
                 }
             });
-            t.controls[0].appendChild(stop);
+            t.leftControls[0].appendChild(stop);
     }
 })(mejs.$);

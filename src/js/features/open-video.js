@@ -7,7 +7,7 @@
                 '</div>');
         
         // t.controls[0].appendChild(openFileInput);
-        t.controls[0].appendChild(open);
+        t.leftControls[0].appendChild(open);
         
         t.openFileForm = function() {
             if(t.getDuration() && !t.isPaused()) {
