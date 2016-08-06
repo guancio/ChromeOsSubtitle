@@ -51,14 +51,9 @@
         
         // SLIDER
         mute.hover(function() {
-                volumeBar.toggleClass('grow-up');
                 mouseIsOver = true;
             }, function() {
                 mouseIsOver = false;
-                
-                if(!mouseIsDown) {
-                    volumeBar.toggleClass('grow-up');
-                }
             });
         
         volumeBar.bind('mouseover', function() {
@@ -72,10 +67,6 @@
                 t.globalBind('mouseup.vol', function() {
                     mouseIsDown = false;
                     t.globalUnbind('.vol');
-                    
-                    if(!mouseIsOver) {
-                        volumeBar.toggleClass('grow-up');
-                    }
                 });
                 mouseIsDown = true;
                 
