@@ -41,7 +41,7 @@
                     
                     // position floating time box
                     if(!mejs.MediaFeatures.hasTouch && t.getSrc()) {
-                        timefloat[0].style.left = pos + 78;
+                        timefloat[0].style.left = pos + 79;  //__UKN#1__ why is 79 needed?
                         timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
                         timefloat.show();
                     }
