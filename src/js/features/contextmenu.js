@@ -3,7 +3,7 @@
         var t = this;
         
         function contextCallback(info) {
-            if(info.parentMenuItemId.startsWith('set')) {
+            if(info.parentMenuItemId && info.parentMenuItemId.startsWith('set')) {
                 t[info.parentMenuItemId](info.menuItemId);
             }
             else {
