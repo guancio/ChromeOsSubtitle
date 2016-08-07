@@ -9,7 +9,7 @@
         // force Android's native controls
         AndroidUseNativeControls: false,
         // features to show
-        features: ['contextmenu', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'notification', 'shortcuts', 'stats'],
+        features: ['contextmenu', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats'],
         
         // only for dynamic
         isVideo: true,
@@ -40,7 +40,6 @@
                     }
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.min(player.getVolume() + 0.1, player.options.maximumVolume));
-                        player.notify('Volume: ' + (player.getVolume() * 100).toFixed() + '%');
                     }
                     else if(activeModifiers.shift) {
                         player.changeBrightness(true);
@@ -55,7 +54,6 @@
                     }
                     else if(activeModifiers.ctrl) {
                         player.setVolume(Math.max(player.getVolume() - 0.1, 0));
-                        player.notify('Volume: ' + (player.getVolume() * 100).toFixed() + '%');
                     }
                     else if(activeModifiers.shift) {
                         player.changeBrightness(false);
@@ -91,7 +89,7 @@
                 keys: [
                     39, // RIGHT
                     228 // Google TV forward
-                ], 
+                ],
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl && activeModifiers.shift) {
                         player.moveCaptions(39);
@@ -111,7 +109,7 @@
                 keys: [70], // f
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player[document.webkitIsFullScreen ? 'exitFullScreen' : 'enterFullScreen']();
+                        player.toggleFullscreen();
                     }
                 }
             },
@@ -199,7 +197,7 @@
                 keys: [65], // a
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.changeAspectRatio();
+                        player.cycleAspectRatio();
                     }
                 }
             },
@@ -231,7 +229,7 @@
                 keys: [81],  // q
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.changePlayType();
+                        player.cyclePlayType();
                     }
                 }
             }
