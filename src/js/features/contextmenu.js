@@ -1,19 +1,12 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.buildcontextmenu = function() {
         var t = this;
         
-        function genericOnClick(info) {
-            if(info.parentMenuItemId === 'setPlaybackRate') {
-                t[info.parentMenuItemId](info.menuItemId);
-            }
-            else if(info.parentMenuItemId === 'setAspectRatio') {
-                t[info.parentMenuItemId](info.menuItemId);
-            }
-            else if(info.parentMenuItemId === 'setPlayType') {
+        function contextCallback(info) {
+            if(info.parentMenuItemId.startsWith('set')) {
                 t[info.parentMenuItemId](info.menuItemId);
             }
             else {
-                console.log(info);
                 t[info.menuItemId]();
             }
         }
@@ -48,7 +41,7 @@
             chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
         
         chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
-            chrome.contextMenus.create({ 'title': 'Set Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });
+            chrome.contextMenus.create({ 'title': 'Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });
                 chrome.contextMenus.create({ 'title': 'Normal', 'type': 'radio', 'parentId': 'setPlayType', 'id': '0p' });
                 chrome.contextMenus.create({ 'title': 'Repeat', 'type': 'radio', 'parentId': 'setPlayType', 'id': '1p' });
                 chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2p' });
@@ -57,7 +50,6 @@
         
         chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
         
-        chrome.contextMenus.onClicked.addListener(genericOnClick);
-
+        chrome.contextMenus.onClicked.addListener(contextCallback);
     };
-})(mejs.$);
+})();
