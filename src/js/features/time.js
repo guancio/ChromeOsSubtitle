@@ -40,9 +40,6 @@
     }
     
     MediaElementPlayer.prototype.updateDuration = function() {
-        //Toggle the long video class if the video is longer than an hour.
-        this.container.toggleClass("mejs-long-video", this.getDuration() > 3600);
-        
         if(this.durationD && this.getDuration()) {
             this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
