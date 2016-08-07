@@ -10,7 +10,7 @@
                 '</div>');
         
         fullscreenBtn.addEventListener('click', function() {
-            t[document.webkitIsFullScreen ? 'exitFullScreen' : 'enterFullScreen']();
+            t.toggleFullscreen();
         });
         
         t.rightControls[0].appendChild(fullscreenBtn);
@@ -18,13 +18,9 @@
         document.addEventListener("webkitfullscreenchange", function() {
             fullscreenBtn.classList.toggle('mejs-unfullscreen-button');
         }, false);
-    }
+    };
     
-    MediaElementPlayer.prototype.enterFullScreen = function() {
-        this.container[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-    
-    MediaElementPlayer.prototype.exitFullScreen = function() {
-        document.webkitCancelFullScreen();
-    }
+    MediaElementPlayer.prototype.toggleFullscreen = function() {
+        document.webkitIsFullScreen ? document.webkitCancelFullScreen() : this.container[0].webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    };
 })(mejs.$);

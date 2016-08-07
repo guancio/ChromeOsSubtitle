@@ -1,192 +1,55 @@
-/*
- * ContextMenu Plugin
- * 
- *
- */
-(function($) {
-    $.extend(mejs.MepDefaults, {
-        'contextMenuItems': [
-            // demo of a fullscreen option
-            {
-                render: function(player) {
-                    // check for fullscreen plugin
-                    if(typeof player.enterFullScreen == 'undefined')
-                        return null;
-                        
-                    if(player.isFullScreen) {
-                        return mejs.i18n.t('Turn off Fullscreen');
-                    } else {
-                        return mejs.i18n.t('Go Fullscreen');
-                    }
-                },
-                click: function(player) {
-                    if(player.isFullScreen) {
-                        player.exitFullScreen();
-                    } else {
-                        player.enterFullScreen();
-                    }
-                }
-            },
-            // demo of a mute/unmute button
-            {
-                render: function(player) {
-                    if(player.media.muted) {
-                        return mejs.i18n.t('Unmute');
-                    } else {
-                        return mejs.i18n.t('Mute');
-                    }
-                },
-                click: function(player) {
-                    if(player.media.muted) {
-                        player.setMuted(false);
-                    } else {
-                        player.setMuted(true);
-                    }
-                }
-            },
-            // separator
-            {
-                isSeparator: true
-            },
-            // demo of simple download video
-            {
-                render: function(player) {
-                    return mejs.i18n.t('Download Video');
-                },
-                click: function(player) {
-                    window.location.href = player.media.currentSrc;
-                }
-            },
-        ],
-        
-        isContextMenuEnabled: true,
-        
-        contextMenuTimeout: null,
-    });
-    
-    MediaElementPlayer.prototype.buildcontextmenu = function(player, controls, layers, media) {
-        // create context menu
-        player.contextMenu = $('<div class="mejs-contextmenu"></div>')
-            .appendTo($('body'))
-            .hide();
-            
-        // create events for showing context menu
-        player.container.bind('contextmenu', function(e) {
-            if(player.isContextMenuEnabled) {
-                e.preventDefault();
-                player.renderContextMenu(e.clientX - 1, e.clientY - 1);
-                return false;
-            }
-        });
-        player.container.bind('click', function() {
-            player.contextMenu.hide();
-        });
-        player.contextMenu.bind('mouseleave', function() {
-        
-            //console.log('context hover out');
-            player.startContextMenuTimer();
-            
-        });
-    }
-    
-    MediaElementPlayer.prototype.cleancontextmenu = function(player) {
-        player.contextMenu.remove();
-    }
-    
-    MediaElementPlayer.prototype.enableContextMenu = function() {
-        this.isContextMenuEnabled = true;
-    }
-    
-    MediaElementPlayer.prototype.disableContextMenu = function() {
-        this.isContextMenuEnabled = false;
-    }
-    
-    MediaElementPlayer.prototype.startContextMenuTimer = function() {
-        //console.log('startContextMenuTimer');
-        
+(function() {
+    MediaElementPlayer.prototype.buildcontextmenu = function() {
         var t = this;
         
-        t.killContextMenuTimer();
-        
-        t.contextMenuTimer = setTimeout(function() {
-            t.hideContextMenu();
-            t.killContextMenuTimer();
-        }, 750);
-    }
-    
-    MediaElementPlayer.prototype.killContextMenuTimer = function() {
-        var timer = this.contextMenuTimer;
-        
-        //console.log('killContextMenuTimer', timer);
-        
-        if(timer != null) {
-            clearTimeout(timer);
-            delete timer;
-            timer = null;
-        }
-    }
-    
-    MediaElementPlayer.prototype.hideContextMenu = function() {
-        this.contextMenu.hide();
-    }
-    
-    MediaElementPlayer.prototype.renderContextMenu = function(x, y) {
-        // alway re-render the items so that things like "turn fullscreen on" and "turn fullscreen off" are always written correctly
-        var t = this,
-            html = '',
-            items = t.options.contextMenuItems;
-            
-        for(var i = 0, il = items.length; i < il; i++) {
-        
-            if(items[i].isSeparator) {
-                html += '<div class="mejs-contextmenu-separator"></div>';
-            } else {
-            
-                var rendered = items[i].render(t);
-                
-                // render can return null if the item doesn't need to be used at the moment
-                if(rendered != null) {
-                    html += '<div class="mejs-contextmenu-item" data-itemindex="' + i + '" id="element-' + (Math.random() * 1000000) + '">' + rendered + '</div>';
-                }
+        function contextCallback(info) {
+            if(info.parentMenuItemId.startsWith('set')) {
+                t[info.parentMenuItemId](info.menuItemId);
+            }
+            else {
+                t[info.menuItemId]();
             }
         }
         
-        // position and show the context menu
-        t.contextMenu
-            .empty()
-            .append($(html))
-            .css({
-                top: y,
-                left: x
-            })
-            .show();
-            
-        // bind events
-        t.contextMenu.find('.mejs-contextmenu-item').each(function() {
+        chrome.contextMenus.create({ 'title': 'Open Media', 'id': 'openFileForm' });
+        chrome.contextMenus.create({ 'title': 'Toggle Fullscreen', 'id': 'toggleFullscreen' });
         
-            // which one is this?
-            var $dom = $(this),
-                itemIndex = parseInt($dom.data('itemindex'), 10),
-                item = t.options.contextMenuItems[itemIndex];
-                
-            // bind extra functionality?
-            if(typeof item.show != 'undefined')
-                item.show($dom, t);
-                
-            // bind click action
-            $dom.click(function() {
-                // perform click action
-                if(typeof item.click != 'undefined')
-                    item.click(t);
-                    
-                // close
-                t.contextMenu.hide();
-            });
-        });
+        chrome.contextMenus.create({ 'title': 'Playback Rate', 'id': 'playbackRate' });
+            chrome.contextMenus.create({ 'title': 'Set', 'parentId': 'playbackRate', 'id': 'setPlaybackRate' });
+                chrome.contextMenus.create({ 'title': '50%', 'parentId': 'setPlaybackRate', 'id': '0.50' });
+                chrome.contextMenus.create({ 'title': '150%', 'parentId': 'setPlaybackRate', 'id': '1.50' });
+                chrome.contextMenus.create({ 'title': '200%', 'parentId': 'setPlaybackRate', 'id': '2.00' });
+            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'playbackRate', 'id': 'incPlaybackRate' });
+            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'playbackRate', 'id': 'decPlaybackRate' });
+            chrome.contextMenus.create({ 'title': 'Reset', 'parentId': 'playbackRate', 'id': 'resetPlaybackRate' });
         
-        // stop the controls from hiding
-        setTimeout(function() {
-            t.killControlsTimer('rev3');
-        }, 100);
-    }
-})(mejs.$);
+        chrome.contextMenus.create({ 'title': 'Aspect Ratio', 'id': 'setAspectRatio' });
+            chrome.contextMenus.create({ 'title': 'Default', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '0a' });
+            chrome.contextMenus.create({ 'title': '1:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '1a' });
+            chrome.contextMenus.create({ 'title': '4:3', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '2a' });
+            chrome.contextMenus.create({ 'title': '16:9', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '3a' });
+            chrome.contextMenus.create({ 'title': '16:10', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '4a' });
+            chrome.contextMenus.create({ 'title': '2.21:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '5a' });
+            chrome.contextMenus.create({ 'title': '2.35:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '6a' });
+            chrome.contextMenus.create({ 'title': '2.39:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '7a' });
+            chrome.contextMenus.create({ 'title': '5:4', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '8a' });
+          
+        chrome.contextMenus.create({ 'title': 'Download Subtitles', 'id': 'openSubtitleLogIn' });
+        
+        chrome.contextMenus.create({ 'title': 'Caption Size', 'id': 'captionSize' });
+            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
+            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
+        
+        chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
+            chrome.contextMenus.create({ 'title': 'Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });
+                chrome.contextMenus.create({ 'title': 'Normal', 'type': 'radio', 'parentId': 'setPlayType', 'id': '0p' });
+                chrome.contextMenus.create({ 'title': 'Repeat', 'type': 'radio', 'parentId': 'setPlayType', 'id': '1p' });
+                chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2p' });
+            chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
+            chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
+        
+        chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
+        
+        chrome.contextMenus.onClicked.addListener(contextCallback);
+    };
+})();
