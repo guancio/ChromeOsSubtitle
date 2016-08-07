@@ -25,12 +25,14 @@
                     pos = 0;
                 
                 if(t.getSrc()) {
+                    //__UKN#2__ Why is x normalised? It will ALWAYS be > offset.left
+                    // and ALWAYS be < width + offset.left.
                     if(x < offset.left) {
                         x = offset.left;
                     } else if(x > width + offset.left) {
                         x = width + offset.left;
                     }
-                    console.log(offset.left, width);
+                    
                     pos = x - offset.left;
                     newTime = (pos / width) * t.getDuration();
                     
