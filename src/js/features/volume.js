@@ -10,7 +10,9 @@
             source = audioContext.createMediaElementSource(this.media);
         
         this.gainNode = audioContext.createGain();
-        source.connect(this.gainNode);
+        this.delayNode = audioContext.createDelay(2.0);
+        source.connect(this.delayNode);
+        this.delayNode.connect(this.gainNode);
         this.gainNode.connect(audioContext.destination);
         
         // Android and iOS don't support volume controls
