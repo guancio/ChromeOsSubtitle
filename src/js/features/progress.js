@@ -30,7 +30,7 @@
                     } else if(x > width + offset.left) {
                         x = width + offset.left;
                     }
-                    
+                    console.log(offset.left, width);
                     pos = x - offset.left;
                     newTime = (pos / width) * t.getDuration();
                     
