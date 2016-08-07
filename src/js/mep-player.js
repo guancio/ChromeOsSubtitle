@@ -259,7 +259,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 // ended for all
                 t.media.addEventListener('ended', function(e) {
                     t.next();
-                
+                    
                     if(t.isPaused()) {
                         $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
                     }
@@ -541,7 +541,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     break;
             }
         },
-        
         
         brightness: 1.0,
         
