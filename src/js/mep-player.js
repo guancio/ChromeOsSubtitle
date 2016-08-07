@@ -510,6 +510,11 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.brightness = Math.min(Math.max(0.5, this.brightness + (inc ? 0.1 : -0.1)), 2);
             this.media.style.webkitFilter = 'brightness(' + this.brightness + ')';
             this.notify('Brightness x' + this.brightness.toFixed(1));
+        },
+        
+        changeAudioDelay: function(inc) {
+            this.delayNode.delayTime.value = Math.min(Math.max(0, (this.delayNode.delayTime.value + (inc ? 0.05 : -0.05))), 2);
+            this.notify('Audio Delay: ' + (this.delayNode.delayTime.value * 1000).toFixed() + 'ms.');
         }
     };
     
