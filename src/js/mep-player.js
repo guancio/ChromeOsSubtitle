@@ -55,7 +55,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.isVideo = (tagName !== 'audio' && t.options.isVideo);
             }
             
-            // use native controls in Android	
+            // use native controls in Android
             if(mf.isAndroid && t.options.AndroidUseNativeControls) {
                 // leave default player
                 
@@ -436,6 +436,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             return this.media.currentTime;
         },
         
+        getVolume: function() {
+            return this.gainNode.gain.value > 1 ? this.gainNode.gain.value : this.media.volume;
+        },
+        
         setVolume: function(volume) {
             if(volume <= 1) {
                 this.media.volume = volume;
@@ -448,10 +452,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 //trigger volume change event.
                 this.media.dispatchEvent(new Event('volumechange'));
             }
-        },
-        
-        getVolume: function() {
-            return this.gainNode.gain.value > 1 ? this.gainNode.gain.value : this.media.volume;
+            
+            this.notify('Volume: ' + (this.getVolume() * 100).toFixed() + '%');
         },
         
         setSrc: function(file) {
@@ -463,19 +465,26 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             return this.media.currentSrc;
         },
         
+        
+        getPlaybackRate: function(value) {
+            return this.media.playbackRate;
+        },
+        
+        setPlaybackRate: function(value) {
+            this.media.playbackRate = parseFloat(value);
+            this.notify('Playback Rate: x' + this.media.playbackRate.toFixed(2));
+        },
+        
         resetPlaybackRate: function() {
-            this.media.playbackRate = 1.0;
-            this.notify('Playback Rate: x1.00');
+            this.setPlaybackRate(1);
         },
         
         incPlaybackRate: function() {
-            this.media.playbackRate += 0.05;
-            this.notify('Playback Rate: x' + this.media.playbackRate.toFixed(2));
+            this.setPlaybackRate(this.getPlaybackRate() + 0.05);
         },
         
         decPlaybackRate: function() {
-            this.media.playbackRate = Math.max(0.05, this.media.playbackRate - 0.05);
-            this.notify('Playback Rate: x' + this.media.playbackRate.toFixed(2));
+            this.setPlaybackRate(Math.max(0.05, this.getPlaybackRate() - 0.05));
         },
         
         toggleLoop: function() {
@@ -510,10 +519,15 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
         },
         
-        changeAspectRatio: function() {
-            this.currentAspectRatio = (this.currentAspectRatio + 1) % this.options.aspectRatios.length;
+        setAspectRatio : function(value) {
+            this.currentAspectRatio = parseInt(value);
             this.resizeVideo();
             this.notify('Aspect Ratio: ' + this.options.aspectRatiosText[this.currentAspectRatio]);
+            chrome.contextMenus.update(this.currentAspectRatio + 'a', { 'checked': true });
+        },
+        
+        cycleAspectRatio: function() {
+            this.setAspectRatio((this.currentAspectRatio + 1)  % this.options.aspectRatios.length);
         },
         
         moveCaptions: function(keyCode) {

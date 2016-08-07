@@ -14,12 +14,13 @@
   },
     "file_handlers": {
 	"video": {
-	    "types": ["video/*"]
+	    "types": ["video/*", "audio/*"]
 	}
     },
   "permissions":[
     {"fileSystem": ["retainEntries", "directory"]} ,
     "fullscreen",
+    "contextMenus",
     "http://api.opensubtitles.org/xml-rpc",
     "https://subtitlevideoplayer.appspot.com/",
     "https://www.google-analytics.com/",

@@ -51,8 +51,13 @@
         this.setSrc(this.playlist[this.playIndex]);
     };
     
-    MediaElementPlayer.prototype.changePlayType = function() {
-        playType = (playType + 1) % 3;
+    MediaElementPlayer.prototype.setPlayType = function(value) {
+        playType = parseInt(value);
+        chrome.contextMenus.update(playType + 'p', { 'checked': true });
         this.notify('Playlist Navigation: ' + playTypes[playType]);
+    };
+    
+    MediaElementPlayer.prototype.cyclePlayType = function() {
+        this.setPlayType((playType + 1) % 3);
     };
 })();
