@@ -9,14 +9,10 @@
         // force Android's native controls
         AndroidUseNativeControls: false,
         // features to show
-        features: ['contextmenu', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats'],
+        features: ['contextmenu', 'aspectRatio', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats'],
         
         // only for dynamic
         isVideo: true,
-        
-        aspectRatios: [null, 1, 1.333333, 1.777778, 1.666666, 2.21, 2.35, 2.39, 1.25],
-        
-        aspectRatiosText: ['Default', '1:1', '4:3', '16:9', '16:10', '2.21:1', '2.35:1', '2.39:1', '5:4'],
         
         // array of keyboard actions such as play pause
         keyActions: [
