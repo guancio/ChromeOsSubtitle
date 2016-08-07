@@ -191,7 +191,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             if(!(mf.isAndroid && t.options.AndroidUseNativeControls)) {
                 // built in feature
-                t.buildoverlays(t, t.controls, t.layers, t.media);
+                t.buildoverlays();
                 
                 // grab for use by features
                 t.findTracks();
@@ -232,13 +232,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     } else {
                         // show/hide controls
                         t.container
-                            .bind('mouseenter mouseover', function() {
-                                if(!t.options.alwaysShowControls) {
-                                    t.killControlsTimer('enter');
-                                    t.showControls();
-                                    t.startControlsTimer(2500);
-                                }
-                            })
                             .bind('mousemove', function() {
                                 if(!t.controlsAreVisible) {
                                     t.showControls();
@@ -266,7 +259,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 // ended for all
                 t.media.addEventListener('ended', function(e) {
                     t.next();
-                
+                    
                     if(t.isPaused()) {
                         $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
                     }
@@ -492,44 +485,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.notify('Loop O' + (this.media.loop ? 'n.' : 'ff.'));
         },
         
-        currentAspectRatio: 0,
-        
-        resizeVideo: function() {
-            var targetAspectRatio,
-                wH = window.innerHeight,
-                wW = window.innerWidth;
-            
-            if(this.currentAspectRatio === 0) {
-                targetAspectRatio = this.media.videoWidth / this.media.videoHeight;
-            }
-            
-            else {
-                targetAspectRatio = this.options.aspectRatios[this.currentAspectRatio];
-            }
-            
-            if(wH * targetAspectRatio <= wW) {
-                //$(this.media).css('-webkit-transform', 'scale(' + (wH * targetAspectRatio) / this.media.videoWidth + ',' + wH / this.media.videoHeight + ')');
-                this.media.style.width = wH * targetAspectRatio;
-                this.media.style.height = wH;
-            }
-            else {
-                //$(this.media).css('-webkit-transform', 'scale(' + wW / this.media.videoWidth + ',' + wW / (targetAspectRatio * this.media.videoHeight) + ')');
-                this.media.style.width = wW;
-                this.media.style.height = wW / targetAspectRatio;
-            }
-        },
-        
-        setAspectRatio : function(value) {
-            this.currentAspectRatio = parseInt(value);
-            this.resizeVideo();
-            this.notify('Aspect Ratio: ' + this.options.aspectRatiosText[this.currentAspectRatio]);
-            chrome.contextMenus.update(this.currentAspectRatio + 'a', { 'checked': true });
-        },
-        
-        cycleAspectRatio: function() {
-            this.setAspectRatio((this.currentAspectRatio + 1)  % this.options.aspectRatios.length);
-        },
-        
         moveCaptions: function(keyCode) {
             var c = document.getElementsByClassName('mejs-captions-position')[0];
             
@@ -548,7 +503,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     break;
             }
         },
-        
         
         brightness: 1.0,
         

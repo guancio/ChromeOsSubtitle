@@ -15,6 +15,9 @@
 15. Added a very rudimentary playlist function. Can now use shortcuts to navigate through the playlist. Different types of navigation are also available.
 16. WebAudio API is now used to provided volume levels beyond 100%. The current limit is at 200%. This can be increased if needed. Performance of WebAudio seems to be good at first glance. More research is needed to determine if the extra CPU cycles are worth the amplification.
 17. Choosing multiple files is now possible in chromeOS as well.
+18. contextmenu for those who hate keyboard shortcuts.
+19. major changes in design.
+20. App is now more efficient resulting in improved battery life.
 
 Keyboard shortcuts:
 Spacebar - Toggle play.
@@ -33,6 +36,7 @@ Ctrl + [ - Previous Media
 Ctrl + ] - Next Media
 Ctrl + q - Change Playlist Navigation
 Ctrl + a - Change Aspect Ratio
+Shift + Up/Down - Change Brightness
 
 Known issues:
 1. Prioritizing downloaded subtitles is a little tricky. Sometimes split CD subtitles (CD1, CD2...) are loaded. The user, however, can always pick different subs from the menu thanks to the already implemented system.

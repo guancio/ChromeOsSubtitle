@@ -25,6 +25,8 @@
                     pos = 0;
                 
                 if(t.getSrc()) {
+                    //__UKN#2__ Why is x normalised? It will ALWAYS be > offset.left
+                    // and ALWAYS be < width + offset.left.
                     if(x < offset.left) {
                         x = offset.left;
                     } else if(x > width + offset.left) {
@@ -41,7 +43,7 @@
                     
                     // position floating time box
                     if(!mejs.MediaFeatures.hasTouch && t.getSrc()) {
-                        timefloat[0].style.left = pos + 78;
+                        timefloat[0].style.left = pos + 79;  //__UKN#1__ why is 79 needed?
                         timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
                         timefloat.show();
                     }
