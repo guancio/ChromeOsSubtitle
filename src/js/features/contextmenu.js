@@ -1,192 +1,69 @@
-/*
- * ContextMenu Plugin
- * 
- *
- */
 (function($) {
-    $.extend(mejs.MepDefaults, {
-        'contextMenuItems': [
-            // demo of a fullscreen option
-            {
-                render: function(player) {
-                    // check for fullscreen plugin
-                    if(typeof player.enterFullScreen == 'undefined')
-                        return null;
-                        
-                    if(player.isFullScreen) {
-                        return mejs.i18n.t('Turn off Fullscreen');
-                    } else {
-                        return mejs.i18n.t('Go Fullscreen');
-                    }
-                },
-                click: function(player) {
-                    if(player.isFullScreen) {
-                        player.exitFullScreen();
-                    } else {
-                        player.enterFullScreen();
-                    }
-                }
-            },
-            // demo of a mute/unmute button
-            {
-                render: function(player) {
-                    if(player.media.muted) {
-                        return mejs.i18n.t('Unmute');
-                    } else {
-                        return mejs.i18n.t('Mute');
-                    }
-                },
-                click: function(player) {
-                    if(player.media.muted) {
-                        player.setMuted(false);
-                    } else {
-                        player.setMuted(true);
-                    }
-                }
-            },
-            // separator
-            {
-                isSeparator: true
-            },
-            // demo of simple download video
-            {
-                render: function(player) {
-                    return mejs.i18n.t('Download Video');
-                },
-                click: function(player) {
-                    window.location.href = player.media.currentSrc;
-                }
-            },
-        ],
-        
-        isContextMenuEnabled: true,
-        
-        contextMenuTimeout: null,
-    });
-    
-    MediaElementPlayer.prototype.buildcontextmenu = function(player, controls, layers, media) {
-        // create context menu
-        player.contextMenu = $('<div class="mejs-contextmenu"></div>')
-            .appendTo($('body'))
-            .hide();
+    MediaElementPlayer.prototype.buildcontextmenu = function() {
+        function onClickHandler(info, tab) {
+          if (info.menuItemId == "radio1" || info.menuItemId == "radio2") {
+            console.log("radio item " + info.menuItemId +
+                        " was clicked (previous checked state was "  +
+                        info.wasChecked + ")");
+          } else if (info.menuItemId == "checkbox1" || info.menuItemId == "checkbox2") {
+            console.log(JSON.stringify(info));
+            console.log("checkbox item " + info.menuItemId +
+                        " was clicked, state is now: " + info.checked +
+                        " (previous state was " + info.wasChecked + ")");
             
-        // create events for showing context menu
-        player.container.bind('contextmenu', function(e) {
-            if(player.isContextMenuEnabled) {
-                e.preventDefault();
-                player.renderContextMenu(e.clientX - 1, e.clientY - 1);
-                return false;
+          } else {
+            console.log("item " + info.menuItemId + " was clicked");
+            console.log("info: " + JSON.stringify(info));
+            console.log("tab: " + JSON.stringify(tab));
+          }
+        };
+        
+        chrome.contextMenus.onClicked.addListener(onClickHandler);
+        
+        // Set up context menu tree at install time.
+        chrome.runtime.onInstalled.addListener(function() {
+          // Create one test item for each context type.
+          var contexts = ["page","selection","link","editable","image","video",
+                          "audio"];
+          for (var i = 0; i < contexts.length; i++) {
+            var context = contexts[i];
+            var title = "Test '" + context + "' menu item";
+            var id = chrome.contextMenus.create({"title": title, "contexts":[context],
+                                                 "id": "context" + context});
+            console.log("'" + context + "' item:" + id);
+          }
+          
+          // Create a parent item and two children.
+          chrome.contextMenus.create({"title": "Test parent item", "id": "parent"});
+          chrome.contextMenus.create(
+              {"title": "Child 1", "parentId": "parent", "id": "child1"});
+          chrome.contextMenus.create(
+              {"title": "Child 2", "parentId": "parent", "id": "child2"});
+          console.log("parent child1 child2");
+          
+          // Create some radio items.
+          chrome.contextMenus.create({"title": "Radio 1", "type": "radio",
+                                      "id": "radio1"});
+          chrome.contextMenus.create({"title": "Radio 2", "type": "radio",
+                                      "id": "radio2"});
+          console.log("radio1 radio2");
+          
+          // Create some checkbox items.
+          chrome.contextMenus.create(
+              {"title": "Checkbox1", "type": "checkbox", "id": "checkbox1"});
+          chrome.contextMenus.create(
+              {"title": "Checkbox2", "type": "checkbox", "id": "checkbox2"});
+          console.log("checkbox1 checkbox2");
+          
+          // Intentionally create an invalid item, to show off error checking in the
+          // create callback.
+          console.log("About to try creating an invalid item - an error about " +
+              "duplicate item child1 should show up");
+          chrome.contextMenus.create({"title": "Oops", "id": "child1"}, function() {
+            if (chrome.extension.lastError) {
+              console.log("Got expected error: " + chrome.extension.lastError.message);
             }
+          });
         });
-        player.container.bind('click', function() {
-            player.contextMenu.hide();
-        });
-        player.contextMenu.bind('mouseleave', function() {
-        
-            //console.log('context hover out');
-            player.startContextMenuTimer();
-            
-        });
-    }
-    
-    MediaElementPlayer.prototype.cleancontextmenu = function(player) {
-        player.contextMenu.remove();
-    }
-    
-    MediaElementPlayer.prototype.enableContextMenu = function() {
-        this.isContextMenuEnabled = true;
-    }
-    
-    MediaElementPlayer.prototype.disableContextMenu = function() {
-        this.isContextMenuEnabled = false;
-    }
-    
-    MediaElementPlayer.prototype.startContextMenuTimer = function() {
-        //console.log('startContextMenuTimer');
-        
-        var t = this;
-        
-        t.killContextMenuTimer();
-        
-        t.contextMenuTimer = setTimeout(function() {
-            t.hideContextMenu();
-            t.killContextMenuTimer();
-        }, 750);
-    }
-    
-    MediaElementPlayer.prototype.killContextMenuTimer = function() {
-        var timer = this.contextMenuTimer;
-        
-        //console.log('killContextMenuTimer', timer);
-        
-        if(timer != null) {
-            clearTimeout(timer);
-            delete timer;
-            timer = null;
-        }
-    }
-    
-    MediaElementPlayer.prototype.hideContextMenu = function() {
-        this.contextMenu.hide();
-    }
-    
-    MediaElementPlayer.prototype.renderContextMenu = function(x, y) {
-        // alway re-render the items so that things like "turn fullscreen on" and "turn fullscreen off" are always written correctly
-        var t = this,
-            html = '',
-            items = t.options.contextMenuItems;
-            
-        for(var i = 0, il = items.length; i < il; i++) {
-        
-            if(items[i].isSeparator) {
-                html += '<div class="mejs-contextmenu-separator"></div>';
-            } else {
-            
-                var rendered = items[i].render(t);
-                
-                // render can return null if the item doesn't need to be used at the moment
-                if(rendered != null) {
-                    html += '<div class="mejs-contextmenu-item" data-itemindex="' + i + '" id="element-' + (Math.random() * 1000000) + '">' + rendered + '</div>';
-                }
-            }
-        }
-        
-        // position and show the context menu
-        t.contextMenu
-            .empty()
-            .append($(html))
-            .css({
-                top: y,
-                left: x
-            })
-            .show();
-            
-        // bind events
-        t.contextMenu.find('.mejs-contextmenu-item').each(function() {
-        
-            // which one is this?
-            var $dom = $(this),
-                itemIndex = parseInt($dom.data('itemindex'), 10),
-                item = t.options.contextMenuItems[itemIndex];
-                
-            // bind extra functionality?
-            if(typeof item.show != 'undefined')
-                item.show($dom, t);
-                
-            // bind click action
-            $dom.click(function() {
-                // perform click action
-                if(typeof item.click != 'undefined')
-                    item.click(t);
-                    
-                // close
-                t.contextMenu.hide();
-            });
-        });
-        
-        // stop the controls from hiding
-        setTimeout(function() {
-            t.killControlsTimer('rev3');
-        }, 100);
-    }
+    };
 })(mejs.$);
