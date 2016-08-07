@@ -1,69 +1,63 @@
 (function($) {
     MediaElementPlayer.prototype.buildcontextmenu = function() {
-        function onClickHandler(info, tab) {
-          if (info.menuItemId == "radio1" || info.menuItemId == "radio2") {
-            console.log("radio item " + info.menuItemId +
-                        " was clicked (previous checked state was "  +
-                        info.wasChecked + ")");
-          } else if (info.menuItemId == "checkbox1" || info.menuItemId == "checkbox2") {
-            console.log(JSON.stringify(info));
-            console.log("checkbox item " + info.menuItemId +
-                        " was clicked, state is now: " + info.checked +
-                        " (previous state was " + info.wasChecked + ")");
-            
-          } else {
-            console.log("item " + info.menuItemId + " was clicked");
-            console.log("info: " + JSON.stringify(info));
-            console.log("tab: " + JSON.stringify(tab));
-          }
-        };
+        var t = this;
         
-        chrome.contextMenus.onClicked.addListener(onClickHandler);
-        
-        // Set up context menu tree at install time.
-        chrome.runtime.onInstalled.addListener(function() {
-          // Create one test item for each context type.
-          var contexts = ["page","selection","link","editable","image","video",
-                          "audio"];
-          for (var i = 0; i < contexts.length; i++) {
-            var context = contexts[i];
-            var title = "Test '" + context + "' menu item";
-            var id = chrome.contextMenus.create({"title": title, "contexts":[context],
-                                                 "id": "context" + context});
-            console.log("'" + context + "' item:" + id);
-          }
-          
-          // Create a parent item and two children.
-          chrome.contextMenus.create({"title": "Test parent item", "id": "parent"});
-          chrome.contextMenus.create(
-              {"title": "Child 1", "parentId": "parent", "id": "child1"});
-          chrome.contextMenus.create(
-              {"title": "Child 2", "parentId": "parent", "id": "child2"});
-          console.log("parent child1 child2");
-          
-          // Create some radio items.
-          chrome.contextMenus.create({"title": "Radio 1", "type": "radio",
-                                      "id": "radio1"});
-          chrome.contextMenus.create({"title": "Radio 2", "type": "radio",
-                                      "id": "radio2"});
-          console.log("radio1 radio2");
-          
-          // Create some checkbox items.
-          chrome.contextMenus.create(
-              {"title": "Checkbox1", "type": "checkbox", "id": "checkbox1"});
-          chrome.contextMenus.create(
-              {"title": "Checkbox2", "type": "checkbox", "id": "checkbox2"});
-          console.log("checkbox1 checkbox2");
-          
-          // Intentionally create an invalid item, to show off error checking in the
-          // create callback.
-          console.log("About to try creating an invalid item - an error about " +
-              "duplicate item child1 should show up");
-          chrome.contextMenus.create({"title": "Oops", "id": "child1"}, function() {
-            if (chrome.extension.lastError) {
-              console.log("Got expected error: " + chrome.extension.lastError.message);
+        function genericOnClick(info) {
+            if(info.parentMenuItemId === 'setPlaybackRate') {
+                t[info.parentMenuItemId](info.menuItemId);
             }
-          });
-        });
+            else if(info.parentMenuItemId === 'setAspectRatio') {
+                t[info.parentMenuItemId](info.menuItemId);
+            }
+            else if(info.parentMenuItemId === 'setPlayType') {
+                t[info.parentMenuItemId](info.menuItemId);
+            }
+            else {
+                console.log(info);
+                t[info.menuItemId]();
+            }
+        }
+        
+        chrome.contextMenus.create({ 'title': 'Open Media', 'id': 'openFileForm' });
+        chrome.contextMenus.create({ 'title': 'Toggle Fullscreen', 'id': 'toggleFullscreen' });
+        
+        chrome.contextMenus.create({ 'title': 'Playback Rate', 'id': 'playbackRate' });
+            chrome.contextMenus.create({ 'title': 'Set', 'parentId': 'playbackRate', 'id': 'setPlaybackRate' });
+                chrome.contextMenus.create({ 'title': '50%', 'parentId': 'setPlaybackRate', 'id': '0.50' });
+                chrome.contextMenus.create({ 'title': '150%', 'parentId': 'setPlaybackRate', 'id': '1.50' });
+                chrome.contextMenus.create({ 'title': '200%', 'parentId': 'setPlaybackRate', 'id': '2.00' });
+            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'playbackRate', 'id': 'incPlaybackRate' });
+            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'playbackRate', 'id': 'decPlaybackRate' });
+            chrome.contextMenus.create({ 'title': 'Reset', 'parentId': 'playbackRate', 'id': 'resetPlaybackRate' });
+        
+        chrome.contextMenus.create({ 'title': 'Aspect Ratio', 'id': 'setAspectRatio' });
+            chrome.contextMenus.create({ 'title': 'Default', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '0a' });
+            chrome.contextMenus.create({ 'title': '1:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '1a' });
+            chrome.contextMenus.create({ 'title': '4:3', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '2a' });
+            chrome.contextMenus.create({ 'title': '16:9', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '3a' });
+            chrome.contextMenus.create({ 'title': '16:10', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '4a' });
+            chrome.contextMenus.create({ 'title': '2.21:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '5a' });
+            chrome.contextMenus.create({ 'title': '2.35:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '6a' });
+            chrome.contextMenus.create({ 'title': '2.39:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '7a' });
+            chrome.contextMenus.create({ 'title': '5:4', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '8a' });
+          
+        chrome.contextMenus.create({ 'title': 'Download Subtitles', 'id': 'openSubtitleLogIn' });
+        
+        chrome.contextMenus.create({ 'title': 'Caption Size', 'id': 'captionSize' });
+            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
+            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
+        
+        chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
+            chrome.contextMenus.create({ 'title': 'Set Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });
+                chrome.contextMenus.create({ 'title': 'Normal', 'type': 'radio', 'parentId': 'setPlayType', 'id': '0p' });
+                chrome.contextMenus.create({ 'title': 'Repeat', 'type': 'radio', 'parentId': 'setPlayType', 'id': '1p' });
+                chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2p' });
+            chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
+            chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
+        
+        chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
+        
+        chrome.contextMenus.onClicked.addListener(genericOnClick);
+
     };
 })(mejs.$);
