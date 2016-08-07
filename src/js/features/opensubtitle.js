@@ -238,6 +238,11 @@ var openSubsLang = [
         }
         
         function logIn() {
+            if(!t.getSrc()) {
+                t.notify('Please load media.', 2000);
+                return;
+            }
+            
             $(document).trigger("opensubtitlesDownload");
             
             info("1/6 Authenticating...");
@@ -245,7 +250,7 @@ var openSubsLang = [
                 params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
                 onException: function(errorObj) {
                     info("Authentiation failed");
-                    t.setNotification('Opensubtitles.org authentication failed!', 2000);
+                    t.notify('Opensubtitles.org authentication failed!', 2000);
                 },
                 onComplete: function(responseObj) {
                     t.opensubtitleService.token = responseObj.result.token;

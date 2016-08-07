@@ -190,7 +190,7 @@
             {
                 keys: [68], // d
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl && player.getSrc()) {
+                    if(activeModifiers.ctrl) {
                         player.openSubtitleLogIn();
                     }
                 }
