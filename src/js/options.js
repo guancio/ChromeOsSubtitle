@@ -155,6 +155,9 @@
                     if(activeModifiers.ctrl) {
                         player.incPlaybackRate();
                     }
+                    else if(activeModifiers.alt) {
+                        player.changeAudioDelay(true);
+                    }
                 }
             },
             {
@@ -162,6 +165,9 @@
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
                         player.decPlaybackRate();
+                    }
+                    else if(activeModifiers.alt) {
+                        player.changeAudioDelay(false);
                     }
                 }
             },
