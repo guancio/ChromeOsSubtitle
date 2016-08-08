@@ -1,5 +1,9 @@
 (function() {
     MediaElementPlayer.prototype.buildcontextmenu = function() {
+        if(!packaged_app) {
+            return;
+        }
+        
         var t = this;
         
         function contextCallback(info) {
