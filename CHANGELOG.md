@@ -41,9 +41,9 @@ Shift + Up/Down - Change Brightness
 Known issues:
 1. Prioritizing downloaded subtitles is a little tricky. Sometimes split CD subtitles (CD1, CD2...) are loaded. The user, however, can always pick different subs from the menu thanks to the already implemented system.
 2. Subtitle download sometimes fails for some weird reasons. Retrying almost always works. Bug in XML-RPC.js? Bug in opensubtile? Dont know yet!
-3. Buttons are not properly resized sometimes, The fullscreen button moves out of position. Resizing the windows fixes it. (fixed? frequency of bug has reduced. fixed i guess)
+3. Buttons are not properly resized sometimes, The fullscreen button moves out of position. Resizing the windows fixes it. (fixed? frequency of bug has reduced. fixed i guess). resizing to very, very small sizes causes problems
 4. Opening files from external devices result in a empty file.fileType property. Hence, drag and drop fails in this situation.
-
+5. timefloat element is a little offsetted.
 
 Improvements to be made:
 1. Redesign the controls bar. A more modern and minimalistic approach may be applauded by the community.

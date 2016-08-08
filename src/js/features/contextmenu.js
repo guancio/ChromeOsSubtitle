@@ -1,9 +1,13 @@
 (function() {
     MediaElementPlayer.prototype.buildcontextmenu = function() {
+        if(!packaged_app) {
+            return;
+        }
+        
         var t = this;
         
         function contextCallback(info) {
-            if(info.parentMenuItemId.startsWith('set')) {
+            if(info.parentMenuItemId && info.parentMenuItemId.startsWith('set')) {
                 t[info.parentMenuItemId](info.menuItemId);
             }
             else {
