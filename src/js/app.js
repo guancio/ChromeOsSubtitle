@@ -21,13 +21,17 @@ $('#player').mediaelementplayer({
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length)
                 return false;
             
-            for (var i = 0; i < window.launchData.items.length; i++) {
-                t.playlist.push(window.launchData.items[i].entry);
-            }
-            
-            t.tracks = [];
-            t.playIndex = 0;
-            t.setSrc(t.playlist[t.playIndex]);
+            window.launchData.items.forEach(function(e, i) {
+                e.entry.file(function(file) {
+                    t.playlist.push(file);
+                    
+                    if(i === window.launchData.items.length - 1) {
+                        t.tracks = [];
+                        t.playIndex = 0;
+                        t.setSrc(t.playlist[t.playIndex]);
+                    }
+                });
+            });
             
             return true;
         }
