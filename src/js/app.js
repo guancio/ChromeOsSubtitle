@@ -21,20 +21,13 @@ $('#player').mediaelementplayer({
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length)
                 return false;
             
-            t.playlist = [];
-            t.playIndex = null;
+            for (var i = 0; i < window.launchData.items.length; i++) {
+                t.playlist.push(window.launchData.items[i].entry);
+            }
             
-            window.launchData.items.forEach(function(entry, i) {
-                entry.file(function(file) {
-                    t.playlist.push(file);
-                    
-                    if(i === window.launchData.items.length - 1) {
-                        t.tracks = [];
-                        
-                        t.setSrc(t.playlist[t.playIndex]);
-                    }
-                });
-            });
+            t.tracks = [];
+            t.playIndex = 0;
+            t.setSrc(t.playlist[t.playIndex]);
             
             return true;
         }
