@@ -150,9 +150,12 @@
                 }
             },
             {
-                keys: [190],  // ,
+                keys: [190],  // .
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
+                        player.incPlaybackRate(1);
+                    }
+                    else if(activeModifiers.ctrl) {
                         player.incPlaybackRate();
                     }
                     else if(activeModifiers.alt) {
@@ -161,9 +164,12 @@
                 }
             },
             {
-                keys: [188],  // .
+                keys: [188],  // ,
                 action: function(player, keyCode, activeModifiers) {
-                    if(activeModifiers.ctrl) {
+                    if(activeModifiers.ctrl && activeModifiers.shift) {
+                        player.decPlaybackRate(1);
+                    }
+                    else if(activeModifiers.ctrl) {
                         player.decPlaybackRate();
                     }
                     else if(activeModifiers.alt) {
@@ -208,6 +214,14 @@
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
                         player.toggleInfo();
+                    }
+                }
+            },
+            {
+                keys: [72], // h
+                action: function(player, keyCode, activeModifiers) {
+                    if(activeModifiers.ctrl) {
+                        player.toggleHelp();
                     }
                 }
             },
