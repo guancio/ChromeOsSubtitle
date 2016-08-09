@@ -23,9 +23,7 @@ mejs.HtmlMediaElementShim = {
             tagName = htmlMediaElement.tagName.toLowerCase(),
             isMediaTag = (tagName === 'audio' || tagName === 'video'),
             src = (isMediaTag) ? htmlMediaElement.getAttribute('src') : htmlMediaElement.getAttribute('href'),
-            poster = htmlMediaElement.getAttribute('poster'),
             autoplay = htmlMediaElement.getAttribute('autoplay'),
-            preload = htmlMediaElement.getAttribute('preload'),
             controls = htmlMediaElement.getAttribute('controls'),
             playback,
             prop;
@@ -37,8 +35,6 @@ mejs.HtmlMediaElementShim = {
         
         // clean up attributes
         src = (typeof src == 'undefined' || src === null || src == '') ? null : src;
-        poster = (typeof poster == 'undefined' || poster === null) ? '' : poster;
-        preload = (typeof preload == 'undefined' || preload === null || preload === 'false') ? 'none' : preload;
         autoplay = !(typeof autoplay == 'undefined' || autoplay === null || autoplay === 'false');
         controls = !(typeof controls == 'undefined' || controls === null || controls === 'false');
         
@@ -46,16 +42,9 @@ mejs.HtmlMediaElementShim = {
         playback = this.determinePlayback(htmlMediaElement, options, isMediaTag, src);
         playback.url = (playback.url !== null) ? mejs.Utility.absolutizeUrl(playback.url) : '';
         
-        // second fix for android
-        if(mejs.MediaFeatures.isBustedAndroid) {
-            htmlMediaElement.src = playback.url;
-            htmlMediaElement.addEventListener('click', function() {
-                htmlMediaElement.play();
-            }, false);
-        }
         // add methods to native HTMLMediaElement
         
-        return this.updateNative(playback, options, autoplay, preload);
+        return this.updateNative(playback, options, autoplay);
     },
     
     determinePlayback: function(htmlMediaElement, options, isMediaTag, src) {
@@ -80,25 +69,7 @@ mejs.HtmlMediaElementShim = {
             media;
         
         // STEP 1: Get URL and type from <video src> or <source src>
-        
-        // supplied type overrides <video type> and <source type>
-        if(typeof options.type != 'undefined' && options.type !== '') {
-            // accept either string or array of types
-            if(typeof options.type == 'string') {
-                mediaFiles.push({
-                    type: options.type,
-                    url: src
-                });
-            } else {
-                for(i = 0; i < options.type.length; i++) {
-                    mediaFiles.push({
-                        type: options.type[i],
-                        url: src
-                    });
-                }
-            }
-            // test for src attribute first
-        } else if(src !== null) {
+        if(src !== null) {
             type = this.formatType(src, htmlMediaElement.getAttribute('type'));
             mediaFiles.push({
                 type: type,
@@ -131,13 +102,6 @@ mejs.HtmlMediaElementShim = {
         }
         
         // STEP 2: Test for playback method
-        
-        // special case for Android which sadly doesn't implement the canPlayType function (always returns '')
-        if(mejs.MediaFeatures.isBustedAndroid) {
-            htmlMediaElement.canPlayType = function(type) {
-                return(type.match(/video\/(mp4|m4v)/gi) !== null) ? 'maybe' : '';
-            };
-        }
         
         if(!isMediaTag) {
             // create a real HTML5 Media Element 
@@ -227,14 +191,9 @@ mejs.HtmlMediaElementShim = {
         }
     },
     
-    updateNative: function(playback, options, autoplay, preload) {
+    updateNative: function(playback, options, autoplay) {
         var htmlMediaElement = playback.htmlMediaElement,
             m;
-        
-        // add methods to video object to bring it into parity with Flash Object
-        for(m in mejs.HtmlMediaElement) {
-            htmlMediaElement[m] = mejs.HtmlMediaElement[m];
-        }
         
         // fire success code
         options.success(htmlMediaElement);
