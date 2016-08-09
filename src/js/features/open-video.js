@@ -32,7 +32,6 @@
                             if(i === entries.length - 1) {
                                 t.stop();
                                 t.tracks = [];
-                                
                                 t.setSrc(t.playlist[t.playIndex]);
                             }
                         });
