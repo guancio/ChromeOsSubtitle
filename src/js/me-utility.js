@@ -2,21 +2,6 @@
 Utility methods
 */
 mejs.Utility = {
-    encodeUrl: function(url) {
-        return encodeURIComponent(url);
-    },
-    
-    escapeHTML: function(s) {
-        return s.toString().split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
-    },
-    
-    absolutizeUrl: function(url) {
-        var el = document.createElement('div');
-        el.innerHTML = '<a href="' + this.escapeHTML(url) + '">x</a>';
-        
-        return el.firstChild.href;
-    },
-    
     secondsToTimeCode: function(time) {
         var hours = Math.floor(time / 3600) % 24,
             minutes = Math.floor(time / 60) % 60,

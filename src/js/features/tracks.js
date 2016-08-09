@@ -538,15 +538,14 @@ zip.useWebWorkers = packaged_app;
     },
     
     MediaElementPlayer.prototype.displayCaptions = function() {
-    
         if(typeof this.tracks == 'undefined')
             return;
-            
+        
         var
             t = this,
             i,
             track = t.selectedTrack;
-            
+        
         var currTime = t.getCurrentTime() - t.capDelayValue;
         
         if(track != null && track.isLoaded) {
