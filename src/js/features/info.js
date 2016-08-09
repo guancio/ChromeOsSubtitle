@@ -4,12 +4,12 @@
             t = this;
         var infoText =
             '<div class="mejs-window" style="width: 650px;"><img src="' + mediaelement_url + 'icon.png" style="width:80px;height: auto;"/>' +
-            '<h2>Subtitle Videoplayer v1.10.0</h2>' +
+            '<h2>Subtitle Videoplayer v1.11.0</h2>' +
             'Plase visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br>Changeset in this release (thanks to vivekannan):';
         infoText = infoText + '<ul>';
-        infoText = infoText + '<li>Added a very rudimentary playlist function. Can now use shortcuts to navigate through the playlist.</li>';
-        infoText = infoText + '<li>WebAudio API is now used to provided volume levels beyond 100%</li>';
-        infoText = infoText + '<li>Choosing multiple files is now possible in chromeOS as well</li>';
+        infoText = infoText + '<li>Contextmenu for those who hate keyboard shortcuts</li>';
+        infoText = infoText + '<li>Major changes in design</li>';
+        infoText = infoText + '<li>App is now more efficient resulting in improved battery life</li>';
         infoText = infoText + '</ul>';
         infoText = infoText +
             'This software is possible thank to several open source projects:<ul>' +
