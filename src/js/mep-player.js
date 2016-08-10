@@ -450,6 +450,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         setSrc: function(file) {
+            if(this.getDuration()) {
+                this.stop();
+            }
+            
             this.media.src = window.URL.createObjectURL(file);
             document.title = file.name;
             
@@ -517,6 +521,21 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         changeAudioDelay: function(inc) {
             this.delayNode.delayTime.value = Math.min(Math.max(0, (this.delayNode.delayTime.value + (inc ? 0.05 : -0.05))), 2);
             this.notify('Audio Delay: ' + (this.delayNode.delayTime.value * 1000).toFixed() + 'ms.');
+        },
+        
+        filterFiles: function(files) {
+            var i, ext, t = this;
+            
+            for(i = 0; i < files.length; i++) {
+                ext = files[i].name.split('.')[-1];
+                
+                if(t.options.mediaExts.indexOf(ext) !== -1) {
+                    t.playlist.push(file);
+                }
+                else if(t.options.subExts.indexOf(ext) !== -1) {
+                    continue;
+                }
+            }
         }
     };
     

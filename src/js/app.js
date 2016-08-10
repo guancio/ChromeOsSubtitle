@@ -18,17 +18,23 @@ $('#player').mediaelementplayer({
         var t = mainMediaElement.player;
         
         function openCmdLineVideo() {
+            var temp;
+            
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length)
                 return false;
             
             window.launchData.items.forEach(function(e, i) {
                 e.entry.file(function(file) {
-                    t.playlist.push(file);
+                    temp.push(file);
                     
                     if(i === window.launchData.items.length - 1) {
-                        t.tracks = [];
-                        t.playIndex = 0;
-                        t.setSrc(t.playlist[t.playIndex]);
+                        t.filterFiles(temp);
+                        
+                        if(t.playlist.length > 0) {
+                            t.tracks = [];
+                            t.playIndex = 0;
+                            t.setSrc(t.playlist[t.playIndex]);
+                        }
                     }
                 });
             });
