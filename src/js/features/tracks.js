@@ -153,11 +153,17 @@ zip.useWebWorkers = packaged_app;
         
         srtFileInputs.change(function(e) {
             e.preventDefault();
-            if(srtFileInputs[0].files.length != 1)
-                return false;
-                
-            t.openSrtEntry(srtFileInputs[0].files[0]);
-            return false;
+            
+            if(e.files.length === 0)
+                return;
+            
+            t.subtitles[t.playIndex] = {
+                file: e.files[0],
+                entries: null,
+                isCorrupt: false
+            };
+            
+            t.loadSubtitles();
         });
         
         t.captionsButton.find('.mejs-captionload button').click(function(e) {
@@ -227,19 +233,8 @@ zip.useWebWorkers = packaged_app;
         t.capDelayValue = 0;
     };
     
-    MediaElementPlayer.prototype.loadSub = function(file) {
-        $(document).trigger(
-            "subtitleFileOpened",
-            file.name
-        );
-        
+    MediaElementPlayer.prototype.loadSubtitles = function() {
         var t = this;
-        
-        t.subtitles[t.playIndex] = {
-            file: file,
-            entries: null,
-            isCorrupt: false
-        };
         
         $('#label_srtname').css('visibility', 'inherit');
         $('#select_srtname').css('visibility', 'hidden');

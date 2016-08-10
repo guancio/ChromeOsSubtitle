@@ -533,7 +533,11 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     t.playlist.push(files[i]);
                 }
                 else if(t.options.subExts.indexOf(ext) !== -1) {
-                    continue;
+                    t.subtitles.push({
+                        file: files[i],
+                        entires: null,
+                        isCorrupt: false
+                    });
                 }
             }
             
