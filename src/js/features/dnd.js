@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.builddrop = function() {
         var t = this;
         
@@ -29,4 +29,4 @@
             }
         }, false);
     }
-})(mejs.$);
+})();

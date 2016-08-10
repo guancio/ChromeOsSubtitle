@@ -464,7 +464,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             return this.media.currentSrc;
         },
         
-        
         getPlaybackRate: function(value) {
             return this.media.playbackRate;
         },
