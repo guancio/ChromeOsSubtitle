@@ -608,60 +608,6 @@ a:visited {
     margin: 0 0 5px 0;
 }
 
-.mejs-chapters {
-    position: absolute;
-    top: 0;
-    left: 0;
-    -xborder-right: solid 1px #fff;
-    width: 10000px;
-    z-index: 1;
-}
-
-.mejs-chapters .mejs-chapter {
-    position: absolute;
-    float: left;
-    background: linear-gradient(rgba(50,50,50,0.7), rgba(0,0,0,0.7));
-    overflow: hidden;
-    border: 0;
-}
-
-.mejs-chapters .mejs-chapter .mejs-chapter-block {
-    font-size: 11px;
-    color: #fff;
-    padding: 5px;
-    display: block;
-    border-right: solid 1px #333;
-    border-bottom: solid 1px #333;
-    cursor: pointer;
-}
-
-.mejs-chapters .mejs-chapter .mejs-chapter-block-last {
-    border-right: none;
-}
-
-.mejs-chapters .mejs-chapter .mejs-chapter-block:hover {
-    background: linear-gradient(rgba(102,102,102,0.7), rgba(50,50,50,0.6));
-}
-
-.mejs-chapters .mejs-chapter .mejs-chapter-block .ch-title {
-    font-size: 12px;
-    font-weight: bold;
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin: 0 0 3px 0;
-    line-height: 12px;
-}
-
-.mejs-chapters .mejs-chapter .mejs-chapter-block .ch-timespan {
-    font-size: 12px;
-    line-height: 12px;
-    margin: 3px 0 4px 0;
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 .mejs-captions-layer {
     position: absolute;
     bottom: 0;
