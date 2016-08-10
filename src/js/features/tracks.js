@@ -7,18 +7,7 @@ zip.useWebWorkers = packaged_app;
         // this will automatically turn on a <track>
         startLanguage: '',
         
-        tracksText: mejs.i18n.t('Captions/Subtitles'),
-        
-        // option to remove the [cc] button when no <track kind="subtitles"> are present
-        hideCaptionsButtonWhenEmpty: true,
-        
-        // If true and we only have one track, change captions to popup
-        toggleCaptionsButtonWhenOnlyOne: false,
-        
-        // #id or .class
-        slidesSelector: '',
-        
-        hasChapters: false,
+        tracksText: mejs.i18n.t('Captions/Subtitles')
     });
     
     MediaElementPlayer.prototype.buildtracks = function() {
@@ -26,9 +15,6 @@ zip.useWebWorkers = packaged_app;
             i,
             options = '';
         
-        t.chapters =
-            $('<div class="mejs-chapters mejs-layer"></div>')
-            .prependTo(t.layers).hide();
         t.captions =
             $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .prependTo(t.layers).hide();
@@ -193,23 +179,19 @@ zip.useWebWorkers = packaged_app;
             event.stopPropagation();
         });
         
-        if(!t.options.alwaysShowControls) {
-            // move with controls
-            t.container
-                .bind('controlsshown', function() {
-                    // push captions above controls
-                    t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
-                    
-                })
-                .bind('controlshidden', function() {
-                    if(!t.isPaused()) {
-                        // move back to normal place
-                        t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
-                    }
-                });
-        } else {
-            t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
-        }
+        // move with controls
+        t.container
+            .bind('controlsshown', function() {
+                // push captions above controls
+                t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
+                
+            })
+            .bind('controlshidden', function() {
+                if(!t.isPaused()) {
+                    // move back to normal place
+                    t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
+                }
+            });
         
         t.trackToLoad = -1;
         t.selectedTrack = null;
@@ -228,41 +210,6 @@ zip.useWebWorkers = packaged_app;
         t.media.addEventListener('timeupdate', function(e) {
             t.displayCaptions();
         }, false);
-        
-        if(t.options.slidesSelector != '') {
-            t.slidesContainer = $(t.options.slidesSelector);
-            
-            t.media.addEventListener('timeupdate', function(e) {
-                t.displaySlides();
-            }, false);
-            
-        }
-        
-        t.media.addEventListener('loadedmetadata', function(e) {
-            t.displayChapters();
-        }, false);
-        
-        t.container.hover(
-            function() {
-                // chapters
-                if(t.hasChapters) {
-                    t.chapters.css('visibility', 'visible');
-                    t.chapters.fadeIn(200).height(t.chapters.find('.mejs-chapter').outerHeight());
-                }
-            },
-            function() {
-                if(t.hasChapters && !t.isPaused()) {
-                    t.chapters.fadeOut(200, function() {
-                        $(this).css('visibility', 'hidden');
-                        $(this).css('display', 'block');
-                    });
-                }
-            });
-            
-        // check for autoplay
-        if(t.node.getAttribute('autoplay') !== null) {
-            t.chapters.css('visibility', 'hidden');
-        }
         
         t.media.addEventListener('loadeddata', function() {
             if(t.tracks.length == 0) {
@@ -283,7 +230,7 @@ zip.useWebWorkers = packaged_app;
         
         t.adjustLanguageBox();
         t.capDelayValue = 0;
-    },
+    };
     
     MediaElementPlayer.prototype.findTrackIdx = function(srclang) {
         var t = this;
@@ -292,7 +239,7 @@ zip.useWebWorkers = packaged_app;
                 return i
         }
         return -1;
-    },
+    };
     
     MediaElementPlayer.prototype.openSrtEntry = function(file) {
         $(document).trigger(
@@ -387,7 +334,7 @@ zip.useWebWorkers = packaged_app;
         }, function(error) {
             // onerror callback
         });
-    },
+    };
     
     MediaElementPlayer.prototype.setTrack = function(lang) {
         var t = this,
@@ -407,7 +354,7 @@ zip.useWebWorkers = packaged_app;
                 }
             }
         }
-    },
+    };
     
     MediaElementPlayer.prototype.loadNextTrack = function() {
         var t = this;
@@ -422,7 +369,7 @@ zip.useWebWorkers = packaged_app;
             
             t.checkForTracks();
         }
-    },
+    };
     
     MediaElementPlayer.prototype.loadTrack = function(index) {
         var
@@ -448,16 +395,6 @@ zip.useWebWorkers = packaged_app;
             after();
             
             $(document).trigger("subtitleChanged");
-            if(track.kind == 'chapters') {
-                t.media.addEventListener('play', function(e) {
-                    if(t.getDuration() > 0) {
-                        t.displayChapters(track);
-                    }
-                }, false);
-            }
-            if(track.kind == 'slides') {
-                t.setupSlides(track);
-            }
         };
         reader.onerror = function() {
             t.loadNextTrack();
@@ -466,8 +403,8 @@ zip.useWebWorkers = packaged_app;
          mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
                 t.captionEncodingSelect.value = value;
                 reader.readAsText(track.file, value);
-            });
-    },
+        });
+    };
     
     MediaElementPlayer.prototype.enableTrackButton = function(lang, label) {
         var t = this;
@@ -486,7 +423,7 @@ zip.useWebWorkers = packaged_app;
         $('#_captions_' + lang).click();
         
         t.adjustLanguageBox();
-    },
+    };
     
     MediaElementPlayer.prototype.addTrackButton = function(lang, label) {
         var t = this;
@@ -505,7 +442,7 @@ zip.useWebWorkers = packaged_app;
         
         // remove this from the dropdownlist (if it exists)
         t.container.find('.mejs-captions-translations option[value=' + lang + ']').remove();
-    },
+    };
     
     MediaElementPlayer.prototype.adjustLanguageBox = function() {
         return;
@@ -515,7 +452,7 @@ zip.useWebWorkers = packaged_app;
             t.captionsButton.find('.mejs-captions-selector ul').outerHeight(true) +
             t.captionsButton.find('.mejs-captions-translations').outerHeight(true)
         );
-    },
+    };
     
     MediaElementPlayer.prototype.checkForTracks = function() {
         var
@@ -535,7 +472,7 @@ zip.useWebWorkers = packaged_app;
                 t.captionsButton.hide();
             }
         }
-    },
+    };
     
     MediaElementPlayer.prototype.displayCaptions = function() {
         if(typeof this.tracks == 'undefined')
@@ -560,131 +497,7 @@ zip.useWebWorkers = packaged_app;
         } else {
             t.captions.hide();
         }
-    },
-    
-    MediaElementPlayer.prototype.setupSlides = function(track) {
-        var t = this;
-        
-        t.slides = track;
-        t.slides.entries.imgs = [t.slides.entries.text.length];
-        t.showSlide(0);
-        
-    },
-    
-    MediaElementPlayer.prototype.showSlide = function(index) {
-        if(typeof this.tracks == 'undefined' || typeof this.slidesContainer == 'undefined') {
-            return;
-        }
-        
-        var t = this,
-            url = t.slides.entries.text[index],
-            img = t.slides.entries.imgs[index];
-            
-        if(typeof img == 'undefined' || typeof img.fadeIn == 'undefined') {
-        
-            t.slides.entries.imgs[index] = img = $('<img src="' + url + '">')
-                .on('load', function() {
-                    img.appendTo(t.slidesContainer)
-                        .hide()
-                        .fadeIn()
-                        .siblings(':visible')
-                        .fadeOut();
-                        
-                });
-                
-        } else {
-        
-            if(!img.is(':visible') && !img.is(':animated')) {
-            
-                console.log('showing existing slide');
-                
-                img.fadeIn()
-                    .siblings(':visible')
-                    .fadeOut();
-            }
-        }
-        
-    },
-    
-    MediaElementPlayer.prototype.displaySlides = function() {
-    
-        if(typeof this.slides == 'undefined')
-            return;
-            
-        var
-            t = this,
-            slides = t.slides,
-            i;
-            
-        for(i = 0; i < slides.entries.times.length; i++) {
-            if(t.getCurrentTime() >= slides.entries.times[i].start && t.getCurrentTime() <= slides.entries.times[i].stop) {
-            
-                t.showSlide(i);
-                
-                return; // exit out if one is visible;
-            }
-        }
-    },
-    
-    MediaElementPlayer.prototype.displayChapters = function() {
-        var
-            t = this,
-            i;
-            
-        for(i = 0; i < t.tracks.length; i++) {
-            if(t.tracks[i].kind == 'chapters' && t.tracks[i].isLoaded) {
-                t.drawChapters(t.tracks[i]);
-                t.hasChapters = true;
-                break;
-            }
-        }
-    },
-    
-    MediaElementPlayer.prototype.drawChapters = function(chapters) {
-        var
-            t = this,
-            i,
-            dur,
-            //width,
-            //left,
-            percent = 0,
-            usedPercent = 0;
-            
-        t.chapters.empty();
-        
-        for(i = 0; i < chapters.entries.times.length; i++) {
-            dur = chapters.entries.times[i].stop - chapters.entries.times[i].start;
-            percent = Math.floor(dur / t.getDuration() * 100);
-            if(percent + usedPercent > 100 || // too large
-                i == chapters.entries.times.length - 1 && percent + usedPercent < 100) // not going to fill it in
-            {
-                percent = 100 - usedPercent;
-            }
-            //width = Math.floor(t.width * dur / t.media.duration);
-            //left = Math.floor(t.width * chapters.entries.times[i].start / t.media.duration);
-            //if (left + width > t.width) {
-            //	width = t.width - left;
-            //}
-            
-            t.chapters.append($(
-                '<div class="mejs-chapter" rel="' + chapters.entries.times[i].start + '" style="left: ' + usedPercent.toString() + '%;width: ' + percent.toString() + '%;">' +
-                '<div class="mejs-chapter-block' + ((i == chapters.entries.times.length - 1) ? ' mejs-chapter-block-last' : '') + '">' +
-                '<span class="ch-title">' + chapters.entries.text[i] + '</span>' +
-                '<span class="ch-time">' + mejs.Utility.secondsToTimeCode(chapters.entries.times[i].start) + '&ndash;' + mejs.Utility.secondsToTimeCode(chapters.entries.times[i].stop) + '</span>' +
-                '</div>' +
-                '</div>'));
-            usedPercent += percent;
-        }
-        
-        t.chapters.find('div.mejs-chapter').click(function() {
-            t.setCurrentTime(parseFloat($(this).attr('rel')));
-            if(t.isPaused()) {
-                t.play();
-            }
-        });
-        
-        t.chapters.show();
-    }
+    };
     
     mejs.language = {
         codes: {
@@ -871,26 +684,4 @@ zip.useWebWorkers = packaged_app;
             return text.split(regex);
         }
     };
-    
-    // test for browsers with bad String.split method.
-    if('x\n\ny'.split(/\n/gi).length != 3) {
-        // add super slow IE8 and below version
-        mejs.TrackFormatParser.split2 = function(text, regex) {
-            var
-                parts = [],
-                chunk = '',
-                i;
-                
-            for(i = 0; i < text.length; i++) {
-                chunk += text.substring(i, i + 1);
-                if(regex.test(chunk)) {
-                    parts.push(chunk.replace(regex, ''));
-                    chunk = '';
-                }
-            }
-            parts.push(chunk);
-            return parts;
-        }
-    }
-    
 })(mejs.$);
