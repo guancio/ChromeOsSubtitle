@@ -59,7 +59,7 @@
                     });
                     entries.push(retainId);
                     
-                    setIntoSettings(
+                    mejs.Utility.setIntoSettings(
                         'autoSrtEntries',
                         entries,
                         function() {}
@@ -68,7 +68,7 @@
             });
         });
         
-        getFromSettings(
+        mejs.Utility.getFromSettings(
             'autoSrtEntries', [],
             function(value) {
                 entries = value;

@@ -35,7 +35,7 @@
                                 if(t.playlist.length > 0) {
                                     t.tracks = [];
                                     t.playIndex = 0;
-                                    t.setSrc(t.playlist[t.playIndex]);
+                                    t.setSrc();
                                 }
                             }
                         });

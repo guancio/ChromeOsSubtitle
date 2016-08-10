@@ -449,15 +449,16 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.notify('Volume: ' + (this.getVolume() * 100).toFixed() + '%');
         },
         
-        setSrc: function(file) {
+        setSrc: function(index) {
             if(this.getDuration()) {
                 this.stop();
             }
             
-            this.media.src = window.URL.createObjectURL(file);
-            document.title = file.name;
+            index = parseInt(index) || this.playIndex;
+            this.media.src = window.URL.createObjectURL(this.playlist[index]);
+            document.title = this.playlist[index].name;
             
-            this.setThumbnailSrc(this.media.src);
+            this.setThumbnailSrc(this.getSrc());
         },
         
         getSrc: function() {
@@ -526,15 +527,28 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             var i, ext, t = this;
             
             for(i = 0; i < files.length; i++) {
-                ext = files[i].name.split('.')[-1];
+                ext = files[i].name.split('.').slice(-1)[0].toLowerCase();
                 
                 if(t.options.mediaExts.indexOf(ext) !== -1) {
-                    t.playlist.push(file);
+                    t.playlist.push(files[i]);
                 }
                 else if(t.options.subExts.indexOf(ext) !== -1) {
                     continue;
                 }
             }
+            
+            chrome.contextMenus.remove('setSrc', function() {
+                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+                if(t.playlist.length === 0) {
+                    chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'null', 'enabled': false });
+                }
+                else {
+                        for(i = 0; i < t.playlist.length; i++) {
+                            chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm' });
+                        }
+            
+                }
+            });
         }
     };
     
