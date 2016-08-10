@@ -174,11 +174,6 @@ zip.useWebWorkers = packaged_app;
             t.setTrack(lang);
         });
         
-        t.captionsButton.find('.mejs-captions-selector').bind('mouseenter mouseover mousemove', function(event) {
-            t.killControlsTimer('enter');
-            event.stopPropagation();
-        });
-        
         // move with controls
         t.container
             .bind('controlsshown', function() {
@@ -232,36 +227,20 @@ zip.useWebWorkers = packaged_app;
         t.capDelayValue = 0;
     };
     
-    MediaElementPlayer.prototype.findTrackIdx = function(srclang) {
-        var t = this;
-        for(var i = 0; i < t.tracks.length; i++) {
-            if(t.tracks[i].srclang == srclang)
-                return i
-        }
-        return -1;
-    };
-    
-    MediaElementPlayer.prototype.openSrtEntry = function(file) {
+    MediaElementPlayer.prototype.loadSub = function(file) {
         $(document).trigger(
             "subtitleFileOpened",
             file.name
         );
         
         var t = this;
-        $('#encoding-selector').val("UTF-8");
         
-        t.tracks = t.tracks.filter(function(el) {
-            return el.srclang != 'fromfile';
-        });
-        
-        t.tracks.push({
-            srclang: 'fromfile',
+        t.subtitles[t.playIndex] = {
             file: file,
-            kind: 'subtitles',
-            label: 'FromFile',
-            entries: [],
-            isLoaded: false
-        });
+            entries: null,
+            isCorrupt: false
+        };
+        
         $('#label_srtname').css('visibility', 'inherit');
         $('#select_srtname').css('visibility', 'hidden');
         
@@ -353,21 +332,6 @@ zip.useWebWorkers = packaged_app;
                     break;
                 }
             }
-        }
-    };
-    
-    MediaElementPlayer.prototype.loadNextTrack = function() {
-        var t = this;
-        
-        t.trackToLoad++;
-        if(t.trackToLoad < t.tracks.length) {
-            t.isLoadingTrack = true;
-            t.loadTrack(t.trackToLoad);
-        } else {
-            // add done?
-            t.isLoadingTrack = false;
-            
-            t.checkForTracks();
         }
     };
     
