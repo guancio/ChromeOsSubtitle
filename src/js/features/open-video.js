@@ -1,7 +1,6 @@
 (function($) {
     MediaElementPlayer.prototype.buildsource = function() {
         var t = this,
-            openFileInput = mejs.Utility.createNestedElement('<input style="display:none" type="file" id="openfile_input" multiple/>'),
             open = mejs.Utility.createNestedElement('<div class="mejs-button mejs-source-button mejs-source" >' +
                 '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
                 '</div>');
@@ -9,6 +8,8 @@
         t.leftControls[0].appendChild(open);
         
         t.openFileForm = function() {
+            var temp = [];
+            
             if(t.getDuration() && !t.isPaused()) {
                 t.pause();
             }
@@ -23,22 +24,23 @@
                     }
                     
                     t.playlist = [];
-                    t.playIndex = 0;
                     
                     entries.forEach(function(entry, i) {
                         entry.file(function(file) {
-                            t.playlist.push(file);
+                            temp.push(file);
                             
                             if(i === entries.length - 1) {
-                                t.stop();
-                                t.tracks = [];
-                                t.setSrc(t.playlist[t.playIndex]);
+                                t.filterFiles(temp);
+                                
+                                if(t.playlist.length > 0) {
+                                    t.tracks = [];
+                                    t.playIndex = 0;
+                                    t.setSrc(t.playlist[t.playIndex]);
+                                }
                             }
                         });
                     });
                 });
-            } else {
-                openFileInput.click();
             }
         };
         
@@ -46,22 +48,6 @@
             e.preventDefault();
             t.openFileForm();
             return false;
-        });
-        
-        openFileInput.addEventListener('change', function(e) {
-            if(openFileInput.length === 0) {
-                return;
-            }
-            
-            if(t.getSrc()) {
-                t.stop();
-            }
-            
-            t.tracks = [];
-            
-            t.playlist = openFileInput.files;
-            t.playIndex = 0;
-            t.setSrc(t.playlist[t.playIndex]);
         });
     }
 })(mejs.$);

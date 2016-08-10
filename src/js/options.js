@@ -2,8 +2,6 @@
     mejs.MepDefaults = {
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
-        // useful for <audio> player loops
-        loop: false,
         // Hide controls when playing and mouse is not over the video
         alwaysShowControls: false,
         // force Android's native controls
@@ -11,6 +9,9 @@
         // features to show
         features: ['contextmenu', 'aspectRatio', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats', 'thumbnail'],
         
+        mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
+        
+        subExts: ['srt', 'txt'],
         // only for dynamic
         isVideo: true,
         
