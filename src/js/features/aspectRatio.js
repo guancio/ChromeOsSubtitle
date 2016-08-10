@@ -30,15 +30,18 @@
     };
     
     MediaElementPlayer.prototype.setAspectRatio = function(value) {
-        currentAspectRatio = parseInt(value) || currentAspectRatio;
+        chrome.contextMenus.update(currentAspectRatio + 'a', { 'checked': false });
+        
+        currentAspectRatio = parseInt(value);
         this.resizeVideo();
         this.notify('Aspect Ratio: ' + aspectRatiosText[currentAspectRatio]);
+        
         chrome.contextMenus.update(currentAspectRatio + 'a', { 'checked': true });
+        
         mejs.Utility.setIntoSettings('aspectRatio', currentAspectRatio);
     };
     
     MediaElementPlayer.prototype.cycleAspectRatio = function() {
-        currentAspectRatio = (currentAspectRatio + 1)  % aspectRatios.length;
-        this.setAspectRatio();
+        this.setAspectRatio((currentAspectRatio + 1)  % aspectRatios.length);
     };
 })();
