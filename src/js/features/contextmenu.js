@@ -1,4 +1,6 @@
 (function() {
+    var aspectRatiosText = ['Default', '1:1', '4:3', '16:9', '16:10', '2.21:1', '2.35:1', '2.39:1', '5:4'];
+    
     MediaElementPlayer.prototype.buildcontextmenu = function() {
         if(!packaged_app) {
             return;
@@ -28,17 +30,11 @@
             chrome.contextMenus.create({ 'title': 'Reset', 'parentId': 'playbackRate', 'id': 'resetPlaybackRate' });
         
         chrome.contextMenus.create({ 'title': 'Aspect Ratio', 'id': 'setAspectRatio' });
-            chrome.contextMenus.create({ 'title': 'Default', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '0a' });
-            chrome.contextMenus.create({ 'title': '1:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '1a' });
-            chrome.contextMenus.create({ 'title': '4:3', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '2a' });
-            chrome.contextMenus.create({ 'title': '16:9', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '3a' });
-            chrome.contextMenus.create({ 'title': '16:10', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '4a' });
-            chrome.contextMenus.create({ 'title': '2.21:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '5a' });
-            chrome.contextMenus.create({ 'title': '2.35:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '6a' });
-            chrome.contextMenus.create({ 'title': '2.39:1', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '7a' });
-            chrome.contextMenus.create({ 'title': '5:4', 'type': 'radio', 'parentId': 'setAspectRatio', 'id': '8a' });
-          
-        chrome.contextMenus.create({ 'title': 'Download Subtitles', 'id': 'openSubtitleLogIn' });
+            for(var i = 0; i < aspectRatiosText.length; i++)
+                chrome.contextMenus.create({ 'title': aspectRatiosText[i], 'type': 'radio', 'parentId': 'setAspectRatio', 'id': i + 'a' });
+        
+        chrome.contextMenus.create({ 'title': 'Subtitles', 'id': 'subtitles' });
+            chrome.contextMenus.create({ 'title': 'Download Subtitles', 'parentId': 'subtitles', 'id': 'openSubtitleLogIn' });
         
         chrome.contextMenus.create({ 'title': 'Caption Size', 'id': 'captionSize' });
             chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
@@ -52,7 +48,7 @@
             chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
             chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
         
-        chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
+        chrome.contextMenus.create({ 'title': 'Help', 'id': 'toggleHelp' });
         
         chrome.contextMenus.onClicked.addListener(contextCallback);
     };

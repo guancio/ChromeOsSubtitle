@@ -472,12 +472,12 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.setPlaybackRate(1);
         },
         
-        incPlaybackRate: function() {
-            this.setPlaybackRate(this.getPlaybackRate() + 0.05);
+        incPlaybackRate: function(amount) {
+            this.setPlaybackRate(this.getPlaybackRate() + (amount || 0.05));
         },
         
-        decPlaybackRate: function() {
-            this.setPlaybackRate(Math.max(0.05, this.getPlaybackRate() - 0.05));
+        decPlaybackRate: function(amount) {
+            this.setPlaybackRate(Math.max(0.05, this.getPlaybackRate() - (amount || 0.05)));
         },
         
         toggleLoop: function() {

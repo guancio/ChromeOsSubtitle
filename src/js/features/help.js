@@ -13,43 +13,30 @@
                                 '<tr><td>[CTRL] + d</td><td>Download Subtitles</td></tr>' +
                                 '<tr><td>[CTRL] + +|-</td><td>Change Subtitle Size</td></tr>' +
                                 '<tr><td>[CTRL] + x|z</td><td>Change Subtitle Delay</td></tr>' +
-                                '<tr><td>[CTRL] + ,|.</td><td>Change Playback Speed</td></tr>' +
+                                '<tr><td>[CTRL] + ,|.</td><td>Change Playback Speed (Finer)</td></tr>' +
+                                '<tr><td>[CTRL + SHIFT] + ,|.</td><td>Change Playback Speed (Coarser)</td></tr>' +
                                 '<tr><td>[CTRL] + /</td><td>Reset Playback Speed</td></tr>' +
                                 '<tr><td>[CTRL] + l</td><td>Toggle Loop</td></tr>' +
                                 '<tr><td>[CTRL + SHIFT] + Arrows</td><td>Move Captions\' Position</td></tr>' +
                                 '<tr><td>[CTRL] + i</td><td>show info window</td></tr>' +
                                 '<tr><td>[CTRL] + [ | ] + </td><td>Previous/Next Media</td></tr>' +
                                 '<tr><td>[CTRL] + a</td><td>Change Aspect Ratio</td></tr>' +
+                                '<tr><td>[ALT] + ,|. </td><td>Change Audio Delay</td></tr>' +
                             '</table>' +
                         '</div><br/>' +
                     '[Click the box to close the help page]' +
                 '</div>',
             helpPanel = $(helpText).appendTo(t.controls[0].parentElement);
         
-        function hide(e) {
-            helpPanel.css('visibility', 'hidden');
-            
-            e.preventDefault();
-            e.stopPropagation();
-            t.container.off("click", hide);
-            
-            $(document).trigger("helpClosed");
-            
-            return false;
-        }
-        
         helpPanel.on("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
-            hide(e);
+            t.toggleHelp();
             return false;
         });
         
-        t.openHelpWindow = function() {
-            $('.me-window').css('visibility', 'hidden');
-            helpPanel.css('visibility', 'visible');
-            
-            t.container.click(hide);
+        t.toggleHelp = function() {
+            helpPanel[0].style.visibility = helpPanel[0].style.visibility === 'visible' ? 'hidden' : 'visible';
         };
         
         var open = $('<div class="mejs-button mejs-help-button mejs-help" >' +
@@ -58,7 +45,7 @@
             .appendTo(t.rightControls)
             .click(function(e) {
                 e.preventDefault();
-                t.openHelpWindow();
+                t.toggleHelp();
                 return false;
             });
     }
