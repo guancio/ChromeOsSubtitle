@@ -100,7 +100,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             // create MediaElement shim
-            mejs.MediaElement(t.$media[0], meOptions);
+            meOptions.success(t.$media[0]);
             
             if(typeof(t.container) != 'undefined') {
                 // controls are shown when loaded
