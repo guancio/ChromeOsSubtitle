@@ -59,7 +59,7 @@
             .append($('<label style="width:250px; float:left;">Default subtitle font size</label>'))
             .append($('<input id="defaultSubSize" style="width:100px;background-color: transparent; color: white;"/>'));
             
-        getFromSettings(
+        mejs.Utility.getFromSettings(
             'default_sub_size',
             22,
             function(value) {
@@ -70,7 +70,7 @@
             
         $(document).bind("settingsClosed", function() {
             var defaultValue = $("#defaultSubSize")[0].value;
-            setIntoSettings(
+            mejs.Utility.setIntoSettings(
                 "default_sub_size",
                 defaultValue,
                 function(obj) {});

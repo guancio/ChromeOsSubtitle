@@ -105,7 +105,7 @@
             });
 
             var disabled = false;
-            getFromSettings(
+            mejs.Utility.getFromSettings(
                 'disableAnalytics',
                 false,
                 function(value) {
@@ -117,7 +117,7 @@
                 disabled = disableCheck.checked;
                 sendEvent(
                     'setting', 'disableAnalytics', disabled);
-                setIntoSettings(
+                mejs.Utility.setIntoSettings(
                     'disableAnalytics',
                     disabled,
                     function() {

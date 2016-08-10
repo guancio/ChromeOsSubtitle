@@ -37,6 +37,8 @@ chrome.runtime.onInstalled.addListener(function() {
             chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2p' });
         chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
         chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
+        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'null', 'enabled': false });
     
     chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
 })

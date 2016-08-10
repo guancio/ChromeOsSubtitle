@@ -142,7 +142,7 @@ zip.useWebWorkers = packaged_app;
                 t.captionEncodingSelect.value
             );
             
-            setIntoSettings("default_encoding", t.captionEncodingSelect.value, function(obj) {});
+            mejs.Utility.setIntoSettings("default_encoding", t.captionEncodingSelect.value, function(obj) {});
             
             if(t.tracks.length == 0)
                 return;
@@ -463,7 +463,7 @@ zip.useWebWorkers = packaged_app;
             t.loadNextTrack();
         };
         
-         getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
+         mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
                 t.captionEncodingSelect.value = value;
                 reader.readAsText(track.file, value);
             });

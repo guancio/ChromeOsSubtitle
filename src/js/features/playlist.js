@@ -26,7 +26,7 @@
             this.playIndex = Math.floor(Math.random() * this.playlist.length);
         }
         
-        this.setSrc(this.playlist[this.playIndex]);
+        this.setSrc();
     };
     
     MediaElementPlayer.prototype.previous = function() {
@@ -48,7 +48,7 @@
             this.playIndex = Math.floor(Math.random() * this.playlist.length);
         }
         
-        this.setSrc(this.playlist[this.playIndex]);
+        this.setSrc();
     };
     
     MediaElementPlayer.prototype.setPlayType = function(value) {

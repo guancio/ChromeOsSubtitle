@@ -310,7 +310,7 @@ var openSubsLang = [
             $('<option value="' + e[0] + '">' + e[1] + '</option>').appendTo(selectDefault);
         });
         
-        getFromSettings(
+        mejs.Utility.getFromSettings(
             'default_opensubtitle_lang',
             "eng",
             function(value) {
@@ -318,7 +318,7 @@ var openSubsLang = [
                 $('#select_opensubtitle_lang').val(value);
             }
         );
-        getFromSettings(
+        mejs.Utility.getFromSettings(
             'opensubtitle_username',
             "",
             function(value) {
@@ -326,7 +326,7 @@ var openSubsLang = [
                 $("#usernameOpenSubtitle")[0].value = value
             }
         );
-        getFromSettings(
+        mejs.Utility.getFromSettings(
             'opensubtitle_pwd',
             "",
             function(value) {
@@ -338,7 +338,7 @@ var openSubsLang = [
         $(document).bind("settingsClosed", function() {
             var defaultValue = selectDefault.value;
             $('#select_opensubtitle_lang').val(defaultValue);
-            setIntoSettings(
+            mejs.Utility.setIntoSettings(
                 'default_opensubtitle_lang',
                 defaultValue,
                 function() {}
@@ -346,7 +346,7 @@ var openSubsLang = [
             
             t.opensubtitleService.username =
                 $("#usernameOpenSubtitle")[0].value;
-            setIntoSettings(
+            mejs.Utility.setIntoSettings(
                 'opensubtitle_username',
                 t.opensubtitleService.username,
                 function() {}
@@ -354,7 +354,7 @@ var openSubsLang = [
             
             t.opensubtitleService.pwd =
                 $("#pwdOpenSubtitle")[0].value;
-            setIntoSettings(
+            mejs.Utility.setIntoSettings(
                 'opensubtitle_pwd',
                 t.opensubtitleService.pwd,
                 function() {}
