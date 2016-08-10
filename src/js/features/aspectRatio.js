@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     var currentAspectRatio = 0,
         aspectRatios = [null, 1, 1.333333, 1.777778, 1.666666, 2.21, 2.35, 2.39, 1.25],
         aspectRatiosText = ['Default', '1:1', '4:3', '16:9', '16:10', '2.21:1', '2.35:1', '2.39:1', '5:4'];
