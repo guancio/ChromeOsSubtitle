@@ -223,97 +223,28 @@ zip.useWebWorkers = packaged_app;
             }
         });
         
-        t.adjustLanguageBox();
         t.capDelayValue = 0;
     };
     
-    MediaElementPlayer.prototype.loadSubtitles = function() {
+    MediaElementPlayer.prototype.setSubtitles = function(index) {
         var t = this,
+            t.subIndex = parseInt(index) || t.subIndex
             current = t.subtitles[t.subIndex];
         
-        if(current === undefined) {
-            return;
-        }
-        
-        if(current.entires === null) {
-            t.parseSubtitles();
-        }
-        
-        if(current.isCorrupt) {
-            t.notify('The given Subtitle file is corrupted!', 2000);
-            return;
-        }
-        
-        t.displaySubtitles();
-        
-        $('#label_srtname').css('visibility', 'inherit');
-        $('#select_srtname').css('visibility', 'hidden');
-        
-        zip.createReader(new zip.BlobReader(file), function(reader) {
-            // get all entries from the zip
-            reader.getEntries(function(entries) {
-                if(entries.length == 0) {
-                    return;
-                }
-                var srt_entries = [];
-                for(var i = 0; i < entries.length; i++) {
-                    if(entries[i].filename.lastIndexOf(".srt") == entries[i].filename.length - 4)
-                        srt_entries.push(entries[i]);
-                }
-                if(srt_entries.length == 0) {
-                    return;
-                }
-                if(srt_entries.length > 1) {
-                    $('#label_srtname').css('visibility', 'hidden');
-                    $('#select_srtname').css('visibility', 'inherit');
-                    $('#select_srtname')
-                        .find('option')
-                        .remove()
-                        .end();
-                    for(var i = 0; i < srt_entries.length; i++) {
-                        $('#select_srtname')
-                            .append('<option value="' +
-                                i + '">' +
-                                srt_entries[i].filename +
-                                '</option>');
-                    }
-                    $('#select_srtname').val('0');
-                }
-                
-                function loadZippedSrt(entry) {
-                    // get first entry content as text
-                    entry.getData(new zip.BlobWriter(), function(data) {
-                        // text contains the entry data as a blob
-                        var trackId = t.findTrackIdx("fromfile");
-                        t.tracks[trackId].file = data;
-                        t.tracks[trackId].isLoaded = false;
-                        
-                        $('#label_srtname')[0].textContent = entry.filename;
-                        t.loadTrack(trackId);
-                        
-                        // close the zip reader
-                        reader.close(function() {
-                            // onclose callback
-                        });
-                    }, function(current, total) {
-                        // onprogress callback
-                    })
-                };
-                loadZippedSrt(srt_entries[0]);
-                
-                $('#select_srtname').off("change");
-                $('#select_srtname').change(function(e) {
-                    loadZippedSrt(
-                        srt_entries[Number($('#select_srtname')[0].value)]
-                    );
-                });
+        if(current.entries === null) {
+            t.parseSubtitles(function() {
+                t.setSubtitles();
             });
-        }, function(error) {
-            // onerror callback
-        });
+        }
+        else if(current.isCorrupt) {
+            t.notify('The given Subtitle file is corrupted!', 2000);
+        }
+        else {
+            t.displaySubtitles();
+        }
     };
     
-    MediaElementPlayer.prototype.parseSubtitles = function() {
+    MediaElementPlayer.prototype.parseSubtitles = function(cb) {
         var t = this,
             current = t.subtitles[t.subIndex],
             reader = new FileReader();
@@ -328,67 +259,18 @@ zip.useWebWorkers = packaged_app;
                 current.entries = mejs.TrackFormatParser.webvvt.parse(d);
             }
             
-            after();
-            
-            $(document).trigger("subtitleChanged");
+            cb();
         };
         
         reader.onerror = function() {
             current.isCorrupt = true;
+            cb();
         };
         
-        mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
-                t.captionEncodingSelect.value = value;
-                reader.readAsText(track.file, value);
+        mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function(value) {
+            t.captionEncodingSelect.value = value;
+            reader.readAsText(track.file, value);
         });
-    };
-    
-    MediaElementPlayer.prototype.enableTrackButton = function(lang, label) {
-        var t = this;
-        
-        if(label === '') {
-            label = mejs.language.codes[lang] || lang;
-        }
-        
-        t.captionsButton
-            .find('input[value=' + lang + ']')
-            .prop('disabled', false);
-        t.captionsButton
-            .find('#encoding-selector')
-            .prop('disabled', false);
-            
-        $('#_captions_' + lang).click();
-        
-        t.adjustLanguageBox();
-    };
-    
-    MediaElementPlayer.prototype.addTrackButton = function(lang, label) {
-        var t = this;
-        if(label === '') {
-            label = mejs.language.codes[lang] || lang;
-        }
-        
-        t.captionsButton.find('ul').append(
-            $('<li>' +
-                '<input type="radio" name="_captions" id="_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
-                '<label for="_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
-                '</li>')
-        );
-        
-        t.adjustLanguageBox();
-        
-        // remove this from the dropdownlist (if it exists)
-        t.container.find('.mejs-captions-translations option[value=' + lang + ']').remove();
-    };
-    
-    MediaElementPlayer.prototype.adjustLanguageBox = function() {
-        return;
-        var t = this;
-        // adjust the size of the outer box
-        t.captionsButton.find('.mejs-captions-selector').height(
-            t.captionsButton.find('.mejs-captions-selector ul').outerHeight(true) +
-            t.captionsButton.find('.mejs-captions-translations').outerHeight(true)
-        );
     };
     
     MediaElementPlayer.prototype.displaySubtitles = function() {
@@ -599,3 +481,37 @@ zip.useWebWorkers = packaged_app;
         }
     };
 })(mejs.$);
+
+    // MediaElementPlayer.prototype.enableTrackButton = function(lang, label) {
+    //     var t = this;
+        
+    //     if(label === '') {
+    //         label = mejs.language.codes[lang] || lang;
+    //     }
+        
+    //     t.captionsButton
+    //         .find('input[value=' + lang + ']')
+    //         .prop('disabled', false);
+    //     t.captionsButton
+    //         .find('#encoding-selector')
+    //         .prop('disabled', false);
+            
+    //     $('#_captions_' + lang).click();o
+    // };
+    
+    // MediaElementPlayer.prototype.addTrackButton = function(lang, label) {
+    //     var t = this;
+    //     if(label === '') {
+    //         label = mejs.language.codes[lang] || lang;
+    //     }
+        
+    //     t.captionsButton.find('ul').append(
+    //         $('<li>' +
+    //             '<input type="radio" name="_captions" id="_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
+    //             '<label for="_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
+    //             '</li>')
+    //     );
+        
+    //     // remove this from the dropdownlist (if it exists)
+    //     t.container.find('.mejs-captions-translations option[value=' + lang + ']').remove();
+    // };
