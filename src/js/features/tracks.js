@@ -180,7 +180,7 @@ zip.useWebWorkers = packaged_app;
         // handle clicks to the language radio buttons
         .on('click', 'input[type=radio]', function() {
             lang = this.value;
-            t.setTrack(lang);
+            //t.setTrack(lang);
         });
         
         // move with controls
@@ -203,7 +203,7 @@ zip.useWebWorkers = packaged_app;
         }
         
         t.media.addEventListener('timeupdate', function(e) {
-            t.displayCaptions();
+            t.displaySubtitles();
         }, false);
         
         t.media.addEventListener('loadeddata', function() {
@@ -227,24 +227,14 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setSubtitles = function(index) {
-        var t = this,
-            t.subIndex = parseInt(index) || t.subIndex
-            current = t.subtitles[t.subIndex];
+        this.subIndex = parseInt(index) || this.subIndex;
         
-        if(current.entries === null) {
-            t.parseSubtitles(function() {
-                t.setSubtitles();
-            });
-        }
-        else if(current.isCorrupt) {
-            t.notify('The given Subtitle file is corrupted!', 2000);
-        }
-        else {
-            t.displaySubtitles();
+        if(this.subtitles[this.subIndex].isCorrupt) {
+            this.notify('The given Subtitle file is corrupted!', 2000);
         }
     };
     
-    MediaElementPlayer.prototype.parseSubtitles = function(cb) {
+    MediaElementPlayer.prototype.parseSubtitles = function() {
         var t = this,
             current = t.subtitles[t.subIndex],
             reader = new FileReader();
@@ -258,26 +248,28 @@ zip.useWebWorkers = packaged_app;
             } else {
                 current.entries = mejs.TrackFormatParser.webvvt.parse(d);
             }
-            
-            cb();
         };
         
         reader.onerror = function() {
             current.isCorrupt = true;
-            cb();
+            t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
         mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function(value) {
             t.captionEncodingSelect.value = value;
-            reader.readAsText(track.file, value);
+            reader.readAsText(current.file, value);
         });
     };
     
     MediaElementPlayer.prototype.displaySubtitles = function() {
         var t, entries, currtime, i;
         
-        if(this.subIndex === null) {
+        if(this.subIndex === null || this.subtitles[this.subIndex].isCorrupt) {
             return;
+        }
+        
+        if(this.subtitles[this.subIndex].entries === null) {
+            return this.parseSubtitles();
         }
         
         t = this;

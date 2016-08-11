@@ -28,11 +28,7 @@ $('#player').mediaelementplayer({
                 temp.push(file);
                 
                 if(i === window.launchData.items.length - 1) {
-                    t.filterFiles(temp);
-                    
-                    if(i === window.launchData.items.length - 1) {
-                        t.filterFiles(temp, true);
-                    }
+                    t.filterFiles(temp, true);
                 }
             });
         });
