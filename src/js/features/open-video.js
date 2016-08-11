@@ -23,19 +23,12 @@
                         return;
                     }
                     
-                    t.playlist = [];
-                    
                     entries.forEach(function(entry, i) {
                         entry.file(function(file) {
                             temp.push(file);
                             
                             if(i === entries.length - 1) {
-                                t.filterFiles(temp);
-                                
-                                if(t.playlist.length > 0) {
-                                    t.playIndex = 0;
-                                    t.setSrc();
-                                }
+                                t.filterFiles(temp, true);
                             }
                         });
                     });

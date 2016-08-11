@@ -19,8 +19,7 @@
                 t.pause();
             }
             
-            t.playlist = [];
-            t.filterFiles(e.dataTransfer.files);
+            t.filterFiles(e.dataTransfer.files, false);
         }, false);
     }
 })();
