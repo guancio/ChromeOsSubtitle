@@ -454,9 +454,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 this.stop();
             }
             
-            index = parseInt(index) || this.playIndex;
-            this.media.src = window.URL.createObjectURL(this.playlist[index]);
-            document.title = this.playlist[index].name;
+            this.playIndex = parseInt(index) || this.playIndex;
+            this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
+            document.title = this.playlist[this.playIndex].name;
             
             this.setThumbnailSrc(this.getSrc());
         },
@@ -523,14 +523,16 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.notify('Audio Delay: ' + (this.delayNode.delayTime.value * 1000).toFixed() + 'ms.');
         },
         
-        filterFiles: function(files) {
-            var i, ext, t = this;
+        filterFiles: function(files, overwrite) {
+            var i, ext,
+                tempPlay = [],
+                t = this;
             
             for(i = 0; i < files.length; i++) {
                 ext = files[i].name.split('.').slice(-1)[0].toLowerCase();
                 
                 if(t.options.mediaExts.indexOf(ext) !== -1) {
-                    t.playlist.push(files[i]);
+                    tempPlay.push(files[i]);
                 }
                 else if(t.options.subExts.indexOf(ext) !== -1) {
                     t.subtitles.push({
@@ -541,18 +543,25 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 }
             }
             
-            chrome.contextMenus.remove('setSrc', function() {
-                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-                if(t.playlist.length === 0) {
-                    chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'null', 'enabled': false });
+            if(tempPlay.length) {
+                if(overwrite) {
+                    t.playlist = tempPlay;
+                    t.playIndex = 0;
                 }
                 else {
-                        for(i = 0; i < t.playlist.length; i++) {
-                            chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm' });
-                        }
-            
+                    t.playlist.concat(tempPlay);
+                    t.playIndex = t.playIndex ? t.playIndex + 1 : 0;
                 }
-            });
+                
+                chrome.contextMenus.remove('setSrc', function() {
+                    chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+                        for(i = 0; i < t.playlist.length; i++) {
+                            chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm', 'checked': i === t.playIndex });
+                        }
+                    
+                    t.setSrc();
+                });
+            }
         }
     };
     

@@ -194,19 +194,10 @@ zip.useWebWorkers = packaged_app;
                 }
             });
         
-        t.trackToLoad = -1;
-        t.selectedTrack = null;
-        t.isLoadingTrack = false;
-        
         // add to list
         for(i = 0; i < t.tracks.length; i++) {
-            if(t.tracks[i].kind == 'subtitles') {
-                t.addTrackButton(t.tracks[i].srclang, t.tracks[i].label);
-            }
+            t.addTrackButton(t.tracks[i].srclang, t.tracks[i].label);
         }
-        
-        // start loading tracks
-        t.loadNextTrack();
         
         t.media.addEventListener('timeupdate', function(e) {
             t.displayCaptions();
@@ -310,26 +301,6 @@ zip.useWebWorkers = packaged_app;
         });
     };
     
-    MediaElementPlayer.prototype.setTrack = function(lang) {
-        var t = this,
-            i;
-        
-        $(document).trigger("subtitleChanged");
-        $('#_captions_' + lang)[0].checked = true;
-        if(lang == 'none') {
-            t.selectedTrack = null;
-        } else {
-            for(i = 0; i < t.tracks.length; i++) {
-                if(t.tracks[i].srclang == lang) {
-                    t.selectedTrack = t.tracks[i];
-                    t.captions.attr('lang', t.selectedTrack.srclang);
-                    t.displayCaptions();
-                    break;
-                }
-            }
-        }
-    };
-    
     MediaElementPlayer.prototype.loadTrack = function(index) {
         var
             t = this,
@@ -411,26 +382,6 @@ zip.useWebWorkers = packaged_app;
             t.captionsButton.find('.mejs-captions-selector ul').outerHeight(true) +
             t.captionsButton.find('.mejs-captions-translations').outerHeight(true)
         );
-    };
-    
-    MediaElementPlayer.prototype.checkForTracks = function() {
-        var
-            t = this,
-            hasSubtitles = false;
-            
-        // check if any subtitles
-        if(t.options.hideCaptionsButtonWhenEmpty) {
-            for(i = 0; i < t.tracks.length; i++) {
-                if(t.tracks[i].kind == 'subtitles') {
-                    hasSubtitles = true;
-                    break;
-                }
-            }
-            
-            if(!hasSubtitles) {
-                t.captionsButton.hide();
-            }
-        }
     };
     
     MediaElementPlayer.prototype.displayCaptions = function() {

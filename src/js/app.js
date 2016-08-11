@@ -30,10 +30,8 @@ $('#player').mediaelementplayer({
                 if(i === window.launchData.items.length - 1) {
                     t.filterFiles(temp);
                     
-                    if(t.playlist.length > 0) {
-                        t.tracks = [];
-                        t.playIndex = 0;
-                        t.setSrc();
+                    if(i === window.launchData.items.length - 1) {
+                        t.filterFiles(temp, true);
                     }
                 }
             });
