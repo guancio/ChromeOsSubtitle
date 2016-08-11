@@ -15,6 +15,9 @@ zip.useWebWorkers = packaged_app;
             i,
             options = '';
         
+        t.subtitles = [];
+        t.subIndex = null;
+        
         t.captions =
             $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .prependTo(t.layers).hide();
@@ -225,18 +228,27 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.loadSubtitles = function() {
-        var t = this;
+        var t = this,
+            current = t.subtitles[t.subIndex];
+        
+        if(current === undefined) {
+            return;
+        }
+        
+        if(current.entires === null) {
+            t.parseSubtitles();
+        }
+        
+        if(current.isCorrupt) {
+            t.notify('The given Subtitle file is corrupted!', 2000);
+            return;
+        }
+        
+        t.displaySubtitles();
         
         $('#label_srtname').css('visibility', 'inherit');
         $('#select_srtname').css('visibility', 'hidden');
         
-        if(file.name.lastIndexOf(".zip") != file.name.length - 4) {
-            $('#label_srtname')[0].textContent = file.name;
-            t.loadTrack(t.findTrackIdx("fromfile"));
-            return;
-        }
-        
-        t.tracks[t.findTrackIdx("fromfile")].zipFile = file;
         zip.createReader(new zip.BlobReader(file), function(reader) {
             // get all entries from the zip
             reader.getEntries(function(entries) {
@@ -301,36 +313,31 @@ zip.useWebWorkers = packaged_app;
         });
     };
     
-    MediaElementPlayer.prototype.loadTrack = function(index) {
-        var
-            t = this,
-            track = t.tracks[index],
-            after = function() {
-                track.isLoaded = true;
-                // create button
-                //t.addTrackButton(track.srclang);
-                t.enableTrackButton(track.srclang, track.label);
-                t.loadNextTrack();
-            };
-            
-        var reader = new FileReader();
+    MediaElementPlayer.prototype.parseSubtitles = function() {
+        var t = this,
+            current = t.subtitles[t.subIndex],
+            reader = new FileReader();
+        
         reader.onloadend = function(evt) {
             // parse the loaded file
             var d = evt.target.result;
-            if(typeof d == "string" && (/<tt\s+xml/ig).exec(d)) {
-                track.entries = mejs.TrackFormatParser.dfxp.parse(d);
+            
+            if(typeof d === "string" && (/<tt\s+xml/ig).exec(d)) {
+                current.entries = mejs.TrackFormatParser.dfxp.parse(d);
             } else {
-                track.entries = mejs.TrackFormatParser.webvvt.parse(d);
+                current.entries = mejs.TrackFormatParser.webvvt.parse(d);
             }
+            
             after();
             
             $(document).trigger("subtitleChanged");
         };
+        
         reader.onerror = function() {
-            t.loadNextTrack();
+            current.isCorrupt = true;
         };
         
-         mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
+        mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function (value) {
                 t.captionEncodingSelect.value = value;
                 reader.readAsText(track.file, value);
         });
@@ -384,29 +391,26 @@ zip.useWebWorkers = packaged_app;
         );
     };
     
-    MediaElementPlayer.prototype.displayCaptions = function() {
-        if(typeof this.tracks == 'undefined')
+    MediaElementPlayer.prototype.displaySubtitles = function() {
+        var t, entries, currtime, i;
+        
+        if(this.subIndex === null) {
             return;
-        
-        var
-            t = this,
-            i,
-            track = t.selectedTrack;
-        
-        var currTime = t.getCurrentTime() - t.capDelayValue;
-        
-        if(track != null && track.isLoaded) {
-            for(i = 0; i < track.entries.times.length; i++) {
-                if(currTime >= track.entries.times[i].start && currTime <= track.entries.times[i].stop) {
-                    t.captionsText.html(track.entries.text[i]);
-                    t.captions.show().height(0);
-                    return; // exit out if one is visible;
-                }
-            }
-            t.captions.hide();
-        } else {
-            t.captions.hide();
         }
+        
+        t = this;
+        entries = t.subtitles[t.subIndex].entries;
+        currTime = t.getCurrentTime() - t.capDelayValue;
+        
+        for(i = 0; i < entries.times.length; i++) {
+            if(currTime >= entries.times[i].start && currTime <= entries.times[i].stop) {
+                t.captionsText.html(entries.text[i]);
+                t.captions.show().height(0);
+                return; // exit out if one is visible;
+            }
+        }
+        
+        t.captions.hide();
     };
     
     mejs.language = {

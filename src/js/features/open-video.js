@@ -17,7 +17,13 @@
             if(packaged_app) {
                 chrome.fileSystem.chooseEntry({
                     type: "openFile",
-                    acceptsMultiple: true
+                    acceptsMultiple: true,
+                    acceptsAllTypes: false,
+                    accepts: [
+                                {
+                                    extensions: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv']
+                                }
+                    ]
                 }, function(entries) {
                     if(typeof entries === 'undefined') {
                         return;

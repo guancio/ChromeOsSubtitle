@@ -549,8 +549,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     t.playIndex = 0;
                 }
                 else {
-                    t.playlist.concat(tempPlay);
-                    t.playIndex = t.playIndex ? t.playIndex + 1 : 0;
+                    t.playIndex = t.playlist.length;
+                    t.playlist = t.playlist.concat(tempPlay);
                 }
                 
                 chrome.contextMenus.remove('setSrc', function() {
