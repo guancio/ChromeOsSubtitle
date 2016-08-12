@@ -218,7 +218,7 @@ var openSubsLang = [
         
         function movieHash() {
             info("2/6 Hashing...");
-            OpenSubtitlesHash(t.playlist[t.playIndex], function(hash) {
+            subtitleHash(t.playlist[t.playIndex], function(hash) {
                 searchSubtitle(hash);
             });
         }
