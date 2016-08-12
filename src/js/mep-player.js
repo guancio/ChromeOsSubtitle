@@ -607,31 +607,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         };
     })();
     
-    // turn into jQuery plugin
-    if(typeof jQuery != 'undefined') {
-        jQuery.fn.mediaelementplayer = function(options) {
-            if(options === false) {
-                this.each(function() {
-                    var player = jQuery(this).data('mediaelementplayer');
-                    if(player) {
-                        player.remove();
-                    }
-                    jQuery(this).removeData('mediaelementplayer');
-                });
-            } else {
-                this.each(function() {
-                    jQuery(this).data('mediaelementplayer', new mejs.MediaElementPlayer(this, options));
-                });
-            }
-            return this;
-        };
-    }
-    
-    document.addEventListener('ready', function() {
-        // auto enable using JSON attribute
-        $('.mejs-player').mediaelementplayer();
-    });
-    
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;
 })(mejs.$);

@@ -4,7 +4,7 @@ var mainMediaElement = null;
 
 $('#main').append('<video id="player" controls="controls"></video>');
 
-$('#player').mediaelementplayer({
+MediaElementPlayer(document.getElementById('player'), {
     startLanguage: 'en',
     isVideo: true,
     mode: "native",
