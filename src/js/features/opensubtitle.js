@@ -126,10 +126,24 @@ var openSubsLang = [
         
         function openSubtitle(content, sub) {
             info("5/6 Opening...");
-            console.log(content);
-            mejs.Utility.unzip(b64toBlob(content, "text/plain"), function(data) {
+            mejs.Utility.gunzip(b64toBlob(content), function(data) {
+                info(sub.SubFileName);
+                t.notify(sub.SubFileName + ' downloaded.', 3000);
                 
+                if(t.opensubtitleService.lastSubtitles.length > 1) {
+                    $('#select_opensubtitle').css('visibility', 'inherit');
+                    $('#label_opensubtitle').css('visibility', 'hidden');
+                }
+                
+                $('#encoding-selector').val("iso-8859-16");
+                
+                t.subtitles.push({
+                    file: new File([data], sub.SubFileName),
+                    entries: null
                 });
+                
+                t.setSubtitles(t.subtitles.length - 1);
+            });
         }
         
         function downloadSubtitle(sub) {

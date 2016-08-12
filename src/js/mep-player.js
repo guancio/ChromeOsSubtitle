@@ -532,7 +532,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t = this;
             
             for(i = 0; i < files.length; i++) {
-                ext = files[i].name.split('.').slice(-1)[0].toLowerCase();
+                ext = files[i].name.split('.').pop().toLowerCase();
                 
                 if(t.options.mediaExts.indexOf(ext) !== -1) {
                     tempPlay.push(files[i]);
@@ -540,9 +540,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 else if(t.options.subExts.indexOf(ext) !== -1) {
                     t.subtitles.push({
                         file: files[i],
-                        entries: null,
-                        isCorrupt: false
+                        entries: null
                     });
+                }
+                else if(ext === 'zip') {
+                    mejs.Utility.unzip(files[i], function(entries) {
+                        t.filterFiles(entries, false);
+                    });
+                    
                 }
             }
             

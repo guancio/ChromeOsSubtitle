@@ -159,8 +159,7 @@ zip.useWebWorkers = packaged_app;
             
             t.subtitles[t.playIndex] = {
                 file: e.files[0],
-                entries: null,
-                isCorrupt: false
+                entries: null
             };
             
             t.loadSubtitles();
@@ -228,7 +227,7 @@ zip.useWebWorkers = packaged_app;
             this.subIndex = parseInt(index);
         }
         
-        if(this.subtitles[this.subIndex].isCorrupt) {
+        if(this.subtitles[this.subIndex].entries === []) {
             this.notify('The given Subtitle file is corrupted!', 2000);
         }
     };
@@ -250,7 +249,7 @@ zip.useWebWorkers = packaged_app;
         };
         
         reader.onerror = function() {
-            current.isCorrupt = true;
+            current.entries = [];
             t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
@@ -263,7 +262,7 @@ zip.useWebWorkers = packaged_app;
     MediaElementPlayer.prototype.displaySubtitles = function() {
         var t, entries, currtime, i;
         
-        if(this.subIndex === null || this.subtitles[this.subIndex].isCorrupt) {
+        if(this.subIndex === null || this.subtitles[this.subIndex].entries === []) {
             return;
         }
         
@@ -407,7 +406,7 @@ zip.useWebWorkers = packaged_app;
                         }
                     }
                 }
-                console.log(entries);
+                
                 return entries;
             }
         },

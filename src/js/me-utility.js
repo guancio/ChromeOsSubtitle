@@ -104,27 +104,20 @@ mejs.Utility = {
     
     unzip: function(zipFile, cb) {
         zip.createReader(new zip.BlobReader(zipFile), function(reader) {
-            // get all entries from the zip
+            var temp = [];
+            
             reader.getEntries(function(entries) {
-                if(entries.length == 0) {
-                    return cb([]);
-                }
+                entries.forEach(function(entry, i) {
+                    entry.getData(new zip.BlobWriter(), function(data) {
+                        temp.push(new File([data], entry.filename));
+                        
+                        if(i === entries.length - 1) {
+                            cb(temp);
+                        }
+                    })
+                })
                 
-                var ext,
-                    srt_entries = [];
-                
-                for(var i = 0; i < entries.length; i++) {
-                    ext = entries[i].filename.split('.').slice(-1)[0];
-                    
-                    if(t.options.subExts.indexOf(ext) !== -1) {
-                        srt_entries.push(entries[i]);
-                    }
-                }
-                
-                if(srt_entries.length === 0) {
-                    return cb([])
-                }
-                
+                return;
                 // if(srt_entries.length > 1) {
                 //     $('#label_srtname').css('visibility', 'hidden');
                 //     $('#select_srtname').css('visibility', 'inherit');
@@ -141,28 +134,6 @@ mejs.Utility = {
                 //     }
                 //     $('#select_srtname').val('0');
                 // }
-                
-                function loadZippedSrt(entry) {
-                    // get first entry content as text
-                    entry.getData(new zip.BlobWriter(), function(data) {
-                        // text contains the entry data as a blob
-                        var trackId = t.findTrackIdx("fromfile");
-                        t.tracks[trackId].file = data;
-                        t.tracks[trackId].isLoaded = false;
-                        
-                        $('#label_srtname')[0].textContent = entry.filename;
-                        t.loadTrack(trackId);
-                        
-                        // close the zip reader
-                        reader.close(function() {
-                            // onclose callback
-                        });
-                    }, function(current, total) {
-                        // onprogress callback
-                    })
-                };
-                loadZippedSrt(srt_entries[0]);
-                
                 // $('#select_srtname').off("change");
                 // $('#select_srtname').change(function(e) {
                 //     loadZippedSrt(
@@ -175,28 +146,11 @@ mejs.Utility = {
         });
     },
     
-    unzip: function(file) {
+    gunzip: function(blob, cb) {
         zip.createGZipReader(new zip.BlobReader(blob), function(reader) {
             reader.gunzip(new zip.BlobWriter(), function(data) {
-                    info(sub.SubFileName);
-                    
-                    t.notify(sub.SubFileName + ' downloaded.', 3000);
-                    
-                    if(t.opensubtitleService.lastSubtitles.length > 1) {
-                        $('#select_opensubtitle').css('visibility', 'inherit');
-                        $('#label_opensubtitle').css('visibility', 'hidden');
-                    }
-                    
-                    $('#encoding-selector').val("iso-8859-16");
-                    
-                    t.subtitles.push({
-                        file: new File([data], sub.SubFileName),
-                        entries: null,
-                        isCorrupt: false
-                    });
-                    
-                    t.setSubtitles(t.subtitles.length - 1);
-                });
+                cb(data);
+            });
         });
     }
 };
