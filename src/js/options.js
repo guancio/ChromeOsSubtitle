@@ -12,7 +12,7 @@
         
         mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
         
-        subExts: ['srt', 'txt', 'zip'],
+        subExts: ['srt', 'txt'],
         // only for dynamic
         isVideo: true,
         
