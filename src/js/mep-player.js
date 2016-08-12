@@ -454,7 +454,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 this.stop();
             }
             
-            this.playIndex = parseInt(index) || this.playIndex;
+            if(index !== undefined) {
+                this.playIndex = parseInt(index)
+            }
+            
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
             document.title = this.playlist[this.playIndex].name;
             

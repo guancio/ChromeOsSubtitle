@@ -133,9 +133,6 @@ zip.useWebWorkers = packaged_app;
             
             mejs.Utility.setIntoSettings("default_encoding", t.captionEncodingSelect.value, function(obj) {});
             
-            if(t.tracks.length == 0)
-                return;
-            
             var radios = t.controls.find('input[name="_captions"]');
             var selectedRadio = radios.filter(function(e) {
                 return radios[e].checked
@@ -227,7 +224,9 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setSubtitles = function(index) {
-        this.subIndex = parseInt(index) || this.subIndex;
+        if(index !== undefined) {
+            this.subIndex = parseInt(index);
+        }
         
         if(this.subtitles[this.subIndex].isCorrupt) {
             this.notify('The given Subtitle file is corrupted!', 2000);
@@ -408,6 +407,7 @@ zip.useWebWorkers = packaged_app;
                         }
                     }
                 }
+                console.log(entries);
                 return entries;
             }
         },
