@@ -173,5 +173,30 @@ mejs.Utility = {
         }, function(error) {
             cb([]);
         });
+    },
+    
+    unzip: function(file) {
+        zip.createGZipReader(new zip.BlobReader(blob), function(reader) {
+            reader.gunzip(new zip.BlobWriter(), function(data) {
+                    info(sub.SubFileName);
+                    
+                    t.notify(sub.SubFileName + ' downloaded.', 3000);
+                    
+                    if(t.opensubtitleService.lastSubtitles.length > 1) {
+                        $('#select_opensubtitle').css('visibility', 'inherit');
+                        $('#label_opensubtitle').css('visibility', 'hidden');
+                    }
+                    
+                    $('#encoding-selector').val("iso-8859-16");
+                    
+                    t.subtitles.push({
+                        file: new File([data], sub.SubFileName),
+                        entries: null,
+                        isCorrupt: false
+                    });
+                    
+                    t.setSubtitles(t.subtitles.length - 1);
+                });
+        });
     }
 };

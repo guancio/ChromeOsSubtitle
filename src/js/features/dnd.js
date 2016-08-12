@@ -15,10 +15,6 @@
             e.preventDefault();
             e.stopPropagation();
             
-            if(t.getDuration() && !t.isPaused()) {
-                t.pause();
-            }
-            
             t.filterFiles(e.dataTransfer.files, false);
         }, false);
     }

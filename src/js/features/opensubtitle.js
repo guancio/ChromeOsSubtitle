@@ -126,38 +126,10 @@ var openSubsLang = [
         
         function openSubtitle(content, sub) {
             info("5/6 Opening...");
-            var blob = b64toBlob(content, "text/plain");
-            zip.createGZipReader(new zip.BlobReader(blob), function(reader) {
-                reader.gunzip(new zip.BlobWriter(), function(data) {
-                        info(sub.SubFileName);
-                        
-                        t.notify(sub.SubFileName + ' downloaded.', 3000);
-                        
-                        if(t.opensubtitleService.lastSubtitles.length > 1) {
-                            $('#select_opensubtitle').css('visibility', 'inherit');
-                            $('#label_opensubtitle').css('visibility', 'hidden');
-                        }
-                        
-                        $('#encoding-selector').val("iso-8859-16");
-                        
-                        t.tracks = t.tracks.filter(function(el) {
-                            return el.srclang != 'opensubtitle';
-                        });
-                        t.tracks.push({
-                            srclang: 'opensubtitle',
-                            file: data,
-                            kind: 'subtitles',
-                            label: 'OpenSubtitle',
-                            entries: [],
-                            isLoaded: false
-                        });
-                        
-                        var trackIdx = t.findTrackIdx("opensubtitle");
-                        t.tracks[trackIdx].file = data;
-                        t.tracks[trackIdx].isLoaded = false;
-                        t.loadTrack(trackIdx);
-                    });
-            });
+            console.log(content);
+            mejs.Utility.unzip(b64toBlob(content, "text/plain"), function(data) {
+                
+                });
         }
         
         function downloadSubtitle(sub) {
