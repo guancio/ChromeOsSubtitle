@@ -154,15 +154,7 @@ zip.useWebWorkers = packaged_app;
         srtFileInputs.change(function(e) {
             e.preventDefault();
             
-            if(e.files.length === 0)
-                return;
-            
-            t.subtitles[t.playIndex] = {
-                file: e.files[0],
-                entries: null
-            };
-            
-            t.loadSubtitles();
+            t.filterFiles(e.files);
         });
         
         t.captionsButton.find('.mejs-captionload button').click(function(e) {
@@ -193,30 +185,23 @@ zip.useWebWorkers = packaged_app;
                 }
             });
         
-        // add to list
-        for(i = 0; i < t.tracks.length; i++) {
-            t.addTrackButton(t.tracks[i].srclang, t.tracks[i].label);
-        }
-        
         t.media.addEventListener('timeupdate', function(e) {
             t.displaySubtitles();
         }, false);
         
         t.media.addEventListener('loadeddata', function() {
-            if(t.tracks.length == 0) {
-                $('#_captions_none').click();
-                t.captionsButton
-                    .find('input[value=fromfile]')
-                    .prop('disabled', true);
-                t.captionsButton
-                    .find('#encoding-selector')
-                    .prop('disabled', true);
-                t.captionsButton
-                    .find('#label_srtname')[0]
-                    .textContent = "No subtitle";
-                $('#label_srtname').css('visibility', 'inherit');
-                $('#select_srtname').css('visibility', 'hidden');
-            }
+            $('#_captions_none').click();
+            t.captionsButton
+                .find('input[value=fromfile]')
+                .prop('disabled', true);
+            t.captionsButton
+                .find('#encoding-selector')
+                .prop('disabled', true);
+            t.captionsButton
+                .find('#label_srtname')[0]
+                .textContent = "No subtitle";
+            $('#label_srtname').css('visibility', 'inherit');
+            $('#select_srtname').css('visibility', 'hidden');
         });
         
         t.capDelayValue = 0;
