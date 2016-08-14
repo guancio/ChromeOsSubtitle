@@ -357,7 +357,7 @@ zip.useWebWorkers = packaged_app;
             parse: function(trackText) {
                 var
                     i = 0,
-                    lines = mejs.TrackFormatParser.split2(trackText, /\r?\n/),
+                    lines = trackText.split(/\r?\n/),
                     entries = {
                         text: [],
                         times: []
@@ -449,11 +449,6 @@ zip.useWebWorkers = packaged_app;
                 }
                 return entries;
             }
-        },
-        split2: function(text, regex) {
-            // normal version for compliant browsers
-            // see below for IE fix
-            return text.split(regex);
         }
     };
 })(mejs.$);

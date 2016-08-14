@@ -124,41 +124,45 @@ var openSubsLang = [
             $('#label_opensubtitle')[0].textContent = text;
         }
         
-        function openSubtitle(content, sub) {
+        function openSubtitle(content, subs) {
+            var temp = [];
             info("5/6 Opening...");
-            mejs.Utility.gunzip(b64toBlob(content), function(data) {
-                info(sub.SubFileName);
-                t.notify(sub.SubFileName + ' downloaded.', 3000);
-                
-                if(t.opensubtitleService.lastSubtitles.length > 1) {
-                    $('#select_opensubtitle').css('visibility', 'inherit');
-                    $('#label_opensubtitle').css('visibility', 'hidden');
-                }
-                
-                $('#encoding-selector').val("iso-8859-16");
-                
-                t.subtitles.push({
-                    file: new File([data], sub.SubFileName),
-                    entries: null
+            console.log(content);
+            content.result.data.forEach(function(e, i) {
+                mejs.Utility.gunzip(b64toBlob(e.data), function(data) {
+                    if(i === 0) {
+                        info(subs[i].SubFileName);
+                        t.notify(subs[i].SubFileName + ' downloaded.', 3000);
+                        
+                        // if(t.opensubtitleService.lastSubtitles.length > 1) {
+                        //     $('#select_opensubtitle').css('visibility', 'inherit');
+                        //     $('#label_opensubtitle').css('visibility', 'hidden');
+                        // }
+                        
+                        $('#encoding-selector').val("iso-8859-16");
+                    }
+                    
+                    temp.push(new File([data], subs[i].SubFileName));
+                    
+                    if(i === content.result.data.length - 1) {
+                        t.filterFiles(temp);
+                    }
                 });
-                
-                t.setSubtitles(t.subtitles.length - 1);
             });
         }
         
-        function downloadSubtitle(sub) {
+        function downloadSubtitle(subs) {
             info("4/6 Downloading...");
             service.DownloadSubtitles({
-                params: [t.opensubtitleService.token, [
-                    sub.IDSubtitleFile
-                ]],
+                params: [t.opensubtitleService.token, 
+                    subs.map(function(e) { return e.IDSubtitleFile; })
+                ],
                 onException: function(errorObj) {
                     info("Download failed...");
                     t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
-                    var content = responseObj.result.data[0].data;
-                    openSubtitle(content, sub);
+                    openSubtitle(responseObj, subs);
                 }
             });
         }
@@ -178,7 +182,7 @@ var openSubsLang = [
                     moviebytesize: t.playlist[t.playIndex].size,
                     sublanguageid: lang
                 }], {
-                    limit: 100
+                    limit: 5
                 }],
                 onException: function(errorObj) {
                     info("Search failed");
@@ -211,7 +215,7 @@ var openSubsLang = [
                         );
                     });
                     
-                    downloadSubtitle(subtitles[0]);
+                    downloadSubtitle(subtitles);
                 }
             });
         }

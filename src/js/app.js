@@ -6,15 +6,14 @@ $('#main').append('<video id="player" controls="controls"></video>');
 
 MediaElementPlayer(document.getElementById('player'), {
     startLanguage: 'en',
-    isVideo: true,
     mode: "native",
-    success: function(mediaElement, domObject) {
+    success: function(mediaElement) {
         mainMediaElement = mediaElement;
         
-        mainMediaElement.player.container
+        mainMediaElement.container
             .addClass('mejs-container-fullscreen');
         
-        var t = mainMediaElement.player,
+        var t = mainMediaElement,
             temp;
         
         if(!window.launchData || !window.launchData.items || !window.launchData.items.length) {
