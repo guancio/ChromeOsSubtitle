@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.buildsource = function() {
         var t = this,
             open = mejs.Utility.createNestedElement('<div class="mejs-button mejs-source-button mejs-source" >' +
@@ -48,4 +48,4 @@
             return false;
         });
     }
-})(mejs.$);
+})();

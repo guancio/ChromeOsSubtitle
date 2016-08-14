@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.buildshortcuts = function() {
         var t = this;
         
@@ -20,4 +20,4 @@
             return true;
         });
     }
-})(mejs.$);
+})();

@@ -77,11 +77,11 @@ var openSubsLang = [
     MediaElementPlayer.prototype.buildopensubtitle = function() {
         var t = this,
             service = new rpc.ServiceProxy(host, {
-            sanitize: false,
-            protocol: "XML-RPC",
-            asynchronous: true,
-            methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB", "UploadSubtitles"]
-        });
+                sanitize: false,
+                protocol: "XML-RPC",
+                asynchronous: true,
+                methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB", "UploadSubtitles"]
+            });
         
         t.opensubtitleService = {
             token: null,
@@ -92,11 +92,10 @@ var openSubsLang = [
         };
         
         var prec = $('#li_encoding'),
-            line1 =
-            $('<li class="mejs-captionload"/>')
-            .append($('<input type="radio" name="_captions" id="_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
-            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
-            .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"/>'));
+            line1 = $('<li class="mejs-captionload"/>')
+                .append($('<input type="radio" name="_captions" id="_captions_opensubtitle" value="opensubtitle" disabled="disabled"/>'))
+                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute"/>'));
         
         line1.insertBefore(prec)
         
@@ -106,12 +105,11 @@ var openSubsLang = [
             $('<option value="' + e[0] + '">' + e[1] + '</option>').appendTo(selectLang);
         });
         
-        var line2 =
-            $('<li class="mejs-captionload"/>')
-            .append($('<div class="mejs-button  mejs-captionload"/>'))
-            .append($('<select id="select_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'))
-            .append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
-            .insertAfter(line1);
+        var line2 =$('<li class="mejs-captionload"/>')
+                .append($('<div class="mejs-button  mejs-captionload"/>'))
+                .append($('<select id="select_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'))
+                .append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
+                .insertAfter(line1);
         
         $('#select_opensubtitle_lang').val("eng");
         
