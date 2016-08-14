@@ -1,13 +1,9 @@
-(function($) {
-    $.extend(mejs.MepDefaults, {
-        stopText: 'Stop'
-    });
-    
+(function() {
     // STOP BUTTON
     MediaElementPlayer.prototype.buildstop = function() {
         var t = this,
             stop = mejs.Utility.createNestedElement('<div class="mejs-button mejs-stop-button mejs-stop">' +
-                '<button type="button" title="' + t.options.stopText + '" aria-label="' + t.options.stopText + '"></button>' +
+                    '<button type="button" title="Stop" aria-label="Stop"></button>' +
                 '</div>');
             
             stop.addEventListener('click', function() {
@@ -17,4 +13,4 @@
             });
             t.leftControls[0].appendChild(stop);
     }
-})(mejs.$);
+})();

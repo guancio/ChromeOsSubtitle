@@ -34,20 +34,18 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             t.media.controls = false;
             
             // build container
-            t.container =
-                $('<div class="mejs-container svg">' +
-                    '<div class="mejs-inner">' +
-                        '<div class="mejs-mediaelement"></div>' +
-                        '<div class="mejs-layers"></div>' +
-                        '<div class="mejs-controls">' +
-                            '<div id="left" class="skip"></div>' +
-                            '<div id="right" class="skip"></div>' +
-                            '<div id="middle" class="skip"></div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>')
-                .addClass(t.media.className)
-                .insertBefore(t.$media);
+            t.container = $('<div class="mejs-container svg">' +
+                                '<div class="mejs-inner">' +
+                                    '<div class="mejs-mediaelement"></div>' +
+                                    '<div class="mejs-layers"></div>' +
+                                    '<div class="mejs-controls">' +
+                                        '<div id="left" class="skip"></div>' +
+                                        '<div id="right" class="skip"></div>' +
+                                        '<div id="middle" class="skip"></div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>')
+                            .insertBefore(t.$media);
             
             // move the <video/video> tag into the right spot
             t.container.find('.mejs-mediaelement').append(t.$media);
@@ -117,7 +115,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             t.killControlsTimer('start');
             
             t.controlsTimer = setTimeout(function() {
-                //console.log('timer fired');
                 t.hideControls();
                 t.killControlsTimer('hide');
             }, timeout || 1500);
@@ -138,12 +135,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 mf = mejs.MediaFeatures,
                 featureIndex,
                 feature;
-            
-            // make sure it can't create itself again if a plugin reloads
-            if(t.created)
-                return;
-            else
-                t.created = true;
             
             // built in feature
             t.buildoverlays();

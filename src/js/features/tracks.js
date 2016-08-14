@@ -10,6 +10,9 @@ zip.useWebWorkers = packaged_app;
         tracksText: mejs.i18n.t('Captions/Subtitles')
     });
     
+    var encodings = ["utf-8", "ibm866", "iso-8859-2", "iso-8859-3", "iso-8859-4", "iso-8859-5", "iso-8859-6", "iso-8859-7", "iso-8859-8", "iso-8859-10", "iso-8859-13 ", "iso-8859-14", "iso-8859-15", "iso-8859-16", "koi8-r", "koi8-u", "windows-874", "windows-1250", "windows-1251", "windows-1252", "windows-1253", "windows-1254", "windows-1255", "windows-1256", "windows-1257", "windows-1258", "gbk", "gb18030", "euc-jp", "iso-2022-jp", "shift_jis", "euc-kr"],
+        encoding_labels = ["UTF-8", "ibm866 Cyrillic", "iso-8859-2 Latin-2", "iso-8859-3 Latin-3", "iso-8859-4 Latin-4", "iso-8859-5 Cyrillic", "iso-8859-6 Arabic", "iso-8859-7 Greek", "iso-8859-8 Hebrew", "iso-8859-10 Latin-6", "iso-8859-13 ", "iso-8859-14", "iso-8859-15", "iso-8859-16", "koi8-r", "koi8-u", "windows-874", "windows-1250", "windows-1251", "windows-1252 US-ascii", "windows-1253", "windows-1254 Latin-5", "windows-1255", "windows-1256 Arabic", "windows-1257", "windows-1258", "gbk Chinese", "gb18030", "euc-jp", "iso-2022-jp", "shift_jis", "euc-kr"];
+    
     MediaElementPlayer.prototype.buildtracks = function() {
         var t = this,
             i,
@@ -22,75 +25,6 @@ zip.useWebWorkers = packaged_app;
             $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .prependTo(t.layers).hide();
         t.captionsText = t.captions.find('.mejs-captions-text');
-        
-        var encodings = [
-            "utf-8",
-            "ibm866",
-            "iso-8859-2",
-            "iso-8859-3",
-            "iso-8859-4",
-            "iso-8859-5",
-            "iso-8859-6",
-            "iso-8859-7",
-            "iso-8859-8",
-            "iso-8859-10",
-            "iso-8859-13 ",
-            "iso-8859-14",
-            "iso-8859-15",
-            "iso-8859-16",
-            "koi8-r",
-            "koi8-u",
-            "windows-874",
-            "windows-1250",
-            "windows-1251",
-            "windows-1252",
-            "windows-1253",
-            "windows-1254",
-            "windows-1255",
-            "windows-1256",
-            "windows-1257",
-            "windows-1258",
-            "gbk",
-            "gb18030",
-            "euc-jp",
-            "iso-2022-jp",
-            "shift_jis",
-            "euc-kr"
-        ];
-        var encoding_labels = [
-            "UTF-8",
-            "ibm866 Cyrillic",
-            "iso-8859-2 Latin-2",
-            "iso-8859-3 Latin-3",
-            "iso-8859-4 Latin-4",
-            "iso-8859-5 Cyrillic",
-            "iso-8859-6 Arabic",
-            "iso-8859-7 Greek",
-            "iso-8859-8 Hebrew",
-            "iso-8859-10 Latin-6",
-            "iso-8859-13 ",
-            "iso-8859-14",
-            "iso-8859-15",
-            "iso-8859-16",
-            "koi8-r",
-            "koi8-u",
-            "windows-874",
-            "windows-1250",
-            "windows-1251",
-            "windows-1252 US-ascii",
-            "windows-1253",
-            "windows-1254 Latin-5",
-            "windows-1255",
-            "windows-1256 Arabic",
-            "windows-1257",
-            "windows-1258",
-            "gbk Chinese",
-            "gb18030",
-            "euc-jp",
-            "iso-2022-jp",
-            "shift_jis",
-            "euc-kr"
-        ];
         
         var encodingText = '<li id="li_encoding">' +
             '<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>' +
@@ -138,23 +72,7 @@ zip.useWebWorkers = packaged_app;
                 return radios[e].checked
             })[0];
             
-            var srcSelected = selectedRadio.value;
-            
-            if(srcSelected == 'none')
-                return;
-                
-            var selectedIdx = t.findTrackIdx(srcSelected);
-            
-            t.tracks[selectedIdx].isLoaded = false;
-            t.loadTrack(selectedIdx);
-        });
-        
-        var srtFileInputs = t.captionsButton.find('#opensrtfile_input');
-        
-        srtFileInputs.change(function(e) {
-            e.preventDefault();
-            
-            t.filterFiles(e.files);
+            var srcSelected = selectedRadio.value
         });
         
         t.captionsButton.find('.mejs-captionload button').click(function(e) {
@@ -207,7 +125,15 @@ zip.useWebWorkers = packaged_app;
         t.capDelayValue = 0;
     };
     
-    MediaElementPlayer.prototype.setSubtitles = function(index) {
+    MediaElementPlayer.prototype.setEncoding = function(index) {
+        mejs.Utility.setIntoSettings('default_encoding', encodings[parseInt(index)], function(obj) {});
+        
+        for(var i = 0; i < this.subtitles.length; i++) {
+            this.subtitles[i].entries = null;
+        }
+    };
+    
+    MediaElementPlayer.prototype.setSubtitle = function(index) {
         if(index !== undefined) {
             this.subIndex = parseInt(index);
         }
@@ -222,6 +148,8 @@ zip.useWebWorkers = packaged_app;
             current = t.subtitles[t.subIndex],
             reader = new FileReader();
         
+        current.entries = [];
+        
         reader.onloadend = function(evt) {
             // parse the loaded file
             var d = evt.target.result;
@@ -234,7 +162,6 @@ zip.useWebWorkers = packaged_app;
         };
         
         reader.onerror = function() {
-            current.entries = [];
             t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
@@ -380,7 +307,6 @@ zip.useWebWorkers = packaged_app;
                                 text = text + '\n' + lines[i];
                                 i++;
                             }
-                            text = $.trim(text).replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, "<a href='$1' target='_blank'>$1</a>");
                             // Text is in a different array so I can use .join
                             entries.text.push(text);
                             entries.times.push({
