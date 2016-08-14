@@ -5,9 +5,6 @@ mejs.MediaFeatures = {
         
         // detect browsers (only the ones that have some kind of quirk we need to work around)
         this.isAndroid = (ua.match(/android/i) !== null);
-        this.isBustedAndroid = (ua.match(/android 2\.[12]/) !== null);
-        this.isChrome = (ua.match(/chrome/gi) !== null);
-        this.isWebkit = (ua.match(/webkit/gi) !== null);
         this.hasTouch = ('ontouchstart' in window);
     }
 };

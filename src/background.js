@@ -24,7 +24,10 @@ chrome.runtime.onInstalled.addListener(function() {
             chrome.contextMenus.create({ 'title': temp[i], 'type': 'radio', 'parentId': 'setAspectRatio', 'id': i + 'a' });
         }
     
-    chrome.contextMenus.create({ 'title': 'Download Subtitles', 'id': 'openSubtitleLogIn' });
+    chrome.contextMenus.create({ 'title': 'Subtitles', 'id': 'subtitles' });
+        chrome.contextMenus.create({ 'title': 'Download Subtitles', 'parentId': 'subtitles', 'id': 'openSubtitleLogIn' });
+        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
+            chrome.contextMenus.create({ 'title': 'None', 'type': 'radio', 'parentId': 'setSubtitle', 'id': 'subNull' });
     
     chrome.contextMenus.create({ 'title': 'Caption Size', 'id': 'captionSize' });
         chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
@@ -32,13 +35,13 @@ chrome.runtime.onInstalled.addListener(function() {
     
     chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
         chrome.contextMenus.create({ 'title': 'Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });
-            chrome.contextMenus.create({ 'title': 'Normal', 'type': 'radio', 'parentId': 'setPlayType', 'id': '0p' });
-            chrome.contextMenus.create({ 'title': 'Repeat', 'type': 'radio', 'parentId': 'setPlayType', 'id': '1p' });
-            chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2p' });
+            chrome.contextMenus.create({ 'title': 'Normal', 'type': 'radio', 'parentId': 'setPlayType', 'id': '0n' });
+            chrome.contextMenus.create({ 'title': 'Repeat', 'type': 'radio', 'parentId': 'setPlayType', 'id': '1n' });
+            chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2n' });
         chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
         chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
         chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'null', 'enabled': false });
+            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'playNull', 'enabled': false });
     
     chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
 })
