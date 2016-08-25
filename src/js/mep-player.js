@@ -163,7 +163,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                         if(!t.isPaused()) {
                             t.startControlsTimer(1000);
                         }
-                        console.log('kkk');
                     });
             }
             
