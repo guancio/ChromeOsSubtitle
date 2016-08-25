@@ -16,9 +16,13 @@
     MediaElementPlayer.prototype.startNotificationTimer = function(timeout) {
         var t = this;
         
-        if(activeTimer !== null)
+        if(activeTimer !== null) {
             clearTimeout(activeTimer);
+        }
         
-        activeTimer = setTimeout(function() { activeTimer = null; t.notification.style.visibility = 'hidden'; }, timeout || 1000);
+        activeTimer = setTimeout(function() {
+            activeTimer = null;
+            t.notification.style.visibility = 'hidden';
+        }, timeout || 1000);
     };
 })();

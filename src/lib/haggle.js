@@ -17,7 +17,7 @@
         }
         
         if(el.charAt(0) !== '<') {
-            this.el = document.querySelector(el);
+            this.el = Array.prototype.slice.call(document.querySelector(el));
             
             if(this.el === null){
                 return undefined;
@@ -27,14 +27,14 @@
             var temp = document.createElement('div');
             temp.innerHTML = el;
             
-            this.el = temp.firstChild;
+            this.el = temp.children;
         }
         
         return this;
     }
     
     Haggle.extend = function(o1, o2) {
-        if(!(o1 instanceof Object)) {
+        if(!(o1 instanceof Object) || !(o2 instanceof Object)) {
             return undefined;
         }
         else {
@@ -168,5 +168,6 @@
         
         return this;
     };
+    
     window.Haggle = Haggle;
 })();
