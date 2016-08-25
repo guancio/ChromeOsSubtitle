@@ -23,5 +23,5 @@
     
     MediaElementPlayer.prototype.paintThumbnail = mejs.Utility.deBounce(function(time) {
         thumbnailVideo.currentTime = time;
-    }, 200);
+    }, 100);
 })();
