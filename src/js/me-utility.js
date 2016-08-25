@@ -52,5 +52,22 @@ mejs.Utility = {
         temp.innerHTML = content;
         
         return temp.firstChild;
+    },
+    
+    deBounce: function(func, timeout) {
+        var timer = null;
+        
+        return function() {
+            var a = Array.prototype.slice.call(arguments);
+            
+            if(timer !== null) {
+                clearTimeout(timer);
+            }
+            
+            timer = setTimeout(function() {
+                func.apply(null, a);
+                timer = null;
+            }, timeout || 500);
+        };
     }
 };

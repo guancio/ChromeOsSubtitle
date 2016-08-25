@@ -9,7 +9,7 @@
         // force Android's native controls
         AndroidUseNativeControls: false,
         // features to show
-        features: ['contextmenu', 'aspectRatio', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats'],
+        features: ['contextmenu', 'aspectRatio', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats', 'thumbnail'],
         
         // only for dynamic
         isVideo: true,
