@@ -1,7 +1,6 @@
 (function($) {
     $.extend(mejs.MepDefaults, {
         muteText: mejs.i18n.t('Mute Toggle'),
-        hideVolumeOnTouchDevices: true,
         maximumVolume: 2
     });
     
@@ -15,10 +14,6 @@
         this.delayNode.connect(this.gainNode);
         this.gainNode.connect(audioContext.destination);
         
-        // Android and iOS don't support volume controls
-        if(mejs.MediaFeatures.hasTouch && this.hideVolumeOnTouchDevices)
-            return;
-        
         var t = this,
             mute = $('<div class="mejs-button mejs-volume-button mejs-mute">' +
                     '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
@@ -26,14 +21,11 @@
                 '</div>')
             .appendTo(t.rightControls),
             volumeBar = t.container.find('#volumeBar'),
-            positionVolumeHandle = function(volume) {
-                volumeBar[0].value = volume;
-            },
             handleVolumeMove = function(e) {
                 var volume = null,
                     totalOffset = volumeBar.offset();
                 
-                // calculate the new volume based on the moust position
+                // calculate the new volume based on the mouse position
                 // height is width becuase we have rotated the progress bar
                 var railHeight = volumeBar.width(),
                     newY = e.pageY - totalOffset.top;
@@ -47,33 +39,18 @@
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)
                 t.setVolume(Math.max(0, Math.min(volume * 2, t.options.maximumVolume)));
-            },
-            mouseIsDown = false,
-            mouseIsOver = false;
+            };
         
-        // SLIDER
-        mute.hover(function() {
-                mouseIsOver = true;
-            }, function() {
-                mouseIsOver = false;
-            });
-        
-        volumeBar.bind('mouseover', function() {
-                mouseIsOver = true;
-            })
-            .bind('mousedown', function(e) {
-                handleVolumeMove(e);
-                t.globalBind('mousemove.vol', function(e) {
-                    handleVolumeMove(e);
-                });
-                t.globalBind('mouseup.vol', function() {
-                    mouseIsDown = false;
-                    t.globalUnbind('.vol');
-                });
-                mouseIsDown = true;
-                
-                return false;
-            });
+        volumeBar[0].addEventListener('mousedown', function(e) {
+            handleVolumeMove(e);
+            volumeBar[0].addEventListener('mousemove', handleVolumeMove);
+        });
+        volumeBar[0].addEventListener('mouseup', function() {
+            volumeBar[0].removeEventListener('mousemove', handleVolumeMove);
+        });
+        volumeBar[0].addEventListener('mouseleave', function() {
+            volumeBar[0].removeEventListener('mousemove', handleVolumeMove);
+        });
         
         // MUTE button
         mute.find('button').click(function() {
@@ -83,16 +60,14 @@
         // listen for volume change events from other sources
         t.media.addEventListener('volumechange', function(e) {
             if(t.isMuted()) {
-                positionVolumeHandle(0);
+                volumeBar[0].value = 0;
                 mute.removeClass('mejs-mute').addClass('mejs-unmute');
             } else {
-                positionVolumeHandle(t.getVolume());
+                volumeBar[0].value = t.getVolume();
                 mute.removeClass('mejs-unmute').addClass('mejs-mute');
             }
         }, false);
         
-        if(t.container.is(':visible')) {
-            t.setVolume(t.options.startVolume);
-        }
+        t.setVolume(t.options.startVolume);
     }
 })(mejs.$);

@@ -3,7 +3,7 @@
         var t = this;
         
         // listen for key presses
-        t.globalBind('keydown', function(e) {
+        window.addEventListener('keydown', function(e) {
             // find a matching key
             for(var i = 0, il = t.options.keyActions.length; i < il; i++) {
                 var keyAction = t.options.keyActions[i];

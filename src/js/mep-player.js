@@ -11,8 +11,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         var t = this;
         
         // these will be reset after the MediaElement.success fires
-        t.$media = $(node);
-        t.media = t.$media[0];
+        t.media = node;
         t.media.player = t;
         
         // extend default options
@@ -45,10 +44,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                                     '</div>' +
                                 '</div>' +
                             '</div>')
-                            .insertBefore(t.$media);
+                            .insertBefore(t.media);
             
             // move the <video/video> tag into the right spot
-            t.container.find('.mejs-mediaelement').append(t.$media);
+            t.container.find('.mejs-mediaelement').append(t.media);
             
             // find parts
             t.controls = t.container.find('.mejs-controls');
@@ -59,10 +58,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.meReady();
             
-            if(typeof(t.container) != 'undefined') {
-                // controls are shown when loaded
-                t.container.trigger('controlsshown');
-            }
+            // controls are shown when loaded
+            t.container.trigger('controlsshown');
         },
         
         timeupdate: function() {
@@ -79,12 +76,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls
-                .css('visibility', 'visible')
-                .stop(true, true).fadeIn(200, function() {
-                    t.controlsAreVisible = true;
-                    t.container.trigger('controlsshown');
-                });
+            t.controls.css('opacity', '1');
+            t.controlsAreVisible = true;
+            t.container.trigger('controlsshown');
         },
         
         hideControls: function() {
@@ -95,16 +89,11 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             // fade out main controls
-            t.controls.stop(true, true).fadeOut(200, function() {
-                $(this)
-                    .css('visibility', 'hidden')
-                    .css('display', 'block');
-                
-                t.controlsAreVisible = false;
-                t.container.trigger('controlshidden');
-            });
+            t.controls.css('opacity', '0');
+            t.controlsAreVisible = false;
+            t.container.trigger('controlshidden');
             
-             t.media.removeEventListener('timeupdate', t.timeupdate, false);
+            t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
         
         controlsTimer: null,
@@ -112,21 +101,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         startControlsTimer: function(timeout) {
             var t = this;
             
-            t.killControlsTimer('start');
+            if(t.controlsTimer !== null) {
+                clearTimeout(t.controlsTimer);
+            }
             
             t.controlsTimer = setTimeout(function() {
                 t.hideControls();
-                t.killControlsTimer('hide');
-            }, timeout || 1500);
-        },
-        
-        killControlsTimer: function(src) {
-            var t = this;
-            
-            if(t.controlsTimer !== null) {
-                clearTimeout(t.controlsTimer);
                 t.controlsTimer = null;
-            }
+            }, timeout || 1500);
         },
         
         // Sets up all controls and events
@@ -159,7 +141,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 // for touch devices (iOS, Android)
                 // show/hide without animation on touch
                 
-                t.$media.bind('touchstart', function() {
+                t.media.addEventListener('touchstart', function() {
                     // toggle controls
                     if(t.controlsAreVisible) {
                         t.hideControls(false);
@@ -181,6 +163,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                         if(!t.isPaused()) {
                             t.startControlsTimer(1000);
                         }
+                        console.log('kkk');
                     });
             }
             
@@ -202,7 +185,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }, false);
             
             // adjust controls whenever window sizes (used to be in fullscreen only)
-            t.globalBind('resize', function() {
+            window.addEventListener('resize', function() {
                 t.resizeVideo();
             });
             
@@ -495,38 +478,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
         }
     };
-    
-    (function() {
-        var rwindow = /^((after|before)print|(before)?unload|hashchange|message|o(ff|n)line|page(hide|show)|popstate|resize|storage)\b/;
-        
-        function splitEvents(events, id) {
-            // add player ID as an event namespace so it's easier to unbind them all later
-            var ret = {
-                d: [],
-                w: []
-            };
-            $.each((events || '').split(' '), function(k, v) {
-                ret[rwindow.test(v) ? 'w' : 'd'].push(v + '.' + id);
-            });
-            ret.d = ret.d.join(' ');
-            ret.w = ret.w.join(' ');
-            return ret;
-        }
-        
-        mejs.MediaElementPlayer.prototype.globalBind = function(events, data, callback) {
-            var t = this;
-            events = splitEvents(events, t.id);
-            if(events.d) $(document).bind(events.d, data, callback);
-            if(events.w) $(window).bind(events.w, data, callback);
-        };
-        
-        mejs.MediaElementPlayer.prototype.globalUnbind = function(events, callback) {
-            var t = this;
-            events = splitEvents(events, t.id);
-            if(events.d) $(document).unbind(events.d, callback);
-            if(events.w) $(window).unbind(events.w, callback);
-        };
-    })();
     
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;

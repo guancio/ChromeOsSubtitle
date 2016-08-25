@@ -66,13 +66,9 @@ a:visited {
     top: 0;
     left: 0;
 }
-/*
+
 .mejs-overlay-play {
     cursor: pointer;
-}*/
-
-.mejs-overlay:hover .mejs-overlay-button {
-    background-position: 0 -100px ;
 }
 
 .mejs-overlay-loading {
@@ -218,6 +214,7 @@ a:visited {
     width: 80vw;
     font-weight: bold;
     -webkit-user-select: none;
+    transition: opacity 0.6s;
 }
 
 .mejs-container .mejs-controls div:not(.skip) {
@@ -394,7 +391,7 @@ a:visited {
 
 .mejs-controls .mejs-time-rail .mejs-time-float {
     position: absolute;
-    display: none;
+    visibility: hidden;
     background: #eee;
     height: 117px;
     top: -116px;
@@ -411,6 +408,10 @@ a:visited {
     margin: 2px;
     border-radius: 6px;
     width: 121px;
+}
+
+.mejs-controls .mejs-time-rail progress[value]:hover + .mejs-time-float {
+    visibility: visible;
 }
 
 .mejs-controls .mejs-time-rail .mejs-time-float-current {
