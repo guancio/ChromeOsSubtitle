@@ -183,11 +183,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.updateCurrent();
             }, false);
             
-            // adjust controls whenever window sizes (used to be in fullscreen only)
-            window.addEventListener('resize', function() {
-                t.resizeVideo();
-            });
-            
             t.options.success(t);
         },
         
@@ -352,7 +347,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
             document.title = this.playlist[this.playIndex].name;
             
-            this.setThumbnailSrc(this.getSrc());
+            this.setThumbnailSrc(this.media.src);
         },
         
         getSrc: function() {

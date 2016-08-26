@@ -19,13 +19,18 @@
             targetAspectRatio = aspectRatios[currentAspectRatio];
         }
         
+        //Use viewport sizes.
+        //      wH * targetAspectRatio => (targetAspectRatio * 100) vh
+        //      wH                     => 100 vh
+        //      wW                     => 100 vw
+        //      wW / targetAspectRatio => (100 / targetAspectRatio) vw
         if(wH * targetAspectRatio <= wW) {
-            this.media.style.width = wH * targetAspectRatio;
-            this.media.style.height = wH;
+            this.media.style.width = (targetAspectRatio * 100) + 'vh';
+            this.media.style.height = '100vh';
         }
         else {
-            this.media.style.width = wW;
-            this.media.style.height = wW / targetAspectRatio;
+            this.media.style.width = '100vw';
+            this.media.style.height = (100 / targetAspectRatio) + 'vw';
         }
     };
     

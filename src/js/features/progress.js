@@ -43,15 +43,14 @@
             };
         
         // handle clicks
-        t.railBar
-            .bind('mousemove', function(e) {
-                handleMouseMove(e, false);
-            })
-            .bind('mousedown', function(e) {
-                if(e.which === 1) {
-                    handleMouseMove(e, true);
-                }
-            });
+        t.railBar[0].addEventListener('mousemove', function(e) {
+            handleMouseMove(e, false);
+        });
+        t.railBar[0].addEventListener('mousedown', function(e) {
+            if(e.which === 1) {
+                handleMouseMove(e, true);
+            }
+        });
     }
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
