@@ -46,7 +46,7 @@
                         timefloat[0].style.left = pos + 39;  //__UKN#1__ why is 79 needed?
                         timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
                         timefloat.show();
-                        t.paintThumbnail(newTime, 200);
+                        t.paintThumbnail(newTime);
                     }
                 }
             },
