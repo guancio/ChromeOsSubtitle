@@ -34,14 +34,12 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             // build container
             t.container = $('<div class="mejs-container svg">' +
-                                '<div class="mejs-inner">' +
-                                    '<div class="mejs-mediaelement"></div>' +
-                                    '<div class="mejs-layers"></div>' +
-                                    '<div class="mejs-controls">' +
-                                        '<div id="left" class="skip"></div>' +
-                                        '<div id="right" class="skip"></div>' +
-                                        '<div id="middle" class="skip"></div>' +
-                                    '</div>' +
+                                '<div class="mejs-mediaelement"></div>' +
+                                '<div class="mejs-layers"></div>' +
+                                '<div class="mejs-controls">' +
+                                    '<div id="left" class="skip"></div>' +
+                                    '<div id="right" class="skip"></div>' +
+                                    '<div id="middle" class="skip"></div>' +
                                 '</div>' +
                             '</div>')
                             .insertBefore(t.media);
