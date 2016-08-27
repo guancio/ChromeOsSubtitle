@@ -1,3 +1,5 @@
+var mejs = {};
+
 if(typeof Haggle !== 'undefined' && false) {
     mejs.$ = Haggle;
 }

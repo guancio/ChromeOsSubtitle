@@ -33,12 +33,9 @@
                         t.setCurrentTime(newTime);
                     }
                     
-                    // position floating time box
-                    if(!mejs.MediaFeatures.hasTouch) {
-                        timefloat[0].style.left = pos + 39;  //__UKN#1__ why is 79 needed?
-                        timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
-                        t.paintThumbnail(newTime);
-                    }
+                    timefloat[0].style.left = pos + 39;  //__UKN#1__ why is 39 needed?
+                    timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
+                    t.paintThumbnail(newTime);
                 }
             };
         

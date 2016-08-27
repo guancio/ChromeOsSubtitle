@@ -8,17 +8,15 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             return new mejs.MediaElementPlayer(node, o);
         }
         
-        var t = this;
-        
         // these will be reset after the MediaElement.success fires
-        t.media = node;
-        t.media.player = t;
+        this.media = node;
+        this.media.player = this;
         
         // extend default options
-        t.options = $.extend({}, mejs.MepDefaults, o);
+        this.options = $.extend({}, mejs.MepDefaults, o);
         
         // start up
-        t.init();
+        this.init();
     };
     
     // actual player
@@ -33,7 +31,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             t.media.controls = false;
             
             // build container
-            t.container = $('<div class="mejs-container svg">' +
+            t.container = $('<div class="mejs-container">' +
                                 '<div class="mejs-mediaelement"></div>' +
                                 '<div class="mejs-layers"></div>' +
                                 '<div class="mejs-controls">' +
@@ -61,6 +59,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         timeupdate: function() {
+            //This function is called by an eventlistener on
+            //the <video>. Hence the need for this.player
             this.player.updateCurrent();
             this.player.setCurrentRail();
         },
@@ -124,7 +124,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 feature = t.options.features[featureIndex];
                 if(t['build' + feature]) {
                     try {
-                        t['build' + feature](t, t.controls, t.layers, t.media);
+                        t['build' + feature]();
                         console.log('Loaded:', feature);
                     } catch(e) {
                         // TODO: report control error
@@ -135,10 +135,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             // controls fade
-            if(mejs.MediaFeatures.hasTouch) {
+            if('ontouchstart' in window) {
                 // for touch devices (iOS, Android)
                 // show/hide without animation on touch
-                
                 t.media.addEventListener('touchstart', function() {
                     // toggle controls
                     if(t.controlsAreVisible) {
@@ -185,10 +184,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         buildoverlays: function() {
-            var t = this;
-            
-            var loading =
-                $('<div class="mejs-overlay mejs-layer">' +
+            var t = this,
+                loading = $('<div class="mejs-overlay mejs-layer">' +
                     '<div class="mejs-overlay-loading">' +
                         '<div class="sk-circle">' +
                             '<div class="sk-circle1"></div><div class="sk-circle2"></div><div class="sk-circle3"></div><div class="sk-circle4"></div><div class="sk-circle5"></div><div class="sk-circle6"></div><div class="sk-circle7"></div><div class="sk-circle8"></div><div class="sk-circle9"></div><div class="sk-circle10"></div><div class="sk-circle11"></div><div class="sk-circle12"></div>' +

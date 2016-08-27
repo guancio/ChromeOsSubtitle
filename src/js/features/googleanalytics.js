@@ -13,49 +13,35 @@
         googleAnalyticsEventTime: 'Time'
     });
     
-    MediaElementPlayer.prototype.buildgoogleanalytics = function(player, controls, layers, media) {
-        media.addEventListener('play', function() {
+    MediaElementPlayer.prototype.buildgoogleanalytics = function() {
+        this.media.addEventListener('play', function() {
             if(typeof _gaq != 'undefined') {
                 _gaq.push(['_trackEvent',
-                    player.options.googleAnalyticsCategory,
-                    player.options.googleAnalyticsEventPlay,
-                    (player.options.googleAnalyticsTitle === '') ? player.currentSrc : player.options.googleAnalyticsTitle
+                    this.options.googleAnalyticsCategory,
+                    this.options.googleAnalyticsEventPlay,
+                    (this.options.googleAnalyticsTitle === '') ? this.currentSrc : this.options.googleAnalyticsTitle
                 ]);
             }
         }, false);
         
-        media.addEventListener('pause', function() {
+        this.media.addEventListener('pause', function() {
             if(typeof _gaq != 'undefined') {
                 _gaq.push(['_trackEvent',
-                    player.options.googleAnalyticsCategory,
-                    player.options.googleAnalyticsEventPause,
-                    (player.options.googleAnalyticsTitle === '') ? player.currentSrc : player.options.googleAnalyticsTitle
+                    this.options.googleAnalyticsCategory,
+                    this.options.googleAnalyticsEventPause,
+                    (this.options.googleAnalyticsTitle === '') ? this.currentSrc : this.options.googleAnalyticsTitle
                 ]);
             }
         }, false);
         
-        media.addEventListener('ended', function() {
+        this.media.addEventListener('ended', function() {
             if(typeof _gaq != 'undefined') {
                 _gaq.push(['_trackEvent',
-                    player.options.googleAnalyticsCategory,
-                    player.options.googleAnalyticsEventEnded,
-                    (player.options.googleAnalyticsTitle === '') ? player.currentSrc : player.options.googleAnalyticsTitle
+                    this.options.googleAnalyticsCategory,
+                    this.options.googleAnalyticsEventEnded,
+                    (this.options.googleAnalyticsTitle === '') ? this.currentSrc : this.options.googleAnalyticsTitle
                 ]);
             }
         }, false);
-        
-        /*
-        media.addEventListener('timeupdate', function() {
-        	if (typeof _gaq != 'undefined') {
-        		_gaq.push(['_trackEvent', 
-        			player.options.googleAnalyticsCategory, 
-        			player.options.googleAnalyticsEventEnded, 
-        			player.options.googleAnalyticsTime,
-        			(player.options.googleAnalyticsTitle === '') ? player.currentSrc : player.options.googleAnalyticsTitle,
-        			player.currentTime
-        		]);
-        	}
-        }, true);
-        */
     }
 })(mejs.$);

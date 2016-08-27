@@ -137,7 +137,7 @@ mejs.Utility = {
         var pattern_identifier = /^([a-zA-z]+-)?[0-9]+$/,
             pattern_timecode = /^([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/;
         
-        var i = 0,
+        var i,
             lines = trackText.split(/\r?\n/),
             entries = {
                 text: [],
@@ -146,7 +146,7 @@ mejs.Utility = {
             timecode,
             text;
         
-        for(; i < lines.length; i++) {
+        for(i = 0; i < lines.length; i++) {
             // check for the line number
             if(pattern_identifier.exec(lines[i])) {
                 // skip to the next line where the start --> end time code should be
@@ -159,15 +159,14 @@ mejs.Utility = {
                     text = lines[i];
                     i++;
                     
-                    while(lines[i] !== '' && i < lines.length) {
-                        text = text + '\n' + lines[i];
-                        i++;
+                    while(lines[i]) {
+                        text += '\n' + lines[i++];
                     }
                     
                     // Text is in a different array so I can use .join
                     entries.text.push(text);
                     entries.times.push({
-                        start: (mejs.Utility.timeCodeToSeconds(timecode[1]) == 0) ? 0.200 : mejs.Utility.timeCodeToSeconds(timecode[1]),
+                        start: mejs.Utility.timeCodeToSeconds(timecode[1]),
                         stop: mejs.Utility.timeCodeToSeconds(timecode[3]),
                         settings: timecode[5]
                     });
