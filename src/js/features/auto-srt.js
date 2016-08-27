@@ -1,21 +1,21 @@
 (function($) {
-    MediaElementPlayer.prototype.buildautosrt = function(player, controls, layers, media) {
+    MediaElementPlayer.prototype.buildautosrt = function() {
         if(!packaged_app)
             return;
         
-        var t = this;
+        var t = this,
+            entries = [],
+            dirs = [];
         
-        var entries = [];
-        var dirs = [];
-        
-        media.addEventListener('loadeddata', function() {
-            if(player.openedFileEntry == null)
+        t.media.addEventListener('loadeddata', function() {
+            if(t.openedFileEntry == null)
                 return;
             // TODO avoid to search the srt if ona has been alreade specified by the user
             
-            chrome.fileSystem.getDisplayPath(player.openedFileEntry, function(path) {
-                var dirEntry = null;
-                var subPath = "";
+            chrome.fileSystem.getDisplayPath(t.openedFileEntry, function(path) {
+                var dirEntry = null,
+                    subPath = "";
+                
                 for(var i = 0; i < dirs.length; i++) {
                     var dir = dirs[i];
                     if(path.indexOf(dir.path) != 0)
@@ -30,7 +30,7 @@
                 subPath = subPath.substr(1, subPath.lastIndexOf(".") - 1);
                 dirEntry.getFile(subPath + ".srt", {}, function(fileEntry) {
                     fileEntry.file(function(file) {
-                        player.openSrtEntry(file);
+                        t.openSrtEntry(file);
                     });
                 });
             });

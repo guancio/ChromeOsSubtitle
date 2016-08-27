@@ -1,5 +1,3 @@
-var myURL = window.URL || window.webkitURL;
-
 var mainMediaElement = null;
 
 $('#main').append('<video id="player" controls="controls"></video>');
@@ -9,9 +7,6 @@ MediaElementPlayer(document.getElementById('player'), {
     mode: "native",
     success: function(mediaElement) {
         mainMediaElement = mediaElement;
-        
-        mainMediaElement.container
-            .addClass('mejs-container-fullscreen');
         
         var t = mainMediaElement,
             temp;
