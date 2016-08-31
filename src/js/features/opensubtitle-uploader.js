@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildopensubtitle_uploader = function() {
+    MediaElementPlayer.prototype.opensubtitle_uploader = function() {
         var t = this;
             
         var minPerc = 0.001;

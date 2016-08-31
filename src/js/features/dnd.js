@@ -1,5 +1,5 @@
 (function() {
-    MediaElementPlayer.prototype.builddrop = function() {
+    MediaElementPlayer.prototype.drop = function() {
         var t = this;
         
         document.body.addEventListener('dragover', function(e) {

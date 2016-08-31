@@ -1,6 +1,6 @@
 (function() {
     // progress/loaded bar
-    MediaElementPlayer.prototype.buildprogress = function() {
+    MediaElementPlayer.prototype.progress = function() {
         var t = this;
         
         t.middleControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail skip">' +

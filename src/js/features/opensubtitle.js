@@ -74,7 +74,7 @@ var openSubsLang = [
 ];
 
 (function($) {
-    MediaElementPlayer.prototype.buildopensubtitle = function() {
+    MediaElementPlayer.prototype.opensubtitle = function() {
         var t = this,
             service = new rpc.ServiceProxy(host, {
                 sanitize: false,

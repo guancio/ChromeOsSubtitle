@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildsettings = function() {
+    MediaElementPlayer.prototype.settings = function() {
         var t = this;
         
         t.settings = {};
@@ -40,7 +40,7 @@
         };
     }
     
-    MediaElementPlayer.prototype.buildsettingsbutton = function() {
+    MediaElementPlayer.prototype.settingsbutton = function() {
         var t = this,
             open =
             $('<div class="mejs-button mejs-settings-button mejs-settings" >' +

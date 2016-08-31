@@ -1,7 +1,7 @@
 (function() {
     var activeTimer = null;
     
-    MediaElementPlayer.prototype.buildnotification = function() {
+    MediaElementPlayer.prototype.notification = function() {
         this.notification = mejs.Utility.createNestedElement('<div class="mejs-notification"></div>');
         this.notification.style.visibility = 'hidden';
         document.getElementsByClassName('mejs-container')[0].appendChild(this.notification);

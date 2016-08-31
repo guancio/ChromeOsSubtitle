@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildsubdelay = function() {
+    MediaElementPlayer.prototype.subdelay = function() {
         var t = this,
             captionSelector = t.captionsButton.find('.mejs-captions-selector'),
             value = $('<input style="background-color: transparent; width: 41px; color: white; font-size: 10px;clear: none; margin:0px 0px 0px 0px;"></input>').on('input', function(e) {

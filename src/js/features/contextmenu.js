@@ -1,5 +1,5 @@
 (function() {
-    MediaElementPlayer.prototype.buildcontextmenu = function() {
+    MediaElementPlayer.prototype.contextmenu = function() {
         if(!packaged_app) {
             return;
         }

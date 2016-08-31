@@ -4,7 +4,7 @@
         maximumVolume: 2
     });
     
-    MediaElementPlayer.prototype.buildvolume = function() {
+    MediaElementPlayer.prototype.volume = function() {
         var audioContext = new window.AudioContext(),
             source = audioContext.createMediaElementSource(this.media);
         
