@@ -1,7 +1,7 @@
 (function() {
     var fullscreenText = mejs.i18n.t('Fullscreen');
     
-    MediaElementPlayer.prototype.buildfullscreen = function() {
+    MediaElementPlayer.prototype.fullscreen = function() {
         var t = this,
             fullscreenBtn = mejs.Utility.createNestedElement('<div class="mejs-button mejs-fullscreen-button">' +
                     '<button type="button" title="' + fullscreenText + '" aria-label="' + fullscreenText + '"></button>' +

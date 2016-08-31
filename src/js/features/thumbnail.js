@@ -3,7 +3,7 @@
         canvas = document.createElement('canvas'),
         ctx = canvas.getContext('2d');
     
-    MediaElementPlayer.prototype.buildthumbnail = function() {
+    MediaElementPlayer.prototype.thumbnail = function() {
         var timefloat = this.rail[0].getElementsByClassName('mejs-time-float')[0];
         
         canvas.width = 121;

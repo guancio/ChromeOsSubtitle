@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildstats = function() {
+    MediaElementPlayer.prototype.stats = function() {
         var t = this;
         
         var service = null;

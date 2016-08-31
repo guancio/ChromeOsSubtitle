@@ -122,9 +122,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // add user-defined features/controls
             for(featureIndex in t.options.features) {
                 feature = t.options.features[featureIndex];
-                if(t['build' + feature]) {
+                if(typeof t[feature] === 'function') {
                     try {
-                        t['build' + feature]();
+                        t[feature]();
                         console.log('Loaded:', feature);
                     } catch(e) {
                         // TODO: report control error

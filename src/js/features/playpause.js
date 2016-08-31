@@ -2,7 +2,7 @@
     var playpauseText = mejs.i18n.t('Play/Pause');
     
     // PLAY/pause BUTTON
-    MediaElementPlayer.prototype.buildplaypause = function() {
+    MediaElementPlayer.prototype.playpause = function() {
         var t = this,
             playpause = mejs.Utility.createNestedElement('<div class="mejs-button mejs-playpause-button mejs-play" >' +
                 '<button type="button" title="' + playpauseText + '" aria-label="' + playpauseText + '"></button>' +

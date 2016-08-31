@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildinfo = function() {
+    MediaElementPlayer.prototype.info = function() {
         var
             t = this;
         var infoText =

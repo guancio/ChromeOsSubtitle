@@ -13,7 +13,7 @@
         googleAnalyticsEventTime: 'Time'
     });
     
-    MediaElementPlayer.prototype.buildgoogleanalytics = function() {
+    MediaElementPlayer.prototype.googleanalytics = function() {
         this.media.addEventListener('play', function() {
             if(typeof _gaq != 'undefined') {
                 _gaq.push(['_trackEvent',

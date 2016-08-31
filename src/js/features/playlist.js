@@ -6,7 +6,7 @@
         playType = v;
     });
     
-    MediaElementPlayer.prototype.buildplaylist = function() {
+    MediaElementPlayer.prototype.playlist = function() {
         this.playlist = [];
         this.playIndex = null;
     };

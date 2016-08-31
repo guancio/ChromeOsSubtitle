@@ -1,5 +1,5 @@
 (function() {
-    MediaElementPlayer.prototype.buildshortcuts = function() {
+    MediaElementPlayer.prototype.shortcuts = function() {
         var t = this;
         
         // listen for key presses

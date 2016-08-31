@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildautosrt = function() {
+    MediaElementPlayer.prototype.autosrt = function() {
         if(!packaged_app)
             return;
         

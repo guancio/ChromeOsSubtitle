@@ -1,5 +1,5 @@
 (function($) {
-    MediaElementPlayer.prototype.buildsubsize = function() {
+    MediaElementPlayer.prototype.subsize = function() {
         var t = this,
             captionSelector = t.captionsButton.find('.mejs-captions-selector');
         

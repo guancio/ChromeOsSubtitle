@@ -1,5 +1,5 @@
 (function() {
-    MediaElementPlayer.prototype.buildsource = function() {
+    MediaElementPlayer.prototype.source = function() {
         var t = this,
             open = mejs.Utility.createNestedElement('<div class="mejs-button mejs-source-button mejs-source" >' +
                 '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +

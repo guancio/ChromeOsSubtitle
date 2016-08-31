@@ -2,7 +2,7 @@
     var showRemaining = false;
     
     // current and duration 00:00 / 00:00
-    MediaElementPlayer.prototype.buildcurrent = function() {
+    MediaElementPlayer.prototype.current = function() {
         var t = this;
         
         t.rightControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time skip">' +
@@ -21,7 +21,7 @@
         });
     }
     
-    MediaElementPlayer.prototype.buildduration = function() {
+    MediaElementPlayer.prototype.duration = function() {
         this.time.appendChild(mejs.Utility.createNestedElement('<span>/</span>'));
         this.time.appendChild(mejs.Utility.createNestedElement('<span class="mejs-duration">00:00</span>'));
         
