@@ -10,10 +10,9 @@ cp src/controls.svg app
 
 echo "Copying root JS files..."
 cp src/background.js app
-cp src/conf.js app
 
-echo "Copying CSS..."
-cp src/mediaelementplayer.css app
+echo "Compressing CSS..."
+curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'https://cssminifier.com/raw'
 
 echo "Copying index.html..."
 cp src/build/index.html app
