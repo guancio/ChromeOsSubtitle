@@ -1,9 +1,8 @@
 (function($) {
     MediaElementPlayer.prototype.stats = function() {
-        var t = this;
-        
-        var service = null;
-        var tracker = null;
+        var t = this,
+            service = null,
+            tracker = null;
         
         var sendView = function(page) {
             if (packaged_app) {
@@ -24,7 +23,8 @@
         if (packaged_app) {
             service = analytics.getService('ice_cream_app');
             tracker = service.getTracker('UA-46086399-2');
-        } else {
+        }
+        else {
             (function(i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function() {
@@ -41,28 +41,24 @@
             ga('send', 'pageview');
         }
         
-        var statTimeout = null;
-        var refresher = function() {
-            sendView('MainView');
-            statTimeout = setTimeout(refresher, 60000);
-        }
+        var statTimeout = null,
+            refresher = function() {
+                sendView('MainView');
+                statTimeout = setTimeout(refresher, 60000);
+            };
         
         $(document).bind("appStarted", function() {
             refresher();
         });
         
         t.media.addEventListener('loadeddata', function() {
-            sendEvent(
-                'video', 'loaded',
-                t.playlist[t.playIndex].name);
+            sendEvent('video', 'loaded', t.playlist[t.playIndex].name);
         });
         t.media.addEventListener('playing', function() {
-            sendEvent(
-                'video', 'playing');
+            sendEvent('video', 'playing');
         });
         t.media.addEventListener('paused', function() {
-            sendEvent(
-                'video', 'paused');
+            sendEvent('video', 'paused');
         });
         
         // settings
@@ -76,17 +72,14 @@
         // drop
         
         $(document).bind("subtitleEncodingChanged", function(e, enc) {
-            sendEvent(
-                'subtitle', 'changeEncoding', enc);
+            sendEvent('subtitle', 'changeEncoding', enc);
         });
         $(document).bind("subtitleFileOpened", function(e, name) {
-            sendEvent(
-                'subtitle', 'openSrtFile', name);
+            sendEvent('subtitle', 'openSrtFile', name);
         });
         
         $(document).bind("opensubtitlesDownload", function() {
-            sendEvent(
-                'opensubtitles', 'download');
+            sendEvent('opensubtitles', 'download');
         });
         
         var settingsList = $('#settings_list')[0];
@@ -101,29 +94,21 @@
         });
         
         var disabled = false;
-        mejs.Utility.getFromSettings(
-            'disableAnalytics',
-            false,
-            function(value) {
-                disableCheck.checked = value;
-                disabled = value;
-            }
-        );
+        
+        mejs.Utility.getFromSettings('disableAnalytics', false, function(value) {
+            disableCheck.checked = value;
+            disabled = value;
+        });
+        
         $(document).bind("settingsClosed", function() {
-            disabled = disableCheck.checked;
-            sendEvent(
-                'setting', 'disableAnalytics', disabled);
-            mejs.Utility.setIntoSettings(
-                'disableAnalytics',
-                disabled,
-                function() {
-                    service.getConfig().addCallback(
-                        function(config) {
-                            var permitted = !disabled;
-                            config.setTrackingPermitted(permitted);
-                        });
-                }
-            );
+            var disabled = disableCheck.checked;
+            
+            sendEvent('setting', 'disableAnalytics', disabled);
+            mejs.Utility.setIntoSettings('disableAnalytics', disabled, function() {
+                service.getConfig().addCallback(function(config) {
+                    config.setTrackingPermitted(!disabled);
+                });
+            });
         });
     }
 })(mejs.$);

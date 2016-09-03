@@ -18,8 +18,7 @@ zip.useWebWorkers = packaged_app;
         t.subtitles = [];
         t.subIndex = -1;
         
-        t.captions =
-            $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
+        t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .prependTo(t.layers).hide();
         t.captionsText = t.captions.find('.mejs-captions-text');
         

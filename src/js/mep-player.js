@@ -121,6 +121,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // add user-defined features/controls
             for(featureIndex in t.options.features) {
                 feature = t.options.features[featureIndex];
+                
                 if(typeof t[feature] === 'function') {
                     try {
                         t[feature]();
@@ -145,7 +146,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                         t.showControls();
                     }
                 });
-            } else {
+            }
+            else {
                 // show/hide controls
                 t.container
                     .bind('mousemove', function() {
@@ -407,7 +409,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         filterFiles: function(files, overwrite) {
-            var i, ext, options = '<option value="-1">None</option>',
+            var i, ext, options,
                 tempPlay = [],
                 tempSubs = [],
                 t = this;
@@ -437,6 +439,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.subtitles = t.subtitles.concat(tempSubs);
                 t.notify(t.subtitles[t.subIndex].file.name + ' loaded.', 3000);
                 
+                options = '<option value="-1">None</option>';
                 t.subtitles.forEach(function(e, i) {
                     options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
                 });

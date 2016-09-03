@@ -34,8 +34,9 @@
                 volume = (railHeight - newY) / railHeight;
                 
                 // the controls just hide themselves (usually when mouse moves too far up)
-                if(totalOffset.top == 0 || totalOffset.left == 0)
+                if(totalOffset.top == 0 || totalOffset.left == 0) {
                     return;
+                }
                 
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)

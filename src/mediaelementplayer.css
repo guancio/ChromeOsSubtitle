@@ -525,10 +525,6 @@ a:visited {
 .mejs-controls .mejs-volume-button {
     position: relative;
 }
-
-.mejs-controls .mejs-volume-button:hover {
-    border-radius: 0 0 4px 4px;
-}
 /* End: Mute/Volume */
 
 /* Start: TRACK (Captions and Chapters) */
