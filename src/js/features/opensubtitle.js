@@ -1,22 +1,21 @@
-var host = "https://api.opensubtitles.org/xml-rpc";
-
-var openSubsLang = [ ["alb", "Albanian"], ["ara", "Arabic"], ["baq", "Basque"], ["pob", "Brazilian"], ["bul", "Bulgarian"], ["cat", "Catalan"], ["chi", "Chinese"], ["cze", "Czech"], ["dan", "Danish"], ["dut", "Dutch"], ["eng", "English"], ["est", "Estonian"], ["fin", "Finnish"], ["fre", "French"], ["geo", "Georgian"], ["ger", "German"], ["glg", "Galician"], ["ell", "Greek"], ["heb", "Hebrew"], ["hin", "Hindi"], ["hrv", "Croatian"], ["hun", "Hungarian"], ["ice", "Icelandic"], ["ind", "Indonesian"], ["ita", "Italian"], ["jpn", "Japanese"], ["khm", "Khmer"], ["kor", "Korean"], ["mac", "Macedonian"], ["may", "Malay"], ["nor", "Norwegian"], ["oci", "Occitan"], ["per", "Persian"], ["pol", "Polish"], ["por", "Portuguese"], ["rum", "Romanian"], ["rus", "Russian"], ["scc", "Serbian"], ["sin", "Sinhalese"], ["slo", "Slovak"], ["slv", "Slovenian"], ["spa", "Spanish"], ["swe", "Swedish"], ["tgl", "Tagalog"], ["tha", "Thai"], ["tur", "Turkish"], ["ukr", "Ukrainian"], ["vie", "Vietnamese"] ];
-
 (function($) {
+    var host = 'https://api.opensubtitles.org/xml-rpc',
+        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ];
+    
     MediaElementPlayer.prototype.opensubtitle = function() {
         var t = this,
             service = new rpc.ServiceProxy(host, {
                 sanitize: false,
-                protocol: "XML-RPC",
+                protocol: 'XML-RPC',
                 asynchronous: true,
-                methods: ["ServerInfo", "LogIn", "SearchSubtitles", "DownloadSubtitles", "TryUploadSubtitles", "CheckMovieHash", "SearchMoviesOnIMDB", "UploadSubtitles"]
+                methods: ['ServerInfo', 'LogIn', 'SearchSubtitles', 'DownloadSubtitles', 'TryUploadSubtitles', 'CheckMovieHash', 'SearchMoviesOnIMDB', 'UploadSubtitles']
             });
         
         t.opensubtitleService = {
             token: null,
             service: service,
-            username: "",
-            pwd: ""
+            username: '',
+            pwd: ''
         };
         
         var prec = $('#li_encoding'),
@@ -86,7 +85,6 @@ var openSubsLang = [ ["alb", "Albanian"], ["ara", "Arabic"], ["baq", "Basque"], 
                 },
                 onComplete: function(responseObj) {
                     console.log(responseObj);
-                    
                     downloadSubtitle(responseObj.result.data);
                 }
             });
@@ -98,11 +96,11 @@ var openSubsLang = [ ["alb", "Albanian"], ["ara", "Arabic"], ["baq", "Basque"], 
                 return;
             }
             
-            $(document).trigger("opensubtitlesDownload");
+            $(document).trigger('opensubtitlesDownload');
             t.notify('Searching for subtitles.', 2000);
             
             service.LogIn({
-                params: [t.opensubtitleService.username, t.opensubtitleService.pwd, "", "ChromeSubtitleVideoplayer"],
+                params: [t.opensubtitleService.username, t.opensubtitleService.pwd, '', 'ChromeSubtitleVideoplayer'],
                 onException: function(errorObj) {
                     t.notify('Opensubtitles.org authentication failed!', 2000);
                 },
@@ -142,46 +140,28 @@ var openSubsLang = [ ["alb", "Albanian"], ["ara", "Arabic"], ["baq", "Basque"], 
         
         mejs.Utility.getFromSettings(
             'opensubtitle_username',
-            "",
+            '',
             function(value) {
                 t.opensubtitleService.username = value;
-                $("#usernameOpenSubtitle")[0].value = value
+                $('#usernameOpenSubtitle')[0].value = value
             }
         );
         
         mejs.Utility.getFromSettings(
             'opensubtitle_pwd',
-            "",
+            '',
             function(value) {
                 t.opensubtitleService.pwd = value;
-                $("#pwdOpenSubtitle")[0].value = value
+                $('#pwdOpenSubtitle')[0].value = value
             }
         );
         
-        $(document).bind("settingsClosed", function() {
-            var defaultValue = selectDefault.value;
-            $('#select_opensubtitle_lang').val(defaultValue);
-            mejs.Utility.setIntoSettings(
-                'default_opensubtitle_lang',
-                defaultValue,
-                function() {}
-            );
+        $(document).bind('settingsClosed', function() {
+            t.opensubtitleService.username = $('#usernameOpenSubtitle')[0].value;
+            mejs.Utility.setIntoSettings('opensubtitle_username', t.opensubtitleService.username);
             
-            t.opensubtitleService.username =
-                $("#usernameOpenSubtitle")[0].value;
-            mejs.Utility.setIntoSettings(
-                'opensubtitle_username',
-                t.opensubtitleService.username,
-                function() {}
-            );
-            
-            t.opensubtitleService.pwd =
-                $("#pwdOpenSubtitle")[0].value;
-            mejs.Utility.setIntoSettings(
-                'opensubtitle_pwd',
-                t.opensubtitleService.pwd,
-                function() {}
-            );
+            t.opensubtitleService.pwd = $('#pwdOpenSubtitle')[0].value;
+            mejs.Utility.setIntoSettings('opensubtitle_pwd', t.opensubtitleService.pwd);
         });
     };
 })(mejs.$);
