@@ -19,7 +19,7 @@ zip.useWebWorkers = packaged_app;
             options = '';
         
         t.subtitles = [];
-        t.subIndex = null;
+        t.subIndex = -1;
         
         t.captions =
             $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
@@ -128,6 +128,7 @@ zip.useWebWorkers = packaged_app;
     MediaElementPlayer.prototype.setEncoding = function(index) {
         mejs.Utility.setIntoSettings('default_encoding', encodings[parseInt(index)], function(obj) {});
         
+        //Force subtitles to be re-parsed with new encoding.
         for(var i = 0; i < this.subtitles.length; i++) {
             this.subtitles[i].entries = null;
         }
@@ -136,9 +137,10 @@ zip.useWebWorkers = packaged_app;
     MediaElementPlayer.prototype.setSubtitle = function(index) {
         if(index !== undefined) {
             this.subIndex = parseInt(index);
+            this.captions.hide();
         }
         
-        if(this.subtitles[this.subIndex].entries === []) {
+        if(this.subIndex !== -1 && this.subtitles[this.subIndex].entries === []) {
             this.notify('The given Subtitle file is corrupted!', 2000);
         }
     };
@@ -178,7 +180,7 @@ zip.useWebWorkers = packaged_app;
     MediaElementPlayer.prototype.displaySubtitles = function() {
         var t, entries, currtime, i;
         
-        if(this.subIndex === null || this.subtitles[this.subIndex].entries === []) {
+        if(this.subIndex === -1 || this.subtitles[this.subIndex].entries === []) {
             return;
         }
         
