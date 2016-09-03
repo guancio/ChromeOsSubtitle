@@ -2,6 +2,26 @@
 Utility methods
 */
 mejs.Utility = {
+    b64toBlob: function(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 1024;
+        
+        function charCodeFromCharacter(c) {
+            return c.charCodeAt(0);
+        }
+        
+        var byteCharacters = atob(b64Data),
+            byteArrays = [];
+        
+        for(var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            byteArrays.push(new Uint8Array(Array.prototype.map.call(byteCharacters.slice(offset, offset + sliceSize), charCodeFromCharacter)));
+        }
+        
+        return new Blob(byteArrays, {
+            type: contentType
+        });
+    },
+    
     secondsToTimeCode: function(time) {
         var hours = Math.floor(time / 3600) % 24,
             minutes = Math.floor(time / 60) % 60,
@@ -49,34 +69,23 @@ mejs.Utility = {
         };
     },
     
-    getFromSettings: function(name, def_value, cb) {
+    getFromSettings: function(key, def_value, cb) {
         if(packaged_app) {
-            var obj = {};
-            obj[name] = def_value;
-            chrome.storage.sync.get(
-                obj,
-                function(obj) {
-                    res = obj[name];
-                    cb(res);
-                });
-        } else {
-            if(localStorage.getItem(name))
-                cb(localStorage.getItem(name));
-            else
-                cb(def_value);
+            var temp = {};
+            temp[key] = def_value;
+            
+            chrome.storage.sync.get(temp, function(obj) {
+                cb(obj[key]);
+            });
         }
     },
     
-    setIntoSettings: function(name, value, cb) {
+    setIntoSettings: function(key, value, cb) {
         if(packaged_app) {
-            var obj = {};
-            obj[name] = value;
-            chrome.storage.sync.set(
-                obj,
-                cb);
-        } else {
-            localStorage.setItem(name, value);
-            cb();
+            var temp = {};
+            temp[key] = value;
+            
+            chrome.storage.sync.set(temp, cb);
         }
     },
     
@@ -93,39 +102,15 @@ mejs.Utility = {
                             cb(temp);
                         }
                     })
-                })
-                
-                return;
-                // if(srt_entries.length > 1) {
-                //     $('#label_srtname').css('visibility', 'hidden');
-                //     $('#select_srtname').css('visibility', 'inherit');
-                //     $('#select_srtname')
-                //         .find('option')
-                //         .remove()
-                //         .end();
-                //     for(var i = 0; i < srt_entries.length; i++) {
-                //         $('#select_srtname')
-                //             .append('<option value="' +
-                //                 i + '">' +
-                //                 srt_entries[i].filename +
-                //                 '</option>');
-                //     }
-                //     $('#select_srtname').val('0');
-                // }
-                // $('#select_srtname').off("change");
-                // $('#select_srtname').change(function(e) {
-                //     loadZippedSrt(
-                //         srt_entries[Number($('#select_srtname')[0].value)]
-                //     );
-                // });
+                });
             });
         }, function(error) {
             cb([]);
         });
     },
     
-    gunzip: function(blob, cb) {
-        zip.createGZipReader(new zip.BlobReader(blob), function(reader) {
+    gunzip: function(data, cb) {
+        zip.createGZipReader(new zip.BlobReader(mejs.Utility.b64toBlob(data)), function(reader) {
             reader.gunzip(new zip.BlobWriter(), function(data) {
                 cb(data);
             });

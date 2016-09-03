@@ -10,6 +10,7 @@
         
         this.gainNode = audioContext.createGain();
         this.delayNode = audioContext.createDelay(2.0);
+        
         source.connect(this.delayNode);
         this.delayNode.connect(this.gainNode);
         this.gainNode.connect(audioContext.destination);

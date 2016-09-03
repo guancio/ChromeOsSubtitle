@@ -140,9 +140,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 t.media.addEventListener('touchstart', function() {
                     // toggle controls
                     if(t.controlsAreVisible) {
-                        t.hideControls(false);
+                        t.hideControls();
                     } else {
-                        t.showControls(false);
+                        t.showControls();
                     }
                 });
             } else {
@@ -407,7 +407,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         },
         
         filterFiles: function(files, overwrite) {
-            var i, ext,
+            var i, ext, options = '<option value="-1">None</option>',
                 tempPlay = [],
                 tempSubs = [],
                 t = this;
@@ -435,6 +435,12 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             if(tempSubs.length) {
                 t.subIndex = t.subtitles.length;
                 t.subtitles = t.subtitles.concat(tempSubs);
+                t.notify(t.subtitles[t.subIndex].file.name + ' loaded.', 3000);
+                
+                t.subtitles.forEach(function(e, i) {
+                    options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
+                });
+                document.getElementById('select_sub').innerHTML = options;
                 
                 chrome.contextMenus.remove('setSubtitle', function() {
                     chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
