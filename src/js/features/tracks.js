@@ -24,30 +24,27 @@ zip.useWebWorkers = packaged_app;
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +
-            '<label style="width:78px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>' +
-            '<select style="width:70px" id="encoding-selector" disabled="disabled">';
+            '<label style="width:55px;float: left;padding: 4px 0px 0px 5px;">Encoding</label>' +
+            '<select style="width:115px" id="encoding-selector">';
         
         for(i = 0; i < encodings.length; i++) {
-            encodingText = encodingText + '<option value="' + encodings[i] + '">' + encoding_labels[i] + '</option>';
+            encodingText += '<option value="' + i + '">' + encoding_labels[i] + '</option>';
         }
         
-        encodingText = encodingText + '</select></il>';
+        encodingText += '</select></il>';
+        
         t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
-                '<li>' +
-                '<input type="radio" name="_captions" id="_captions_none" value="none" checked="checked" />' +
-                '<label for="_captions_none">' + mejs.i18n.t('None') + '</label>' +
-                '</li>' +
                 '<li class="mejs-captionload">' +
-                '<input type="radio" name="_captions" id="_captions_fromfile" value="fromfile" disabled="disabled"/>' +
                 '<div class="mejs-button  mejs-captionload" >' +
                 '<button type="button" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
                 '</div>' +
                 '<input style="display:none" type="file" id="opensrtfile_input"/>' +
-                '<select id="select_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>' +
-                '<label id="label_srtname" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>' +
+                '<select id="select_sub" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width:150px;height: 18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute;">' +
+                    '<option value="-1">None</option>' +
+                '</select>' +
                 '</li>' +
                 encodingText +
                 '</ul>' +
@@ -56,34 +53,24 @@ zip.useWebWorkers = packaged_app;
             .appendTo(t.rightControls);
         
         t.captionEncodingSelect = t.captionsButton.find('#encoding-selector')[0];
-        t.captionsButton.find('#encoding-selector').change(function(e) {
-            $(document).trigger(
-                "subtitleEncodingChanged",
-                t.captionEncodingSelect.value
-            );
-            
-            mejs.Utility.setIntoSettings("default_encoding", t.captionEncodingSelect.value, function(obj) {});
-            
-            var radios = t.controls.find('input[name="_captions"]');
-            var selectedRadio = radios.filter(function(e) {
-                return radios[e].checked
-            })[0];
-            
-            var srcSelected = selectedRadio.value
+        
+        mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+            t.captionEncodingSelect.value = value;
+        });
+        
+        t.captionEncodingSelect.addEventListener('change', function(e) {
+            $(document).trigger("subtitleEncodingChanged", e.target.value);
+            t.setEncoding(e.target.value);
+        });
+        
+        t.captionsButton.find('#select_sub').change(function(e) {
+            t.setSubtitle(e.target.value);
         });
         
         t.captionsButton.find('.mejs-captionload button').click(function(e) {
             e.preventDefault();
             srtFileInputs[0].click();
             return false;
-        });
-        
-        // hover
-        t.captionsButton
-        // handle clicks to the language radio buttons
-        .on('click', 'input[type=radio]', function() {
-            lang = this.value;
-            //t.setTrack(lang);
         });
         
         // move with controls
@@ -104,26 +91,11 @@ zip.useWebWorkers = packaged_app;
             t.displaySubtitles();
         }, false);
         
-        t.media.addEventListener('loadeddata', function() {
-            $('#_captions_none').click();
-            t.captionsButton
-                .find('input[value=fromfile]')
-                .prop('disabled', true);
-            t.captionsButton
-                .find('#encoding-selector')
-                .prop('disabled', true);
-            t.captionsButton
-                .find('#label_srtname')[0]
-                .textContent = "No subtitle";
-            $('#label_srtname').css('visibility', 'inherit');
-            $('#select_srtname').css('visibility', 'hidden');
-        });
-        
         t.capDelayValue = 0;
     };
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
-        mejs.Utility.setIntoSettings('default_encoding', encodings[parseInt(index)], function(obj) {});
+        mejs.Utility.setIntoSettings('default_encoding', parseInt(index));
         
         //Force subtitles to be re-parsed with new encoding.
         for(var i = 0; i < this.subtitles.length; i++) {
@@ -199,99 +171,4 @@ zip.useWebWorkers = packaged_app;
         
         t.captions.hide();
     };
-    
-    mejs.language = {
-        codes: {
-            af: 'Afrikaans',
-            sq: 'Albanian',
-            ar: 'Arabic',
-            be: 'Belarusian',
-            bg: 'Bulgarian',
-            ca: 'Catalan',
-            zh: 'Chinese',
-            'zh-cn': 'Chinese Simplified',
-            'zh-tw': 'Chinese Traditional',
-            hr: 'Croatian',
-            cs: 'Czech',
-            da: 'Danish',
-            nl: 'Dutch',
-            en: 'English',
-            et: 'Estonian',
-            tl: 'Filipino',
-            fi: 'Finnish',
-            fr: 'French',
-            gl: 'Galician',
-            de: 'German',
-            el: 'Greek',
-            ht: 'Haitian Creole',
-            iw: 'Hebrew',
-            hi: 'Hindi',
-            hu: 'Hungarian',
-            is: 'Icelandic',
-            id: 'Indonesian',
-            ga: 'Irish',
-            it: 'Italian',
-            ja: 'Japanese',
-            ko: 'Korean',
-            lv: 'Latvian',
-            lt: 'Lithuanian',
-            mk: 'Macedonian',
-            ms: 'Malay',
-            mt: 'Maltese',
-            no: 'Norwegian',
-            fa: 'Persian',
-            pl: 'Polish',
-            pt: 'Portuguese',
-            //'pt-pt':'Portuguese (Portugal)',
-            ro: 'Romanian',
-            ru: 'Russian',
-            sr: 'Serbian',
-            sk: 'Slovak',
-            sl: 'Slovenian',
-            es: 'Spanish',
-            sw: 'Swahili',
-            sv: 'Swedish',
-            tl: 'Tagalog',
-            th: 'Thai',
-            tr: 'Turkish',
-            uk: 'Ukrainian',
-            vi: 'Vietnamese',
-            cy: 'Welsh',
-            yi: 'Yiddish'
-        }
-    };
 })(mejs.$);
-
-    // MediaElementPlayer.prototype.enableTrackButton = function(lang, label) {
-    //     var t = this;
-        
-    //     if(label === '') {
-    //         label = mejs.language.codes[lang] || lang;
-    //     }
-        
-    //     t.captionsButton
-    //         .find('input[value=' + lang + ']')
-    //         .prop('disabled', false);
-    //     t.captionsButton
-    //         .find('#encoding-selector')
-    //         .prop('disabled', false);
-            
-    //     $('#_captions_' + lang).click();o
-    // };
-    
-    // MediaElementPlayer.prototype.addTrackButton = function(lang, label) {
-    //     var t = this;
-    //     if(label === '') {
-    //         label = mejs.language.codes[lang] || lang;
-    //     }
-        
-    //     t.captionsButton.find('ul').append(
-    //         $('<li>' +
-    //             '<input type="radio" name="_captions" id="_captions_' + lang + '" value="' + lang + '" disabled="disabled" />' +
-    //             '<label for="_captions_' + lang + '">' + label + ' (loading)' + '</label>' +
-    //             '</li>')
-    //     );
-        
-    //     // remove this from the dropdownlist (if it exists)
-    //     t.container.find('.mejs-captions-translations option[value=' + lang + ']').remove();
-    // };
