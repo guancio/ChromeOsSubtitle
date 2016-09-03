@@ -105,7 +105,7 @@ var openSubsLang = [
             $('<option value="' + e[0] + '">' + e[1] + '</option>').appendTo(selectLang);
         });
         
-        var line2 =$('<li class="mejs-captionload"/>')
+        var line2 = $('<li class="mejs-captionload"/>')
                 .append($('<div class="mejs-button  mejs-captionload"/>'))
                 .append($('<select id="select_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;visibility:hidden"/>'))
                 .append($('<label id="label_opensubtitle" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width: 105px;height: 18px;overflow: hidden;white-space: nowrap;left:60px;position:absolute;">No subtitle</label>'))
@@ -125,8 +125,8 @@ var openSubsLang = [
         function openSubtitle(content, subs) {
             var temp = [];
             info("5/6 Opening...");
-            console.log(content);
-            content.result.data.forEach(function(e, i) {
+            
+            mejs.Utility.waterfall(content.result.data, function(e, i, next) {
                 mejs.Utility.gunzip(b64toBlob(e.data), function(data) {
                     if(i === 0) {
                         info(subs[i].SubFileName);
@@ -141,6 +141,7 @@ var openSubsLang = [
                     }
                     
                     temp.push(new File([data], subs[i].SubFileName));
+                    next();
                     
                     if(i === content.result.data.length - 1) {
                         t.filterFiles(temp);

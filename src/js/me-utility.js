@@ -132,6 +132,20 @@ mejs.Utility = {
         });
     },
     
+    waterfall: function(array, action) {
+        var i = -1,
+            len = array.length,
+            next = function() {
+                if(++i === len) {
+                    return;
+                }
+                
+                action(array[i], i, next);
+            };
+        
+        next();
+    },
+    
     webvvt: function(trackText) {
         // match start "chapter-" (or anythingelse)
         var pattern_identifier = /^([a-zA-z]+-)?[0-9]+$/,

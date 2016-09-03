@@ -439,7 +439,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                 
                 chrome.contextMenus.remove('setSubtitle', function() {
                     chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
-                        chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': 'subNull', 'checked': true });
+                        chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
                         for(i = 0; i < t.subtitles.length; i++) {
                             chrome.contextMenus.create({ 'title': t.subtitles[i].file.name, 'type': 'radio', 'parentId': 'setSubtitle', 'id': i + 's', 'checked': i === t.subIndex });
                         }
