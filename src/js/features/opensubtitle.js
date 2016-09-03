@@ -144,6 +144,7 @@ var openSubsLang = [
                     next();
                     
                     if(i === content.result.data.length - 1) {
+                        console.log(temp);
                         t.filterFiles(temp);
                     }
                 });

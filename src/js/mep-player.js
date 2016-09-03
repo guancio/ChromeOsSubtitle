@@ -2,10 +2,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
 
 (function($) {
     // wraps a MediaElement object in player controls
-    mejs.MediaElementPlayer = function(node, o) {
+    mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
         if(!(this instanceof mejs.MediaElementPlayer)) {
-            return new mejs.MediaElementPlayer(node, o);
+            return new mejs.MediaElementPlayer(node);
         }
         
         // these will be reset after the MediaElement.success fires
@@ -13,7 +13,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         this.media.player = this;
         
         // extend default options
-        this.options = $.extend({}, mejs.MepDefaults, o);
+        this.options = mejs.MepDefaults;
         
         // start up
         this.init();
@@ -39,8 +39,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                                     '<div id="right" class="skip"></div>' +
                                     '<div id="middle" class="skip"></div>' +
                                 '</div>' +
-                            '</div>')
-                            .insertBefore(t.media);
+                            '</div>').insertBefore(t.media);
             
             // move the <video/video> tag into the right spot
             t.container.find('.mejs-mediaelement').append(t.media);
@@ -447,14 +446,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             if(tempPlay.length) {
-                if(overwrite) {
-                    t.playlist = tempPlay;
-                    t.playIndex = 0;
-                }
-                else {
-                    t.playIndex = t.playlist.length;
-                    t.playlist = t.playlist.concat(tempPlay);
-                }
+                t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
+                t.playIndex = overwrite ? 0 : t.playlist.length;
                 
                 chrome.contextMenus.remove('setSrc', function() {
                     chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });

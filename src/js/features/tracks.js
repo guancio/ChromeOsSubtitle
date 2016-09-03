@@ -4,9 +4,6 @@ zip.useWebWorkers = packaged_app;
 (function($) {
     // add extra default options 
     $.extend(mejs.MepDefaults, {
-        // this will automatically turn on a <track>
-        startLanguage: '',
-        
         tracksText: mejs.i18n.t('Captions/Subtitles')
     });
     
