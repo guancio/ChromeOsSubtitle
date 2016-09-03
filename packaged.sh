@@ -33,6 +33,8 @@ curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_i
 
 cd ../
 
+sleep 2
+
 echo "Copying lib/..."
 cp -r src/lib/ app/lib
 
