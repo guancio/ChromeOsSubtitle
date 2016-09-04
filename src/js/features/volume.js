@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     $.extend(mejs.MepDefaults, {
         muteText: mejs.i18n.t('Mute Toggle'),
         maximumVolume: 2
@@ -72,4 +72,4 @@
         
         t.setVolume(t.options.startVolume);
     }
-})(mejs.$);
+})();

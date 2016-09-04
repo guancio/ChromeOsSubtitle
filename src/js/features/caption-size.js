@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.subsize = function() {
         var t = this,
             captionSelector = t.captionsButton.find('.mejs-captions-selector');
@@ -19,13 +19,13 @@
         t.decCaptionSize = function() {
             t.capSizeValue /= 1.2;
             mejs.Utility.setIntoSettings("default_sub_size", t.capSizeValue);
-            t.capSizeInput.attr({ 'value': t.capSizeValue });
+            t.capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
             updateCaptionSize();
         };
         t.incCaptionSize = function() {
             t.capSizeValue *= 1.2;
             mejs.Utility.setIntoSettings("default_sub_size", t.capSizeValue);
-            t.capSizeInput.attr({ 'value': t.capSizeValue });
+            t.capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
             updateCaptionSize();
         };
         
@@ -47,9 +47,9 @@
         captionSelector.find('ul').append(line);
         
         mejs.Utility.getFromSettings('default_sub_size', 22, function(value) {
-            t.capSizeInput.attr({ 'value': value });
+            t.capSizeInput.attr({ 'value': value.toFixed() });
             t.capSizeValue = value;
             updateCaptionSize();
         });
     }
-})(mejs.$);
+})();

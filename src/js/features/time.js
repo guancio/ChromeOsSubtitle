@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     var showRemaining = false;
     
     // current and duration 00:00 / 00:00
@@ -25,7 +25,7 @@
         this.time.append($('<span>/</span>'));
         this.time.append($('<span class="mejs-duration">00:00</span>'));
         
-        this.durationD = this.time.find('mejs-duration');
+        this.durationD = this.time.find('.mejs-duration');
     }
     
     MediaElementPlayer.prototype.updateCurrent = function() {
@@ -42,4 +42,4 @@
             this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
     }
-})(mejs.$);
+})();

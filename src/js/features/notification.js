@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     var activeTimer = null;
     
     MediaElementPlayer.prototype.notification = function() {
@@ -25,4 +25,4 @@
             t.notification.css({ 'visibility': 'hidden' });
         }, timeout || 1000);
     };
-})(mejs.$);
+})();

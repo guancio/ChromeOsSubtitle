@@ -288,12 +288,8 @@ a:visited {
 .mejs-captions-position {
     position: absolute;
     width: 100%;
-    bottom: 15px;
-    left: 0;
-}
-
-.mejs-captions-position-hover {
     bottom: 45px;
+    left: 0;
 }
 
 .mejs-captions-text {
