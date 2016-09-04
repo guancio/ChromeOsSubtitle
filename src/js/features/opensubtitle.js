@@ -26,7 +26,7 @@
         line1.appendTo(prec).insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');
-            
+        
         mejs.Utility.getFromSettings('default_opensubtitle_lang', 'eng', function(value) {
             openSubsLang.forEach(function(e) {
                 $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
