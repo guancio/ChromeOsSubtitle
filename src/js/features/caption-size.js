@@ -1,7 +1,7 @@
 (function($) {
     MediaElementPlayer.prototype.subsize = function() {
         var t = this,
-            captionSelector = t.captionsButton.find('.mejs-captions-selector');
+            captionSelector = t.captionsButton.getElementsByClassName('mejs-captions-selector')[0];
         
         function updateCaptionSize(value) {
             mejs.Utility.setIntoSettings("default_sub_size", value);
@@ -42,7 +42,7 @@
                 .append(value)
                 .append(inc);
         
-        captionSelector.find('ul').append(line);
+        captionSelector.getElementsByTagName('ul')[0].appendChild(line[0]);
         
         mejs.Utility.getFromSettings('default_sub_size', 22, function(value) {
             t.capSizeInput.value = value;

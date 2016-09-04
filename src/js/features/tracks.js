@@ -7,8 +7,8 @@ zip.useWebWorkers = packaged_app;
         tracksText: mejs.i18n.t('Captions/Subtitles')
     });
     
-    var encodings = ["utf-8", "ibm866", "iso-8859-2", "iso-8859-3", "iso-8859-4", "iso-8859-5", "iso-8859-6", "iso-8859-7", "iso-8859-8", "iso-8859-10", "iso-8859-13 ", "iso-8859-14", "iso-8859-15", "iso-8859-16", "koi8-r", "koi8-u", "windows-874", "windows-1250", "windows-1251", "windows-1252", "windows-1253", "windows-1254", "windows-1255", "windows-1256", "windows-1257", "windows-1258", "gbk", "gb18030", "euc-jp", "iso-2022-jp", "shift_jis", "euc-kr"],
-        encoding_labels = ["UTF-8", "ibm866 Cyrillic", "iso-8859-2 Latin-2", "iso-8859-3 Latin-3", "iso-8859-4 Latin-4", "iso-8859-5 Cyrillic", "iso-8859-6 Arabic", "iso-8859-7 Greek", "iso-8859-8 Hebrew", "iso-8859-10 Latin-6", "iso-8859-13 ", "iso-8859-14", "iso-8859-15", "iso-8859-16", "koi8-r", "koi8-u", "windows-874", "windows-1250", "windows-1251", "windows-1252 US-ascii", "windows-1253", "windows-1254 Latin-5", "windows-1255", "windows-1256 Arabic", "windows-1257", "windows-1258", "gbk Chinese", "gb18030", "euc-jp", "iso-2022-jp", "shift_jis", "euc-kr"];
+    var encodings = ['utf-8', 'ibm866', 'iso-8859-2', 'iso-8859-3', 'iso-8859-4', 'iso-8859-5', 'iso-8859-6', 'iso-8859-7', 'iso-8859-8', 'iso-8859-10', 'iso-8859-13 ', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r', 'koi8-u', 'windows-874', 'windows-1250', 'windows-1251', 'windows-1252', 'windows-1253', 'windows-1254', 'windows-1255', 'windows-1256', 'windows-1257', 'windows-1258', 'gbk', 'gb18030', 'euc-jp', 'iso-2022-jp', 'shift_jis', 'euc-kr'],
+        encoding_labels = ['UTF-8', 'ibm866 Cyrillic', 'iso-8859-2 Latin-2', 'iso-8859-3 Latin-3', 'iso-8859-4 Latin-4', 'iso-8859-5 Cyrillic', 'iso-8859-6 Arabic', 'iso-8859-7 Greek', 'iso-8859-8 Hebrew', 'iso-8859-10 Latin-6', 'iso-8859-13 ', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r', 'koi8-u', 'windows-874', 'windows-1250', 'windows-1251', 'windows-1252 US-ascii', 'windows-1253', 'windows-1254 Latin-5', 'windows-1255', 'windows-1256 Arabic', 'windows-1257', 'windows-1258', 'gbk Chinese', 'gb18030', 'euc-jp', 'iso-2022-jp', 'shift_jis', 'euc-kr'];
     
     MediaElementPlayer.prototype.tracks = function() {
         var t = this,
@@ -32,7 +32,7 @@ zip.useWebWorkers = packaged_app;
         
         encodingText += '</select></il>';
         
-        t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
+        t.captionsButton = mejs.Utility.createNestedElement('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
@@ -40,7 +40,6 @@ zip.useWebWorkers = packaged_app;
                 '<div class="mejs-button  mejs-captionload" >' +
                 '<button type="button" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
                 '</div>' +
-                '<input style="display:none" type="file" id="opensrtfile_input"/>' +
                 '<select id="select_sub" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width:150px;height: 18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute;">' +
                     '<option value="-1">None</option>' +
                 '</select>' +
@@ -48,28 +47,55 @@ zip.useWebWorkers = packaged_app;
                 encodingText +
                 '</ul>' +
                 '</div>' +
-                '</div>')
-            .appendTo(t.rightControls);
+                '</div>');
         
-        t.captionEncodingSelect = t.captionsButton.find('#encoding-selector')[0];
+        t.rightControls[0].appendChild(t.captionsButton);
+        t.captionEncodingSelect = document.getElementById('encoding-selector');
         
         mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
             t.captionEncodingSelect.value = value;
         });
         
         t.captionEncodingSelect.addEventListener('change', function(e) {
-            $(document).trigger("subtitleEncodingChanged", e.target.value);
-            t.setEncoding(e.target.value);
+            $(document).trigger('subtitleEncodingChanged', e.target.value);
+            t.setEncoding(e.target.value, true);
         });
         
-        t.captionsButton.find('#select_sub').change(function(e) {
-            t.setSubtitle(e.target.value);
+        document.getElementById('select_sub').addEventListener('change', function(e) {
+            t.setSubtitle(e.target.value, true);
         });
         
-        t.captionsButton.find('.mejs-captionload button').click(function(e) {
+        t.captionsButton.querySelector('.mejs-captionload button').addEventListener('click', function(e) {
             e.preventDefault();
-            srtFileInputs[0].click();
-            return false;
+            
+            if(packaged_app) {
+                chrome.fileSystem.chooseEntry({
+                    type: 'openFile',
+                    acceptsMultiple: true,
+                    acceptsAllTypes: false,
+                    accepts: [
+                                {
+                                    extensions: t.options.subExts
+                                }
+                    ]
+                }, function(entries) {
+                    var temp = [];
+                    
+                    if(typeof entries === 'undefined') {
+                        return;
+                    }
+                    
+                    entries.forEach(function(entry, i) {
+                        entry.file(function(file) {
+                            temp.push(file);
+                            
+                            if(i === entries.length - 1) {
+                                t.filterFiles(temp);
+                            }
+                        });
+                    });
+                });
+            }
         });
         
         // move with controls
@@ -131,7 +157,9 @@ zip.useWebWorkers = packaged_app;
                 current.entries = mejs.Utility.ass(d);
             }
             else {
+                console.log('re parsing...');
                 current.entries = mejs.Utility.webvvt(d);
+                
             }
         };
         
@@ -141,7 +169,7 @@ zip.useWebWorkers = packaged_app;
         
         mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.value, function(value) {
             t.captionEncodingSelect.value = value;
-            reader.readAsText(current.file, value);
+            reader.readAsText(current.file, encodings[value]);
         });
     };
     
