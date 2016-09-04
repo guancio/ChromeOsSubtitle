@@ -45,7 +45,6 @@
         open.on('click', function(e) {
             e.preventDefault();
             t.openFileForm();
-            return false;
         });
     }
 })();

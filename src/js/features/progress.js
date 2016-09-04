@@ -3,15 +3,13 @@
     MediaElementPlayer.prototype.progress = function() {
         var t = this;
         
-        t.middleControls.append($('<div class="mejs-time-rail skip">' +
+        t.rail = $('<div class="mejs-time-rail skip">' +
                 '<progress id="railBar" min="0" max="1"></progress>' +
                 '<span class="mejs-time-float">' +
                     '<span class="mejs-time-float-current">00:00</span>' +
                     '<span class="mejs-time-float-corner"></span>' +
                 '</span>' +
-            '</div>'));
-        
-        t.rail = t.middleControls.find('.mejs-time-rail');
+            '</div>').appendTo(t.middleControls);
         t.railBar = t.rail.find('#railBar');
         
         var timefloat = t.rail.find('.mejs-time-float'),
@@ -52,7 +50,7 @@
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
         if(this.getSrc()) {
-            this.railBar.val(this.getCurrentTime() / this.getDuration());
+            this.railBar.attr({ 'value': this.getCurrentTime() / this.getDuration() });
         }
     }
 })(mejs.$);

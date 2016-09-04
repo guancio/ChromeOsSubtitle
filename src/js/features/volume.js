@@ -43,29 +43,29 @@
                 t.setVolume(Math.max(0, Math.min(volume * 2, t.options.maximumVolume)));
             };
         
-        volumeBar[0].addEventListener('mousedown', function(e) {
+        volumeBar.on('mousedown', function(e) {
             handleVolumeMove(e);
-            volumeBar[0].addEventListener('mousemove', handleVolumeMove);
+            volumeBar.on('mousemove', handleVolumeMove);
         });
-        volumeBar[0].addEventListener('mouseup', function() {
-            volumeBar[0].removeEventListener('mousemove', handleVolumeMove);
+        volumeBar.on('mouseup', function() {
+            volumeBar.off('mousemove', handleVolumeMove);
         });
-        volumeBar[0].addEventListener('mouseleave', function() {
-            volumeBar[0].removeEventListener('mousemove', handleVolumeMove);
+        volumeBar.on('mouseleave', function() {
+            volumeBar.off('mousemove', handleVolumeMove);
         });
         
         // MUTE button
-        mute.find('button').click(function() {
+        mute.find('button').on('click', function() {
             t.setMuted(!t.isMuted());
         });
         
         // listen for volume change events from other sources
         t.media.addEventListener('volumechange', function(e) {
             if(t.isMuted()) {
-                volumeBar[0].value = 0;
+                volumeBar.attr({ 'value': 0 });
                 mute.removeClass('mejs-mute').addClass('mejs-unmute');
             } else {
-                volumeBar[0].value = t.getVolume();
+                volumeBar.attr({ 'value': t.getVolume() });
                 mute.removeClass('mejs-unmute').addClass('mejs-mute');
             }
         }, false);

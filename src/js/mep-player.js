@@ -52,9 +52,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             t.layers = t.container.find('.mejs-layers');
             
             t.meReady();
-            
-            // controls are shown when loaded
-            t.container.trigger('controlsshown');
         },
         
         timeupdate: function() {
@@ -75,7 +72,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.controls.css('opacity', '1');
             t.controlsAreVisible = true;
-            t.container.trigger('controlsshown');
+            t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
         },
         
         hideControls: function() {
@@ -88,7 +85,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // fade out main controls
             t.controls.css('opacity', '0');
             t.controlsAreVisible = false;
-            t.container.trigger('controlshidden');
+            t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
             
             t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
@@ -150,14 +147,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             else {
                 // show/hide controls
                 t.container
-                    .bind('mousemove', function() {
+                    .on('mousemove', function() {
                         if(!t.controlsAreVisible) {
                             t.showControls();
                         }
                         
                         t.startControlsTimer(2500);
                     })
-                    .bind('mouseleave', function() {
+                    .on('mouseleave', function() {
                         if(!t.isPaused()) {
                             t.startControlsTimer(1000);
                         }
@@ -205,7 +202,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeking', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 
                 t.showControls();
                 t.startControlsTimer();
@@ -213,26 +210,26 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeked', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
                 loading.show();
                 t.resizeVideo();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
                 t.play();
             }, false);
             
             t.media.addEventListener('play', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             // error handling
@@ -241,7 +238,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     return;
                 
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
         },

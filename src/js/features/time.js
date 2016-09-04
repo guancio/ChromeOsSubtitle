@@ -1,4 +1,4 @@
-(function() {
+(function($) {
     var showRemaining = false;
     
     // current and duration 00:00 / 00:00
@@ -42,4 +42,4 @@
             this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
     }
-})();
+})(mejs.$);
