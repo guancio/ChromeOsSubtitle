@@ -18,16 +18,16 @@
         infoText = infoText + '<li>Subtitles service is powered by <a href="http://www.OpenSubtitles.org" target="_blank">www.OpenSubtitles.org</a>. More uploaded subs means more subs available. Please upload <a href="http://www.opensubtitles.org/upload" target="_blank">here</a> jour subs.<br/><a href="http://www.OpenSubtitles.org" target="_blank"><img src="opensubtitle.gif"/></a></li></ul><br>' +
             '[Click the box to close the info page]</div>';
         
-        var info = $(infoText).appendTo(t.controls[0].parentElement);
+        var info = $(infoText).appendTo(t.controls.parent());
         
-        info.find("a").click(function(e) {
+        info.find("a").on('click', function(e) {
             window.open(this.href, '_blank');
             event.stopPropagation();
             return false;
         });
         
         t.toggleInfo = function() {
-            info[0].style.visibility = info[0].style.visibility === 'visible' ? 'hidden' : 'visible';
+            info.css('visibility') === 'visible' ? info.hide() : info.show();
         };
 
         info.on("click", function(e) {
@@ -42,7 +42,7 @@
                 '<button type="button" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button>' +
                 '</div>')
             .appendTo(t.rightControls)
-            .click(function(e) {
+            .on('click', function(e) {
                 e.preventDefault();
                 t.toggleInfo();
                 return false;

@@ -1,25 +1,17 @@
 (function() {
-    function properString(e) {
-        return ((typeof e === 'string' || (e instanceof String)) && e !== '');
-    }
-    
     function Haggle(el) {
         if(!(this instanceof Haggle))
             return new Haggle(el);
         
-        if(el instanceof HTMLElement) {
+        if(el instanceof HTMLElement || el === document) {
             this.el = el;
             return this;
-        }
-        
-        if(!properString(el)) {
-            return undefined;
         }
         
         if(el.charAt(0) !== '<') {
             this.el = document.querySelector(el);
             
-            if(this.el === null){
+            if(this.el === null) {
                 return undefined;
             }
         }
@@ -34,18 +26,13 @@
     }
     
     Haggle.extend = function(o1, o2) {
-        if(!(o1 instanceof Object) || !(o2 instanceof Object)) {
-            return undefined;
-        }
-        else {
-            for(var prop in o2) {
-                if(o2.hasOwnProperty(prop)) {
-                    o1[prop] = o2[prop];
-                }
+        for(var prop in o2) {
+            if(o2.hasOwnProperty(prop)) {
+                o1[prop] = o2[prop];
             }
-            
-            return o1;
         }
+        
+        return o1;
     };
     
     Haggle.prototype.appendTo = function(el) {
@@ -65,10 +52,12 @@
     Haggle.prototype.append = function(el) {
         if(el instanceof Haggle) {
             this.el.appendChild(el.el);
+            
             return this;
         }
         else if(el instanceof HTMLElement) {
             this.el.appendChild(el);
+            
             return this;
         }
         else {
@@ -77,8 +66,14 @@
     };
     
     Haggle.prototype.css = function(arg) {
-        if(properString(arg)) {
-            return this.el.style[arg];
+        if(arg instanceof Object) {
+            for(var prop in arg) {
+                if(arg.hasOwnProperty(prop)){
+                    this.el.style[prop] = arg[prop];
+                }
+            }
+            
+            return this;
         }
         else if(arg instanceof Array) {
             var temp = {};
@@ -89,26 +84,14 @@
             
             return temp;
         }
-        else if(arg instanceof Object) {
-            for(var prop in arg) {
-                if(arg.hasOwnProperty(prop)){
-                    this.el.style[prop] = arg[prop];
-                }
-            }
-            
-            return this;
-        }
         else {
-            return undefined;
+            return this.el.style[arg];
         }
     };
     
     Haggle.prototype.find = function(query) {
-        if(!properString(query)) {
-            return undefined;
-        }
-        
         if(query.charAt(0) === '.') {
+            // console.log(query, this.el, this.el.getElementsByClassName(query.slice(1)));
             return new Haggle(this.el.getElementsByClassName(query.slice(1))[0]);
         }
         else if(query.charAt(0) === '#') {
@@ -122,45 +105,41 @@
     };
     
     Haggle.prototype.addClass = function(cl) {
-        if(!properString(cl)) {
-            return undefined;
-        }
-        
         this.el.classList.add(cl);
         
         return this;
     };
     
     Haggle.prototype.removeClass = function(cl) {
-        if(!properString(cl)) {
-            return undefined;
-        }
-        
         this.el.classList.remove(cl);
         
         return this;
     };
     
     Haggle.prototype.toggleClass = function(cl) {
-        if(!properString(cl)) {
-            return undefined;
-        }
-        
-        this.el.classList.remove(cl);
+        this.el.classList.toggle(cl);
         
         return this;
     };
     
     Haggle.prototype.on = function(events, handler, useCapture) {
-        if(!properString(events)) {
-            return undefined;
-        }
-        
         events = events.split(' ');
         
         for(var i = 0; i < events.length; i++) {
             if(events[i] !== '') {
                 this.el.addEventListener(events[i], handler, useCapture);
+            }
+        }
+        
+        return this;
+    };
+    
+    Haggle.prototype.on = function(events, handler, useCapture) {
+        events = events.split(' ');
+        
+        for(var i = 0; i < events.length; i++) {
+            if(events[i] !== '') {
+                this.el.removeEventListener(events[i], handler, useCapture);
             }
         }
         
@@ -185,18 +164,33 @@
         return this;
     };
     
-    Haggle.prototype.parent = function() {
-        return this.el.parentElement;
-    };
-    
-    Haggle.prototype.val = function(value) {
-        this.el.value = value;
+    Haggle.prototype.show = function() {
+        this.css({ 'visibility': 'visible' });
         
         return this;
     };
     
+    Haggle.prototype.parent = function() {
+        return this.el.parentElement;
+    };
+    
+    Haggle.prototype.attr = function(arg) {
+        if(typeof arg === 'object') {
+            for(var prop in arg) {
+                if(arg.hasOwnProperty(prop)) {
+                    this.el[prop] = arg[prop];
+                }
+            }
+            
+            return this;
+        }
+        else {
+            return this.el[arg];
+        }
+    };
+    
     Haggle.prototype.insertBefore = function(el) {
-        this.parent().insertBefore(this.el, el);
+        this.parent().insertBefore(this.el, el instanceof Haggle ? el.el : el);
         
         return this;
     };

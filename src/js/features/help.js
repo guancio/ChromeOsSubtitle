@@ -28,7 +28,7 @@
                         '</div>',
             helpPanel = $(helpText);
         
-        t.controls.parentElement.appendChild(helpPanel);
+        $(t.controls.parent()).append(helpPanel);
         helpPanel.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -36,7 +36,7 @@
         });
         
         t.toggleHelp = function() {
-            helpPanel.toggleHide();
+            helpPanel.css('visibility') === 'visible' ? helpPanel.hide() : helpPanel.show();
         };
         
         var open = $('<div class="mejs-button mejs-help-button mejs-help" >' +

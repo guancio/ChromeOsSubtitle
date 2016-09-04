@@ -19,7 +19,8 @@ zip.useWebWorkers = packaged_app;
         t.subIndex = -1;
         
         t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
-            .prependTo(t.layers).hide();
+            .appendTo(t.layers).hide();
+        t.captions.insertBefore(t.layers.find('div'));
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +
@@ -32,7 +33,7 @@ zip.useWebWorkers = packaged_app;
         
         encodingText += '</select></il>';
         
-        t.captionsButton = mejs.Utility.createNestedElement('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
+        t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
@@ -47,25 +48,25 @@ zip.useWebWorkers = packaged_app;
                 encodingText +
                 '</ul>' +
                 '</div>' +
-                '</div>');
+                '</div>').appendTo(t.rightControls);
         
-        t.rightControls[0].appendChild(t.captionsButton);
-        t.captionEncodingSelect = document.getElementById('encoding-selector');
+        t.captionEncodingSelect = $(document).find('#encoding-selector');
         
         mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
-            t.captionEncodingSelect.value = value;
+            t.captionEncodingSelect.attr({ 'value': value });
         });
         
-        t.captionEncodingSelect.addEventListener('change', function(e) {
+        t.captionEncodingSelect.on('change', function(e) {
             $(document).trigger('subtitleEncodingChanged', e.target.value);
             t.setEncoding(e.target.value, true);
         });
         
-        document.getElementById('select_sub').addEventListener('change', function(e) {
+        
+        $(document).find('#select_sub').on('change', function(e) {
             t.setSubtitle(e.target.value, true);
         });
         
-        t.captionsButton.querySelector('.mejs-captionload button').addEventListener('click', function(e) {
+        t.captionsButton.find('.mejs-captionload').find('button').on('click', function(e) {
             e.preventDefault();
             
             if(packaged_app) {
@@ -97,20 +98,6 @@ zip.useWebWorkers = packaged_app;
                 });
             }
         });
-        
-        // move with controls
-        t.container
-            .bind('controlsshown', function() {
-                // push captions above controls
-                t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
-                
-            })
-            .bind('controlshidden', function() {
-                if(!t.isPaused()) {
-                    // move back to normal place
-                    t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
-                }
-            });
         
         t.media.addEventListener('timeupdate', function(e) {
             t.displaySubtitles();
@@ -157,7 +144,6 @@ zip.useWebWorkers = packaged_app;
                 current.entries = mejs.Utility.ass(d);
             }
             else {
-                console.log('re parsing...');
                 current.entries = mejs.Utility.webvvt(d);
                 
             }
@@ -191,7 +177,7 @@ zip.useWebWorkers = packaged_app;
         for(i = 0; i < entries.times.length; i++) {
             if(currTime >= entries.times[i].start && currTime <= entries.times[i].stop) {
                 t.captionsText.html(entries.text[i]);
-                t.captions.show().height(0);
+                t.captions.show().css({ 'height': '0px' });
                 return; // exit out if one is visible;
             }
         }
