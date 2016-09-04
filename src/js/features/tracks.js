@@ -62,8 +62,10 @@ zip.useWebWorkers = packaged_app;
         });
         
         
-        $(document).find('#select_sub').on('change', function(e) {
+        t.subSelect = $(document).find('#select_sub').on('change', function(e) {
+            chrome.contextMenus.update(t.subIndex + 's', { 'checked': false });
             t.setSubtitle(e.target.value, true);
+            chrome.contextMenus.update(t.subIndex + 's', { 'checked': true });
         });
         
         t.captionsButton.find('.mejs-captionload').find('button').on('click', function(e) {
@@ -116,10 +118,9 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setSubtitle = function(index) {
-        if(index !== undefined) {
-            this.subIndex = parseInt(index);
-            this.captions.hide();
-        }
+        this.subIndex = parseInt(index);
+        this.captions.hide();
+        this.subSelect.attr({ 'value': this.subIndex });
         
         if(this.subIndex !== -1 && this.subtitles[this.subIndex].entries === []) {
             this.notify('The given Subtitle file is corrupted!', 2000);
