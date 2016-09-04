@@ -1,21 +1,22 @@
-(function($) {
-    MediaElementPlayer.prototype.buildautosrt = function(player, controls, layers, media) {
+(function() {
+    MediaElementPlayer.prototype.autosrt = function() {
         if(!packaged_app)
             return;
         
-        var t = this;
+        var t = this,
+            entries = [],
+            dirs = [];
         
-        var entries = [];
-        var dirs = [];
-        
-        media.addEventListener('loadeddata', function() {
-            if(player.openedFileEntry == null)
+        t.media.addEventListener('loadeddata', function() {
+            if(t.openedFileEntry == null) {
                 return;
+            }
             // TODO avoid to search the srt if ona has been alreade specified by the user
             
-            chrome.fileSystem.getDisplayPath(player.openedFileEntry, function(path) {
-                var dirEntry = null;
-                var subPath = "";
+            chrome.fileSystem.getDisplayPath(t.openedFileEntry, function(path) {
+                var dirEntry = null,
+                    subPath = "";
+                
                 for(var i = 0; i < dirs.length; i++) {
                     var dir = dirs[i];
                     if(path.indexOf(dir.path) != 0)
@@ -30,19 +31,19 @@
                 subPath = subPath.substr(1, subPath.lastIndexOf(".") - 1);
                 dirEntry.getFile(subPath + ".srt", {}, function(fileEntry) {
                     fileEntry.file(function(file) {
-                        player.openSrtEntry(file);
+                        t.openSrtEntry(file);
                     });
                 });
             });
         });
         
-        var settingsList = $('#settings_list')[0];
+        var settingsList = $('#settings_list');
         $('<li/>')
             .appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Enable auto-srt</label>'))
             .append($('<button id="allowedAutoSrtButton" style="width:100px">Select Folder</button>'));
             
-        $('#allowedAutoSrtButton').click(function() {
+        $('#allowedAutoSrtButton').on('click', function() {
             chrome.fileSystem.chooseEntry({
                 type: "openDirectory"
             }, function(entry) {
@@ -59,35 +60,26 @@
                     });
                     entries.push(retainId);
                     
-                    setIntoSettings(
-                        'autoSrtEntries',
-                        entries,
-                        function() {}
-                    );
+                    mejs.Utility.setIntoSettings('autoSrtEntries', entries);
                 });
             });
         });
         
-        getFromSettings(
-            'autoSrtEntries', [],
-            function(value) {
-                entries = value;
-                for(var i = 0; i < entries.length; i++) {
-                    var retainId = entries[i];
-                    chrome.fileSystem.restoreEntry(retainId, function(entry) {
-                        chrome.fileSystem.getDisplayPath(entry, function(path) {
-                            $('#allowedAutoSrtButton').text(path);
-                            
-                            dirs = [];
-                            
-                            dirs.push({
-                                path: path,
-                                entry: entry,
-                            });
+        mejs.Utility.getFromSettings('autoSrtEntries', [], function(entries) {
+            for(var i = 0; i < entries.length; i++) {
+                chrome.fileSystem.restoreEntry(entries[i], function(entry) {
+                    chrome.fileSystem.getDisplayPath(entry, function(path) {
+                        $('#allowedAutoSrtButton').text(path);
+                        
+                        dirs = [];
+                        
+                        dirs.push({
+                            path: path,
+                            entry: entry,
                         });
                     });
-                }
+                });
             }
-        );
+        });
     }
-})(mejs.$);
+})();

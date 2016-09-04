@@ -1,7 +1,6 @@
-(function($) {
-    MediaElementPlayer.prototype.buildopensubtitle_uploader = function(player, controls, layers, media) {
-        var
-            t = this;
+(function() {
+    MediaElementPlayer.prototype.opensubtitle_uploader = function() {
+        var t = this;
             
         var minPerc = 0.001;
         // var minPerc = 0.80;
@@ -60,7 +59,7 @@
         
         function gzipSub(subhash, idmovieimdb, moviehash) {
             // var r = new zip.TextReader("hello");
-            var r = new zip.BlobReader(player.selectedTrack.file);
+            var r = new zip.BlobReader(t.selectedTrack.file);
             var w = new zip.BlobWriter("application/gzip");
             
             function empty(data) {}
@@ -78,7 +77,7 @@
                             finalizeUpload(
                                 idmovieimdb,
                                 subhash,
-                                player.selectedTrack.file.name,
+                                t.selectedTrack.file.name,
                                 moviehash,
                                 0, //moviebytesize,
                                 "", //moviefilename,
@@ -132,7 +131,7 @@
                     t.opensubtitleService.token, {
                         cd1: {
                             subhash: subhash,
-                            subfilename: player.selectedTrack.file.name,
+                            subfilename: t.selectedTrack.file.name,
                             moviehash: hash,
                             moviebytesize: t.openedFile.size,
                             moviefilename: t.openedFile.name
@@ -164,7 +163,7 @@
                     tryUpload(md5(d), hash);
                 }
                 //reader.readAsText(selectedTrack.file, t.captionEncodingSelect.value);
-            reader.readAsText(player.selectedTrack.file);
+            reader.readAsText(t.selectedTrack.file);
         };
         
         function movieHash() {
@@ -175,7 +174,7 @@
         
         function upload() {
             t.opensubtitleService.uploader.uploadAttempts = 1;
-            player.resetOpenSubUploader();
+            t.resetOpenSubUploader();
             t.opensubtitleService.service.LogIn({
                 params: [t.opensubtitleService.uploader.username,
                     t.opensubtitleService.uploader.pwd,
@@ -194,8 +193,8 @@
             });
         }
         
-        player.resetOpenSubUploader = function() {
-            var secs = Math.ceil(media.duration ? media.duration : 1);
+        t.resetOpenSubUploader = function() {
+            var secs = Math.ceil(t.media.duration ? t.media.duration : 1);
             var watched = new Array(secs + 1);
             for(var i = 0; i <= secs; i++) {
                 watched[i] = false;
@@ -215,36 +214,36 @@
             uploadAttempts: 0
         };
         
-        player.resetOpenSubUploader();
+        t.resetOpenSubUploader();
         
-        media.addEventListener('loadeddata', function() {
-            player.resetOpenSubUploader();
+        t.media.addEventListener('loadeddata', function() {
+            t.resetOpenSubUploader();
             t.opensubtitleService.uploader.uploadAttempts = 0;
         });
         
         $(document).bind("subtitleChanged", function() {
-            player.resetOpenSubUploader();
+            t.resetOpenSubUploader();
             t.opensubtitleService.uploader.uploadAttempts = 0;
         });
         
-        media.addEventListener('timeupdate', function(e) {
+        t.media.addEventListener('timeupdate', function(e) {
             if(t.opensubtitleService.uploader.uploadAttempts > 0)
                 return;
                 
             var state = t.opensubtitleService.uploader;
-            var sec = Math.floor(media.currentTime);
+            var sec = Math.floor(t.media.currentTime);
             
             var oldLastSec = state.lastSec;
             state.lastSec = sec;
             
-            if(player.selectedTrack == null)
+            if(t.selectedTrack == null)
                 return;
                 
-            if(player.selectedTrack.srclang != "fromfile")
+            if(t.selectedTrack.srclang != "fromfile")
                 return;
                 
             if(t.capDelayValue != 0) {
-                player.resetOpenSubUploader();
+                t.resetOpenSubUploader();
                 return;
             }
             
@@ -253,16 +252,16 @@
                 
             if(Math.abs(sec - state.lastCheck) >= 5) {
                 var nWatched = 0;
-                for(var i = 0; i < Math.ceil(media.duration); i++) {
+                for(var i = 0; i < Math.ceil(t.media.duration); i++) {
                     if(state.watched[i])
                         nWatched += 1;
                 }
                 console.log(sec);
                 console.log(nWatched);
                 state.lastCheck = sec;
-                console.log(nWatched / Math.ceil(media.duration) * 100);
+                console.log(nWatched / Math.ceil(t.media.duration) * 100);
                 
-                if(nWatched / media.duration > minPerc) {
+                if(nWatched / t.media.duration > minPerc) {
                     console.log("To upload");
                     upload();
                 }
@@ -335,4 +334,4 @@
         // 	$('#select_opensubtitle_lang').val(defaultValue);
         // });
     }
-})(mejs.$);
+})();
