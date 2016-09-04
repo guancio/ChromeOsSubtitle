@@ -29,7 +29,7 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.contextMenus.create({ 'title': 'Subtitles', 'id': 'subtitles' });
         chrome.contextMenus.create({ 'title': 'Download Subtitles', 'parentId': 'subtitles', 'id': 'openSubtitleLogIn' });
         chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
-            chrome.contextMenus.create({ 'title': 'None', 'type': 'radio', 'parentId': 'setSubtitle', 'id': 'subNull' });
+            chrome.contextMenus.create({ 'title': 'None', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s' });
         chrome.contextMenus.create({ 'title': 'Encoding', 'parentId': 'subtitles', 'id': 'setEncoding' });
             for(var i = 0; i < encodings.length; i++) {
                 chrome.contextMenus.create({ 'title': encodings[i], 'type': 'radio', 'parentId': 'setEncoding', 'id': i + 'e' });
@@ -47,7 +47,7 @@ chrome.runtime.onInstalled.addListener(function() {
         chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
         chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
         chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': 'playNull', 'enabled': false });
+            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
     
-    chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelpWindow' });
-})
+    chrome.contextMenus.create({ 'title': 'Help', 'id': 'toggleHelp' });
+});

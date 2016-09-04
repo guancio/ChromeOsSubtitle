@@ -450,6 +450,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                         }
                 });
             }
+            else {
+                if(t.subtitles.length === 0) {
+                    chrome.contextMenus.remove('setSubtitle', function() {
+                        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
+                            chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
+                    });
+                }
+            }
             
             if(tempPlay.length) {
                 t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
@@ -463,6 +471,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                     
                     t.setSrc();
                 });
+            }
+            else {
+                if(t.playlist.length === 0) {
+                    chrome.contextMenus.remove('setSrc', function() {
+                        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+                            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
+                    });
+                }
             }
         }
     };
