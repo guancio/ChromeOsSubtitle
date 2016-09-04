@@ -13,12 +13,12 @@
         
         t.decCaptionDelay = function() {
             t.capDelayValue -= 0.1;
-            t.capDelayInput.attr({ 'value': t.capDelayValue });
+            t.capDelayInput.attr({ 'value': t.capDelayValue.toFixed(1) });
             t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
         };
         t.incCaptionDelay = function() {
             t.capDelayValue += 0.1;
-            t.capDelayInput.attr({ 'value': t.capDelayValue });
+            t.capDelayInput.attr({ 'value': t.capDelayValue.toFixed(1) });
             t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
         };
         
