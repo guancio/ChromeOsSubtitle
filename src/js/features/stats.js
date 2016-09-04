@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.stats = function() {
         var t = this,
             service = null,
@@ -41,13 +41,12 @@
             ga('send', 'pageview');
         }
         
-        var statTimeout = null,
-            refresher = function() {
+        var refresher = function() {
                 sendView('MainView');
-                statTimeout = setTimeout(refresher, 60000);
+                setTimeout(refresher, 60000);
             };
         
-        $(document).bind("appStarted", function() {
+        $(document).on('appStarted', function() {
             refresher();
         });
         
@@ -71,37 +70,37 @@
         // fullscreen
         // drop
         
-        $(document).bind("subtitleEncodingChanged", function(e, enc) {
+        $(document).on('subtitleEncodingChanged', function(e, enc) {
             sendEvent('subtitle', 'changeEncoding', enc);
         });
-        $(document).bind("subtitleFileOpened", function(e, name) {
+        $(document).on('subtitleFileOpened', function(e, name) {
             sendEvent('subtitle', 'openSrtFile', name);
         });
         
-        $(document).bind("opensubtitlesDownload", function() {
+        $(document).on('opensubtitlesDownload', function() {
             sendEvent('opensubtitles', 'download');
         });
         
-        var settingsList = $('#settings_list')[0];
         $('<li/>')
-            .appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Disable analytics</label>'))
-            .append($('<input type="checkbox" id="disableAnalytics"/>'));
-        var disableCheck = $('#disableAnalytics')[0];
-        $(disableCheck).click(function(e) {
+            .append($('<input type="checkbox" id="disableAnalytics"/>'))
+            .appendTo($('#settings_list'));
+        
+        var disableCheck = $('#disableAnalytics');
+        
+        disableCheck.on('click', function(e) {
             e.stopPropagation();
-            return true;
         });
         
         var disabled = false;
         
         mejs.Utility.getFromSettings('disableAnalytics', false, function(value) {
-            disableCheck.checked = value;
+            disableCheck.attr({ 'checked': value });
             disabled = value;
         });
         
-        $(document).bind("settingsClosed", function() {
-            var disabled = disableCheck.checked;
+        $(document).on('settingsClosed', function() {
+            var disabled = disableCheck.attr('checked');
             
             sendEvent('setting', 'disableAnalytics', disabled);
             mejs.Utility.setIntoSettings('disableAnalytics', disabled, function() {
@@ -111,4 +110,4 @@
             });
         });
     }
-})(mejs.$);
+})();

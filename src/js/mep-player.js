@@ -1,6 +1,7 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0),
+    mejs = {};
 
-(function($) {
+(function() {
     // wraps a MediaElement object in player controls
     mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
@@ -39,7 +40,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                                     '<div id="right" class="skip"></div>' +
                                     '<div id="middle" class="skip"></div>' +
                                 '</div>' +
-                            '</div>').insertBefore(t.media);
+                            '</div>').appendTo($('#main'));
             
             // move the <video/video> tag into the right spot
             t.container.find('.mejs-mediaelement').append(t.media);
@@ -52,9 +53,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             t.layers = t.container.find('.mejs-layers');
             
             t.meReady();
-            
-            // controls are shown when loaded
-            t.container.trigger('controlsshown');
         },
         
         timeupdate: function() {
@@ -73,9 +71,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls.css('opacity', '1');
+            t.controls.css({ 'opacity': '1' });
             t.controlsAreVisible = true;
-            t.container.trigger('controlsshown');
         },
         
         hideControls: function() {
@@ -86,9 +83,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             // fade out main controls
-            t.controls.css('opacity', '0');
+            t.controls.css({ 'opacity': '0' });
             t.controlsAreVisible = false;
-            t.container.trigger('controlshidden');
             
             t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
@@ -150,14 +146,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             else {
                 // show/hide controls
                 t.container
-                    .bind('mousemove', function() {
+                    .on('mousemove', function() {
                         if(!t.controlsAreVisible) {
                             t.showControls();
                         }
                         
                         t.startControlsTimer(2500);
                     })
-                    .bind('mouseleave', function() {
+                    .on('mouseleave', function() {
                         if(!t.isPaused()) {
                             t.startControlsTimer(1000);
                         }
@@ -199,13 +195,13 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // this needs to come last so it's on top
             $('<div class="mejs-overlay mejs-layer mejs-overlay-play"></div>')
                 .appendTo(t.layers)
-                .click(function() {
+                .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
                 });
             
             t.media.addEventListener('seeking', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 
                 t.showControls();
                 t.startControlsTimer();
@@ -213,26 +209,26 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeked', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
                 loading.show();
                 t.resizeVideo();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
                 t.play();
             }, false);
             
             t.media.addEventListener('play', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             // error handling
@@ -241,7 +237,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                     return;
                 
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
         },
@@ -472,4 +468,4 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
     
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;
-})(mejs.$);
+})();

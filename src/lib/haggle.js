@@ -1,25 +1,17 @@
 (function() {
-    function properString(e) {
-        return ((typeof e === 'string' || (e instanceof String)) && e !== '');
-    }
-    
     function Haggle(el) {
         if(!(this instanceof Haggle))
             return new Haggle(el);
         
-        if(el instanceof HTMLElement) {
+        if(el instanceof HTMLElement || el === document) {
             this.el = el;
             return this;
         }
         
-        if(!properString(el)) {
-            return undefined;
-        }
-        
         if(el.charAt(0) !== '<') {
-            this.el = Array.prototype.slice.call(document.querySelector(el));
+            this.el = document.querySelector(el);
             
-            if(this.el === null){
+            if(this.el === null) {
                 return undefined;
             }
         }
@@ -27,25 +19,20 @@
             var temp = document.createElement('div');
             temp.innerHTML = el;
             
-            this.el = temp.children;
+            this.el = temp.firstChild;
         }
         
         return this;
     }
     
     Haggle.extend = function(o1, o2) {
-        if(!(o1 instanceof Object) || !(o2 instanceof Object)) {
-            return undefined;
-        }
-        else {
-            for(var prop in o2) {
-                if(o2.hasOwnProperty(prop)) {
-                    o1[prop] = o2[prop];
-                }
+        for(var prop in o2) {
+            if(o2.hasOwnProperty(prop)) {
+                o1[prop] = o2[prop];
             }
-            
-            return o1;
         }
+        
+        return o1;
     };
     
     Haggle.prototype.appendTo = function(el) {
@@ -65,10 +52,12 @@
     Haggle.prototype.append = function(el) {
         if(el instanceof Haggle) {
             this.el.appendChild(el.el);
+            
             return this;
         }
-        else if(e instanceof HTMLElement) {
+        else if(el instanceof HTMLElement) {
             this.el.appendChild(el);
+            
             return this;
         }
         else {
@@ -77,19 +66,7 @@
     };
     
     Haggle.prototype.css = function(arg) {
-        if(properString(arg)) {
-            return this.el.style[arg];
-        }
-        else if(arg instanceof Array) {
-            var temp = {};
-            
-            for(var i = 0; i < arg.length; i++) {
-                temp[arg[i]] = this.el.style[arg[i]];
-            }
-            
-            return temp;
-        }
-        else if(arg instanceof Object) {
+        if(arg instanceof Object) {
             for(var prop in arg) {
                 if(arg.hasOwnProperty(prop)){
                     this.el.style[prop] = arg[prop];
@@ -99,15 +76,11 @@
             return this;
         }
         else {
-            return undefined;
+            return this.el.style[arg];
         }
     };
     
     Haggle.prototype.find = function(query) {
-        if(!properString(query)) {
-            return undefined;
-        }
-        
         if(query.charAt(0) === '.') {
             return new Haggle(this.el.getElementsByClassName(query.slice(1))[0]);
         }
@@ -122,35 +95,41 @@
     };
     
     Haggle.prototype.addClass = function(cl) {
-        if(!properString(cl)) {
-            return undefined;
-        }
-        
         this.el.classList.add(cl);
         
         return this;
     };
     
     Haggle.prototype.removeClass = function(cl) {
-        if(!properString(cl)) {
-            return undefined;
-        }
-        
         this.el.classList.remove(cl);
         
         return this;
     };
     
-    Haggle.prototype.on = function(events, handler, useCapture) {
-        if(!properString(events)) {
-            return undefined;
-        }
+    Haggle.prototype.toggleClass = function(cl) {
+        this.el.classList.toggle(cl);
         
+        return this;
+    };
+    
+    Haggle.prototype.on = function(events, handler, useCapture) {
         events = events.split(' ');
         
         for(var i = 0; i < events.length; i++) {
             if(events[i] !== '') {
                 this.el.addEventListener(events[i], handler, useCapture);
+            }
+        }
+        
+        return this;
+    };
+    
+    Haggle.prototype.off = function(events, handler, useCapture) {
+        events = events.split(' ');
+        
+        for(var i = 0; i < events.length; i++) {
+            if(events[i] !== '') {
+                this.el.removeEventListener(events[i], handler, useCapture);
             }
         }
         
@@ -169,5 +148,66 @@
         return this;
     };
     
-    window.Haggle = Haggle;
+    Haggle.prototype.hide = function() {
+        this.css({ 'visibility': 'hidden' });
+        
+        return this;
+    };
+    
+    Haggle.prototype.show = function() {
+        this.css({ 'visibility': 'visible' });
+        
+        return this;
+    };
+    
+    Haggle.prototype.parent = function() {
+        return this.el.parentElement;
+    };
+    
+    Haggle.prototype.attr = function(arg) {
+        if(typeof arg === 'object') {
+            for(var prop in arg) {
+                if(arg.hasOwnProperty(prop)) {
+                    this.el[prop] = arg[prop];
+                }
+            }
+            
+            return this;
+        }
+        else {
+            return this.el[arg];
+        }
+    };
+    
+    Haggle.prototype.insertBefore = function(el) {
+        this.parent().insertBefore(this.el, el instanceof Haggle ? el.el : el);
+        
+        return this;
+    };
+    
+    Haggle.prototype.get = function() {
+        return this.el;
+    };
+    
+    //Thanks to http://youmightnotneedjquery.com/
+    Haggle.prototype.offset = function() {
+        var rect = this.el.getBoundingClientRect();
+        
+        return {
+          top: rect.top + document.body.scrollTop,
+          left: rect.left + document.body.scrollLeft
+        }
+    };
+    
+    Haggle.prototype.outerWidth = function() {
+        return this.el.offsetWidth;
+    };
+    
+    Haggle.prototype.trigger = function(event) {
+        this.el.dispatchEvent(new CustomEvent(event));
+        
+        return this;
+    };
+    
+    window.$ = Haggle;
 })();

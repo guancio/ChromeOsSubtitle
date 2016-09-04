@@ -3,15 +3,13 @@
     MediaElementPlayer.prototype.progress = function() {
         var t = this;
         
-        t.middleControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time-rail skip">' +
+        t.rail = $('<div class="mejs-time-rail skip">' +
                 '<progress id="railBar" min="0" max="1"></progress>' +
                 '<span class="mejs-time-float">' +
                     '<span class="mejs-time-float-current">00:00</span>' +
                     '<span class="mejs-time-float-corner"></span>' +
                 '</span>' +
-            '</div>'));
-        
-        t.rail = t.middleControls.find('.mejs-time-rail');
+            '</div>').appendTo(t.middleControls);
         t.railBar = t.rail.find('#railBar');
         
         var timefloat = t.rail.find('.mejs-time-float'),
@@ -33,17 +31,16 @@
                         t.setCurrentTime(newTime);
                     }
                     
-                    timefloat[0].style.left = pos + 39;  //__UKN#1__ why is 39 needed?
-                    timefloatcurrent[0].innerHTML = mejs.Utility.secondsToTimeCode(newTime);
+                    timefloat.css({ 'left': pos + 39 + 'px' });  //__UKN#1__ why is 39 needed?
+                    timefloatcurrent.html(mejs.Utility.secondsToTimeCode(newTime));
                     t.paintThumbnail(newTime);
                 }
             };
         
         // handle clicks
-        t.railBar[0].addEventListener('mousemove', function(e) {
+        t.railBar.on('mousemove', function(e) {
             handleMouseMove(e, false);
-        });
-        t.railBar[0].addEventListener('mousedown', function(e) {
+        }).on('mousedown', function(e) {
             if(e.which === 1) {
                 handleMouseMove(e, true);
             }
@@ -52,7 +49,7 @@
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
         if(this.getSrc()) {
-            this.railBar[0].value = this.getCurrentTime() / this.getDuration();
+            this.railBar.attr({ 'value': this.getCurrentTime() / this.getDuration() });
         }
     }
 })();
