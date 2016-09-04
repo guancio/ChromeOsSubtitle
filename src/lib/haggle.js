@@ -17,7 +17,7 @@
         }
         
         if(el.charAt(0) !== '<') {
-            this.el = Array.prototype.slice.call(document.querySelector(el));
+            this.el = document.querySelector(el);
             
             if(this.el === null){
                 return undefined;
@@ -27,7 +27,7 @@
             var temp = document.createElement('div');
             temp.innerHTML = el;
             
-            this.el = temp.children;
+            this.el = temp.firstChild;
         }
         
         return this;
@@ -67,7 +67,7 @@
             this.el.appendChild(el.el);
             return this;
         }
-        else if(e instanceof HTMLElement) {
+        else if(el instanceof HTMLElement) {
             this.el.appendChild(el);
             return this;
         }
@@ -141,6 +141,16 @@
         return this;
     };
     
+    Haggle.prototype.toggleClass = function(cl) {
+        if(!properString(cl)) {
+            return undefined;
+        }
+        
+        this.el.classList.remove(cl);
+        
+        return this;
+    };
+    
     Haggle.prototype.on = function(events, handler, useCapture) {
         if(!properString(events)) {
             return undefined;
@@ -165,6 +175,28 @@
     
     Haggle.prototype.html = function(html) {
         this.el.innerHTML = html;
+        
+        return this;
+    };
+    
+    Haggle.prototype.hide = function() {
+        this.css({ 'visibility': 'hidden' });
+        
+        return this;
+    };
+    
+    Haggle.prototype.parent = function() {
+        return this.el.parentElement;
+    };
+    
+    Haggle.prototype.val = function(value) {
+        this.el.value = value;
+        
+        return this;
+    };
+    
+    Haggle.prototype.insertBefore = function(el) {
+        this.parent().insertBefore(this.el, el);
         
         return this;
     };
