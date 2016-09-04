@@ -1,11 +1,15 @@
 (function() {
     MediaElementPlayer.prototype.source = function() {
-        var t = this,
-            open = $('<div class="mejs-button mejs-source-button mejs-source" >' +
-                '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
-                '</div>');
+        var t = this;
         
-        t.leftControls.append(open);
+        $('<div class="mejs-button mejs-source-button mejs-source">' +
+            '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
+        '</div>')
+            .appendTo(t.leftControls)
+            .on('click', function(e) {
+                e.preventDefault();
+                t.openFileForm();
+            });
         
         t.openFileForm = function() {
             if(t.getDuration() && !t.isPaused()) {
@@ -41,10 +45,5 @@
                 });
             }
         };
-        
-        open.on('click', function(e) {
-            e.preventDefault();
-            t.openFileForm();
-        });
     }
 })();

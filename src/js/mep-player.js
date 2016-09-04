@@ -1,6 +1,7 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0),
+    mejs = {};
 
-(function($) {
+(function() {
     // wraps a MediaElement object in player controls
     mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
@@ -70,9 +71,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls.css('opacity', '1');
+            t.controls.css({ 'opacity': '1' });
             t.controlsAreVisible = true;
-            t.container.find('.mejs-captions-position').addClass('mejs-captions-position-hover');
         },
         
         hideControls: function() {
@@ -83,9 +83,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             }
             
             // fade out main controls
-            t.controls.css('opacity', '0');
+            t.controls.css({ 'opacity': '0' });
             t.controlsAreVisible = false;
-            t.container.find('.mejs-captions-position').removeClass('mejs-captions-position-hover');
             
             t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
@@ -469,4 +468,4 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
     
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;
-})(mejs.$);
+})();

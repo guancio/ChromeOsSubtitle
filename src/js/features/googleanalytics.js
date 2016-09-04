@@ -3,7 +3,7 @@
  * Requires
  *
  */
-(function($) {
+(function() {
     $.extend(mejs.MepDefaults, {
         googleAnalyticsTitle: '',
         googleAnalyticsCategory: 'Videos',
@@ -44,4 +44,4 @@
             }
         }, false);
     }
-})(mejs.$);
+})();

@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     // STOP BUTTON
     MediaElementPlayer.prototype.stop = function() {
         var t = this,
@@ -13,4 +13,4 @@
             });
             t.leftControls.append(stop);
     }
-})(mejs.$);
+})();

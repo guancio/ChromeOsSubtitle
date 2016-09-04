@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     // progress/loaded bar
     MediaElementPlayer.prototype.progress = function() {
         var t = this;
@@ -40,8 +40,7 @@
         // handle clicks
         t.railBar.on('mousemove', function(e) {
             handleMouseMove(e, false);
-        });
-        t.railBar.on('mousedown', function(e) {
+        }).on('mousedown', function(e) {
             if(e.which === 1) {
                 handleMouseMove(e, true);
             }
@@ -53,4 +52,4 @@
             this.railBar.attr({ 'value': this.getCurrentTime() / this.getDuration() });
         }
     }
-})(mejs.$);
+})();

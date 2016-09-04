@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.subdelay = function() {
         var t = this,
             captionSelector = t.captionsButton.find('.mejs-captions-selector');
@@ -46,4 +46,4 @@
             t.capDelayValue = 0;
         });
     }
-})(mejs.$);
+})();

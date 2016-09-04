@@ -1,7 +1,7 @@
 zip.workerScriptsPath = 'lib/zipjs/WebContent/'
 zip.useWebWorkers = packaged_app;
 
-(function($) {
+(function() {
     // add extra default options 
     $.extend(mejs.MepDefaults, {
         tracksText: mejs.i18n.t('Captions/Subtitles')
@@ -20,7 +20,7 @@ zip.useWebWorkers = packaged_app;
         
         t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .appendTo(t.layers).hide();
-        t.captions.insertBefore(t.layers.find('div'));
+        // t.captions.insertBefore(t.layers.find('div'));
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +
@@ -184,4 +184,4 @@ zip.useWebWorkers = packaged_app;
         
         t.captions.hide();
     };
-})(mejs.$);
+})();

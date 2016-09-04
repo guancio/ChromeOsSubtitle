@@ -75,15 +75,6 @@
             
             return this;
         }
-        else if(arg instanceof Array) {
-            var temp = {};
-            
-            for(var i = 0; i < arg.length; i++) {
-                temp[arg[i]] = this.el.style[arg[i]];
-            }
-            
-            return temp;
-        }
         else {
             return this.el.style[arg];
         }
@@ -91,7 +82,6 @@
     
     Haggle.prototype.find = function(query) {
         if(query.charAt(0) === '.') {
-            // console.log(query, this.el, this.el.getElementsByClassName(query.slice(1)));
             return new Haggle(this.el.getElementsByClassName(query.slice(1))[0]);
         }
         else if(query.charAt(0) === '#') {
@@ -134,7 +124,7 @@
         return this;
     };
     
-    Haggle.prototype.on = function(events, handler, useCapture) {
+    Haggle.prototype.off = function(events, handler, useCapture) {
         events = events.split(' ');
         
         for(var i = 0; i < events.length; i++) {
@@ -195,5 +185,23 @@
         return this;
     };
     
-    window.Haggle = Haggle;
+    Haggle.prototype.get = function() {
+        return this.el;
+    };
+    
+    //Thanks to http://youmightnotneedjquery.com/
+    Haggle.prototype.offset = function() {
+        var rect = this.el.getBoundingClientRect();
+        
+        return {
+          top: rect.top + document.body.scrollTop,
+          left: rect.left + document.body.scrollLeft
+        }
+    };
+    
+    Haggle.prototype.outerWidth = function () {
+        return this.el.offsetWidth;
+    };
+    
+    window.$ = Haggle;
 })();

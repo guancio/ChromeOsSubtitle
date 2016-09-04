@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.stats = function() {
         var t = this,
             service = null,
@@ -81,13 +81,12 @@
             sendEvent('opensubtitles', 'download');
         });
         
-        var settingsList = $('#settings_list'),
-            disableCheck = $('#disableAnalytics');
-        
         $('<li/>')
-            .appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Disable analytics</label>'))
-            .append($('<input type="checkbox" id="disableAnalytics"/>'));
+            .append($('<input type="checkbox" id="disableAnalytics"/>'))
+            .appendTo($('#settings_list'));
+        
+        var disableCheck = $('#disableAnalytics');
         
         disableCheck.on('click', function(e) {
             e.stopPropagation();
@@ -111,4 +110,4 @@
             });
         });
     }
-})(mejs.$);
+})();
