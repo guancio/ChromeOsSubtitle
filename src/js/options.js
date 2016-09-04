@@ -8,7 +8,7 @@
         
         mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
         
-        subExts: ['srt', 'sub', 'txt', 'ass'],
+        subExts: ['srt', 'sub', 'txt', 'ass', 'dfxp'],
         
         success: function(mediaElement) {
             mainMediaElement = mediaElement;
@@ -32,7 +32,7 @@
                 });
             });
             
-            $(document).trigger("appStarted");
+            $(document).trigger('appStarted');
         },
         
         // array of keyboard actions such as play pause

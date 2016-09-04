@@ -1,7 +1,7 @@
 (function($) {
     MediaElementPlayer.prototype.subdelay = function() {
         var t = this,
-            captionSelector = t.captionsButton.find('.mejs-captions-selector'),
+            captionSelector = t.captionsButton.getElementsByClassName('mejs-captions-selector')[0],
             value = $('<input style="background-color: transparent; width: 41px; color: white; font-size: 10px;clear: none; margin:0px 0px 0px 0px;"></input>').on('input', function(e) {
                     t.capDelayValue = Number(t.capDelayInput.value);
                 });
@@ -37,7 +37,7 @@
                     .append(value)
                     .append(inc);
         
-        captionSelector.find('ul').append(line);
+        captionSelector.getElementsByTagName('ul')[0].appendChild(line[0]);
         
         t.media.addEventListener('loadeddata', function() {
             t.capDelayInput.value = 0;

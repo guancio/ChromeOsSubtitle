@@ -129,8 +129,7 @@
             return true;
         });
         
-        $('<li/>')
-            .appendTo(settingsList)
+        $('<li/>').appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Opensubtitles.org password</label>'))
             .append($('<input id="pwdOpenSubtitle" type="password" style="width:100px;background-color: transparent; color: white;"/>'));
         $('#pwdOpenSubtitle').keydown(function(e) {
@@ -138,23 +137,15 @@
             return true;
         });
         
-        mejs.Utility.getFromSettings(
-            'opensubtitle_username',
-            '',
-            function(value) {
-                t.opensubtitleService.username = value;
-                $('#usernameOpenSubtitle')[0].value = value
-            }
-        );
+        mejs.Utility.getFromSettings('opensubtitle_username', '', function(value) {
+            t.opensubtitleService.username = value;
+            $('#usernameOpenSubtitle')[0].value = value
+        });
         
-        mejs.Utility.getFromSettings(
-            'opensubtitle_pwd',
-            '',
-            function(value) {
-                t.opensubtitleService.pwd = value;
-                $('#pwdOpenSubtitle')[0].value = value
-            }
-        );
+        mejs.Utility.getFromSettings('opensubtitle_pwd', '', function(value) {
+            t.opensubtitleService.pwd = value;
+            $('#pwdOpenSubtitle')[0].value = value
+        });
         
         $(document).bind('settingsClosed', function() {
             t.opensubtitleService.username = $('#usernameOpenSubtitle')[0].value;
