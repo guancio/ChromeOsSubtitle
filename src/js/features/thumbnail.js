@@ -1,27 +1,28 @@
 (function() {
-    var thumbnailVideo = document.createElement('video'),
-        canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
+    var thumbnailVideo = $('<video>'),
+        canvas = $('<canvas>'),
+        ctx = canvas.get(0).getContext('2d');
     
     MediaElementPlayer.prototype.thumbnail = function() {
-        var timefloat = this.rail[0].getElementsByClassName('mejs-time-float')[0];
+        var timefloat = this.rail.find('.mejs-time-float');
         
-        canvas.width = 121;
-        canvas.height = 96;
+        canvas.attr({ 'width': 121 });
+        canvas.attr({ 'height': 96 });
         
-        timefloat.insertBefore(canvas, timefloat.getElementsByClassName('mejs-time-float-current')[0]);
+        canvas.appendTo(timefloat);
+        canvas.insertBefore(timefloat.find('.mejs-time-float-current'));
         
-        thumbnailVideo.addEventListener('seeked', function() {
-            ctx.drawImage(thumbnailVideo, 0, 0, canvas.width, canvas.height);
+        thumbnailVideo.on('seeked', function() {
+            ctx.drawImage(thumbnailVideo.get(0), 0, 0, canvas.attr('width'), canvas.attr('height'));
         });
     };
     
     MediaElementPlayer.prototype.setThumbnailSrc = function(src) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        thumbnailVideo.src = src;
+        ctx.clearRect(0, 0, canvas.attr('width'), canvas.attr('height'));
+        thumbnailVideo.attr({ 'src': src });
     };
     
     MediaElementPlayer.prototype.paintThumbnail = mejs.Utility.deBounce(function(time) {
-        thumbnailVideo.currentTime = time;
+        thumbnailVideo.attr({ 'currentTime': time });
     }, 100);
 })();

@@ -45,13 +45,6 @@ mejs.Utility = {
         return (parseFloat(pixelString) || 0) + addValue;
     },
     
-    createNestedElement: function(content) {
-        var temp = document.createElement('div');
-        temp.innerHTML = content;
-        
-        return temp.firstChild;
-    },
-    
     deBounce: function(func, timeout) {
         var timer = null;
         
@@ -104,7 +97,7 @@ mejs.Utility = {
                     })
                 });
             });
-        }, function(error) {
+        }, function() {
             cb([]);
         });
     },

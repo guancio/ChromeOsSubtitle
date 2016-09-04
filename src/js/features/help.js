@@ -4,7 +4,7 @@
             helpText = '<div class="mejs-window">' +
                             '<h2>Help</h2>' +
                             '<div>' +
-                                '<table style="color:#fff; width: 100%">' +
+                                '<table style="color:#fff;width:100%">' +
                                     '<tr><td style="width:60px">Spacebar</td><td style="width:100px">Play/Pause</td></tr>' +
                                     '<tr><td>[CTRL] + Up|Down</td><td>Change Volume</td></tr>' +
                                     '<tr><td>[SHIFT|ALT|CTRL] +  Left|Right</td><td>Seek 3s/10s/60s</td></tr>' +
@@ -26,26 +26,23 @@
                             '</div><br/>' +
                             '[Click the box to close the help page]' +
                         '</div>',
-            helpPanel = mejs.Utility.createNestedElement(helpText);
-        
-        t.controls[0].parentElement.appendChild(helpPanel);
-        helpPanel.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            t.toggleHelp();
-        });
+            helpPanel = $(helpText)
+                            .appendTo(t.container)
+                            .on('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                t.toggleHelp();
+                            });
         
         t.toggleHelp = function() {
-            helpPanel.style.visibility = (helpPanel.style.visibility === 'visible') ? 'hidden' : 'visible';
+            helpPanel.css('visibility') === 'visible' ? helpPanel.hide() : helpPanel.show();
         };
         
-        var open = mejs.Utility.createNestedElement('<div class="mejs-button mejs-help-button mejs-help" >' +
-                '<button type="button" title="' + mejs.i18n.t('Help...') + '" aria-label="' + mejs.i18n.t('Help...') + '"></button></div>');
-        
-        t.rightControls[0].appendChild(open);
-        open.addEventListener('click', function(e) {
-            e.preventDefault();
-            t.toggleHelp();
-        });
+        $('<div class="mejs-button mejs-help-button mejs-help"><button type="button" title="' + mejs.i18n.t('Help...') + '" aria-label="' + mejs.i18n.t('Help...') + '"></button></div>')
+            .appendTo(t.rightControls)
+            .on('click', function(e) {
+                e.preventDefault();
+                t.toggleHelp();
+            });
     }
 })();

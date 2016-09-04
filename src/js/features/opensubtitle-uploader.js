@@ -1,4 +1,4 @@
-(function($) {
+(function() {
     MediaElementPlayer.prototype.opensubtitle_uploader = function() {
         var t = this;
             
@@ -334,4 +334,4 @@
         // 	$('#select_opensubtitle_lang').val(defaultValue);
         // });
     }
-})(mejs.$);
+})();
