@@ -1,4 +1,4 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0),
+var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
     mejs = {};
 
 (function() {
@@ -233,8 +233,9 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0),
             
             // error handling
             t.media.addEventListener('error', function(e) {
-                if(t.getSrc() === '')
+                if(t.getSrc() === '') {
                     return;
+                }
                 
                 loading.hide();
                 t.railBar.removeClass('mejs-buffering');
@@ -439,7 +440,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0),
                 t.subtitles.forEach(function(e, i) {
                     options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
                 });
-                document.getElementById('select_sub').innerHTML = options;
+                t.subSelect.html(options);
                 
                 chrome.contextMenus.remove('setSubtitle', function() {
                     chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
