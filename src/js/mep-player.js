@@ -39,7 +39,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
                                     '<div id="right" class="skip"></div>' +
                                     '<div id="middle" class="skip"></div>' +
                                 '</div>' +
-                            '</div>').insertBefore(t.media);
+                            '</div>').appendTo($('#main'));
             
             // move the <video/video> tag into the right spot
             t.container.find('.mejs-mediaelement').append(t.media);
@@ -199,7 +199,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // this needs to come last so it's on top
             $('<div class="mejs-overlay mejs-layer mejs-overlay-play"></div>')
                 .appendTo(t.layers)
-                .click(function() {
+                .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
                 });
             

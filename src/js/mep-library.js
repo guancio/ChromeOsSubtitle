@@ -1,6 +1,6 @@
 var mejs = {};
 
-if(typeof Haggle !== 'undefined' && false) {
+if(typeof Haggle !== 'undefined' && true) {
     mejs.$ = Haggle;
 }
 else if(typeof jQuery !== 'undefined') {

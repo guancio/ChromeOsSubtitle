@@ -26,24 +26,24 @@
                             '</div><br/>' +
                             '[Click the box to close the help page]' +
                         '</div>',
-            helpPanel = mejs.Utility.createNestedElement(helpText);
+            helpPanel = $(helpText);
         
-        t.controls[0].parentElement.appendChild(helpPanel);
-        helpPanel.addEventListener('click', function(e) {
+        t.controls.parentElement.appendChild(helpPanel);
+        helpPanel.on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             t.toggleHelp();
         });
         
         t.toggleHelp = function() {
-            helpPanel.style.visibility = (helpPanel.style.visibility === 'visible') ? 'hidden' : 'visible';
+            helpPanel.toggleHide();
         };
         
-        var open = mejs.Utility.createNestedElement('<div class="mejs-button mejs-help-button mejs-help" >' +
+        var open = $('<div class="mejs-button mejs-help-button mejs-help" >' +
                 '<button type="button" title="' + mejs.i18n.t('Help...') + '" aria-label="' + mejs.i18n.t('Help...') + '"></button></div>');
         
-        t.rightControls[0].appendChild(open);
-        open.addEventListener('click', function(e) {
+        t.rightControls.append(open);
+        open.on('click', function(e) {
             e.preventDefault();
             t.toggleHelp();
         });

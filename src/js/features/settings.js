@@ -10,15 +10,15 @@
                 '<div><ul id="settings_list" style="list-style-type: none !important;padding-left:0px"></ul></div>' +
                 '[Click the box to close the settings]</div>'
             )
-            .appendTo(t.controls[0].parentElement);
+            .appendTo(t.controls.parent());
             
-        settingsPanel.keydown(function(e) {
+        settingsPanel.on('keydown', function(e) {
             e.stopPropagation();
             return true;
         });
         
         function hide(e) {
-            settingsPanel.css('visibility', 'hidden');
+            settingsPanel.css({ 'visibility': 'hidden' });
             
             $(document)
                 .trigger("settingsClosed");
@@ -29,14 +29,14 @@
         settingsPanel.on("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
-            hide()
+            hide();
             return false;
         });
         
         t.openSettingsWindow = function() {
             $('.mejs-window')
-                .css('visibility', 'hidden');
-            settingsPanel.css('visibility', 'visible');
+                .css({ 'visibility': 'hidden' });
+            settingsPanel.css({ 'visibility': 'visible' });
         };
     }
     
@@ -47,7 +47,7 @@
                 '<button type="button" title="' + mejs.i18n.t('Settings...') + '" aria-label="' + mejs.i18n.t('Settings...') + '"></button>' +
                 '</div>')
             .appendTo(t.rightControls)
-            .click(function(e) {
+            .on('click', function(e) {
                 e.preventDefault();
                 t.openSettingsWindow();
                 return false;
