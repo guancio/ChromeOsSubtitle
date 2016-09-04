@@ -4,7 +4,7 @@
     MediaElementPlayer.prototype.notification = function() {
         this.notification = $('<div class="mejs-notification"></div>');
         this.notification.css({ 'visibility': 'hidden' });
-        this.notification.appendTo(document.getElementsByClassName('mejs-container')[0])
+        this.notification.appendTo(this.container)
     };
     
     MediaElementPlayer.prototype.notify = function(text, timeout) {
