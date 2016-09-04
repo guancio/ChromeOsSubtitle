@@ -199,8 +199,14 @@
         }
     };
     
-    Haggle.prototype.outerWidth = function () {
+    Haggle.prototype.outerWidth = function() {
         return this.el.offsetWidth;
+    };
+    
+    Haggle.prototype.trigger = function(event) {
+        this.el.dispatchEvent(new CustomEvent(event));
+        
+        return this;
     };
     
     window.$ = Haggle;
