@@ -2,17 +2,38 @@
     mejs.MepDefaults = {
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
-        // useful for <audio> player loops
-        loop: false,
-        // Hide controls when playing and mouse is not over the video
-        alwaysShowControls: false,
-        // force Android's native controls
-        AndroidUseNativeControls: false,
-        // features to show
-        features: ['contextmenu', 'aspectRatio', 'notification', 'playlist', 'source', 'settings', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settingsbutton', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'stats', 'thumbnail'],
         
-        // only for dynamic
-        isVideo: true,
+        // features to show
+        features: ['contextmenu', 'notification', 'playlist', 'source', 'playpause', 'stop', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settings', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'thumbnail'],
+        
+        mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
+        
+        subExts: ['srt', 'sub', 'txt', 'ass', 'dfxp'],
+        
+        success: function(mediaElement) {
+            mainMediaElement = mediaElement;
+            
+            var t = mainMediaElement,
+                temp;
+            
+            if(!window.launchData || !window.launchData.items || !window.launchData.items.length) {
+                t.filterFiles([]);
+                t.toggleInfo();
+                return;
+            }
+            
+            window.launchData.items.forEach(function(e, i) {
+                e.entry.file(function(file) {
+                    temp.push(file);
+                    
+                    if(i === window.launchData.items.length - 1) {
+                        t.filterFiles(temp, true);
+                    }
+                });
+            });
+            
+            $(document).trigger('appStarted');
+        },
         
         // array of keyboard actions such as play pause
         keyActions: [
@@ -22,10 +43,12 @@
                     179 // GOOGLE play/pause button
                 ],
                 action: function(player, keyCode, activeModifiers) {
-                    if(player.isPaused() || player.isEnded())
+                    if(player.isPaused() || player.isEnded()) {
                         player.play();
-                    else
+                    }
+                    else {
                         player.pause();
+                    }
                 }
             },
             {
@@ -66,17 +89,15 @@
                         player.moveCaptions(37);
                     }
                     else if(player.getSrc()) {
-                        if(player.isVideo) {
-                            player.showControls();
-                            player.startControlsTimer();
-                        }
-                        
                         var seekDuration = (activeModifiers.shift && -3) ||
                                            (activeModifiers.alt && -10) ||
                                            (activeModifiers.ctrl && -60);
                         
                         if(seekDuration) {
                             player.seek(seekDuration);
+                            
+                            player.showControls();
+                            player.startControlsTimer();
                         }
                     }
                 }
@@ -97,6 +118,9 @@
                         
                         if(seekDuration) {
                             player.seek(seekDuration);
+                            
+                            player.showControls();
+                            player.startControlsTimer();
                         }
                     }
                 }

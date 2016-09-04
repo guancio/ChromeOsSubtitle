@@ -1,18 +1,18 @@
-(function($) {
+(function() {
     var showRemaining = false;
     
     // current and duration 00:00 / 00:00
-    MediaElementPlayer.prototype.buildcurrent = function() {
+    MediaElementPlayer.prototype.current = function() {
         var t = this;
         
-        t.rightControls[0].appendChild(mejs.Utility.createNestedElement('<div class="mejs-time skip">' +
+        t.rightControls.append($('<div class="mejs-time skip">' +
             '<span class="mejs-currenttime">00:00</span>' +
         '</div>'));
         
         t.time = t.rightControls.find('.mejs-time');
         t.currenttime = t.time.find('.mejs-currenttime');
         
-        t.currenttime[0].addEventListener('click', function() {
+        t.currenttime.on('click', function() {
             if(t.getDuration()) {
                 showRemaining = !showRemaining;
                 
@@ -21,27 +21,25 @@
         });
     }
     
-    MediaElementPlayer.prototype.buildduration = function() {
-        $('<span>/</span><span class="mejs-duration">00:00</span>')
-            .appendTo(this.time);
+    MediaElementPlayer.prototype.duration = function() {
+        this.time.append($('<span>/</span>'));
+        this.time.append($('<span class="mejs-duration">00:00</span>'));
         
-        this.durationD = this.controls.find('.mejs-duration');
+        this.durationD = this.time.find('.mejs-duration');
     }
     
     MediaElementPlayer.prototype.updateCurrent = function() {
-        if(this.currenttime) {
-            if(showRemaining) {
-                this.currenttime.html('-' + mejs.Utility.secondsToTimeCode(this.getDuration() - this.getCurrentTime()));
-            }
-            else {
-                this.currenttime.html(mejs.Utility.secondsToTimeCode(this.getCurrentTime()));
-            }
+        if(showRemaining) {
+            this.currenttime.html('-' + mejs.Utility.secondsToTimeCode(this.getDuration() - this.getCurrentTime()));
+        }
+        else {
+            this.currenttime.html(mejs.Utility.secondsToTimeCode(this.getCurrentTime()));
         }
     }
     
     MediaElementPlayer.prototype.updateDuration = function() {
-        if(this.durationD && this.getDuration()) {
+        if(this.getDuration()) {
             this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
     }
-})(mejs.$);
+})();
