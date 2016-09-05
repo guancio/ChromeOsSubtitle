@@ -446,6 +446,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             if(tempPlay.length) {
                 t.playIndex = overwrite ? 0 : t.playlist.length;
                 t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
+                
+                t.setSrc();
             }
             
             chrome.contextMenus.remove('setSrc', function() {
@@ -458,8 +460,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                     for(i = 0; i < t.playlist.length; i++) {
                         chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm', 'checked': i === t.playIndex });
                     }
-                
-                t.setSrc();
             });
             
             chrome.contextMenus.remove('setSubtitle', function() {
