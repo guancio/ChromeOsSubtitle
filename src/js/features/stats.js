@@ -70,11 +70,11 @@
         // fullscreen
         // drop
         
-        $(document).on('subtitleEncodingChanged', function(e, enc) {
-            sendEvent('subtitle', 'changeEncoding', enc);
+        $(document).on('subtitleEncodingChanged', function(e) {
+            sendEvent('subtitle', 'changeEncoding', e.detail);
         });
-        $(document).on('subtitleFileOpened', function(e, name) {
-            sendEvent('subtitle', 'openSrtFile', name);
+        $(document).on('subtitleFileOpened', function(e) {
+            sendEvent('subtitle', 'openSrtFile', e.detail);
         });
         
         $(document).on('opensubtitlesDownload', function() {
@@ -86,17 +86,13 @@
             .append($('<input type="checkbox" id="disableAnalytics"/>'))
             .appendTo($('#settings_list'));
         
-        var disableCheck = $('#disableAnalytics');
-        
-        disableCheck.on('click', function(e) {
-            e.stopPropagation();
-        });
-        
-        var disabled = false;
+        var disableCheck = $('#disableAnalytics')
+                                .on('click', function(e) {
+                                    e.stopPropagation();
+                                });
         
         mejs.Utility.getFromSettings('disableAnalytics', false, function(value) {
             disableCheck.attr({ 'checked': value });
-            disabled = value;
         });
         
         $(document).on('settingsClosed', function() {

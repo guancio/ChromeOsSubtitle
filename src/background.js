@@ -5,6 +5,23 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
 });
 
 chrome.runtime.onInstalled.addListener(function() {
+    chrome.notifications.onClicked.addListener(function() {
+        chrome.app.window.create('wiki.html', { bounds: { width: 1040, height: 600 } });
+    });
+    
+    chrome.notifications.create('updateNotify', {
+        type: 'basic',
+        iconUrl: 'icon.png',
+        title: 'Here is what\'s new in Subtitle Video Player!',
+        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nPerformance boost to save batter life!',
+        contextMessage: 'Click on the notification to visit the Wiki!',
+        priority: 2,
+        isClickable: true,
+        requireInteraction: true
+    });
+});
+
+chrome.runtime.onInstalled.addListener(function() {
     var aspects = ['Default', '1:1', '4:3', '16:9', '16:10', '2.21:1', '2.35:1', '2.39:1', '5:4'],
         encodings = ['UTF-8', 'ibm866 Cyrillic', 'iso-8859-2 Latin-2', 'iso-8859-3 Latin-3', 'iso-8859-4 Latin-4', 'iso-8859-5 Cyrillic', 'iso-8859-6 Arabic', 'iso-8859-7 Greek', 'iso-8859-8 Hebrew', 'iso-8859-10 Latin-6', 'iso-8859-13 ', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r', 'koi8-u', 'windows-874', 'windows-1250', 'windows-1251', 'windows-1252 US-ascii', 'windows-1253', 'windows-1254 Latin-5', 'windows-1255', 'windows-1256 Arabic', 'windows-1257', 'windows-1258', 'gbk Chinese', 'gb18030', 'euc-jp', 'iso-2022-jp', 'shift_jis', 'euc-kr'
         ];
@@ -28,8 +45,6 @@ chrome.runtime.onInstalled.addListener(function() {
     
     chrome.contextMenus.create({ 'title': 'Subtitles', 'id': 'subtitles' });
         chrome.contextMenus.create({ 'title': 'Download Subtitles', 'parentId': 'subtitles', 'id': 'openSubtitleLogIn' });
-        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
-            chrome.contextMenus.create({ 'title': 'None', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s' });
         chrome.contextMenus.create({ 'title': 'Encoding', 'parentId': 'subtitles', 'id': 'setEncoding' });
             for(var i = 0; i < encodings.length; i++) {
                 chrome.contextMenus.create({ 'title': encodings[i], 'type': 'radio', 'parentId': 'setEncoding', 'id': i + 'e' });
@@ -46,8 +61,6 @@ chrome.runtime.onInstalled.addListener(function() {
             chrome.contextMenus.create({ 'title': 'Shuffle', 'type': 'radio', 'parentId': 'setPlayType', 'id': '2n' });
         chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
         chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
-        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
     
     chrome.contextMenus.create({ 'title': 'Help', 'id': 'toggleHelp' });
 });

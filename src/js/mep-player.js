@@ -441,45 +441,34 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                     options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
                 });
                 t.subSelect.html(options);
-                
-                chrome.contextMenus.remove('setSubtitle', function() {
-                    chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
-                        chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
-                        for(i = 0; i < t.subtitles.length; i++) {
-                            chrome.contextMenus.create({ 'title': t.subtitles[i].file.name, 'type': 'radio', 'parentId': 'setSubtitle', 'id': i + 's', 'checked': i === t.subIndex });
-                        }
-                });
-            }
-            else {
-                if(t.subtitles.length === 0) {
-                    chrome.contextMenus.remove('setSubtitle', function() {
-                        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
-                            chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
-                    });
-                }
             }
             
             if(tempPlay.length) {
-                t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
                 t.playIndex = overwrite ? 0 : t.playlist.length;
-                
-                chrome.contextMenus.remove('setSrc', function() {
-                    chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-                        for(i = 0; i < t.playlist.length; i++) {
-                            chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm', 'checked': i === t.playIndex });
-                        }
+                t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
+            }
+            
+            chrome.contextMenus.remove('setSrc', function() {
+                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+                    if(t.playlist.length === 0) {
+                        chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
+                        return;
+                    }
                     
-                    t.setSrc();
-                });
-            }
-            else {
-                if(t.playlist.length === 0) {
-                    chrome.contextMenus.remove('setSrc', function() {
-                        chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
-                            chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
-                    });
-                }
-            }
+                    for(i = 0; i < t.playlist.length; i++) {
+                        chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm', 'checked': i === t.playIndex });
+                    }
+                
+                t.setSrc();
+            });
+            
+            chrome.contextMenus.remove('setSubtitle', function() {
+                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
+                    chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
+                    for(i = 0; i < t.subtitles.length; i++) {
+                        chrome.contextMenus.create({ 'title': t.subtitles[i].file.name, 'type': 'radio', 'parentId': 'setSubtitle', 'id': i + 's', 'checked': i === t.subIndex });
+                    }
+            });
         }
     };
     
