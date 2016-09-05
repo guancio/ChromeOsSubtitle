@@ -16,7 +16,7 @@ curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'ht
 
 echo "Copying HTML..."
 cp src/build/index.html app
-cp src/build/wiki.html app
+cp src/wiki.html app
 
 echo "Copying manifest..."
 cp src/manifest.json app
