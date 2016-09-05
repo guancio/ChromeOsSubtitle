@@ -203,8 +203,10 @@
         return this.el.offsetWidth;
     };
     
-    Haggle.prototype.trigger = function(event) {
-        this.el.dispatchEvent(new CustomEvent(event));
+    Haggle.prototype.trigger = function(event, data) {
+        this.el.dispatchEvent(new CustomEvent(event, {
+            detail: data
+        }));
         
         return this;
     };

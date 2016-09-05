@@ -50,21 +50,18 @@ zip.useWebWorkers = packaged_app;
                 '</div>' +
                 '</div>').appendTo(t.rightControls);
         
-        t.captionEncodingSelect = $(document).find('#encoding-selector');
-        
-        mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
-            t.captionEncodingSelect.attr({ 'value': value });
-        });
-        
-        t.captionEncodingSelect.on('change', function(e) {
+        t.captionEncodingSelect = $(document).find('#encoding-selector').on('change', function(e) {
             mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
                 chrome.contextMenus.update(value + 'e', { 'checked': false });
                 $(document).trigger('subtitleEncodingChanged', e.target.value);
                 t.setEncoding(e.target.value);
                 chrome.contextMenus.update(e.target.value + 'e', { 'checked': true });
             });
-        });
+        });;
         
+        mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+            t.captionEncodingSelect.attr({ 'value': value });
+        });
         
         t.subSelect = $(document).find('#select_sub').on('change', function(e) {
             chrome.contextMenus.update(t.subIndex + 's', { 'checked': false });

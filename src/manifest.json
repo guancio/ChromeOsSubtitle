@@ -23,10 +23,13 @@
         },
         "fullscreen",
         "contextMenus",
+        "storage",
+        "notifications",
+        "webview",
+        
         "http://api.opensubtitles.org/xml-rpc",
         "https://subtitlevideoplayer.appspot.com/",
-        "https://www.google-analytics.com/",
-        "storage"
+        "https://www.google-analytics.com/"
     ],
     "offline_enabled": true
 }
