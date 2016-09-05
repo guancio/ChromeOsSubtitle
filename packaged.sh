@@ -14,8 +14,9 @@ cp src/background.js app
 echo "Compressing CSS..."
 curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'https://cssminifier.com/raw'
 
-echo "Copying index.html..."
+echo "Copying HTML..."
 cp src/build/index.html app
+cp src/build/wiki.html app
 
 echo "Copying manifest..."
 cp src/manifest.json app

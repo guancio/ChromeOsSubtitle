@@ -12,6 +12,8 @@
         
         success: function(mediaElement) {
             mainMediaElement = mediaElement;
+            chrome.app.window.get('master').show();
+            $(document).trigger('appStarted');
             
             var t = mainMediaElement,
                 temp;
@@ -31,8 +33,6 @@
                     }
                 });
             });
-            
-            $(document).trigger('appStarted');
         },
         
         // array of keyboard actions such as play pause
