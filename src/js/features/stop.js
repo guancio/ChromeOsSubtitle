@@ -1,6 +1,6 @@
 (function() {
     // STOP BUTTON
-    MediaElementPlayer.prototype.stop = function() {
+    MediaElementPlayer.prototype.stopButton = function() {
         var t = this,
             stop = $('<div class="mejs-button mejs-stop-button mejs-stop">' +
                     '<button type="button" title="Stop" aria-label="Stop"></button>' +
