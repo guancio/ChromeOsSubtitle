@@ -1,20 +1,21 @@
 chrome.app.runtime.onLaunched.addListener(function(launchData) {
-  chrome.app.window.create('index.html', { bounds: { width: 1040, height: 600 } }, function(win) {
+  chrome.app.window.create('index.html', { id: 'master', outerBounds: { width: 1040, height: 600, minWidth: 500, minHeight: 300 }, hidden: true }, function(win) {
     win.contentWindow.launchData = launchData;
   });
 });
 
 chrome.runtime.onInstalled.addListener(function() {
     chrome.notifications.onClicked.addListener(function() {
-        chrome.app.window.create('wiki.html', { bounds: { width: 1040, height: 600 } });
+        chrome.app.window.create('wiki.html', { id: 'wiki', outerBounds: { width: 1040, height: 600 } });
+        chrome.notifications.clear('updateNotify');
     });
     
     chrome.notifications.create('updateNotify', {
         type: 'basic',
         iconUrl: 'icon.png',
         title: 'Here is what\'s new in Subtitle Video Player!',
-        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nPerformance boost to save batter life!',
-        contextMessage: 'Click on the notification to visit the Wiki!',
+        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nPerformance boost to save battery life!',
+        contextMessage: 'Click on this notification to visit the Wiki!',
         priority: 2,
         isClickable: true,
         requireInteraction: true
