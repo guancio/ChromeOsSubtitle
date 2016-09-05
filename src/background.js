@@ -19,6 +19,10 @@ chrome.runtime.onInstalled.addListener(function() {
         priority: 2,
         isClickable: true,
         requireInteraction: true
+    }, function(id) {
+        setTimeout(function() {
+            chrome.notifications.clear(id);
+        }, 60000);
     });
 });
 
@@ -63,5 +67,5 @@ chrome.runtime.onInstalled.addListener(function() {
         chrome.contextMenus.create({ 'title': 'Next Media', 'parentId': 'playlist', 'id': 'next' });
         chrome.contextMenus.create({ 'title': 'Previous Media', 'parentId': 'playlist', 'id': 'previous' });
     
-    chrome.contextMenus.create({ 'title': 'Help', 'id': 'toggleHelp' });
+    chrome.contextMenus.create({ 'title': 'Help', 'id': 'openHelp' });
 });
