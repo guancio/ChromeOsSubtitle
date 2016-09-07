@@ -1,12 +1,16 @@
-Icon change.
-JQuery dependency removal.
-ChromeOS context menu advanced version.
-Dual subtitle support.
-Settings persistence.
-x265 support.
-Chromecast support.
-Remote controls support.
-Performance boosting.
-Control panel icon set --> Google Materials
-move shortcuts to command API.
-make use of notification API. on first run of new version, notifiy new changes.
+1.13.0 --> current master after testing and fixing. (11 Sep)
+1.14.0 --> merge remote with master after fixing and testing and changing remote side html (20 Sep)
+1.15.0 --> final code restructure, redundancy removal, testing and fixing and adding QR code if haven't and needed. Minor features as well. (Crash reporting, double clicking to play/pause) (end of Sep)
+2.0.0.X --> Chromecast/Flash support. First Major release since the beginning. Implement proper version scheme. Revamp chrome web store screen shots and description, rewrite wiki and update, readme, changelog, todo etc. (12 Oct)
+2.0.1.X --> Chromecast/Flash support. (end of Oct)
+2.0.2.X --> Controls Panel revamp (mid Nov)
+2.0.3.X --> Ads, monetization. Paid ad-free version? Have to be very careful. (end of Nov)
+2.0.4.X --> x265 support if performance is acceptable. (mid dec)
+2.0.5.X & beyond --> ?????
+
+Experiments:
+Visualizations for audio...
+Equaliser for audio and video...
+Battery low indicator...
+Flashy, yet performant notifications...
+Youtube, Vimeo support? (Going to the dark side with this.)
