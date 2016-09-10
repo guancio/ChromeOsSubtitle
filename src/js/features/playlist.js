@@ -2,8 +2,8 @@
     var playTypes = ['Normal', 'Repeat', 'Shuffle'],
         playType = 0;
     
-    mejs.Utility.getFromSettings('playType', 0, function(v) {
-        playType = v;
+    mejs.Utility.getFromSettings('playType', 0, function(value) {
+        playType = value;
     });
     
     MediaElementPlayer.prototype.playlist = function() {

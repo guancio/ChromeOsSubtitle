@@ -202,7 +202,6 @@ mejs.Utility = {
     
     // Thanks to Justin Capella: https://github.com/johndyer/mediaelement/pull/420
     dfxp: function(trackText) {
-        
         var pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/g,
             match,
             entries = {

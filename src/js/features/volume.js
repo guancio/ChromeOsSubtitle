@@ -19,8 +19,7 @@
             mute = $('<div class="mejs-button mejs-volume-button mejs-mute">' +
                     '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
                     '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
-                '</div>')
-            .appendTo(t.rightControls),
+                '</div>').appendTo(t.rightControls),
             volumeBar = t.container.find('#volumeBar'),
             handleVolumeMove = function(e) {
                 var volume = null,
@@ -28,7 +27,7 @@
                 
                 // calculate the new volume based on the mouse position
                 // height is width becuase we have rotated the progress bar
-                var railHeight = volumeBar.width(),
+                var railHeight = volumeBar.outerWidth(),
                     newY = e.pageY - totalOffset.top;
                 
                 volume = (railHeight - newY) / railHeight;
@@ -43,30 +42,30 @@
                 t.setVolume(Math.max(0, Math.min(volume * 2, t.options.maximumVolume)));
             };
         
-        volumeBar.on('mousedown', function(e) {
-            handleVolumeMove(e);
-            volumeBar.on('mousemove', handleVolumeMove);
-        });
-        volumeBar.on('mouseup', function() {
-            volumeBar.off('mousemove', handleVolumeMove);
-        });
-        volumeBar.on('mouseleave', function() {
-            volumeBar.off('mousemove', handleVolumeMove);
-        });
+        volumeBar
+            .on('mousedown', function(e) {
+                handleVolumeMove(e);
+                volumeBar.on('mousemove', handleVolumeMove);
+            })
+            .on('mouseup mouseleave', function() {
+                volumeBar.off('mousemove', handleVolumeMove);
+            });
         
         // MUTE button
-        mute.find('button').on('click', function() {
-            t.setMuted(!t.isMuted());
-        });
+        mute
+            .find('button')
+            .on('click', function() {
+                t.setMuted(!t.isMuted());
+            });
         
         // listen for volume change events from other sources
         t.media.addEventListener('volumechange', function(e) {
             if(t.isMuted()) {
                 volumeBar.attr({ 'value': 0 });
-                mute.removeClass('mejs-mute').addClass('mejs-unmute');
+                mute.addClass('mejs-unmute');
             } else {
                 volumeBar.attr({ 'value': t.getVolume() });
-                mute.removeClass('mejs-unmute').addClass('mejs-mute');
+                mute.removeClass('mejs-unmute');
             }
         }, false);
         

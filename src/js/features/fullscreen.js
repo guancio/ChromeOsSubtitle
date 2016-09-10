@@ -9,7 +9,7 @@
                     t.toggleFullscreen();
                 }).appendTo(t.rightControls);
         
-        document.addEventListener("webkitfullscreenchange", function() {
+        $(document).on('webkitfullscreenchange', function() {
             fullscreenBtn.toggleClass('mejs-unfullscreen-button');
         }, false);
     };

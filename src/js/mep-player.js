@@ -189,18 +189,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                         '</div>' +
                     '</div>' +
                 '</div>')
-                .hide() // start out hidden
-                .appendTo(t.layers);
-            
-            // this needs to come last so it's on top
-            $('<div class="mejs-overlay mejs-layer mejs-overlay-play"></div>')
-                .appendTo(t.layers)
+                .hide(true) // start out hidden
                 .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
-                });
+                })
+                .appendTo(t.layers);
             
             t.media.addEventListener('seeking', function() {
-                loading.show();
+                loading.show(true);
                 t.railBar.addClass('mejs-buffering');
                 
                 t.showControls();
@@ -208,18 +204,18 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }, false);
             
             t.media.addEventListener('seeked', function() {
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
-                loading.show();
+                loading.show(true);
                 t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
-                loading.show();
+                loading.show(true);
                 t.resizeVideo();
                 t.railBar.addClass('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
@@ -227,7 +223,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }, false);
             
             t.media.addEventListener('play', function() {
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
             }, false);
             
@@ -237,7 +233,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                     return;
                 }
                 
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);

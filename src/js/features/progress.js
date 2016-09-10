@@ -38,18 +38,20 @@
             };
         
         // handle clicks
-        t.railBar.on('mousemove', function(e) {
-            handleMouseMove(e, false);
-        }).on('mousedown', function(e) {
-            if(e.which === 1) {
-                handleMouseMove(e, true);
-            }
-        });
-    }
+        t.railBar
+            .on('mousemove', function(e) {
+                handleMouseMove(e, false);
+            })
+            .on('mousedown', function(e) {
+                if(e.which === 1) {
+                    handleMouseMove(e, true);
+                }
+            });
+    };
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
         if(this.getSrc()) {
             this.railBar.attr({ 'value': this.getCurrentTime() / this.getDuration() });
         }
-    }
+    };
 })();

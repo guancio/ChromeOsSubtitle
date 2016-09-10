@@ -24,6 +24,7 @@
                 return;
             }
             
+            // This forEach needs to be waterfalled #issue
             window.launchData.items.forEach(function(e, i) {
                 e.entry.file(function(file) {
                     temp.push(file);

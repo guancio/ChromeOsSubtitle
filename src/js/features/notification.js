@@ -2,14 +2,16 @@
     var activeTimer = null;
     
     MediaElementPlayer.prototype.notification = function() {
-        this.notification = $('<div class="mejs-notification"></div>');
-        this.notification.css({ 'visibility': 'hidden' });
-        this.notification.appendTo(this.container)
+        this.notification = $('<div class="mejs-notification"></div>')
+                                .hide()
+                                .appendTo(this.container);
     };
     
     MediaElementPlayer.prototype.notify = function(text, timeout) {
-        this.notification.text(text);
-        this.notification.css({ 'visibility': 'visible' });
+        this.notification
+            .text(text)
+            .show();
+        
         this.startNotificationTimer(timeout);
     };
     
@@ -22,7 +24,7 @@
         
         activeTimer = setTimeout(function() {
             activeTimer = null;
-            t.notification.css({ 'visibility': 'hidden' });
+            t.notification.hide();
         }, timeout || 1000);
     };
 })();

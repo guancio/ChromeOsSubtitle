@@ -20,16 +20,19 @@
                         '</div>',
             info = $(infoText)
                         .appendTo(t.container)
-                        .on("click", function(e) {
+                        .on('click', function(e) {
                             e.preventDefault();
                             e.stopPropagation();
                             t.toggleInfo();
                         });
         
-        info.find("a").on('click', function(e) {
-            window.open(this.href, '_blank');
-            event.stopPropagation();
-        });
+        // Apply onClick to all a tags #issue
+        info
+            .find('a')
+            .on('click', function(e) {
+                window.open(this.href, '_blank');
+                event.stopPropagation();
+            });
         
         t.toggleInfo = function() {
             info.css('visibility') === 'visible' ? info.hide() : info.show();

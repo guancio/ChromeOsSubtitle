@@ -18,12 +18,13 @@
             pwd: ''
         };
         
-        var prec = $('#li_encoding'),
-            line1 = $('<li class="mejs-captionload"/>')
-                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
-                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'));
+        var prec = $('#li_encoding');
         
-        line1.appendTo(prec).insertBefore(prec.find('label'));
+        $('<li class="mejs-captionload"/>')
+                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
+                .appendTo(prec)
+                .insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');
         
@@ -54,8 +55,11 @@
         
         function downloadSubtitle(subs) {
             service.DownloadSubtitles({
-                params: [t.opensubtitleService.token, 
-                    subs.map(function(e) { return e.IDSubtitleFile; })
+                params: [
+                    t.opensubtitleService.token, 
+                    subs.map(function(e) {
+                        return e.IDSubtitleFile;
+                    })
                 ],
                 onException: function(errorObj) {
                     t.notify('Subtitle download failed.');
@@ -124,6 +128,7 @@
             .appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Opensubtitles.org username</label>'))
             .append($('<input id="usernameOpenSubtitle" style="width:100px;background-color: transparent; color: white;"/>'));
+        
         $('#usernameOpenSubtitle').on('keydown', function(e) {
             e.stopPropagation();
         });
@@ -131,6 +136,7 @@
         $('<li/>').appendTo(settingsList)
             .append($('<label style="width:250px; float:left;">Opensubtitles.org password</label>'))
             .append($('<input id="pwdOpenSubtitle" type="password" style="width:100px;background-color: transparent; color: white;"/>'));
+        
         $('#pwdOpenSubtitle').on('keydown', function(e) {
             e.stopPropagation();
         });

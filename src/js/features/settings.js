@@ -2,8 +2,6 @@
     MediaElementPlayer.prototype.settings = function() {
         var t = this;
         
-        t.settings = {};
-        
         var settingsPanel = $('<div class="mejs-window" style="width: 356px;">' +
                 '<h2>Settings</h2>' +
                 '<div><ul id="settings_list" style="list-style-type: none !important;padding-left:0px"></ul></div>' +
@@ -13,7 +11,7 @@
                         e.stopPropagation();
                         return true;
                     })
-                    .on("click", function(e) {
+                    .on('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         t.toggleSettings();
@@ -22,7 +20,7 @@
         
         t.toggleSettings = function() {
             settingsPanel.css('visibility') === 'visible' ? settingsPanel.hide() : settingsPanel.show();
-            $(document).trigger("settingsClosed");
+            $(document).trigger('settingsClosed');
         };
         
         $('<div class="mejs-button mejs-settings-button mejs-settings" >' +
