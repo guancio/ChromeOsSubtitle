@@ -16,34 +16,32 @@
                 t.pause();
             }
             
-            if(packaged_app) {
-                chrome.fileSystem.chooseEntry({
-                    type: 'openFile',
-                    acceptsMultiple: true,
-                    acceptsAllTypes: false,
-                    accepts: [
-                                {
-                                    extensions: t.options.mediaExts
-                                }
-                    ]
-                }, function(entries) {
-                    var temp = [];
-                    
-                    if(typeof entries === 'undefined') {
-                        return;
-                    }
-                    
-                    entries.forEach(function(entry, i) {
-                        entry.file(function(file) {
-                            temp.push(file);
-                            
-                            if(i === entries.length - 1) {
-                                t.filterFiles(temp, true);
+            chrome.fileSystem.chooseEntry({
+                type: 'openFile',
+                acceptsMultiple: true,
+                acceptsAllTypes: false,
+                accepts: [
+                            {
+                                extensions: t.options.mediaExts
                             }
-                        });
+                ]
+            }, function(entries) {
+                var temp = [];
+                
+                if(chrome.runtime.lastError) {
+                    return;
+                }
+                
+                entries.forEach(function(entry, i) {
+                    entry.file(function(file) {
+                        temp.push(file);
+                        
+                        if(i === entries.length - 1) {
+                            t.filterFiles(temp, true);
+                        }
                     });
                 });
-            }
+            });
         };
     }
 })();

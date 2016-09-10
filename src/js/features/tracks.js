@@ -72,34 +72,32 @@ zip.useWebWorkers = packaged_app;
         t.captionsButton.find('.mejs-captionload').find('button').on('click', function(e) {
             e.preventDefault();
             
-            if(packaged_app) {
-                chrome.fileSystem.chooseEntry({
-                    type: 'openFile',
-                    acceptsMultiple: true,
-                    acceptsAllTypes: false,
-                    accepts: [
-                                {
-                                    extensions: t.options.subExts
-                                }
-                    ]
-                }, function(entries) {
-                    var temp = [];
-                    
-                    if(typeof entries === 'undefined') {
-                        return;
-                    }
-                    
-                    entries.forEach(function(entry, i) {
-                        entry.file(function(file) {
-                            temp.push(file);
-                            
-                            if(i === entries.length - 1) {
-                                t.filterFiles(temp);
+            chrome.fileSystem.chooseEntry({
+                type: 'openFile',
+                acceptsMultiple: true,
+                acceptsAllTypes: false,
+                accepts: [
+                            {
+                                extensions: t.options.subExts
                             }
-                        });
+                ]
+            }, function(entries) {
+                if(chrome.runtime.lastError) {
+                    return;
+                }
+                
+                var temp = [];
+                
+                entries.forEach(function(entry, i) {
+                    entry.file(function(file) {
+                        temp.push(file);
+                        
+                        if(i === entries.length - 1) {
+                            t.filterFiles(temp);
+                        }
                     });
                 });
-            }
+            });
         });
         
         t.media.addEventListener('timeupdate', function(e) {

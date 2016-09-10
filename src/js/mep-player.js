@@ -71,7 +71,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls.css({ 'opacity': '1' });
+            t.controls.show();
             t.controlsAreVisible = true;
         },
         
@@ -83,7 +83,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             // fade out main controls
-            t.controls.css({ 'opacity': '0' });
+            t.controls.hide();
             t.controlsAreVisible = false;
             
             t.media.removeEventListener('timeupdate', t.timeupdate, false);
