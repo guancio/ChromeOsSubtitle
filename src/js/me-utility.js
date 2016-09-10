@@ -87,9 +87,11 @@ mejs.Utility = {
             var temp = [];
             
             reader.getEntries(function(entries) {
-                entries.forEach(function(entry, i) {
+                mejs.Utility.waterfall(entries, function(entry, i, next) {
                     entry.getData(new zip.BlobWriter(), function(data) {
                         temp.push(new File([data], entry.filename));
+                        
+                        next();
                         
                         if(i === entries.length - 1) {
                             cb(temp);

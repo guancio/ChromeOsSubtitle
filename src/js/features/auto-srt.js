@@ -8,12 +8,7 @@
             dirs = [];
         
         t.media.addEventListener('loadeddata', function() {
-            if(t.openedFileEntry == null) {
-                return;
-            }
-            // TODO avoid to search the srt if ona has been alreade specified by the user
-            
-            chrome.fileSystem.getDisplayPath(t.openedFileEntry, function(path) {
+            chrome.fileSystem.getDisplayPath(t.playlist[t.playIndex], function(path) {
                 var dirEntry = null,
                     subPath = "";
                 
