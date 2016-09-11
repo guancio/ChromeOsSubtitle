@@ -11,7 +11,7 @@
         }
         
         t.capSizeInput = $('<input type="number" min="10" max="50" step="2"></input>').on('input', function(e) {
-                t.capSizeValue = t.capSizeInput.attr('value');
+                t.capSizeValue = parseInt(e.target.value) || 0;
                 mejs.Utility.storage.set('default_sub_size', t.capSizeValue);
                 updateCaptionSize();
             });
@@ -30,9 +30,9 @@
         };
         
         $('<li class="mejs-captionsize"></li>')
-                .append($('<label>Caption size</label>'))
-                .append(t.capSizeInput)
-                .appendTo(captionSelector.find('ul'));
+            .append($('<label>Caption size</label>'))
+            .append(t.capSizeInput)
+            .appendTo(captionSelector.find('ul'));
         
         mejs.Utility.storage.get('default_sub_size', 22, function(value) {
             t.capSizeInput.attr({ 'value': Number(value).toFixed() });

@@ -13,7 +13,6 @@
         success: function(mediaElement) {
             mainMediaElement = mediaElement;
             chrome.app.window.get('master').show();
-            $(document).trigger('appStarted');
             
             var t = mainMediaElement,
                 temp = [];

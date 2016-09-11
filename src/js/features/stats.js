@@ -41,14 +41,9 @@
             ga('send', 'pageview');
         }
         
-        var refresher = function() {
-                sendView('MainView');
-                setTimeout(refresher, 60000);
-            };
-        
-        $(document).on('appStarted', function() {
-            refresher();
-        });
+        setInterval(function() {
+            sendView('MainView');
+        }, 60000);
         
         t.media.addEventListener('loadeddata', function() {
             sendEvent('video', 'loaded', t.playlist[t.playIndex].name);

@@ -88,7 +88,7 @@ zip.useWebWorkers = packaged_app;
                 
                 var temp = [];
                 
-                mejs.watterfall(entries, function(entry, i, next) {
+                mejs.Utility.waterfall(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         temp.push(file);
                         
