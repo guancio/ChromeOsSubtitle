@@ -62,23 +62,25 @@ mejs.Utility = {
         };
     },
     
-    getFromSettings: function(key, def_value, cb) {
-        if(packaged_app) {
-            var temp = {};
-            temp[key] = def_value;
-            
-            chrome.storage.sync.get(temp, function(obj) {
-                cb(obj[key]);
-            });
-        }
-    },
-    
-    setIntoSettings: function(key, value, cb) {
-        if(packaged_app) {
-            var temp = {};
-            temp[key] = value;
-            
-            chrome.storage.sync.set(temp, cb);
+    storage: {
+        get: function(key, def_value, cb) {
+            if(packaged_app) {
+                var temp = {};
+                temp[key] = def_value;
+                
+                chrome.storage.sync.get(temp, function(obj) {
+                    cb(obj[key]);
+                });
+            }
+        },
+        
+        set: function(key, value, cb) {
+            if(packaged_app) {
+                var temp = {};
+                temp[key] = value;
+                
+                chrome.storage.sync.set(temp, cb);
+            }
         }
     },
     
@@ -91,11 +93,11 @@ mejs.Utility = {
                     entry.getData(new zip.BlobWriter(), function(data) {
                         temp.push(new File([data], entry.filename));
                         
-                        next();
-                        
                         if(i === entries.length - 1) {
                             cb(temp);
                         }
+                        
+                        next();
                     })
                 });
             });

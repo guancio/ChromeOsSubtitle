@@ -1,6 +1,7 @@
 chrome.app.runtime.onLaunched.addListener(function(launchData) {
   chrome.app.window.create('index.html', { id: 'master', outerBounds: { width: 1040, height: 600, minWidth: 500, minHeight: 300 }, hidden: true }, function(win) {
     win.contentWindow.launchData = launchData;
+    console.log(launchData);
   });
 });
 

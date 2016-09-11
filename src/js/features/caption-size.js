@@ -12,19 +12,19 @@
         
         t.capSizeInput = $('<input type="number" min="10" max="50" step="2"></input>').on('input', function(e) {
                 t.capSizeValue = t.capSizeInput.attr('value');
-                mejs.Utility.setIntoSettings('default_sub_size', t.capSizeValue);
+                mejs.Utility.storage.set('default_sub_size', t.capSizeValue);
                 updateCaptionSize();
             });
         
         t.decCaptionSize = function() {
             t.capSizeValue = Math.min(t.capSizeValue - 2, 50);
-            mejs.Utility.setIntoSettings('default_sub_size', t.capSizeValue);
+            mejs.Utility.storage.set('default_sub_size', t.capSizeValue);
             t.capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
             updateCaptionSize();
         };
         t.incCaptionSize = function() {
             t.capSizeValue = Math.max(t.capSizeValue + 2, 10);
-            mejs.Utility.setIntoSettings('default_sub_size', t.capSizeValue);
+            mejs.Utility.storage.set('default_sub_size', t.capSizeValue);
             t.capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
             updateCaptionSize();
         };
@@ -34,7 +34,7 @@
                 .append(t.capSizeInput)
                 .appendTo(captionSelector.find('ul'));
         
-        mejs.Utility.getFromSettings('default_sub_size', 22, function(value) {
+        mejs.Utility.storage.get('default_sub_size', 22, function(value) {
             t.capSizeInput.attr({ 'value': Number(value).toFixed() });
             t.capSizeValue = value;
             updateCaptionSize();

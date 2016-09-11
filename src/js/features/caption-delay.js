@@ -8,7 +8,6 @@
                 t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
             });
         
-        
         t.capDelayInput.attr({ 'value': 0 });
         t.capDelayValue = 0;
         

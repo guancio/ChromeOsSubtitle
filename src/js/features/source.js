@@ -32,13 +32,16 @@
                     return;
                 }
                 
-                entries.forEach(function(entry, i) {
+                mejs.Utility.waterfall(entries, function(entry, i, next) {
                     entry.file(function(file) {
+                        file.fileEntry = entry;
                         temp.push(file);
                         
                         if(i === entries.length - 1) {
                             t.filterFiles(temp, true);
                         }
+                        
+                        next();
                     });
                 });
             });
