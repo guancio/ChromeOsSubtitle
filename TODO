@@ -1,12 +1,21 @@
-1.13.0 --> current master after testing and fixing. (11 Sep)
-1.14.0 --> merge remote with master after fixing and testing and changing remote side html (20 Sep)
+1.13.0 --> current master after testing and fixing (merge moreFixs). (15 Sep)
+1.14.0 --> merge remote with master after fixing and testing and changing remote side html (25 Sep)
 1.15.0 --> final code restructure, redundancy removal, testing and fixing and adding QR code if haven't and needed. Minor features as well. (Crash reporting, double clicking to play/pause) (end of Sep)
-2.0.0.X --> Chromecast/Flash support. First Major release since the beginning. Implement proper version scheme. Revamp chrome web store screen shots and description, rewrite wiki and update, readme, changelog, todo etc. (12 Oct)
+2.0.0.X --> Chromecast/Flash support. First Major release since the beginning. Implement proper version scheme. Revamp chrome web store screen shots and description, rewrite wiki and update, readme, changelog, todo etc. (15 Oct)
 2.0.1.X --> Chromecast/Flash support. (end of Oct)
 2.0.2.X --> Controls Panel revamp (mid Nov)
 2.0.3.X --> Ads, monetization. Paid ad-free version? Have to be very careful. (end of Nov)
 2.0.4.X --> x265 support if performance is acceptable. (mid dec)
 2.0.5.X & beyond --> ?????
+
+
+General:
+1. Fix the every present context menu issues. Sometimes, previous entries are still present in the subtitles and playlist menus. Other times the whole menu crashes for some reason. The API keeps saying that it can't find menu items that surely exist. Witch-hunt this bug!!!
+2. Remove the google-analytics bundle after ensuring that it does nothing more than what google's own analytics js does. Google's js is much smaller than the bundled version. Given that we are hardly using any of the features, bundled-version is an overkill.
+3. Fix duplicate loading of files and downloading of subtitles. Make use of the movie's hash and subtitle language to prevent redownloading.
+4. Rewrite stats.js to be more consistent and ensure that the analytics is not too infringy and at the same time not too inconclusive. Merge google-analytics feature with stats.js
+5. Study on difference between functions defined in the prototype object vs functions defined within the object. Make changes of needed.
+6. Contact app reviews websites and get them to write reviews!!!
 
 Experiments:
 Visualizations for audio...
