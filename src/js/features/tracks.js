@@ -51,7 +51,7 @@ zip.useWebWorkers = packaged_app;
                 '</div>').appendTo(t.rightControls);
         
         t.captionEncodingSelect = $(document).find('#encoding-selector').on('change', function(e) {
-            mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+            mejs.Utility.storage.get('default_encoding', 6, function(value) {
                 chrome.contextMenus.update(value + 'e', { 'checked': false });
                 $(document).trigger('subtitleEncodingChanged', e.target.value);
                 t.setEncoding(e.target.value);
@@ -59,7 +59,7 @@ zip.useWebWorkers = packaged_app;
             });
         });;
         
-        mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+        mejs.Utility.storage.get('default_encoding', 6, function(value) {
             t.captionEncodingSelect.attr({ 'value': value });
         });
         
@@ -88,13 +88,15 @@ zip.useWebWorkers = packaged_app;
                 
                 var temp = [];
                 
-                entries.forEach(function(entry, i) {
+                mejs.watterfall(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         temp.push(file);
                         
                         if(i === entries.length - 1) {
                             t.filterFiles(temp);
                         }
+                        
+                        next();
                     });
                 });
             });
@@ -108,7 +110,7 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
-        mejs.Utility.setIntoSettings('default_encoding', parseInt(index));
+        mejs.Utility.storage.set('default_encoding', parseInt(index));
         this.captionEncodingSelect.attr({ 'value': parseInt(index) });
         
         //Force subtitles to be re-parsed with new encoding.
@@ -154,7 +156,7 @@ zip.useWebWorkers = packaged_app;
             t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
-        mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
+        mejs.Utility.storage.get('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
             reader.readAsText(current.file, encodings[value]);
         });
     };

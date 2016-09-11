@@ -91,7 +91,7 @@
                                     e.stopPropagation();
                                 });
         
-        mejs.Utility.getFromSettings('disableAnalytics', false, function(value) {
+        mejs.Utility.storage.get('disableAnalytics', false, function(value) {
             disableCheck.attr({ 'checked': value });
         });
         
@@ -99,7 +99,7 @@
             var disabled = disableCheck.attr('checked');
             
             sendEvent('setting', 'disableAnalytics', disabled);
-            mejs.Utility.setIntoSettings('disableAnalytics', disabled, function() {
+            mejs.Utility.storage.set('disableAnalytics', disabled, function() {
                 service.getConfig().addCallback(function(config) {
                     config.setTrackingPermitted(!disabled);
                 });
