@@ -1,30 +1,35 @@
 {
-  "name": "Subtitle Videoplayer",
-  "version": "1.12.0",
-  "manifest_version": 2,
-  "minimum_chrome_version": "28",
-  "icons": {
-    "16": "icon.png",
-    "128": "icon.png"
-  },
-  "app": {
-  	 "background": {
-         	       "scripts": ["background.js"]
-	 }
-  },
-    "file_handlers": {
-	"video": {
-	    "types": ["video/*", "audio/*"]
-	}
+    "name": "Subtitle Videoplayer",
+    "version": "1.13.0",
+    "manifest_version": 2,
+    "minimum_chrome_version": "40",
+    "icons": {
+        "16": "icon.png",
+        "128": "icon.png"
     },
-  "permissions":[
-    {"fileSystem": ["retainEntries", "directory"]} ,
-    "fullscreen",
-    "contextMenus",
-    "http://api.opensubtitles.org/xml-rpc",
-    "https://subtitlevideoplayer.appspot.com/",
-    "https://www.google-analytics.com/",
-    "storage"
-  ],
-  "offline_enabled": true
+    "app": {
+        "background": {
+            "scripts": ["background.js"]
+        }
+    },
+    "file_handlers": {
+        "video": {
+            "types": ["aac", "mp4", "m4a", "mp1", "mp2", "mp3", "mpg", "mpeg", "oga", "ogg", "wav", "webm", "m4v", "ogv", "mkv"]
+        }
+    },
+    "permissions":[
+        {
+            "fileSystem": ["retainEntries", "directory"]
+        },
+        "fullscreen",
+        "contextMenus",
+        "storage",
+        "notifications",
+        "webview",
+        
+        "http://api.opensubtitles.org/xml-rpc",
+        "https://subtitlevideoplayer.appspot.com/",
+        "https://www.google-analytics.com/"
+    ],
+    "offline_enabled": true
 }

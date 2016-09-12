@@ -1,34 +1,23 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
+var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
+    mejs = {};
 
-(function($) {
+(function() {
     // wraps a MediaElement object in player controls
-    mejs.MediaElementPlayer = function(node, o) {
+    mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
         if(!(this instanceof mejs.MediaElementPlayer)) {
-            return new mejs.MediaElementPlayer(node, o);
+            return new mejs.MediaElementPlayer(node);
         }
-        
-        var t = this;
         
         // these will be reset after the MediaElement.success fires
-        t.$media = t.$node = $(node);
-        t.node = t.media = t.$media[0];
-        
-        // check for existing player
-        if(typeof t.node.player != 'undefined') {
-            return t.node.player;
-        } else {
-            // attach player to DOM node for reference
-            t.node.player = t;
-        }
+        this.media = node;
+        this.media.player = this;
         
         // extend default options
-        t.options = $.extend({}, mejs.MepDefaults, o);
+        this.options = mejs.MepDefaults;
         
         // start up
-        t.init();
-        
-        return t;
+        this.init();
     };
     
     // actual player
@@ -36,79 +25,39 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         controlsAreVisible: true,
         
         init: function() {
-            var t = this,
-                mf = mejs.MediaFeatures,
-                // options for MediaElement (shim)
-                meOptions = $.extend(true, {}, t.options, {
-                    success: function(media) {
-                        t.meReady(media);
-                    }
-                }),
-                tagName = t.media.tagName.toLowerCase();
-                
-            t.isDynamic = (tagName !== 'audio' && tagName !== 'video');
+            var t = this;
             
-            if(t.isDynamic) {
-                // get video from src or href?
-                t.isVideo = t.options.isVideo;
-            } else {
-                t.isVideo = (tagName !== 'audio' && t.options.isVideo);
-            }
+            // DESKTOP: use MediaElementPlayer controls
+            // remove native controls
+            t.media.controls = false;
             
-            // use native controls in Android
-            if(mf.isAndroid && t.options.AndroidUseNativeControls) {
-                // leave default player
-                
-            } else {
-                // DESKTOP: use MediaElementPlayer controls
-                
-                // remove native controls
-                t.media.controls = false;
-                
-                // build container
-                t.container =
-                    $('<div class="mejs-container svg">' +
-                        '<div class="mejs-inner">' +
-                            '<div class="mejs-mediaelement"></div>' +
-                            '<div class="mejs-layers"></div>' +
-                            '<div class="mejs-controls">' +
-                                '<div id="left" class="skip"></div>' +
-                                '<div id="right" class="skip"></div>' +
-                                '<div id="middle" class="skip"></div>' +
-                            '</div>' +
-                            '<div class="mejs-clear"></div>' +
-                        '</div>' +
-                    '</div>')
-                    .addClass(t.media.className)
-                    .insertBefore(t.$media);
-                    
-                // add classes for user and content
-                t.container.addClass(
-                    (mf.isAndroid ? 'mejs-android ' : '') +
-                    (t.isVideo ? 'mejs-video ' : 'mejs-audio ')
-                );
-                
-                // move the <video/video> tag into the right spot
-                t.container.find('.mejs-mediaelement').append(t.$media);
-                
-                // find parts
-                t.controls = t.container.find('.mejs-controls');
-                t.leftControls = t.controls.find('#left');
-                t.rightControls = t.controls.find('#right');
-                t.middleControls = t.controls.find('#middle');
-                t.layers = t.container.find('.mejs-layers');
-            }
+            // build container
+            t.container = $('<div class="mejs-container">' +
+                                '<div class="mejs-mediaelement"></div>' +
+                                '<div class="mejs-layers"></div>' +
+                                '<div class="mejs-controls">' +
+                                    '<div id="left" class="skip"></div>' +
+                                    '<div id="right" class="skip"></div>' +
+                                    '<div id="middle" class="skip"></div>' +
+                                '</div>' +
+                            '</div>').appendTo($('#main'));
             
-            // create MediaElement shim
-            meOptions.success(t.$media[0]);
+            // move the <video/video> tag into the right spot
+            t.container.find('.mejs-mediaelement').append(t.media);
             
-            if(typeof(t.container) != 'undefined') {
-                // controls are shown when loaded
-                t.container.trigger('controlsshown');
-            }
+            // find parts
+            t.controls = t.container.find('.mejs-controls');
+            t.leftControls = t.controls.find('#left');
+            t.rightControls = t.controls.find('#right');
+            t.middleControls = t.controls.find('#middle');
+            t.layers = t.container.find('.mejs-layers');
+            
+            t.meReady();
         },
         
         timeupdate: function() {
+            //This function is called by an eventlistener on
+            //the <video>. Hence the need for this.player
             this.player.updateCurrent();
             this.player.setCurrentRail();
         },
@@ -116,36 +65,28 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         showControls: function() {
             var t = this;
             
-            if(t.controlsAreVisible)
+            if(t.controlsAreVisible) {
                 return;
+            }
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls
-                .css('visibility', 'visible')
-                .stop(true, true).fadeIn(200, function() {
-                    t.controlsAreVisible = true;
-                    t.container.trigger('controlsshown');
-                });
+            t.controls.css({ 'opacity': '1' });
+            t.controlsAreVisible = true;
         },
         
         hideControls: function() {
             var t = this;
             
-            if(!t.controlsAreVisible)
+            if(!t.controlsAreVisible) {
                 return;
+            }
             
             // fade out main controls
-            t.controls.stop(true, true).fadeOut(200, function() {
-                $(this)
-                    .css('visibility', 'hidden')
-                    .css('display', 'block');
-                    
-                t.controlsAreVisible = false;
-                t.container.trigger('controlshidden');
-            });
+            t.controls.css({ 'opacity': '0' });
+            t.controlsAreVisible = false;
             
-             t.media.removeEventListener('timeupdate', t.timeupdate, false);
+            t.media.removeEventListener('timeupdate', t.timeupdate, false);
         },
         
         controlsTimer: null,
@@ -153,138 +94,95 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         startControlsTimer: function(timeout) {
             var t = this;
             
-            t.killControlsTimer('start');
+            if(t.controlsTimer !== null) {
+                clearTimeout(t.controlsTimer);
+            }
             
             t.controlsTimer = setTimeout(function() {
-                //console.log('timer fired');
                 t.hideControls();
-                t.killControlsTimer('hide');
+                t.controlsTimer = null;
             }, timeout || 1500);
         },
         
-        killControlsTimer: function(src) {
-            var t = this;
-            
-            if(t.controlsTimer !== null) {
-                clearTimeout(t.controlsTimer);
-                delete t.controlsTimer;
-                t.controlsTimer = null;
-            }
-        },
-        
         // Sets up all controls and events
-        meReady: function(media) {
+        meReady: function() {
             var t = this,
                 mf = mejs.MediaFeatures,
-                autoplayAttr = media.getAttribute('autoplay'),
-                autoplay = !(typeof autoplayAttr == 'undefined' || autoplayAttr === null || autoplayAttr === 'false'),
                 featureIndex,
                 feature;
-                
-            // make sure it can't create itself again if a plugin reloads
-            if(t.created)
-                return;
-            else
-                t.created = true;
             
-            t.media = media;
+            // built in feature
+            t.buildoverlays();
             
-            if(!(mf.isAndroid && t.options.AndroidUseNativeControls)) {
-                // built in feature
-                t.buildoverlays();
+            // add user-defined features/controls
+            for(featureIndex in t.options.features) {
+                feature = t.options.features[featureIndex];
                 
-                // grab for use by features
-                t.findTracks();
-                
-                // add user-defined features/controls
-                for(featureIndex in t.options.features) {
-                    feature = t.options.features[featureIndex];
-                    if(t['build' + feature]) {
-                        try {
-                            t['build' + feature](t, t.controls, t.layers, t.media);
-                            console.log('Loaded:', feature);
-                        } catch(e) {
-                            // TODO: report control error
-                            //throw e;
-                            //console.log('error building ' + feature);
-                            console.log('Load Failed:', feature);
-                            console.log(e);
-                        }
+                if(typeof t[feature] === 'function') {
+                    try {
+                        t[feature]();
+                        console.log('Loaded:', feature);
+                    } catch(e) {
+                        // TODO: report control error
+                        console.error('Load Failed:', feature);
+                        console.error(e);
                     }
                 }
-                
-                t.container.trigger('controlsready');
-                
-                // controls fade
-                if(t.isVideo) {
-                    if(mejs.MediaFeatures.hasTouch) {
-                        // for touch devices (iOS, Android)
-                        // show/hide without animation on touch
-                        
-                        t.$media.bind('touchstart', function() {
-                            // toggle controls
-                            if(t.controlsAreVisible) {
-                                t.hideControls(false);
-                            } else {
-                                t.showControls(false);
-                            }
-                        });
-                    } else {
-                        // show/hide controls
-                        t.container
-                            .bind('mousemove', function() {
-                                if(!t.controlsAreVisible) {
-                                    t.showControls();
-                                }
-                                //t.killControlsTimer('move');
-                                if(!t.options.alwaysShowControls) {
-                                    t.startControlsTimer(2500);
-                                }
-                            })
-                            .bind('mouseleave', function() {
-                                if(!t.isPaused() && !t.options.alwaysShowControls) {
-                                    t.startControlsTimer(1000);
-                                }
-                            });
-                    }
-                    
-                    // check for autoplay
-                    if(autoplay && !t.options.alwaysShowControls) {
-                        t.hideControls();
-                    }
-                }
-                
-                // EVENTS
-                
-                // ended for all
-                t.media.addEventListener('ended', function(e) {
-                    t.next();
-                    
-                    if(t.isPaused()) {
-                        $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
-                    }
-                }, false);
-                
-                // resize on the first play
-                t.media.addEventListener('loadedmetadata', function(e) {
-                    t.updateDuration();
-                    t.updateCurrent();
-                }, false);
-                
-                // adjust controls whenever window sizes (used to be in fullscreen only)
-                t.globalBind('resize', function() {
-                    t.resizeVideo();
-                });
             }
             
-            t.options.success(t.media);
+            // controls fade
+            if('ontouchstart' in window) {
+                // for touch devices (iOS, Android)
+                // show/hide without animation on touch
+                t.media.addEventListener('touchstart', function() {
+                    // toggle controls
+                    if(t.controlsAreVisible) {
+                        t.hideControls();
+                    } else {
+                        t.showControls();
+                    }
+                });
+            }
+            else {
+                // show/hide controls
+                t.container
+                    .on('mousemove', function() {
+                        if(!t.controlsAreVisible) {
+                            t.showControls();
+                        }
+                        
+                        t.startControlsTimer(2500);
+                    })
+                    .on('mouseleave', function() {
+                        if(!t.isPaused()) {
+                            t.startControlsTimer(1000);
+                        }
+                    });
+            }
+            
+            // EVENTS
+            
+            // ended for all
+            t.media.addEventListener('ended', function(e) {
+                t.next();
+                
+                if(t.isPaused()) {
+                    $('.mejs-pause').removeClass('mejs-pause').addClass('mejs-play');
+                }
+            }, false);
+            
+            // resize on the first play
+            t.media.addEventListener('loadedmetadata', function(e) {
+                t.updateDuration();
+                t.updateCurrent();
+            }, false);
+            
+            t.options.success(t);
         },
         
         buildoverlays: function() {
-            var t = this;
-            
-            var loading =
-                $('<div class="mejs-overlay mejs-layer">' +
+            var t = this,
+                loading = $('<div class="mejs-overlay mejs-layer">' +
                     '<div class="mejs-overlay-loading">' +
                         '<div class="sk-circle">' +
                             '<div class="sk-circle1"></div><div class="sk-circle2"></div><div class="sk-circle3"></div><div class="sk-circle4"></div><div class="sk-circle5"></div><div class="sk-circle6"></div><div class="sk-circle7"></div><div class="sk-circle8"></div><div class="sk-circle9"></div><div class="sk-circle10"></div><div class="sk-circle11"></div><div class="sk-circle12"></div>' +
@@ -297,13 +195,13 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             // this needs to come last so it's on top
             $('<div class="mejs-overlay mejs-layer mejs-overlay-play"></div>')
                 .appendTo(t.layers)
-                .click(function() {
+                .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
                 });
             
             t.media.addEventListener('seeking', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 
                 t.showControls();
                 t.startControlsTimer();
@@ -311,57 +209,38 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             
             t.media.addEventListener('seeked', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
                 loading.show();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
                 loading.show();
                 t.resizeVideo();
-                t.railBar[0].classList.add('mejs-buffering');
+                t.railBar.addClass('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
                 t.play();
             }, false);
             
             t.media.addEventListener('play', function() {
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
             }, false);
             
             // error handling
             t.media.addEventListener('error', function(e) {
-                if(t.getSrc() === '')
+                if(t.getSrc() === '') {
                     return;
+                }
                 
                 loading.hide();
-                t.railBar[0].classList.remove('mejs-buffering');
+                t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
-        },
-        
-        findTracks: function() {
-            var t = this,
-                tracktags = t.$media.find('track');
-            
-            // store for use by plugins
-            t.tracks = [];
-            tracktags.each(function(index, track) {
-                track = $(track);
-                
-                t.tracks.push({
-                    srclang: (track.attr('srclang')) ? track.attr('srclang').toLowerCase() : '',
-                    src: track.attr('src'),
-                    kind: track.attr('kind'),
-                    label: track.attr('label') || '',
-                    entries: [],
-                    isLoaded: false
-                });
-            });
         },
         
         isEnded: function() {
@@ -449,15 +328,24 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
             this.notify('Volume: ' + (this.getVolume() * 100).toFixed() + '%');
         },
         
-        setSrc: function(file) {
-            this.media.src = window.URL.createObjectURL(file);
-            document.title = file.name;
+        setSrc: function(index) {
+            if(this.getDuration()) {
+                this.stop();
+            }
+            
+            if(index !== undefined) {
+                this.playIndex = parseInt(index)
+            }
+            
+            this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
+            document.title = this.playlist[this.playIndex].name;
+            
+            this.setThumbnailSrc(this.media.src);
         },
         
         getSrc: function() {
             return this.media.currentSrc;
         },
-        
         
         getPlaybackRate: function(value) {
             return this.media.playbackRate;
@@ -515,66 +403,75 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") == 0);
         changeAudioDelay: function(inc) {
             this.delayNode.delayTime.value = Math.min(Math.max(0, (this.delayNode.delayTime.value + (inc ? 0.05 : -0.05))), 2);
             this.notify('Audio Delay: ' + (this.delayNode.delayTime.value * 1000).toFixed() + 'ms.');
+        },
+        
+        filterFiles: function(files, overwrite) {
+            var i, ext, options,
+                tempPlay = [],
+                tempSubs = [],
+                t = this;
+            
+            for(i = 0; i < files.length; i++) {
+                ext = files[i].name.split('.').pop().toLowerCase();
+                
+                if(t.options.mediaExts.indexOf(ext) !== -1) {
+                    tempPlay.push(files[i]);
+                }
+                else if(t.options.subExts.indexOf(ext) !== -1) {
+                    tempSubs.push({
+                        file: files[i],
+                        entries: null
+                    });
+                }
+                else if(ext === 'zip') {
+                    mejs.Utility.unzip(files[i], function(entries) {
+                        t.filterFiles(entries, false);
+                    });
+                    
+                }
+            }
+            
+            if(tempSubs.length) {
+                t.subIndex = t.subtitles.length;
+                t.subtitles = t.subtitles.concat(tempSubs);
+                t.notify(t.subtitles[t.subIndex].file.name + ' loaded.', 3000);
+                
+                options = '<option value="-1">None</option>';
+                t.subtitles.forEach(function(e, i) {
+                    options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
+                });
+                t.subSelect.html(options);
+            }
+            
+            if(tempPlay.length) {
+                t.playIndex = overwrite ? 0 : t.playlist.length;
+                t.playlist = overwrite ? tempPlay : t.playlist.concat(tempPlay);
+                
+                t.setSrc();
+            }
+            
+            chrome.contextMenus.remove('setSrc', function() {
+                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
+                    if(t.playlist.length === 0) {
+                        chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
+                        return;
+                    }
+                    
+                    for(i = 0; i < t.playlist.length; i++) {
+                        chrome.contextMenus.create({ 'title': t.playlist[i].name, 'type': 'radio', 'parentId': 'setSrc', 'id': i + 'm', 'checked': i === t.playIndex });
+                    }
+            });
+            
+            chrome.contextMenus.remove('setSubtitle', function() {
+                chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
+                    chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
+                    for(i = 0; i < t.subtitles.length; i++) {
+                        chrome.contextMenus.create({ 'title': t.subtitles[i].file.name, 'type': 'radio', 'parentId': 'setSubtitle', 'id': i + 's', 'checked': i === t.subIndex });
+                    }
+            });
         }
     };
     
-    (function() {
-        var rwindow = /^((after|before)print|(before)?unload|hashchange|message|o(ff|n)line|page(hide|show)|popstate|resize|storage)\b/;
-        
-        function splitEvents(events, id) {
-            // add player ID as an event namespace so it's easier to unbind them all later
-            var ret = {
-                d: [],
-                w: []
-            };
-            $.each((events || '').split(' '), function(k, v) {
-                ret[rwindow.test(v) ? 'w' : 'd'].push(v + '.' + id);
-            });
-            ret.d = ret.d.join(' ');
-            ret.w = ret.w.join(' ');
-            return ret;
-        }
-        
-        mejs.MediaElementPlayer.prototype.globalBind = function(events, data, callback) {
-            var t = this;
-            events = splitEvents(events, t.id);
-            if(events.d) $(document).bind(events.d, data, callback);
-            if(events.w) $(window).bind(events.w, data, callback);
-        };
-        
-        mejs.MediaElementPlayer.prototype.globalUnbind = function(events, callback) {
-            var t = this;
-            events = splitEvents(events, t.id);
-            if(events.d) $(document).unbind(events.d, callback);
-            if(events.w) $(window).unbind(events.w, callback);
-        };
-    })();
-    
-    // turn into jQuery plugin
-    if(typeof jQuery != 'undefined') {
-        jQuery.fn.mediaelementplayer = function(options) {
-            if(options === false) {
-                this.each(function() {
-                    var player = jQuery(this).data('mediaelementplayer');
-                    if(player) {
-                        player.remove();
-                    }
-                    jQuery(this).removeData('mediaelementplayer');
-                });
-            } else {
-                this.each(function() {
-                    jQuery(this).data('mediaelementplayer', new mejs.MediaElementPlayer(this, options));
-                });
-            }
-            return this;
-        };
-    }
-    
-    document.addEventListener('ready', function() {
-        // auto enable using JSON attribute
-        $('.mejs-player').mediaelementplayer();
-    });
-    
     // push out to window
     window.MediaElementPlayer = mejs.MediaElementPlayer;
-})(mejs.$);
+})();

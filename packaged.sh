@@ -1,28 +1,49 @@
 #!/bin/sh
 
-rm -rf app
 mkdir app
-cp src/*.png app
-cp src/*.js app
-cp src/*.svg app
-cp src/*.html app
-cp src/*.json app
-cp src/*.gif app
-cp src/*.css app
 
-mkdir app/js
-cp src/js/*.js app/js
+echo "Copying images..."
+cp src/icon.png app
+cp src/flattr.png app
+cp src/opensubtitle.gif app
+cp src/controls.svg app
 
-mkdir app/js/features
-cp src/js/features/*.js app/js/features
+echo "Copying root JS files..."
+cp src/background.js app
 
-mkdir app/lib
+echo "Compressing CSS..."
+curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'https://cssminifier.com/raw'
 
-cp src/lib/*.js app/lib
+echo "Copying HTML..."
+cp src/build/index.html app
+cp src/wiki.html app
 
-mkdir -p app/lib/zipjs/WebContent
-cp src/lib/zipjs/WebContent/*.js app/lib/zipjs/WebContent/
+echo "Copying manifest..."
+cp src/manifest.json app
 
-rm -rf app.zip
+cd src/
 
-zip -r app.zip app
+for file in js/*.js
+do
+    echo "Compressing $file..."
+    curl --silent --data-urlencode js_code="$(cat $file)" --data output_info=compiled_code --create-dirs -o ../app/$file 'https://closure-compiler.appspot.com/compile'
+done
+
+echo "Compressing features..."
+curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_info=compiled_code --create-dirs -o ../app/js/features.js 'https://closure-compiler.appspot.com/compile'
+
+cd ../
+
+sleep 2
+
+echo "Copying lib/..."
+cp -r src/lib/ app/lib
+
+echo "Zippin' everything..."
+rm app.zip
+zip --quiet -r app.zip app
+
+echo "Cleaning up..."
+rm -rf app
+
+echo 'All done!'
