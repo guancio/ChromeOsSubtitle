@@ -447,6 +447,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             chrome.contextMenus.remove('setSrc', function() {
+                if(chrome.runtime.lastError) {
+                    //do nothing
+                }
+                
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
                     if(t.playlist.length === 0) {
                         chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
@@ -459,6 +463,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             });
             
             chrome.contextMenus.remove('setSubtitle', function() {
+                if(chrome.runtime.lastError) {
+                    //do nothing
+                }
+                
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
                     chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
                     for(i = 0; i < t.subtitles.length; i++) {
