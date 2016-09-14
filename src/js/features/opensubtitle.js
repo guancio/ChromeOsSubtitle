@@ -41,6 +41,8 @@
         function unzipSubtitles(content, subs) {
             var temp = [];
             
+            t.notify('Unzipping subtitles...', 5000);
+            
             mejs.Utility.waterfall(content.result.data, function(e, i, next) {
                 mejs.Utility.gunzip(e.data, function(data) {
                     temp.push(new File([data], subs[i].SubFileName));
@@ -101,8 +103,8 @@
             }
             
             $(document).trigger('opensubtitlesDownload');
-            t.notify('Searching for subtitles.', 2000);
-            console.log(t.opensubtitleService.username, t.opensubtitleService.pwd);
+            t.notify('Searching for subtitles...', 5000);
+            
             service.LogIn({
                 params: [t.opensubtitleService.username, t.opensubtitleService.pwd, '', 'ChromeSubtitleVideoplayer'],
                 onException: function(errorObj) {

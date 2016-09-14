@@ -57,7 +57,7 @@ zip.useWebWorkers = packaged_app;
                 t.setEncoding(e.target.value);
                 chrome.contextMenus.update(e.target.value + 'e', { 'checked': true });
             });
-        });;
+        });
         
         mejs.Utility.storage.get('default_encoding', 6, function(value) {
             t.captionEncodingSelect.attr({ 'value': value });
@@ -124,8 +124,13 @@ zip.useWebWorkers = packaged_app;
         this.captions.hide();
         this.subSelect.attr({ 'value': this.subIndex });
         
-        if(this.subIndex !== -1 && this.subtitles[this.subIndex].entries === []) {
-            this.notify('The given Subtitle file is corrupted!', 2000);
+        if(this.subIndex !== -1) {
+            if(this.subtitles[this.subIndex].entries === []) {
+                this.notify('The given Subtitle file is corrupted!', 3000);
+            }
+            else {
+                this.notify(this.subtitles[this.subIndex].file.name + ' loaded.', 3000);
+            }
         }
     };
     
