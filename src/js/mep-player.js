@@ -171,7 +171,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                 }
             }, false);
             
-            // resize on the first play
             t.media.addEventListener('loadedmetadata', function(e) {
                 t.updateDuration();
                 t.updateCurrent();
@@ -370,20 +369,20 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
         },
         
         moveCaptions: function(keyCode) {
-            var c = document.getElementsByClassName('mejs-captions-position')[0];
+            var c = $('.mejs-captions-position');
             
             switch(keyCode) {
                 case 37:
-                    c.style.left = mejs.Utility.addToPixel(c.style.left, -8);
+                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), -8) + 'px' });
                     break;
                 case 38:
-                    c.style.bottom = mejs.Utility.addToPixel(c.style.bottom, 8);
+                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), 8) + 'px' });
                     break;
                 case 39:
-                    c.style.left = mejs.Utility.addToPixel(c.style.left, 8);
+                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), 8) + 'px' });
                     break;
                 case 40:
-                    c.style.bottom = mejs.Utility.addToPixel(c.style.bottom, -8);
+                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), -8) + 'px' });
                     break;
             }
         },
@@ -428,9 +427,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             if(tempSubs.length) {
-                t.subIndex = t.subtitles.length;
                 t.subtitles = t.subtitles.concat(tempSubs);
-                t.notify(t.subtitles[t.subIndex].file.name + ' loaded.', 3000);
+                t.setSubtitle(t.subtitles.length - tempSubs.length);
                 
                 options = '<option value="-1">None</option>';
                 t.subtitles.forEach(function(e, i) {

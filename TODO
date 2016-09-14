@@ -14,8 +14,9 @@ General:
 2. Remove the google-analytics bundle after ensuring that it does nothing more than what google's own analytics js does. Google's js is much smaller than the bundled version. Given that we are hardly using any of the features, bundled-version is an overkill.
 3. Fix duplicate loading of files and downloading of subtitles. Make use of the movie's hash and subtitle language to prevent redownloading.
 4. Rewrite stats.js to be more consistent and ensure that the analytics is not too infringy and at the same time not too inconclusive. Merge google-analytics feature with stats.js
-5. Study on difference between functions defined in the prototype object vs functions defined within the object. Make changes of needed.
+5. Study on difference between functions defined in the prototype object vs functions defined within the object. Make changes if needed.
 6. Contact app reviews websites and get them to write reviews!!!
+7. rewrite display subtitles so that it doesnt loop from the beginning each time. also remove event when no subs is loaded.
 
 Experiments:
 Visualizations for audio...
