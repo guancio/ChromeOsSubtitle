@@ -446,7 +446,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             
             chrome.contextMenus.remove('setSrc', function() {
                 if(chrome.runtime.lastError) {
-                    //do nothing
+                    console.log('Nothing!');
                 }
                 
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
@@ -462,7 +462,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             
             chrome.contextMenus.remove('setSubtitle', function() {
                 if(chrome.runtime.lastError) {
-                    //do nothing
+                    console.log('Nothing!');
                 }
                 
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
