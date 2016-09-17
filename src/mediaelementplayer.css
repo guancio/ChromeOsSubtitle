@@ -259,7 +259,7 @@ a:visited {
     padding: 8px 3px 0 8px ;
     overflow: hidden;
     text-align: center;
-    padding: auto 4px;
+    padding: 8px 3px 0px 8px;
     box-sizing: content-box;
     float: left;
 }
