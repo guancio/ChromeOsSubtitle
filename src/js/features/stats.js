@@ -41,14 +41,9 @@
             ga('send', 'pageview');
         }
         
-        var refresher = function() {
-                sendView('MainView');
-                setTimeout(refresher, 60000);
-            };
-        
-        $(document).on('appStarted', function() {
-            refresher();
-        });
+        setInterval(function() {
+            sendView('MainView');
+        }, 60000);
         
         t.media.addEventListener('loadeddata', function() {
             sendEvent('video', 'loaded', t.playlist[t.playIndex].name);
@@ -91,7 +86,7 @@
                                     e.stopPropagation();
                                 });
         
-        mejs.Utility.getFromSettings('disableAnalytics', false, function(value) {
+        mejs.Utility.storage.get('disableAnalytics', false, function(value) {
             disableCheck.attr({ 'checked': value });
         });
         
@@ -99,7 +94,7 @@
             var disabled = disableCheck.attr('checked');
             
             sendEvent('setting', 'disableAnalytics', disabled);
-            mejs.Utility.setIntoSettings('disableAnalytics', disabled, function() {
+            mejs.Utility.storage.set('disableAnalytics', disabled, function() {
                 service.getConfig().addCallback(function(config) {
                     config.setTrackingPermitted(!disabled);
                 });

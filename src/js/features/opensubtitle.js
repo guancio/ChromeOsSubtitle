@@ -18,27 +18,30 @@
             pwd: ''
         };
         
-        var prec = $('#li_encoding'),
-            line1 = $('<li class="mejs-captionload"/>')
-                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
-                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'));
+        var prec = $('#li_encoding');
         
-        line1.appendTo(prec).insertBefore(prec.find('label'));
+        $('<li class="mejs-captionload"/>')
+                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
+                .appendTo(prec)
+                .insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');
         
-        mejs.Utility.getFromSettings('default_opensubtitle_lang', 'eng', function(value) {
+        mejs.Utility.storage.get('default_opensubtitle_lang', 'eng', function(value) {
             openSubsLang.forEach(function(e) {
                 $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
             });
         });
         
         selectLang.on('change', function(e) {
-            mejs.Utility.setIntoSettings('default_opensubtitle_lang', e.target.value);
+            mejs.Utility.storage.set('default_opensubtitle_lang', e.target.value);
         });
         
         function unzipSubtitles(content, subs) {
             var temp = [];
+            
+            t.notify('Unzipping subtitles...', 5000);
             
             mejs.Utility.waterfall(content.result.data, function(e, i, next) {
                 mejs.Utility.gunzip(e.data, function(data) {
@@ -54,8 +57,11 @@
         
         function downloadSubtitle(subs) {
             service.DownloadSubtitles({
-                params: [t.opensubtitleService.token, 
-                    subs.map(function(e) { return e.IDSubtitleFile; })
+                params: [
+                    t.opensubtitleService.token, 
+                    subs.map(function(e) {
+                        return e.IDSubtitleFile;
+                    })
                 ],
                 onException: function(errorObj) {
                     t.notify('Subtitle download failed.');
@@ -97,7 +103,7 @@
             }
             
             $(document).trigger('opensubtitlesDownload');
-            t.notify('Searching for subtitles.', 2000);
+            t.notify('Searching for subtitles...', 5000);
             
             service.LogIn({
                 params: [t.opensubtitleService.username, t.opensubtitleService.pwd, '', 'ChromeSubtitleVideoplayer'],
@@ -122,35 +128,37 @@
         
         $('<li/>')
             .appendTo(settingsList)
-            .append($('<label style="width:250px; float:left;">Opensubtitles.org username</label>'))
-            .append($('<input id="usernameOpenSubtitle" style="width:100px;background-color: transparent; color: white;"/>'));
-        $('#usernameOpenSubtitle').on('keydown', function(e) {
+            .append($('<label style="width:210px; float:left;">Opensubtitles.org username</label>'))
+            .append($('<input id="usernameOpenSubtitle" style="width:140px;background-color: transparent; color: white;"/>'));
+        
+        $('#usernameOpenSubtitle').on('keydown click', function(e) {
             e.stopPropagation();
         });
         
         $('<li/>').appendTo(settingsList)
-            .append($('<label style="width:250px; float:left;">Opensubtitles.org password</label>'))
-            .append($('<input id="pwdOpenSubtitle" type="password" style="width:100px;background-color: transparent; color: white;"/>'));
-        $('#pwdOpenSubtitle').on('keydown', function(e) {
+            .append($('<label style="width:210px; float:left;">Opensubtitles.org password</label>'))
+            .append($('<input id="pwdOpenSubtitle" type="password" style="width:140px;background-color: transparent; color: white;"/>'));
+        
+        $('#pwdOpenSubtitle').on('keydown click', function(e) {
             e.stopPropagation();
         });
         
-        mejs.Utility.getFromSettings('opensubtitle_username', '', function(value) {
+        mejs.Utility.storage.get('opensubtitle_username', '', function(value) {
             t.opensubtitleService.username = value;
             $('#usernameOpenSubtitle').attr({ 'value': value });
         });
         
-        mejs.Utility.getFromSettings('opensubtitle_pwd', '', function(value) {
+        mejs.Utility.storage.get('opensubtitle_pwd', '', function(value) {
             t.opensubtitleService.pwd = value;
             $('#pwdOpenSubtitle').attr({ 'value': value });
         });
         
         $(document).on('settingsClosed', function() {
             t.opensubtitleService.username = $('#usernameOpenSubtitle').attr('value');
-            mejs.Utility.setIntoSettings('opensubtitle_username', t.opensubtitleService.username);
+            mejs.Utility.storage.set('opensubtitle_username', t.opensubtitleService.username);
             
             t.opensubtitleService.pwd = $('#pwdOpenSubtitle').attr('value');
-            mejs.Utility.setIntoSettings('opensubtitle_pwd', t.opensubtitleService.pwd);
+            mejs.Utility.storage.set('opensubtitle_pwd', t.opensubtitleService.pwd);
         });
     };
 })();

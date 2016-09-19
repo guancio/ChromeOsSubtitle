@@ -1,5 +1,5 @@
 chrome.app.runtime.onLaunched.addListener(function(launchData) {
-  chrome.app.window.create('index.html', { id: 'master', outerBounds: { width: 1040, height: 600, minWidth: 500, minHeight: 300 }, hidden: true }, function(win) {
+    chrome.app.window.create('index.html', { id: 'master', outerBounds: { width: 1040, height: 600, minWidth: 500, minHeight: 300 }, hidden: true }, function(win) {
     win.contentWindow.launchData = launchData;
   });
 });
@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function() {
         type: 'basic',
         iconUrl: 'icon.png',
         title: 'Here is what\'s new in Subtitle Video Player!',
-        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nPerformance boost to save battery life!',
+        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nSupport for ASS and DFXP subtitles!',
         contextMessage: 'Click on this notification to visit the Wiki!',
         priority: 2,
         isClickable: true,
@@ -54,10 +54,9 @@ chrome.runtime.onInstalled.addListener(function() {
             for(var i = 0; i < encodings.length; i++) {
                 chrome.contextMenus.create({ 'title': encodings[i], 'type': 'radio', 'parentId': 'setEncoding', 'id': i + 'e' });
             }
-    
-    chrome.contextMenus.create({ 'title': 'Caption Size', 'id': 'captionSize' });
-        chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
-        chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
+        chrome.contextMenus.create({ 'title': 'Display Size', 'parentId': 'subtitles', 'id': 'captionSize' });
+            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
+            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
     
     chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
         chrome.contextMenus.create({ 'title': 'Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });

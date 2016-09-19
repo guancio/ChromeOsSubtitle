@@ -5,6 +5,9 @@ A small video player supporting subtitles
 This is currently a toy app. Please report your suggestions.
 It is basically a simple wrapper for http://mediaelementjs.com/
 
+[Chrome WebStore link (Same tab).](https://chrome.google.com/webstore/detail/subtitle-videoplayer/naikohapihpbhficdpbddmgbhiccijca)
+
+
 Please, if possible submit bug and feature request at https://github.com/guancio/ChromeOsSubtitle/issues
 
 The subtitle service is provided by <a href="http://www.opensubtitles.org">www.opensubtitles.org</a>

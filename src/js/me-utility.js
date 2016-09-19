@@ -62,23 +62,25 @@ mejs.Utility = {
         };
     },
     
-    getFromSettings: function(key, def_value, cb) {
-        if(packaged_app) {
-            var temp = {};
-            temp[key] = def_value;
-            
-            chrome.storage.sync.get(temp, function(obj) {
-                cb(obj[key]);
-            });
-        }
-    },
-    
-    setIntoSettings: function(key, value, cb) {
-        if(packaged_app) {
-            var temp = {};
-            temp[key] = value;
-            
-            chrome.storage.sync.set(temp, cb);
+    storage: {
+        get: function(key, def_value, cb) {
+            if(packaged_app) {
+                var temp = {};
+                temp[key] = def_value;
+                
+                chrome.storage.sync.get(temp, function(obj) {
+                    cb(obj[key]);
+                });
+            }
+        },
+        
+        set: function(key, value, cb) {
+            if(packaged_app) {
+                var temp = {};
+                temp[key] = value;
+                
+                chrome.storage.sync.set(temp, cb);
+            }
         }
     },
     
@@ -87,13 +89,15 @@ mejs.Utility = {
             var temp = [];
             
             reader.getEntries(function(entries) {
-                entries.forEach(function(entry, i) {
+                mejs.Utility.waterfall(entries, function(entry, i, next) {
                     entry.getData(new zip.BlobWriter(), function(data) {
                         temp.push(new File([data], entry.filename));
                         
                         if(i === entries.length - 1) {
                             cb(temp);
                         }
+                        
+                        next();
                     })
                 });
             });
@@ -202,7 +206,6 @@ mejs.Utility = {
     
     // Thanks to Justin Capella: https://github.com/johndyer/mediaelement/pull/420
     dfxp: function(trackText) {
-        
         var pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/g,
             match,
             entries = {

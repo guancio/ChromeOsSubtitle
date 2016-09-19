@@ -1,5 +1,5 @@
 var mainMediaElement = null;
 
-$('#main').append($('<video id="player" controls="controls"></video>'));
+$('<video id="player" controls="controls"></video>').appendTo($('#main'));
 
 MediaElementPlayer(document.getElementById('player'));

@@ -67,11 +67,7 @@
     
     Haggle.prototype.css = function(arg) {
         if(arg instanceof Object) {
-            for(var prop in arg) {
-                if(arg.hasOwnProperty(prop)){
-                    this.el.style[prop] = arg[prop];
-                }
-            }
+            Haggle.extend(this.el.style, arg);
             
             return this;
         }
@@ -124,12 +120,12 @@
         return this;
     };
     
-    Haggle.prototype.off = function(events, handler, useCapture) {
+    Haggle.prototype.off = function(events, handler) {
         events = events.split(' ');
         
         for(var i = 0; i < events.length; i++) {
             if(events[i] !== '') {
-                this.el.removeEventListener(events[i], handler, useCapture);
+                this.el.removeEventListener(events[i], handler);
             }
         }
         
@@ -148,16 +144,12 @@
         return this;
     };
     
-    Haggle.prototype.hide = function() {
-        this.css({ 'visibility': 'hidden' });
-        
-        return this;
+    Haggle.prototype.hide = function(useOpacity) {
+        return this.css(useOpacity ? { 'opacity': 0 } : { 'visibility': 'hidden' });
     };
     
-    Haggle.prototype.show = function() {
-        this.css({ 'visibility': 'visible' });
-        
-        return this;
+    Haggle.prototype.show = function(useOpacity) {
+        return this.css(useOpacity ? { 'opacity': 1 } : { 'visibility': 'visible' });
     };
     
     Haggle.prototype.parent = function() {
@@ -196,7 +188,7 @@
         return {
           top: rect.top + document.body.scrollTop,
           left: rect.left + document.body.scrollLeft
-        }
+        };
     };
     
     Haggle.prototype.outerWidth = function() {

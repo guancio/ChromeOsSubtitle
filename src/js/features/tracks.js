@@ -51,15 +51,15 @@ zip.useWebWorkers = packaged_app;
                 '</div>').appendTo(t.rightControls);
         
         t.captionEncodingSelect = $(document).find('#encoding-selector').on('change', function(e) {
-            mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+            mejs.Utility.storage.get('default_encoding', 6, function(value) {
                 chrome.contextMenus.update(value + 'e', { 'checked': false });
                 $(document).trigger('subtitleEncodingChanged', e.target.value);
                 t.setEncoding(e.target.value);
                 chrome.contextMenus.update(e.target.value + 'e', { 'checked': true });
             });
-        });;
+        });
         
-        mejs.Utility.getFromSettings('default_encoding', 6, function(value) {
+        mejs.Utility.storage.get('default_encoding', 6, function(value) {
             t.captionEncodingSelect.attr({ 'value': value });
         });
         
@@ -72,34 +72,34 @@ zip.useWebWorkers = packaged_app;
         t.captionsButton.find('.mejs-captionload').find('button').on('click', function(e) {
             e.preventDefault();
             
-            if(packaged_app) {
-                chrome.fileSystem.chooseEntry({
-                    type: 'openFile',
-                    acceptsMultiple: true,
-                    acceptsAllTypes: false,
-                    accepts: [
-                                {
-                                    extensions: t.options.subExts
-                                }
-                    ]
-                }, function(entries) {
-                    var temp = [];
-                    
-                    if(typeof entries === 'undefined') {
-                        return;
-                    }
-                    
-                    entries.forEach(function(entry, i) {
-                        entry.file(function(file) {
-                            temp.push(file);
-                            
-                            if(i === entries.length - 1) {
-                                t.filterFiles(temp);
+            chrome.fileSystem.chooseEntry({
+                type: 'openFile',
+                acceptsMultiple: true,
+                acceptsAllTypes: false,
+                accepts: [
+                            {
+                                extensions: t.options.subExts
                             }
-                        });
+                ]
+            }, function(entries) {
+                if(chrome.runtime.lastError) {
+                    return;
+                }
+                
+                var temp = [];
+                
+                mejs.Utility.waterfall(entries, function(entry, i, next) {
+                    entry.file(function(file) {
+                        temp.push(file);
+                        
+                        if(i === entries.length - 1) {
+                            t.filterFiles(temp);
+                        }
+                        
+                        next();
                     });
                 });
-            }
+            });
         });
         
         t.media.addEventListener('timeupdate', function(e) {
@@ -110,7 +110,7 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
-        mejs.Utility.setIntoSettings('default_encoding', parseInt(index));
+        mejs.Utility.storage.set('default_encoding', parseInt(index));
         this.captionEncodingSelect.attr({ 'value': parseInt(index) });
         
         //Force subtitles to be re-parsed with new encoding.
@@ -124,8 +124,13 @@ zip.useWebWorkers = packaged_app;
         this.captions.hide();
         this.subSelect.attr({ 'value': this.subIndex });
         
-        if(this.subIndex !== -1 && this.subtitles[this.subIndex].entries === []) {
-            this.notify('The given Subtitle file is corrupted!', 2000);
+        if(this.subIndex !== -1) {
+            if(this.subtitles[this.subIndex].entries === []) {
+                this.notify('The given Subtitle file is corrupted!', 3000);
+            }
+            else {
+                this.notify(this.subtitles[this.subIndex].file.name + ' loaded.', 3000);
+            }
         }
     };
     
@@ -156,7 +161,7 @@ zip.useWebWorkers = packaged_app;
             t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
-        mejs.Utility.getFromSettings('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
+        mejs.Utility.storage.get('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
             reader.readAsText(current.file, encodings[value]);
         });
     };

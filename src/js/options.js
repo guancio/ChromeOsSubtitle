@@ -13,10 +13,9 @@
         success: function(mediaElement) {
             mainMediaElement = mediaElement;
             chrome.app.window.get('master').show();
-            $(document).trigger('appStarted');
             
             var t = mainMediaElement,
-                temp;
+                temp = [];
             
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length) {
                 t.filterFiles([]);
@@ -24,13 +23,16 @@
                 return;
             }
             
-            window.launchData.items.forEach(function(e, i) {
+            mejs.Utility.waterfall(window.launchData.items, function(e, i, next) {
                 e.entry.file(function(file) {
+                    file.fileEntry = e.entry;
                     temp.push(file);
                     
                     if(i === window.launchData.items.length - 1) {
                         t.filterFiles(temp, true);
                     }
+                    
+                    next();
                 });
             });
         },

@@ -71,7 +71,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             
             t.media.addEventListener('timeupdate', t.timeupdate, false);
             
-            t.controls.css({ 'opacity': '1' });
+            t.controls.show();
             t.controlsAreVisible = true;
         },
         
@@ -83,7 +83,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             // fade out main controls
-            t.controls.css({ 'opacity': '0' });
+            t.controls.hide();
             t.controlsAreVisible = false;
             
             t.media.removeEventListener('timeupdate', t.timeupdate, false);
@@ -171,7 +171,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                 }
             }, false);
             
-            // resize on the first play
             t.media.addEventListener('loadedmetadata', function(e) {
                 t.updateDuration();
                 t.updateCurrent();
@@ -189,18 +188,14 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                         '</div>' +
                     '</div>' +
                 '</div>')
-                .hide() // start out hidden
-                .appendTo(t.layers);
-            
-            // this needs to come last so it's on top
-            $('<div class="mejs-overlay mejs-layer mejs-overlay-play"></div>')
-                .appendTo(t.layers)
+                .hide(true) // start out hidden
                 .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
-                });
+                })
+                .appendTo(t.layers);
             
             t.media.addEventListener('seeking', function() {
-                loading.show();
+                loading.show(true);
                 t.railBar.addClass('mejs-buffering');
                 
                 t.showControls();
@@ -208,18 +203,18 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }, false);
             
             t.media.addEventListener('seeked', function() {
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
             }, false);
             
             t.media.addEventListener('waiting', function() {
-                loading.show();
+                loading.show(true);
                 t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading
             t.media.addEventListener('loadeddata', function() {
-                loading.show();
+                loading.show(true);
                 t.resizeVideo();
                 t.railBar.addClass('mejs-buffering');
                 t.media.addEventListener('timeupdate', t.timeupdate, false);
@@ -227,7 +222,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }, false);
             
             t.media.addEventListener('play', function() {
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
             }, false);
             
@@ -237,7 +232,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                     return;
                 }
                 
-                loading.hide();
+                loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
@@ -374,20 +369,20 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
         },
         
         moveCaptions: function(keyCode) {
-            var c = document.getElementsByClassName('mejs-captions-position')[0];
+            var c = $('.mejs-captions-position');
             
             switch(keyCode) {
                 case 37:
-                    c.style.left = mejs.Utility.addToPixel(c.style.left, -8);
+                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), -8) + 'px' });
                     break;
                 case 38:
-                    c.style.bottom = mejs.Utility.addToPixel(c.style.bottom, 8);
+                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), 8) + 'px' });
                     break;
                 case 39:
-                    c.style.left = mejs.Utility.addToPixel(c.style.left, 8);
+                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), 8) + 'px' });
                     break;
                 case 40:
-                    c.style.bottom = mejs.Utility.addToPixel(c.style.bottom, -8);
+                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), -8) + 'px' });
                     break;
             }
         },
@@ -432,9 +427,8 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             if(tempSubs.length) {
-                t.subIndex = t.subtitles.length;
                 t.subtitles = t.subtitles.concat(tempSubs);
-                t.notify(t.subtitles[t.subIndex].file.name + ' loaded.', 3000);
+                t.setSubtitle(t.subtitles.length - tempSubs.length);
                 
                 options = '<option value="-1">None</option>';
                 t.subtitles.forEach(function(e, i) {
@@ -451,6 +445,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             chrome.contextMenus.remove('setSrc', function() {
+                if(chrome.runtime.lastError) {
+                    console.log('Nothing!');
+                }
+                
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
                     if(t.playlist.length === 0) {
                         chrome.contextMenus.create({ 'title': 'None', 'parentId': 'setSrc', 'id': '-1m', 'enabled': false });
@@ -463,6 +461,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             });
             
             chrome.contextMenus.remove('setSubtitle', function() {
+                if(chrome.runtime.lastError) {
+                    console.log('Nothing!');
+                }
+                
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });
                     chrome.contextMenus.create({ 'title': 'None', 'type': 'Select', 'type': 'radio', 'parentId': 'setSubtitle', 'id': '-1s', 'checked': true });
                     for(i = 0; i < t.subtitles.length; i++) {

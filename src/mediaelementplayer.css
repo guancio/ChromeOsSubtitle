@@ -53,10 +53,6 @@ a:visited {
     left: 0;
 }
 
-.mejs-overlay-play {
-    cursor: pointer;
-}
-
 .mejs-overlay-loading {
     position: absolute;
     top: 50%;
@@ -333,26 +329,26 @@ a:visited {
     border: 0;
 }
 
-.mejs-controls .mejs-captionsize .mejs-reduce button {
-    margin: 2px 2px;
-    background-position: -160px 0;
-}
-
-.mejs-controls .mejs-captionsize .mejs-increase button {
-    margin: 2px 2px;
-    background-position: -160px -16px;
-}
-
 .mejs-controls .mejs-captionload .mejs-captionload button {
     margin: 2px 2px;
     background-position: -144px 0px;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize label {
-    width: 60px;
+    width: 75px;
     float: left;
-    padding: 0px 0 0 0;
+    padding: 3px 0 0 5px;
     line-height: 20px;
+}
+
+.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize input {
+    background-color: transparent;
+    width: 95px;
+    height: 25px;
+    color: white;
+    font-size: 15px;
+    line-height: 25px;
+    text-align: center;
 }
 
 /* Stop */
@@ -540,7 +536,7 @@ a:visited {
     height: 0;
     padding: 15px;
     visibility: hidden;
-    background: rgba(50,50,50,0.7);
+    background: rgba(50, 50, 50, 0.7);
     overflow: hidden;
     border-radius: 10px;
     transition: height 0.25s, visibility 0.22s;
@@ -568,12 +564,6 @@ a:visited {
     overflow: hidden;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector ul li input {
-    clear: both;
-    float: left;
-    margin: 3px 3px 0 5px;
-}
-
 .mejs-controls .mejs-captions-button .mejs-captions-selector ul li label {
     width: 100px;
     float: left;
@@ -581,11 +571,6 @@ a:visited {
     line-height: 15px;
     font-family: helvetica, arial;
     font-size: 10px;
-}
-
-.mejs-controls .mejs-captions-button .mejs-captions-translations {
-    font-size: 10px;
-    margin: 0 0 5px 0;
 }
 
 .mejs-captions-layer {
@@ -599,7 +584,7 @@ a:visited {
     color: #fff;
 }
 
-.mejs-captions-layer  a {
+.mejs-captions-layer a {
     color: #fff;
     text-decoration: underline;
 }

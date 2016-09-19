@@ -2,8 +2,8 @@
     var playTypes = ['Normal', 'Repeat', 'Shuffle'],
         playType = 0;
     
-    mejs.Utility.getFromSettings('playType', 0, function(v) {
-        playType = v;
+    mejs.Utility.storage.get('playType', 0, function(value) {
+        playType = value;
     });
     
     MediaElementPlayer.prototype.playlist = function() {
@@ -49,7 +49,7 @@
         
         chrome.contextMenus.update(playType + 'p', { 'checked': true });
         
-        mejs.Utility.setIntoSettings('playType', playType);
+        mejs.Utility.storage.set('playType', playType);
         this.notify('Playlist Navigation: ' + playTypes[playType]);
     };
     
