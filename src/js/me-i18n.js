@@ -1,4 +1,4 @@
-/*!
+/*
  * Adds Internationalization and localization to objects.
  *
  * What is the concept beyond i18n?
