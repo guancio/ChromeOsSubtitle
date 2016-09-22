@@ -31,7 +31,7 @@
             e.stopPropagation();
             
             chrome.fileSystem.chooseEntry({
-                type: "openDirectory"
+                type: 'openDirectory'
             }, function(entry) {
                 if(chrome.runtime.lastError) {
                     return;
@@ -41,7 +41,7 @@
                     $('#allowedAutoSrtButton').text('...' + path.slice(-15));
                     autoLoadDirectory = {
                         path: path,
-                        entry: entry,
+                        entry: entry
                     };
                     
                     mejs.Utility.storage.set('autoSrtRetainId', chrome.fileSystem.retainEntry(entry));
@@ -69,5 +69,5 @@
                 });
             });
         });
-    }
+    };
 })();

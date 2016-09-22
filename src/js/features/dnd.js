@@ -13,5 +13,5 @@
                 
                 t.filterFiles(e.dataTransfer.files, false);
             }, false);
-    }
+    };
 })();

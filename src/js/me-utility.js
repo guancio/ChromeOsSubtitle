@@ -98,7 +98,7 @@ mejs.Utility = {
                         }
                         
                         next();
-                    })
+                    });
                 });
             });
         }, function() {

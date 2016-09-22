@@ -12,7 +12,7 @@
                     t.openedFile.name
                 ],
                 onException: function(errorObj) {
-                    console.log("SearchIMDB Failed");
+                    console.log('SearchIMDB Failed');
                     console.log(errorObj);
                 },
                 onComplete: function(responseObj) {
@@ -48,11 +48,11 @@
                 ],
                 onException: function(errorObj) {
                     console.log(errorObj);
-                    console.log("Upload failed");
+                    console.log('Upload failed');
                 },
                 onComplete: function(responseObj) {
-                    console.log(responseObj)
-                    console.log("Upload Succes");
+                    console.log(responseObj);
+                    console.log('Upload Succes');
                 }
             });
         }
@@ -60,7 +60,7 @@
         function gzipSub(subhash, idmovieimdb, moviehash) {
             // var r = new zip.TextReader("hello");
             var r = new zip.BlobReader(t.selectedTrack.file);
-            var w = new zip.BlobWriter("application/gzip");
+            var w = new zip.BlobWriter('application/gzip');
             
             function empty(data) {}
             
@@ -80,13 +80,13 @@
                                 t.selectedTrack.file.name,
                                 moviehash,
                                 0, //moviebytesize,
-                                "", //moviefilename,
+                                '', //moviefilename,
                                 event.target.result.split(',')[1]
                             );
                             
-                            var downloadLink = document.createElement("a");
-                            downloadLink.download = "aaa.gz";
-                            downloadLink.innerHTML = "Download File";
+                            var downloadLink = document.createElement('a');
+                            downloadLink.download = 'aaa.gz';
+                            downloadLink.innerHTML = 'Download File';
                             downloadLink.href = window.webkitURL.createObjectURL(new Blob([event.target.result.split(',')[1]]));
                             document.body.appendChild(downloadLink);
                             downloadLink.click();
@@ -96,7 +96,7 @@
                     },
                     empty,
                     empty,
-                    empty)
+                    empty);
             });
         }
         
@@ -106,14 +106,14 @@
                     t.opensubtitleService.token, [hash]
                 ],
                 onException: function(errorObj) {
-                    console.log("CheckMovieHash Failed");
+                    console.log('CheckMovieHash Failed');
                     console.log(errorObj);
                 },
                 onComplete: function(responseObj) {
                     var movieID = null;
                     if(!responseObj.result.data ||
                         responseObj.result.data[hash].length == 0) {
-                        console.log("IMDB search not implemented");
+                        console.log('IMDB search not implemented');
                         return;
                     }
                     movieID = responseObj.result.data[hash].MovieImdbID;
@@ -139,17 +139,17 @@
                     }
                 ],
                 onException: function(errorObj) {
-                    console.log("TryUpload Failed");
+                    console.log('TryUpload Failed');
                     console.log(errorObj);
                 },
                 onComplete: function(responseObj) {
-                    console.log("tried");
+                    console.log('tried');
                     console.log(responseObj);
                     if(responseObj.result.alreadyindb == 1) {
-                        console.log("Already in DB");
+                        console.log('Already in DB');
                         return;
                     }
-                    console.log("Not in DB");
+                    console.log('Not in DB');
                     checkMovieHash(subhash, hash);
                 }
             });
@@ -161,7 +161,7 @@
                     var d = evt.target.result;
                     console.log(md5(d));
                     tryUpload(md5(d), hash);
-                }
+                };
                 //reader.readAsText(selectedTrack.file, t.captionEncodingSelect.value);
             reader.readAsText(t.selectedTrack.file);
         };
@@ -178,16 +178,16 @@
             t.opensubtitleService.service.LogIn({
                 params: [t.opensubtitleService.uploader.username,
                     t.opensubtitleService.uploader.pwd,
-                    "", "ChromeSubtitleVideoplayer"
+                    '', 'ChromeSubtitleVideoplayer'
                 ],
                 onException: function(errorObj) {
                     console.log(errorObj);
-                    console.log("Authentiation failed");
+                    console.log('Authentiation failed');
                 },
                 onComplete: function(responseObj) {
                     console.log(responseObj);
                     t.opensubtitleService.token = responseObj.result.token;
-                    console.log("logged");
+                    console.log('logged');
                     movieHash();
                 }
             });
@@ -208,8 +208,8 @@
             watched: [],
             lastSec: 0,
             lastCheck: 0,
-            username: "",
-            pwd: "",
+            username: '',
+            pwd: '',
             autoUpload: true,
             uploadAttempts: 0
         };
@@ -221,7 +221,7 @@
             t.opensubtitleService.uploader.uploadAttempts = 0;
         });
         
-        $(document).bind("subtitleChanged", function() {
+        $(document).bind('subtitleChanged', function() {
             t.resetOpenSubUploader();
             t.opensubtitleService.uploader.uploadAttempts = 0;
         });
@@ -239,7 +239,7 @@
             if(t.selectedTrack == null)
                 return;
                 
-            if(t.selectedTrack.srclang != "fromfile")
+            if(t.selectedTrack.srclang != 'fromfile')
                 return;
                 
             if(t.capDelayValue != 0) {
@@ -262,7 +262,7 @@
                 console.log(nWatched / Math.ceil(t.media.duration) * 100);
                 
                 if(nWatched / t.media.duration > minPerc) {
-                    console.log("To upload");
+                    console.log('To upload');
                     upload();
                 }
             }
@@ -293,45 +293,45 @@
             return true;
         });
         
-        t.opensubtitleService.uploader;
+        // t.opensubtitleService.uploader;
         
         if(localStorage.getItem('opensubtitle_username')) {
             t.opensubtitleService.uploader.username =
                 localStorage.getItem('opensubtitle_username');
-            $("#usernameOpenSubtitle")[0].value =
+            $('#usernameOpenSubtitle')[0].value =
                 t.opensubtitleService.uploader.username;
         }
         if(localStorage.getItem('opensubtitle_pwd')) {
             t.opensubtitleService.uploader.pwd = localStorage.getItem('opensubtitle_pwd');
-            $("#pwdOpenSubtitle")[0].value =
+            $('#pwdOpenSubtitle')[0].value =
                 t.opensubtitleService.uploader.pwd;
         }
         
-        $(document).bind("settingsClosed", function() {
+        $(document).bind('settingsClosed', function() {
             t.opensubtitleService.uploader.username =
-                $("#usernameOpenSubtitle")[0].value;
+                $('#usernameOpenSubtitle')[0].value;
             localStorage.setItem(
                 'opensubtitle_username',
                 t.opensubtitleService.uploader.username);
                 
             t.opensubtitleService.uploader.pwd =
-                $("#pwdOpenSubtitle")[0].value;
+                $('#pwdOpenSubtitle')[0].value;
             localStorage.setItem(
                 'opensubtitle_pwd',
                 t.opensubtitleService.uploader.pwd);
         });
         
         // if (localStorage.getItem('default_opensubtitle_lang')) {
-        // 	settingsLang = localStorage.getItem('default_opensubtitle_lang');
+        // settingsLang = localStorage.getItem('default_opensubtitle_lang');
         // }
         
         // $(selectDefault).val(settingsLang);
         // $('#select_opensubtitle_lang').val(settingsLang);
         
         // $(document).bind("settingsClosed", function() { 
-        // 	var defaultValue = selectDefault.value;
-        // 	localStorage.setItem('default_opensubtitle_lang', defaultValue);
-        // 	$('#select_opensubtitle_lang').val(defaultValue);
+        // var defaultValue = selectDefault.value;
+        // localStorage.setItem('default_opensubtitle_lang', defaultValue);
+        // $('#select_opensubtitle_lang').val(defaultValue);
         // });
-    }
+    };
 })();

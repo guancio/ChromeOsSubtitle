@@ -1,5 +1,27 @@
 #!/bin/sh
 
+which gjslint > /dev/null;
+
+if [ $? -ne 0 ]; then
+    printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n";
+    exit;
+fi
+
+echo 'Linting files.....'
+
+# Disabled lints:
+#               0001 - Extra space at end of line
+#               0002 - Space before '(' in for and if
+#               0110 - Line to long
+#               0200 - Invalid JSDoc tag.
+#               0213 - Missing type in @param tag
+gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
+
+if [ $? -ne 0 ]; then
+    printf 'Please fix lint errors!!!\n';
+    exit;
+fi
+
 mkdir app
 
 echo "Copying images..."
@@ -23,18 +45,23 @@ cp src/manifest.json app
 
 cd src/
 
-for file in js/*.js
-do
+for file in js/*.js; do
     echo "Compressing $file..."
-    curl --silent --data-urlencode js_code="$(cat $file)" --data output_info=compiled_code --create-dirs -o ../app/$file 'https://closure-compiler.appspot.com/compile'
+    java -jar '../closure/compiler.jar' --language_in ECMASCRIPT5 --language_out ECMASCRIPT5 --compilation_level SIMPLE --js_output_file ../app/$file --js $file
+    if [ $? -ne 0 ]; then
+        printf "Failed to compress $file...";
+        exit;
+    fi
 done
 
 echo "Compressing features..."
-curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_info=compiled_code --create-dirs -o ../app/js/features.js 'https://closure-compiler.appspot.com/compile'
+java -jar '../closure/compiler.jar' --language_in ECMASCRIPT5 --language_out ECMASCRIPT5 --compilation_level SIMPLE --js js/features/*.js --js_output_file ../app/js/features.js
+if [ $? -ne 0 ]; then
+    printf "Failed to compress features...";
+    exit;
+fi
 
 cd ../
-
-sleep 2
 
 echo "Copying lib/..."
 cp -r src/lib/ app/lib

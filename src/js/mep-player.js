@@ -1,4 +1,4 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
+var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     mejs = {};
 
 (function() {
@@ -296,7 +296,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
         
         seek: function(duration) {
             this.notify('Seeking ' + duration + 's.');
-            this.setCurrentTime(Math.max(0, Math.min(this.getCurrentTime() + duration, this.getDuration())))
+            this.setCurrentTime(Math.max(0, Math.min(this.getCurrentTime() + duration, this.getDuration())));
         },
         
         getCurrentTime: function() {
@@ -329,7 +329,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             if(index !== undefined) {
-                this.playIndex = parseInt(index)
+                this.playIndex = parseInt(index);
             }
             
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
