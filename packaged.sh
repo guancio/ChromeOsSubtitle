@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 which gjslint > /dev/null;
 
 if [ $? -ne 0 ]; then
@@ -7,7 +9,7 @@ if [ $? -ne 0 ]; then
     exit;
 fi
 
-echo 'Linting files.....'
+printf 'Linting files.....\n'
 
 # Disabled lints:
 #               0001 - Extra space at end of line
@@ -17,60 +19,47 @@ echo 'Linting files.....'
 #               0213 - Missing type in @param tag
 gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
 
-if [ $? -ne 0 ]; then
-    printf 'Please fix lint errors!!!\n';
-    exit;
-fi
+mkdir -p app/js
 
-mkdir app
-
-echo "Copying images..."
+printf "Copying images...\n"
 cp src/icon.png app
 cp src/flattr.png app
 cp src/opensubtitle.gif app
 cp src/controls.svg app
 
-echo "Copying root JS files..."
+printf "Copying root JS files...\n"
 cp src/background.js app
 
-echo "Compressing CSS..."
-curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'https://cssminifier.com/raw'
+printf "Compressing CSS...\n"
+java -jar 'yui.jar' src/*.css > app/style.min.css
 
-echo "Copying HTML..."
+printf "Copying HTML...\n"
 cp src/build/index.html app
 cp src/wiki.html app
 
-echo "Copying manifest..."
+printf "Copying manifest...\n"
 cp src/manifest.json app
 
 cd src/
 
 for file in js/*.js; do
-    echo "Compressing $file..."
-    java -jar '../closure/compiler.jar' --language_in ECMASCRIPT5 --language_out ECMASCRIPT5 --compilation_level SIMPLE --js_output_file ../app/$file --js $file
-    if [ $? -ne 0 ]; then
-        printf "Failed to compress $file...";
-        exit;
-    fi
+    printf "Compressing $file...\n"
+    java -jar '../yui.jar' $file > ../app/$file
 done
 
-echo "Compressing features..."
-java -jar '../closure/compiler.jar' --language_in ECMASCRIPT5 --language_out ECMASCRIPT5 --compilation_level SIMPLE --js js/features/*.js --js_output_file ../app/js/features.js
-if [ $? -ne 0 ]; then
-    printf "Failed to compress features...";
-    exit;
-fi
+printf "Compressing features...\n"
+cat js/features/*.js | java -jar '../yui.jar' --type js > ../app/js/features.js
 
 cd ../
 
-echo "Copying lib/..."
+printf "Copying lib/...\n"
 cp -r src/lib/ app/lib
 
-echo "Zippin' everything..."
-rm app.zip
+printf "Zippin' everything...\n"
+[ -f app.zip ] && rm app.zip
 zip --quiet -r app.zip app
 
-echo "Cleaning up..."
+printf "Cleaning up...\n"
 rm -rf app
 
-echo 'All done!'
+printf 'All done!\n'
