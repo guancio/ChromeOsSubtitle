@@ -70,5 +70,5 @@
         }, false);
         
         t.setVolume(t.options.startVolume);
-    }
+    };
 })();
