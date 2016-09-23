@@ -7,16 +7,22 @@ zip.useWebWorkers = packaged_app;
         tracksText: mejs.i18n.t('Captions/Subtitles')
     });
     
+    var timeUpdateHandler = function() {
+        //This function is called by an eventlistener on
+        //the <video>. Hence the need for this.player
+        this.player.displaySubtitles();
+    };
+    
     var encodings = ['utf-8', 'ibm866', 'iso-8859-2', 'iso-8859-3', 'iso-8859-4', 'iso-8859-5', 'iso-8859-6', 'iso-8859-7', 'iso-8859-8', 'iso-8859-10', 'iso-8859-13 ', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r', 'koi8-u', 'windows-874', 'windows-1250', 'windows-1251', 'windows-1252', 'windows-1253', 'windows-1254', 'windows-1255', 'windows-1256', 'windows-1257', 'windows-1258', 'gbk', 'gb18030', 'euc-jp', 'iso-2022-jp', 'shift_jis', 'euc-kr'],
         encoding_labels = ['UTF-8', 'ibm866 Cyrillic', 'iso-8859-2 Latin-2', 'iso-8859-3 Latin-3', 'iso-8859-4 Latin-4', 'iso-8859-5 Cyrillic', 'iso-8859-6 Arabic', 'iso-8859-7 Greek', 'iso-8859-8 Hebrew', 'iso-8859-10 Latin-6', 'iso-8859-13 ', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r', 'koi8-u', 'windows-874', 'windows-1250', 'windows-1251', 'windows-1252 US-ascii', 'windows-1253', 'windows-1254 Latin-5', 'windows-1255', 'windows-1256 Arabic', 'windows-1257', 'windows-1258', 'gbk Chinese', 'gb18030', 'euc-jp', 'iso-2022-jp', 'shift_jis', 'euc-kr'];
     
     MediaElementPlayer.prototype.tracks = function() {
-        var t = this,
-            i,
+        var i,
+            t = this,
             options = '';
         
-        t.subtitles = [];
         t.subIndex = -1;
+        t.subtitles = [];
         
         t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .appendTo(t.layers).hide();
@@ -77,9 +83,9 @@ zip.useWebWorkers = packaged_app;
                 acceptsMultiple: true,
                 acceptsAllTypes: false,
                 accepts: [
-                            {
-                                extensions: t.options.subExts
-                            }
+                    {
+                        extensions: t.options.subExts
+                    }
                 ]
             }, function(entries) {
                 if(chrome.runtime.lastError) {
@@ -102,10 +108,6 @@ zip.useWebWorkers = packaged_app;
             });
         });
         
-        t.media.addEventListener('timeupdate', function(e) {
-            t.displaySubtitles();
-        }, false);
-        
         t.capDelayValue = 0;
     };
     
@@ -124,11 +126,14 @@ zip.useWebWorkers = packaged_app;
         this.captions.hide();
         this.subSelect.attr({ 'value': this.subIndex });
         
+        this.media.removeEventListener('timeupdate', timeUpdateHandler);
+        
         if(this.subIndex !== -1) {
             if(this.subtitles[this.subIndex].entries === []) {
                 this.notify('The given Subtitle file is corrupted!', 3000);
             }
             else {
+                this.media.addEventListener('timeupdate', timeUpdateHandler);
                 this.notify(this.subtitles[this.subIndex].file.name + ' loaded.', 3000);
             }
         }
@@ -153,7 +158,6 @@ zip.useWebWorkers = packaged_app;
             }
             else {
                 current.entries = mejs.Utility.webvvt(d);
-                
             }
         };
         
@@ -167,21 +171,16 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.displaySubtitles = function() {
-        var t,
-            entries,
+        var i,
+            t,
             currTime,
-            i;
+            entries = t.subtitles[t.subIndex].entries;
         
-        if(this.subIndex === -1 || this.subtitles[this.subIndex].entries === []) {
-            return;
-        }
-        
-        if(this.subtitles[this.subIndex].entries === null) {
+        if(entries === null) {
             return this.parseSubtitles();
         }
         
         t = this;
-        entries = t.subtitles[t.subIndex].entries;
         currTime = t.getCurrentTime() - t.capDelayValue;
         
         for(i = 0; i < entries.times.length; i++) {

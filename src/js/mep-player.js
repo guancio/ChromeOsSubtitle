@@ -2,6 +2,13 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     mejs = {};
 
 (function() {
+    var timeUpdateHandler = function() {
+        //This function is called by an eventlistener on
+        //the <video>. Hence the need for this.player
+        this.player.updateCurrent();
+        this.player.setCurrentRail();
+    };
+    
     // wraps a MediaElement object in player controls
     mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
@@ -55,13 +62,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             t.meReady();
         },
         
-        timeupdate: function() {
-            //This function is called by an eventlistener on
-            //the <video>. Hence the need for this.player
-            this.player.updateCurrent();
-            this.player.setCurrentRail();
-        },
-        
         showControls: function() {
             var t = this;
             
@@ -69,7 +69,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                 return;
             }
             
-            t.media.addEventListener('timeupdate', t.timeupdate, false);
+            t.media.addEventListener('timeupdate', timeUpdateHandler, false);
             
             t.controls.show();
             t.controlsAreVisible = true;
@@ -86,7 +86,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             t.controls.hide();
             t.controlsAreVisible = false;
             
-            t.media.removeEventListener('timeupdate', t.timeupdate, false);
+            t.media.removeEventListener('timeupdate', timeUpdateHandler, false);
         },
         
         controlsTimer: null,
