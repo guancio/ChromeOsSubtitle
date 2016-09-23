@@ -39,5 +39,5 @@
             t.capSizeValue = value;
             updateCaptionSize();
         });
-    }
+    };
 })();

@@ -1,4 +1,4 @@
-/*!
+/*
  * This is a i18n.locale language object.
  *
  *<de> German translation by Tim Latz, latz.tim@gmail.com
@@ -12,14 +12,13 @@
  * @params
  *  - exports - CommonJS, window ..
  */
-;
 (function(exports, undefined) {
-    "use strict";
+    'use strict';
     
     exports.de = {
-        "Fullscreen": "Vollbild",
-        "Go Fullscreen": "Vollbild an",
-        "Turn off Fullscreen": "Vollbild aus",
-        "Close": "Schließen"
+        'Fullscreen': 'Vollbild',
+        'Go Fullscreen': 'Vollbild an',
+        'Turn off Fullscreen': 'Vollbild aus',
+        'Close': 'Schließen'
     };
 }(mejs.i18n.locale.strings));

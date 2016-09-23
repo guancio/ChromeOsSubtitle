@@ -22,7 +22,7 @@
             t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
         };
         
-        line = $('<li class="mejs-captionsize"></li>')
+        var line = $('<li class="mejs-captionsize"></li>')
                 .append($('<label>Caption delay</label>'))
                 .append(t.capDelayInput);
         
@@ -32,5 +32,5 @@
             t.capDelayInput.attr({ 'value': 0 });
             t.capDelayValue = 0;
         });
-    }
+    };
 })();

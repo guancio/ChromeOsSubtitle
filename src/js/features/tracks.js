@@ -1,4 +1,4 @@
-zip.workerScriptsPath = 'lib/zipjs/WebContent/'
+zip.workerScriptsPath = 'lib/zipjs/WebContent/';
 zip.useWebWorkers = packaged_app;
 
 (function() {
@@ -167,7 +167,10 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.displaySubtitles = function() {
-        var t, entries, currtime, i;
+        var t,
+            entries,
+            currTime,
+            i;
         
         if(this.subIndex === -1 || this.subtitles[this.subIndex].entries === []) {
             return;

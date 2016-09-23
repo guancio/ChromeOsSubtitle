@@ -31,7 +31,7 @@
             .find('a')
             .on('click', function(e) {
                 window.open(this.href, '_blank');
-                event.stopPropagation();
+                e.stopPropagation();
             });
         
         t.toggleInfo = function() {
@@ -44,5 +44,5 @@
                 e.preventDefault();
                 t.toggleInfo();
             });
-    }
+    };
 })();

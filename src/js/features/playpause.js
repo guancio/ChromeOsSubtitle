@@ -13,5 +13,5 @@
                 t.isPaused() ? t.play() : t.pause();
             })
             .appendTo(t.leftControls);
-    }
+    };
 })();

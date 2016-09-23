@@ -117,7 +117,7 @@
                     });
                 }
             });
-        }
+        };
         
         $('#opensubtitle_button').on('click', function(e) {
             t.openSubtitleLogIn();
