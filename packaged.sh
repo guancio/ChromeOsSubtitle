@@ -1,13 +1,13 @@
 #!/bin/sh
 
-set -e
-
-which gjslint > /dev/null;
+which gjlint > /dev/null;
 
 if [ $? -ne 0 ]; then
     printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n";
     exit;
 fi
+
+set -e
 
 printf 'Linting files.....\n'
 
