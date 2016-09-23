@@ -174,7 +174,7 @@ a:visited {
 }
 
 @-webkit-keyframes sk-circleBounceDelay {
-    0%, 100% {
+    0.00%, 100% {
         transform: scale(0) translate(0px);
   } 50% {
         transform: scale(1) translate(15px);
