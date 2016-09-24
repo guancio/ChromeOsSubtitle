@@ -1,6 +1,6 @@
 #!/bin/sh
 
-which gjlint > /dev/null;
+which gjslint > /dev/null;
 
 if [ $? -ne 0 ]; then
     printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n";
@@ -18,6 +18,10 @@ printf 'Linting files.....\n'
 #               0200 - Invalid JSDoc tag.
 #               0213 - Missing type in @param tag
 gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
+
+if [ $1 = "--lint-only" ]; then
+    exit
+fi
 
 mkdir -p app/js
 
