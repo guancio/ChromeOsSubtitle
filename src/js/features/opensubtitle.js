@@ -1,9 +1,11 @@
 (function() {
     var host = 'https://api.opensubtitles.org/xml-rpc',
-        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ];
+        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ],
+        subtitleHistory = {};
     
     MediaElementPlayer.prototype.opensubtitle = function() {
         var t = this,
+            lang,
             service = new rpc.ServiceProxy(host, {
                 sanitize: false,
                 protocol: 'XML-RPC',
@@ -30,10 +32,12 @@
             openSubsLang.forEach(function(e) {
                 $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
             });
+            lang = value;
         });
         
         selectLang.on('change', function(e) {
             mejs.Utility.storage.set('default_opensubtitle_lang', e.target.value);
+            lang = e.target.value;
         });
         
         function unzipSubtitles(content, subs) {
@@ -65,14 +69,18 @@
                     t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
+                    if(subtitleHistory[lang] === undefined) {
+                        subtitleHistory[lang] = [ t.playlist[t.playIndex].name ];
+                    }
+                    else {
+                        subtitleHistory[lang].push(t.playlist[t.playIndex].name);
+                    }
                     unzipSubtitles(responseObj, subs);
                 }
             });
         }
         
         function searchSubtitle(hash) {
-            var lang = $('#select_opensubtitle_lang').attr('value');
-            
             service.SearchSubtitles({
                 params: [t.opensubtitleService.token, [{
                     query: t.playlist[t.playIndex].name,
@@ -96,6 +104,11 @@
         t.openSubtitleLogIn = function() {
             if(!t.getSrc()) {
                 t.notify('Please load media.', 2000);
+                return;
+            }
+            
+            if(subtitleHistory[lang] && subtitleHistory[lang].indexOf(t.playlist[t.playIndex].name) !== -1) {
+                t.notify('Already downloaded subtitles for the loaded media.', 3000);
                 return;
             }
             

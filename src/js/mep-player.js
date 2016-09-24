@@ -411,7 +411,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                 if(t.options.mediaExts.indexOf(ext) !== -1 && t.playlist.every(function(e) { return e.name !== files[i].name; })) {
                     tempPlay.push(files[i]);
                 }
-                else if(t.options.subExts.indexOf(ext) !== -1 && t.subtitles.every(function(e) { return e.name !== files[i].name; })) {
+                else if(t.options.subExts.indexOf(ext) !== -1 && t.subtitles.every(function(e) { return e.file.name !== files[i].name; })) {
                     tempSubs.push({
                         file: files[i],
                         entries: null
