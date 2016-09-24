@@ -26,7 +26,6 @@ zip.useWebWorkers = packaged_app;
         
         t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
             .appendTo(t.layers).hide();
-        // t.captions.insertBefore(t.layers.find('div'));
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +
@@ -186,7 +185,7 @@ zip.useWebWorkers = packaged_app;
         for(i = 0; i < entries.times.length; i++) {
             if(currTime >= entries.times[i].start && currTime <= entries.times[i].stop) {
                 t.captionsText.html(entries.text[i]);
-                t.captions.show().css({ 'height': '0px' });
+                t.captions.show();
                 return; // exit out if one is visible;
             }
         }

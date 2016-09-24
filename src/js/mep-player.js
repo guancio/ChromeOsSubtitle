@@ -161,7 +161,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             }
             
             // EVENTS
-            
             // ended for all
             t.media.addEventListener('ended', function(e) {
                 t.next();
