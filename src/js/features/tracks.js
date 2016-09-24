@@ -183,10 +183,15 @@ zip.useWebWorkers = packaged_app;
         currTime = t.getCurrentTime() - t.capDelayValue;
         
         for(i = 0; i < entries.times.length; i++) {
-            if(currTime >= entries.times[i].start && currTime <= entries.times[i].stop) {
-                t.captionsText.html(entries.text[i]);
-                t.captions.show();
-                return; // exit out if one is visible;
+            if(currTime >= entries.times[i].start) {
+                if(currTime <= entries.times[i].stop) {
+                    t.captionsText.html(entries.text[i]);
+                    t.captions.show();
+                    return; // exit out if one is visible;
+                }
+            }
+            else {
+                break;
             }
         }
         
