@@ -174,7 +174,7 @@ zip.useWebWorkers = packaged_app;
         var i,
             t,
             currTime,
-            entries = t.subtitles[t.subIndex].entries;
+            entries = this.subtitles[this.subIndex].entries;
         
         if(entries === null) {
             return this.parseSubtitles();
