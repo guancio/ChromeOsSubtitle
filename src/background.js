@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function() {
         type: 'basic',
         iconUrl: 'icon.png',
         title: 'Here is what\'s new in Subtitle Video Player!',
-        message: 'A more versatile Contextmenu.\nThumbnail Preview on Time rail.\nSupport for ASS and DFXP subtitles!',
+        message: 'Google Materials Design Face-lift.\nFixes for many annoying bugs!\nLeaner, Meaner and Fitter!',
         contextMessage: 'Click on this notification to visit the Wiki!',
         priority: 2,
         isClickable: true,
