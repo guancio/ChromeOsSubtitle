@@ -101,7 +101,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             t.controlsTimer = setTimeout(function() {
                 t.hideControls();
                 t.controlsTimer = null;
-            }, 15000000);
+            }, timeout || 1500);
         },
         
         // Sets up all controls and events
