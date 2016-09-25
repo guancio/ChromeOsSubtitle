@@ -327,9 +327,14 @@ a:visited {
     border: 0;
 }
 
-.mejs-controls .mejs-captionload .mejs-captionload button {
+.mejs-controls li .mejs-captionload button {
     margin: -3px;
     background-position: -96px 0;
+}
+
+.mejs-controls li .mejs-openload button {
+    margin: -3px;
+    background-position: -48px 0;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize label {

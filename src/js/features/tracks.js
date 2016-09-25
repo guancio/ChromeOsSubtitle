@@ -42,7 +42,7 @@ zip.useWebWorkers = packaged_app;
                 '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
                 '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
-                '<li class="mejs-captionload">' +
+                '<li>' +
                 '<div class="mejs-button  mejs-captionload" >' +
                 '<button type="button" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
                 '</div>' +
