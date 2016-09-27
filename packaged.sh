@@ -19,7 +19,7 @@ printf 'Linting files.....\n'
 #               0213 - Missing type in @param tag
 gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
 
-if [ "$1" == "--lint-only" ]; then
+if [ "$1" = "--lint-only" ]; then
     exit
 fi
 
