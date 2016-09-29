@@ -1,7 +1,14 @@
-var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
+var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     mejs = {};
 
 (function() {
+    var timeUpdateHandler = function() {
+        //This function is called by an eventlistener on
+        //the <video>. Hence the need for this.player
+        this.player.updateCurrent();
+        this.player.setCurrentRail();
+    };
+    
     // wraps a MediaElement object in player controls
     mejs.MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
@@ -55,13 +62,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             t.meReady();
         },
         
-        timeupdate: function() {
-            //This function is called by an eventlistener on
-            //the <video>. Hence the need for this.player
-            this.player.updateCurrent();
-            this.player.setCurrentRail();
-        },
-        
         showControls: function() {
             var t = this;
             
@@ -69,9 +69,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
                 return;
             }
             
-            t.media.addEventListener('timeupdate', t.timeupdate, false);
+            t.media.addEventListener('timeupdate', timeUpdateHandler, false);
             
-            t.controls.show();
+            t.controls.show(true);
+            $(document.body).css({ 'cursor': 'pointer' });
             t.controlsAreVisible = true;
         },
         
@@ -83,10 +84,11 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             // fade out main controls
-            t.controls.hide();
+            t.controls.hide(true);
+            $(document.body).css({ 'cursor': 'none' });
             t.controlsAreVisible = false;
             
-            t.media.removeEventListener('timeupdate', t.timeupdate, false);
+            t.media.removeEventListener('timeupdate', timeUpdateHandler, false);
         },
         
         controlsTimer: null,
@@ -161,7 +163,6 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             // EVENTS
-            
             // ended for all
             t.media.addEventListener('ended', function(e) {
                 t.next();
@@ -296,7 +297,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
         
         seek: function(duration) {
             this.notify('Seeking ' + duration + 's.');
-            this.setCurrentTime(Math.max(0, Math.min(this.getCurrentTime() + duration, this.getDuration())))
+            this.setCurrentTime(Math.max(0, Math.min(this.getCurrentTime() + duration, this.getDuration())));
         },
         
         getCurrentTime: function() {
@@ -329,7 +330,7 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             }
             
             if(index !== undefined) {
-                this.playIndex = parseInt(index)
+                this.playIndex = parseInt(index);
             }
             
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
@@ -409,10 +410,10 @@ var packaged_app = (window.location.origin.indexOf("chrome-extension") === 0),
             for(i = 0; i < files.length; i++) {
                 ext = files[i].name.split('.').pop().toLowerCase();
                 
-                if(t.options.mediaExts.indexOf(ext) !== -1) {
+                if(t.options.mediaExts.indexOf(ext) !== -1 && t.playlist.every(function(e) { return e.name !== files[i].name; })) {
                     tempPlay.push(files[i]);
                 }
-                else if(t.options.subExts.indexOf(ext) !== -1) {
+                else if(t.options.subExts.indexOf(ext) !== -1 && t.subtitles.every(function(e) { return e.file.name !== files[i].name; })) {
                     tempSubs.push({
                         file: files[i],
                         entries: null

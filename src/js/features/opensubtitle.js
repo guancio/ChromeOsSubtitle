@@ -1,30 +1,30 @@
 (function() {
     var host = 'https://api.opensubtitles.org/xml-rpc',
-        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ];
+        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ],
+        subtitleHistory = {};
     
     MediaElementPlayer.prototype.opensubtitle = function() {
         var t = this,
+            lang,
             service = new rpc.ServiceProxy(host, {
                 sanitize: false,
                 protocol: 'XML-RPC',
                 asynchronous: true,
-                methods: ['ServerInfo', 'LogIn', 'SearchSubtitles', 'DownloadSubtitles', 'TryUploadSubtitles', 'CheckMovieHash', 'SearchMoviesOnIMDB', 'UploadSubtitles']
+                methods: ['ServerInfo', 'LogIn', 'SearchSubtitles', 'DownloadSubtitles']
             });
         
         t.opensubtitleService = {
             token: null,
-            service: service,
-            username: '',
-            pwd: ''
+            service: service
         };
         
         var prec = $('#li_encoding');
         
-        $('<li class="mejs-captionload"/>')
-                .append($('<div id="opensubtitle_button" class="mejs-button  mejs-captionload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
-                .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
-                .appendTo(prec)
-                .insertBefore(prec.find('label'));
+        $('<li>')
+            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+            .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
+            .appendTo(prec)
+            .insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');
         
@@ -32,10 +32,12 @@
             openSubsLang.forEach(function(e) {
                 $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
             });
+            lang = value;
         });
         
         selectLang.on('change', function(e) {
             mejs.Utility.storage.set('default_opensubtitle_lang', e.target.value);
+            lang = e.target.value;
         });
         
         function unzipSubtitles(content, subs) {
@@ -67,14 +69,18 @@
                     t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
+                    if(subtitleHistory[lang] === undefined) {
+                        subtitleHistory[lang] = [ t.playlist[t.playIndex].name ];
+                    }
+                    else {
+                        subtitleHistory[lang].push(t.playlist[t.playIndex].name);
+                    }
                     unzipSubtitles(responseObj, subs);
                 }
             });
         }
         
         function searchSubtitle(hash) {
-            var lang = $('#select_opensubtitle_lang').attr('value');
-            
             service.SearchSubtitles({
                 params: [t.opensubtitleService.token, [{
                     query: t.playlist[t.playIndex].name,
@@ -90,7 +96,6 @@
                     t.notify('Subtitle search failed. Please try later.', 2000);
                 },
                 onComplete: function(responseObj) {
-                    console.log(responseObj);
                     downloadSubtitle(responseObj.result.data);
                 }
             });
@@ -102,63 +107,37 @@
                 return;
             }
             
+            if(subtitleHistory[lang] && subtitleHistory[lang].indexOf(t.playlist[t.playIndex].name) !== -1) {
+                t.notify('Already downloaded subtitles for the loaded media.', 3000);
+                return;
+            }
+            
             $(document).trigger('opensubtitlesDownload');
             t.notify('Searching for subtitles...', 5000);
             
-            service.LogIn({
-                params: [t.opensubtitleService.username, t.opensubtitleService.pwd, '', 'ChromeSubtitleVideoplayer'],
-                onException: function(errorObj) {
-                    t.notify('Opensubtitles.org authentication failed!', 2000);
-                },
-                onComplete: function(responseObj) {
-                    t.opensubtitleService.token = responseObj.result.token;
-                    subtitleHash(t.playlist[t.playIndex], function(hash) {
-                        searchSubtitle(hash);
-                    });
-                }
-            });
-        }
+            if(t.opensubtitleService.token !== null) {
+                subtitleHash(t.playlist[t.playIndex], function(hash) {
+                    searchSubtitle(hash);
+                });
+            }
+            else {
+                service.LogIn({
+                    params: ['', '', '', 'ChromeSubtitleVideoplayer'],
+                    onException: function(errorObj) {
+                        t.notify('Opensubtitles.org authentication failed!', 2000);
+                    },
+                    onComplete: function(responseObj) {
+                        t.opensubtitleService.token = responseObj.result.token;
+                        subtitleHash(t.playlist[t.playIndex], function(hash) {
+                            searchSubtitle(hash);
+                        });
+                    }
+                });
+            }
+        };
         
         $('#opensubtitle_button').on('click', function(e) {
             t.openSubtitleLogIn();
-        });
-        
-        // on load a new video
-        var settingsList = $('#settings_list');
-        
-        $('<li/>')
-            .appendTo(settingsList)
-            .append($('<label style="width:210px; float:left;">Opensubtitles.org username</label>'))
-            .append($('<input id="usernameOpenSubtitle" style="width:140px;background-color: transparent; color: white;"/>'));
-        
-        $('#usernameOpenSubtitle').on('keydown click', function(e) {
-            e.stopPropagation();
-        });
-        
-        $('<li/>').appendTo(settingsList)
-            .append($('<label style="width:210px; float:left;">Opensubtitles.org password</label>'))
-            .append($('<input id="pwdOpenSubtitle" type="password" style="width:140px;background-color: transparent; color: white;"/>'));
-        
-        $('#pwdOpenSubtitle').on('keydown click', function(e) {
-            e.stopPropagation();
-        });
-        
-        mejs.Utility.storage.get('opensubtitle_username', '', function(value) {
-            t.opensubtitleService.username = value;
-            $('#usernameOpenSubtitle').attr({ 'value': value });
-        });
-        
-        mejs.Utility.storage.get('opensubtitle_pwd', '', function(value) {
-            t.opensubtitleService.pwd = value;
-            $('#pwdOpenSubtitle').attr({ 'value': value });
-        });
-        
-        $(document).on('settingsClosed', function() {
-            t.opensubtitleService.username = $('#usernameOpenSubtitle').attr('value');
-            mejs.Utility.storage.set('opensubtitle_username', t.opensubtitleService.username);
-            
-            t.opensubtitleService.pwd = $('#pwdOpenSubtitle').attr('value');
-            mejs.Utility.storage.set('opensubtitle_pwd', t.opensubtitleService.pwd);
         });
     };
 })();

@@ -3,14 +3,9 @@
         var t = this,
             infoText = '<div class="mejs-window" style="width:650px;">' +
                             '<img src="icon.png" style="width:80px;height:auto;"/>' +
-                            '<h2>Subtitle Videoplayer v1.13.0</h2>' +
-                            'Please visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.<br>Changeset in this release (thanks to vivekannan):' +
-                            '<ul>' +
-                                '<li>Contextmenu for those who hate keyboard shortcuts</li>' +
-                                '<li>Major changes in design</li>' +
-                                '<li>App is now more efficient resulting in improved battery life</li>' +
-                            '</ul>' +
-                            'This software is possible thank to several open source projects:' +
+                            '<h2>Subtitle Videoplayer v1.14.0</h2>' +
+                            'Please visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.' +
+                            'This software is possible thanks to several open source projects:' +
                             '<ul>' +
                                 '<li>The main media player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer</li>' +
                                 '<li>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a></li>' +
@@ -31,7 +26,7 @@
             .find('a')
             .on('click', function(e) {
                 window.open(this.href, '_blank');
-                event.stopPropagation();
+                e.stopPropagation();
             });
         
         t.toggleInfo = function() {
@@ -44,5 +39,5 @@
                 e.preventDefault();
                 t.toggleInfo();
             });
-    }
+    };
 })();

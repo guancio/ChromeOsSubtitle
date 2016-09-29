@@ -1,4 +1,4 @@
-/*!
+/*
  * Adds Internationalization and localization to objects.
  *
  * What is the concept beyond i18n?
@@ -41,14 +41,13 @@
  *  - exports - CommonJS, window ..
  *
  */
-;
 (function(context, exports, undefined) {
-    "use strict";
+    'use strict';
     var i18n = {
-        "locale": {
-            "strings": {}
+        'locale': {
+            'strings': {}
         },
-        "methods": {}
+        'methods': {}
     };
     // start i18n
     /**
@@ -58,7 +57,7 @@
      */
     i18n.locale.getLanguage = function() {
         return mejs.locale || {
-            "language": navigator.language
+            'language': navigator.language
         };
     };
     /**
@@ -168,15 +167,15 @@
             var lang = i18n.locale.getLanguage();
 
             options = options || {
-                "context": lang.language
+                'context': lang.language
             };
 
             return i18n.methods.t(str, args, options);
         } else {
             throw {
-                "name": 'InvalidArgumentException',
-                "message": 'First argument is either not a string or empty.'
-            }
+                'name': 'InvalidArgumentException',
+                'message': 'First argument is either not a string or empty.'
+            };
         }
     };
     

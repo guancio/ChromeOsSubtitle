@@ -1,50 +1,69 @@
 #!/bin/sh
 
-mkdir app
+which gjslint > /dev/null;
 
-echo "Copying images..."
+if [ $? -ne 0 ]; then
+    printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n";
+    exit;
+fi
+
+set -e
+
+printf 'Linting files.....\n'
+
+# Disabled lints:
+#               0001 - Extra space at end of line
+#               0002 - Space before '(' in for and if
+#               0110 - Line too long
+#               0200 - Invalid JSDoc tag.
+#               0213 - Missing type in @param tag
+gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
+
+if [ "$1" == "--lint-only" ]; then
+    exit
+fi
+
+mkdir -p app/js
+
+printf "Copying images...\n"
 cp src/icon.png app
 cp src/flattr.png app
 cp src/opensubtitle.gif app
-cp src/controls.svg app
+cp src/sprite.svg app
 
-echo "Copying root JS files..."
+printf "Copying root JS files...\n"
 cp src/background.js app
 
-echo "Compressing CSS..."
-#curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'http://cssminifier.com/raw'
-cp src/mediaelementplayer.css app/style.min.css
+printf "Compressing CSS...\n"
+java -jar 'yui.jar' src/*.css > app/style.min.css
 
-echo "Copying HTML..."
+printf "Copying HTML...\n"
 cp src/build/index.html app
 cp src/wiki.html app
 
-echo "Copying manifest..."
+printf "Copying manifest...\n"
 cp src/manifest.json app
 
 cd src/
 
-for file in js/*.js
-do
-    echo "Compressing $file..."
-    curl --silent --data-urlencode js_code="$(cat $file)" --data output_info=compiled_code --create-dirs -o ../app/$file 'http://closure-compiler.appspot.com/compile'
+for file in js/*.js; do
+    printf "Compressing $file...\n"
+    java -jar '../yui.jar' $file > ../app/$file
 done
 
-echo "Compressing features..."
-curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_info=compiled_code --create-dirs -o ../app/js/features.js 'http://closure-compiler.appspot.com/compile'
+printf "Compressing features...\n"
+cat js/features/*.js | java -jar '../yui.jar' --type js > ../app/js/features.js
 
 cd ../
 
-sleep 2
-
-echo "Copying lib/..."
+printf "Copying lib/...\n"
 cp -r src/lib/ app/lib
 
-echo "Zippin' everything..."
-rm app.zip
+printf "Zippin' everything...\n"
+[ -f app.zip ] && rm app.zip
 zip --quiet -r app.zip app
 
-echo "Cleaning up..."
+printf "Cleaning up...\n"
 rm -rf app
 
-echo 'All done!'
+printf 'All done!\n'

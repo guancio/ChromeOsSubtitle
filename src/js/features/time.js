@@ -19,14 +19,14 @@
                 t.updateCurrent();
             }
         });
-    }
+    };
     
     MediaElementPlayer.prototype.duration = function() {
         this.time.append($('<span>/</span>'));
         this.time.append($('<span class="mejs-duration">00:00</span>'));
         
         this.durationD = this.time.find('.mejs-duration');
-    }
+    };
     
     MediaElementPlayer.prototype.updateCurrent = function() {
         if(showRemaining) {
@@ -35,11 +35,11 @@
         else {
             this.currenttime.html(mejs.Utility.secondsToTimeCode(this.getCurrentTime()));
         }
-    }
+    };
     
     MediaElementPlayer.prototype.updateDuration = function() {
         if(this.getDuration()) {
             this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
         }
-    }
+    };
 })();

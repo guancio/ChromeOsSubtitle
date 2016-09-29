@@ -174,7 +174,7 @@ a:visited {
 }
 
 @-webkit-keyframes sk-circleBounceDelay {
-    0%, 100% {
+    0.00%, 100% {
         transform: scale(0) translate(0px);
   } 50% {
         transform: scale(1) translate(15px);
@@ -188,9 +188,7 @@ a:visited {
     position: absolute;
     background: none;
     list-style-type: none;
-    padding: 0;
-    margin: 0;
-    bottom: 15px;
+    bottom: 25px;
     left: 10vw;
     height: 30px;
     width: 80vw;
@@ -206,8 +204,8 @@ a:visited {
     float: left;
     margin: 0;
     padding: 0;
-    width: 26px;
-    height: 26px;
+    width: 27px;
+    height: 24px;
     font-size: 11px;
     line-height: 11px;
     font-family: Helvetica, Arial;
@@ -215,12 +213,14 @@ a:visited {
 }
 
 #left {
-    width: 78px;
+    width: 81px;
     float: left;
+    padding-top: 3px;
 }
 
 #right {
     float: right;
+    padding-top: 3px;
 }
 
 #middle {
@@ -234,13 +234,12 @@ a:visited {
     font-size: 0;
     line-height: 0;
     text-decoration: none;
-    margin: 7px 5px;
     padding: 0;
     position: absolute;
-    height: 16px;
-    width: 16px;
+    height: 24px;
+    width: 24px;
     border: 0;
-    background: transparent url(controls.svg) no-repeat;
+    background: url(sprite.svg) no-repeat;
 }
 
 /* :focus for accessibility */
@@ -256,10 +255,9 @@ a:visited {
     display: block;
     height: 17px;
     width: auto;
-    padding: 8px 3px 0 8px ;
     overflow: hidden;
     text-align: center;
-    padding: auto 4px;
+    padding: 5px 3px 0px 8px;
     box-sizing: content-box;
     float: left;
 }
@@ -278,7 +276,7 @@ a:visited {
 
 /* Start: Play/pause */
 .mejs-controls .mejs-play button {
-    background-position: 0 0;
+    background-position: -384px 0;
 }
 
 .mejs-captions-position {
@@ -297,26 +295,26 @@ a:visited {
 }
 
 .mejs-controls .mejs-pause button {
-    background-position: 0 -16px;
+    background-position: -336px 0;
 }
 
 /* End: Play/pause */
 
 /* Start: Play/pause */
 .mejs-controls .mejs-source button {
-    background-position: -144px 0;
+    background-position: -96px 0;
 }
 
 .mejs-controls .mejs-info button {
-    background-position: -176px 0;
+    background-position: -288px 0;
 }
 
 .mejs-controls .mejs-settings button {
-    background-position: -128px 0;
+    background-position: -432px 0;
 }
 
 .mejs-controls .mejs-help button {
-    background-position: -176px -16px;
+    background-position: -240px 0;
 }
 
 .mejs-container .mejs-captionsize div {
@@ -329,9 +327,14 @@ a:visited {
     border: 0;
 }
 
-.mejs-controls .mejs-captionload .mejs-captionload button {
-    margin: 2px 2px;
-    background-position: -144px 0px;
+.mejs-controls li .mejs-captionload button {
+    margin: -3px;
+    background-position: -96px 0;
+}
+
+.mejs-controls li .mejs-openload button {
+    margin: -3px;
+    background-position: -48px 0;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize label {
@@ -353,7 +356,7 @@ a:visited {
 
 /* Stop */
 .mejs-controls .mejs-stop button {
-    background-position: -112px 0;
+    background-position: -480px 0;
 }
 
 /* End: Play/pause */
@@ -373,7 +376,7 @@ a:visited {
     background: #eee;
     height: 117px;
     top: -116px;
-    margin-left: -24px;
+    margin-left: -21px;
     text-align: center;
     color: #111;
     border-radius: 8px;
@@ -462,11 +465,11 @@ a:visited {
 
 /* Start: Fullscreen */
 .mejs-controls .mejs-fullscreen-button button {
-    background-position: -32px 0;
+    background-position: -144px 0;
 }
 
 .mejs-controls .mejs-unfullscreen-button button {
-    background-position: -32px -16px;
+    background-position: -192px 0;
 }
 
 /* End: Fullscreen */
@@ -507,11 +510,11 @@ a:visited {
 }
 
 .mejs-controls .mejs-mute button {
-    background-position: -16px -16px;
+    background-position: -576px 0;
 }
 
 .mejs-controls .mejs-unmute button {
-    background-position: -16px 0;
+    background-position: -528px 0;
 }
 
 .mejs-controls .mejs-volume-button {
@@ -525,13 +528,13 @@ a:visited {
 }
 
 .mejs-controls .mejs-captions-button button {
-    background-position: -48px 0;
+    background-position: 0 0;
 }
 
 .mejs-controls .mejs-captions-button .mejs-captions-selector {
     position: absolute;
     bottom: 26px;
-    right: -20px;
+    right: 0px;
     width: 175px;
     height: 0;
     padding: 15px;
