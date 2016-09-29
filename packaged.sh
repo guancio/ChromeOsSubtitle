@@ -12,7 +12,8 @@ echo "Copying root JS files..."
 cp src/background.js app
 
 echo "Compressing CSS..."
-curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'https://cssminifier.com/raw'
+#curl --silent --data-urlencode input="$(cat src/*.css)" -o app/style.min.css 'http://cssminifier.com/raw'
+cp src/mediaelementplayer.css app/style.min.css
 
 echo "Copying HTML..."
 cp src/build/index.html app
@@ -26,11 +27,11 @@ cd src/
 for file in js/*.js
 do
     echo "Compressing $file..."
-    curl --silent --data-urlencode js_code="$(cat $file)" --data output_info=compiled_code --create-dirs -o ../app/$file 'https://closure-compiler.appspot.com/compile'
+    curl --silent --data-urlencode js_code="$(cat $file)" --data output_info=compiled_code --create-dirs -o ../app/$file 'http://closure-compiler.appspot.com/compile'
 done
 
 echo "Compressing features..."
-curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_info=compiled_code --create-dirs -o ../app/js/features.js 'https://closure-compiler.appspot.com/compile'
+curl --silent --data-urlencode js_code="$(cat js/features/*.js)" --data output_info=compiled_code --create-dirs -o ../app/js/features.js 'http://closure-compiler.appspot.com/compile'
 
 cd ../
 
