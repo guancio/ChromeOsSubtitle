@@ -311,6 +311,13 @@ a:visited {
 
 .mejs-controls .mejs-settings button {
     background-position: -432px 0;
+    transform: rotateZ(0);
+    transition: transform 1s;
+}
+
+
+.mejs-controls .mejs-settings button:hover {
+    transform: rotateZ(360deg);
 }
 
 .mejs-controls .mejs-help button {
