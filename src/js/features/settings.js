@@ -5,7 +5,7 @@
         var settingsPanel = $('<div class="mejs-window" style="width: 356px;">' +
                 '<h2>Settings</h2>' +
                 '<div><ul id="settings_list" style="list-style-type: none !important;padding-left:0px"></ul></div>' +
-                '[Click the box to close the settings]</div>')
+                '</div>')
                     .appendTo(t.container)
                     .on('keydown', function(e) {
                         e.stopPropagation();
@@ -24,7 +24,7 @@
         };
         
         $('<div class="mejs-button mejs-settings-button mejs-settings" >' +
-                '<button type="button" title="' + mejs.i18n.t('Settings...') + '" aria-label="' + mejs.i18n.t('Settings...') + '"></button>' +
+                '<button type="button" title="' + mejs.i18n.t('Settings') + '" aria-label="' + mejs.i18n.t('Settings') + '"></button>' +
                 '</div>')
             .appendTo(t.rightControls)
             .on('click', function(e) {

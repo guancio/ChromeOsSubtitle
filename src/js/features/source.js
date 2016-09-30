@@ -3,7 +3,7 @@
         var t = this;
         
         $('<div class="mejs-button mejs-source-button mejs-source">' +
-            '<button type="button" title="' + mejs.i18n.t('Open video...') + '" aria-label="' + mejs.i18n.t('Open video...') + '"></button>' +
+            '<button type="button" title="' + mejs.i18n.t('Open Media') + '" aria-label="' + mejs.i18n.t('Open Media') + '"></button>' +
         '</div>')
             .appendTo(t.leftControls)
             .on('click', function(e) {

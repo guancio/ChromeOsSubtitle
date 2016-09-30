@@ -7,11 +7,10 @@
                             'Please visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.' +
                             'This software is possible thanks to several open source projects:' +
                             '<ul>' +
-                                '<li>The main media player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaelEment.js</a>, developed by John Dyer</li>' +
+                                '<li>The main media player component is a fork of <a id="link_mediaelement" href="http://mediaelementjs.com/">MediaElement.js</a>, developed by John Dyer</li>' +
                                 '<li>Zip files are opened using <a href="http://gildas-lormeau.github.io/zip.js/" target="_blank">zip.js</a></li>' +
                                 '<li>Subtitles service is powered by <a href="http://www.OpenSubtitles.org" target="_blank">www.OpenSubtitles.org</a>. More uploaded subs means more subs available. Please upload <a href="http://www.opensubtitles.org/upload" target="_blank">here</a> your subs.<br/><a href="http://www.OpenSubtitles.org" target="_blank"><img src="opensubtitle.gif"/></a></li>' +
                             '</ul><br>' +
-                            '[Click the box to close the info page]' +
                         '</div>',
             info = $(infoText)
                         .appendTo(t.container)
@@ -33,7 +32,7 @@
             info.css('visibility') === 'visible' ? info.hide() : info.show();
         };
         
-        $('<div class="mejs-button mejs-info-button mejs-info"><button type="button" title="' + mejs.i18n.t('About...') + '" aria-label="' + mejs.i18n.t('About...') + '"></button></div>')
+        $('<div class="mejs-button mejs-info-button mejs-info"><button type="button" title="' + mejs.i18n.t('About') + '" aria-label="' + mejs.i18n.t('About') + '"></button></div>')
             .appendTo(t.rightControls)
             .on('click', function(e) {
                 e.preventDefault();
