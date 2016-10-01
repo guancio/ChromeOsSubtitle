@@ -3,9 +3,7 @@ zip.useWebWorkers = packaged_app;
 
 (function() {
     // add extra default options 
-    $.extend(mejs.MepDefaults, {
-        tracksText: mejs.i18n.t('Captions/Subtitles')
-    });
+    var tracksText = mejs.i18n.t('Captions/Subtitles');
     
     var timeUpdateHandler = function() {
         //This function is called by an eventlistener on
@@ -42,7 +40,7 @@ zip.useWebWorkers = packaged_app;
         encodingText += '</select></il>';
         
         t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
-                '<button type="button" title="' + t.options.tracksText + '" aria-label="' + t.options.tracksText + '"></button>' +
+                '<button type="button" title="' + tracksText + '" aria-label="' + tracksText + '"></button>' +
                 '<div class="mejs-captions-selector skip">' +
                 '<ul>' +
                 '<li>' +
@@ -59,7 +57,7 @@ zip.useWebWorkers = packaged_app;
                 '</div>').appendTo(t.rightControls);
         
         t.captionEncodingSelect = $(document).find('#encoding-selector').on('change', function(e) {
-            mejs.Utility.storage.get('default_encoding', 6, function(value) {
+            wrnch.storage.get('default_encoding', 6, function(value) {
                 chrome.contextMenus.update(value + 'e', { 'checked': false });
                 $(document).trigger('subtitleEncodingChanged', e.target.value);
                 t.setEncoding(e.target.value);
@@ -67,7 +65,7 @@ zip.useWebWorkers = packaged_app;
             });
         });
         
-        mejs.Utility.storage.get('default_encoding', 6, function(value) {
+        wrnch.storage.get('default_encoding', 6, function(value) {
             t.captionEncodingSelect.attr({ 'value': value });
         });
         
@@ -96,7 +94,7 @@ zip.useWebWorkers = packaged_app;
                 
                 var temp = [];
                 
-                mejs.Utility.waterfall(entries, function(entry, i, next) {
+                wrnch.waterfall(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         temp.push(file);
                         
@@ -114,7 +112,7 @@ zip.useWebWorkers = packaged_app;
     };
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
-        mejs.Utility.storage.set('default_encoding', parseInt(index));
+        wrnch.storage.set('default_encoding', parseInt(index));
         this.captionEncodingSelect.attr({ 'value': parseInt(index) });
         
         //Force subtitles to be re-parsed with new encoding.
@@ -154,13 +152,13 @@ zip.useWebWorkers = packaged_app;
             var d = evt.target.result;
             
             if((/<tt\s+xml/ig).exec(d)) {
-                current.entries = mejs.Utility.dfxp(d);
+                current.entries = wrnch.dfxp(d);
             }
             else if(/\[Script Info\]/.exec(d)) {
-                current.entries = mejs.Utility.ass(d);
+                current.entries = wrnch.ass(d);
             }
             else {
-                current.entries = mejs.Utility.webvvt(d);
+                current.entries = wrnch.webvvt(d);
             }
         };
         
@@ -168,7 +166,7 @@ zip.useWebWorkers = packaged_app;
             t.notify('The given Subtitle file is corrupted!', 2000);
         };
         
-        mejs.Utility.storage.get('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
+        wrnch.storage.get('default_encoding', t.captionEncodingSelect.attr('value'), function(value) {
             reader.readAsText(current.file, encodings[value]);
         });
     };

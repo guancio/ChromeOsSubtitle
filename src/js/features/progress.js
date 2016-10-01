@@ -32,7 +32,7 @@
                     }
                     
                     timefloat.css({ 'left': pos + 'px' });
-                    timefloatcurrent.html(mejs.Utility.secondsToTimeCode(newTime));
+                    timefloatcurrent.html(wrnch.secondsToTimeCode(newTime));
                     t.paintThumbnail(newTime);
                 }
             };

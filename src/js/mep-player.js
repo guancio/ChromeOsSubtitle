@@ -374,16 +374,16 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             
             switch(keyCode) {
                 case 37:
-                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), -8) + 'px' });
+                    c.css({ 'left': wrnch.addToPixel(c.css('left'), -8) + 'px' });
                     break;
                 case 38:
-                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), 8) + 'px' });
+                    c.css({ 'bottom': wrnch.addToPixel(c.css('bottom'), 8) + 'px' });
                     break;
                 case 39:
-                    c.css({ 'left': mejs.Utility.addToPixel(c.css('left'), 8) + 'px' });
+                    c.css({ 'left': wrnch.addToPixel(c.css('left'), 8) + 'px' });
                     break;
                 case 40:
-                    c.css({ 'bottom': mejs.Utility.addToPixel(c.css('bottom'), -8) + 'px' });
+                    c.css({ 'bottom': wrnch.addToPixel(c.css('bottom'), -8) + 'px' });
                     break;
             }
         },
@@ -420,7 +420,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                     });
                 }
                 else if(ext === 'zip') {
-                    mejs.Utility.unzip(files[i], function(entries) {
+                    wrnch.unzip(files[i], function(entries) {
                         t.filterFiles(entries, false);
                     });
                 }

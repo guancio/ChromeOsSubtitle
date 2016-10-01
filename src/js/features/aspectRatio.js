@@ -3,7 +3,7 @@
         aspectRatios = [null, 1, 1.333333, 1.777778, 1.666666, 2.21, 2.35, 2.39, 1.25],
         aspectRatiosText = ['Default', '1:1', '4:3', '16:9', '16:10', '2.21:1', '2.35:1', '2.39:1', '5:4'];
     
-    mejs.Utility.storage.get('aspectRatio', 0, function(value) {
+    wrnch.storage.get('aspectRatio', 0, function(value) {
         currentAspectRatio = value;
     });
     
@@ -43,7 +43,7 @@
         
         chrome.contextMenus.update(currentAspectRatio + 'a', { 'checked': true });
         
-        mejs.Utility.storage.set('aspectRatio', currentAspectRatio);
+        wrnch.storage.set('aspectRatio', currentAspectRatio);
     };
     
     MediaElementPlayer.prototype.cycleAspectRatio = function() {

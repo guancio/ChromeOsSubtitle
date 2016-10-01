@@ -25,16 +25,6 @@
         return this;
     }
     
-    Haggle.extend = function(o1, o2) {
-        for(var prop in o2) {
-            if(o2.hasOwnProperty(prop)) {
-                o1[prop] = o2[prop];
-            }
-        }
-        
-        return o1;
-    };
-    
     Haggle.prototype.appendTo = function(el) {
         if(el instanceof Haggle) {
             el.el.appendChild(this.el);
@@ -67,7 +57,7 @@
     
     Haggle.prototype.css = function(arg) {
         if(arg instanceof Object) {
-            Haggle.extend(this.el.style, arg);
+            wrnch.extend(this.el.style, arg);
             
             return this;
         }

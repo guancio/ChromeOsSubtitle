@@ -32,7 +32,7 @@
                     return;
                 }
                 
-                mejs.Utility.waterfall(entries, function(entry, i, next) {
+                wrnch.waterfall(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         file.fileEntry = entry;
                         temp.push(file);

@@ -1,5 +1,5 @@
 (function() {
-    $.extend(mejs.MepDefaults, {
+    wrnch.extend(mejs.MepDefaults, {
         muteText: mejs.i18n.t('Mute Toggle'),
         maximumVolume: 2
     });

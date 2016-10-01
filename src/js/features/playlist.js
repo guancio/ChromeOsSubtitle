@@ -2,7 +2,7 @@
     var playTypes = ['Normal', 'Repeat', 'Shuffle'],
         playType = 0;
     
-    mejs.Utility.storage.get('playType', 0, function(value) {
+    wrnch.storage.get('playType', 0, function(value) {
         playType = value;
     });
     
@@ -49,7 +49,7 @@
         
         chrome.contextMenus.update(playType + 'p', { 'checked': true });
         
-        mejs.Utility.storage.set('playType', playType);
+        wrnch.storage.set('playType', playType);
         this.notify('Playlist Navigation: ' + playTypes[playType]);
     };
     

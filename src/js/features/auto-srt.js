@@ -15,7 +15,7 @@
                 var temp = [],
                     path = path.slice(autoLoadDirectory.path.length + 1).split('.').slice(0, -1).join('.');
                 
-                mejs.Utility.waterfall(t.options.subExts, function(extension, i, next) {
+                wrnch.waterfall(t.options.subExts, function(extension, i, next) {
                     autoLoadDirectory.entry.getFile(path + '.' + extension, {}, function(fileEntry) {
                         fileEntry.file(function(file) {
                             temp.push(file);
@@ -58,12 +58,12 @@
                         entry: entry
                     };
                     
-                    mejs.Utility.storage.set('autoSrtRetainId', chrome.fileSystem.retainEntry(entry));
+                    wrnch.storage.set('autoSrtRetainId', chrome.fileSystem.retainEntry(entry));
                 });
             });
         });
         
-        mejs.Utility.storage.get('autoSrtRetainId', null, function(retainId) {
+        wrnch.storage.get('autoSrtRetainId', null, function(retainId) {
             if(retainId === null) {
                 return;
             }

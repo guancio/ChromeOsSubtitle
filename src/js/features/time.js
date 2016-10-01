@@ -30,16 +30,16 @@
     
     MediaElementPlayer.prototype.updateCurrent = function() {
         if(showRemaining) {
-            this.currenttime.html('-' + mejs.Utility.secondsToTimeCode(this.getDuration() - this.getCurrentTime()));
+            this.currenttime.html('-' + wrnch.secondsToTimeCode(this.getDuration() - this.getCurrentTime()));
         }
         else {
-            this.currenttime.html(mejs.Utility.secondsToTimeCode(this.getCurrentTime()));
+            this.currenttime.html(wrnch.secondsToTimeCode(this.getCurrentTime()));
         }
     };
     
     MediaElementPlayer.prototype.updateDuration = function() {
         if(this.getDuration()) {
-            this.durationD.html(mejs.Utility.secondsToTimeCode(this.getDuration()));
+            this.durationD.html(wrnch.secondsToTimeCode(this.getDuration()));
         }
     };
 })();

@@ -26,7 +26,7 @@
         thumbnailVideo.attr({ 'src': src });
     };
     
-    MediaElementPlayer.prototype.paintThumbnail = mejs.Utility.deBounce(function(time) {
+    MediaElementPlayer.prototype.paintThumbnail = wrnch.deBounce(function(time) {
         thumbnailVideo.attr({ 'currentTime': time });
     }, 100);
 })();

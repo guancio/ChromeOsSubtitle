@@ -28,7 +28,7 @@
         
         var selectLang = $('#select_opensubtitle_lang');
         
-        mejs.Utility.storage.get('default_opensubtitle_lang', 'eng', function(value) {
+        wrnch.storage.get('default_opensubtitle_lang', 'eng', function(value) {
             openSubsLang.forEach(function(e) {
                 $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
             });
@@ -36,7 +36,7 @@
         });
         
         selectLang.on('change', function(e) {
-            mejs.Utility.storage.set('default_opensubtitle_lang', e.target.value);
+            wrnch.storage.set('default_opensubtitle_lang', e.target.value);
             lang = e.target.value;
         });
         
@@ -45,8 +45,8 @@
             
             t.notify('Unzipping subtitles...', 5000);
             
-            mejs.Utility.waterfall(content.result.data, function(e, i, next) {
-                mejs.Utility.gunzip(e.data, function(data) {
+            wrnch.waterfall(content.result.data, function(e, i, next) {
+                wrnch.gunzip(e.data, function(data) {
                     temp.push(new File([data], subs[i].SubFileName));
                     next();
                     
