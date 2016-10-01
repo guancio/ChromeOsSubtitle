@@ -31,7 +31,7 @@
                         t.setCurrentTime(newTime);
                     }
                     
-                    timefloat.css({ 'left': pos + 39 + 'px' });  //__UKN#1__ why is 39 needed?
+                    timefloat.css({ 'left': pos + 'px' });
                     timefloatcurrent.html(mejs.Utility.secondsToTimeCode(newTime));
                     t.paintThumbnail(newTime);
                 }
