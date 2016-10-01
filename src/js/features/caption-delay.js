@@ -4,9 +4,8 @@
             captionSelector = t.captionsButton.find('.mejs-captions-selector');
         
         t.capDelayInput = $('<input type="number" step="0.1"></input>').on('input', function(e) {
-                t.capDelayValue = parseFloat(e.target.value) || 0;
-                t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
-            });
+            t.capDelayValue = parseFloat(e.target.value) || 0;
+        });
         
         t.capDelayInput.attr({ 'value': 0 });
         t.capDelayValue = 0;

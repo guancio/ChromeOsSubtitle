@@ -12,19 +12,33 @@
             }
             
             chrome.fileSystem.getDisplayPath(t.playlist[t.playIndex].fileEntry, function(path) {
-                var temp = path.slice(autoLoadDirectory.path.length + 1).split('.').slice(0, -1).join('.') + '.srt';
+                var temp = [],
+                    path = path.slice(autoLoadDirectory.path.length + 1).split('.').slice(0, -1).join('.');
                 
-                autoLoadDirectory.entry.getFile(temp, {}, function(fileEntry) {
-                    fileEntry.file(function(file) {
-                        t.filterFiles([file]);
+                mejs.Utility.waterfall(t.options.subExts, function(extension, i, next) {
+                    autoLoadDirectory.entry.getFile(path + '.' + extension, {}, function(fileEntry) {
+                        fileEntry.file(function(file) {
+                            temp.push(file);
+                            next();
+                            
+                            if(i === t.options.subExts.length - 1) {
+                                t.filterFiles(temp);
+                            }
+                        });
+                    }, function() {
+                        next();
+                        
+                        if(i === t.options.subExts.length - 1) {
+                            t.filterFiles(temp);
+                        }
                     });
-                }, function() {});
+                });
             });
         });
         
         $('<li/>')
-            .append($('<label style="width:210px;float:left;">Enable auto-srt</label>'))
-            .append($('<button id="allowedAutoSrtButton" style="width:140px">Select Folder</button>'))
+            .append($('<label>Enable auto-srt</label>'))
+            .append($('<button id="allowedAutoSrtButton" style="width: 90px">Select Folder</button>'))
             .appendTo($('#settings_list'));
         
         $('#allowedAutoSrtButton').on('click', function(e) {
@@ -38,7 +52,7 @@
                 }
                 
                 chrome.fileSystem.getDisplayPath(entry, function(path) {
-                    $('#allowedAutoSrtButton').text('...' + path.slice(-15));
+                    $('#allowedAutoSrtButton').text('...' + path.slice(-10));
                     autoLoadDirectory = {
                         path: path,
                         entry: entry
@@ -60,7 +74,7 @@
                 }
                 
                 chrome.fileSystem.getDisplayPath(entry, function(path) {
-                    $('#allowedAutoSrtButton').text('...' + path.slice(-15));
+                    $('#allowedAutoSrtButton').text('...' + path.slice(-10));
                     
                     autoLoadDirectory = {
                         path: path,

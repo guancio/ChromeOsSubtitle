@@ -218,7 +218,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                 loading.show(true);
                 t.resizeVideo();
                 t.railBar.addClass('mejs-buffering');
-                t.media.addEventListener('timeupdate', t.timeupdate, false);
+                t.media.addEventListener('timeupdate', timeUpdateHandler, false);
                 t.play();
             }, false);
             
@@ -423,19 +423,19 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                     mejs.Utility.unzip(files[i], function(entries) {
                         t.filterFiles(entries, false);
                     });
-                    
                 }
             }
             
             if(tempSubs.length) {
                 t.subtitles = t.subtitles.concat(tempSubs);
-                t.setSubtitle(t.subtitles.length - tempSubs.length);
                 
                 options = '<option value="-1">None</option>';
                 t.subtitles.forEach(function(e, i) {
                     options += '<option value=' + i + (i === t.subIndex ? ' selected' : '')  + '>' + e.file.name + '</option>';
                 });
                 t.subSelect.html(options);
+                
+                t.setSubtitle(t.subtitles.length - tempSubs.length);
             }
             
             if(tempPlay.length) {

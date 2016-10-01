@@ -77,8 +77,8 @@
         });
         
         $('<li/>')
-            .append($('<label style="width:250px; float:left;">Disable analytics</label>'))
-            .append($('<input type="checkbox" id="disableAnalytics"/>'))
+            .append($('<label>Disable analytics</label>'))
+            .append($('<input style="margin: 6px" type="checkbox" id="disableAnalytics"/>'))
             .appendTo($('#settings_list'));
         
         var disableCheck = $('#disableAnalytics')

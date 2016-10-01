@@ -24,8 +24,11 @@ zip.useWebWorkers = packaged_app;
         t.subIndex = -1;
         t.subtitles = [];
         
-        t.captions = $('<div class="mejs-captions-layer mejs-layer"><div class="mejs-captions-position mejs-captions-position-hover"><span class="mejs-captions-text"></span></div></div>')
-            .appendTo(t.layers).hide();
+        t.captions = $('<div class="mejs-captions-layer mejs-layer">' + 
+                            '<div class="mejs-captions-position mejs-captions-position-hover">' + 
+                                '<span class="mejs-captions-text"></span>' + 
+                            '</div>' + 
+                        '</div>').appendTo(t.layers).hide();
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +
@@ -44,7 +47,7 @@ zip.useWebWorkers = packaged_app;
                 '<ul>' +
                 '<li>' +
                 '<div class="mejs-button  mejs-captionload" >' +
-                '<button type="button" title="' + mejs.i18n.t('Load subtitle...') + '" aria-label="' + mejs.i18n.t('Load subtitle...') + '"></button>' +
+                '<button type="button" title="' + mejs.i18n.t('Load Subtitle') + '" aria-label="' + mejs.i18n.t('Load Subtitle') + '"></button>' +
                 '</div>' +
                 '<select id="select_sub" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width:150px;height: 18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute;">' +
                     '<option value="-1">None</option>' +
@@ -128,7 +131,7 @@ zip.useWebWorkers = packaged_app;
         this.media.removeEventListener('timeupdate', timeUpdateHandler);
         
         if(this.subIndex !== -1) {
-            if(this.subtitles[this.subIndex].entries === []) {
+            if(this.subtitles[this.subIndex].entries && this.subtitles[this.subIndex].entries.text === []) {
                 this.notify('The given Subtitle file is corrupted!', 3000);
             }
             else {
@@ -143,7 +146,8 @@ zip.useWebWorkers = packaged_app;
             current = t.subtitles[t.subIndex],
             reader = new FileReader();
         
-        current.entries = [];
+        // Prevent displaySubtitles from calling parseSubtitles too many times.
+        current.entries = {};
         
         reader.onloadend = function(evt) {
             // parse the loaded file
