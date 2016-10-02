@@ -32,7 +32,7 @@
             info.css('visibility') === 'visible' ? info.hide() : info.show();
         };
         
-        $('<div class="mejs-button mejs-info-button mejs-info"><button type="button" title="' + mejs.i18n.t('About') + '" aria-label="' + mejs.i18n.t('About') + '"></button></div>')
+        $('<div class="mejs-button mejs-info-button mejs-info"><button type="button" title="' + chrome.i18n.getMessage('info') + '" aria-label="' + chrome.i18n.getMessage('info') + '"></button></div>')
             .appendTo(t.rightControls)
             .on('click', function(e) {
                 e.preventDefault();

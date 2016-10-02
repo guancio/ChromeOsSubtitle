@@ -99,7 +99,7 @@ wrnch = {
             var temp = [];
             
             reader.getEntries(function(entries) {
-                wrnch.waterfall(entries, function(entry, i, next) {
+                wrnch.forEachSync(entries, function(entry, i, next) {
                     entry.getData(new zip.BlobWriter(), function(data) {
                         temp.push(new File([data], entry.filename));
                         
@@ -124,7 +124,7 @@ wrnch = {
         });
     },
     
-    waterfall: function(array, action) {
+    forEachSync: function(array, action) {
         var i = -1,
             len = array.length,
             next = function() {

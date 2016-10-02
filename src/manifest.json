@@ -31,5 +31,6 @@
         "https://subtitlevideoplayer.appspot.com/",
         "https://www.google-analytics.com/"
     ],
-    "offline_enabled": true
+    "offline_enabled": true,
+    "default_locale": "en"
 }

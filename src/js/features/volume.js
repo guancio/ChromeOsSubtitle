@@ -1,6 +1,6 @@
 (function() {
     wrnch.extend(mejs.MepDefaults, {
-        muteText: mejs.i18n.t('Mute Toggle'),
+        muteText: chrome.i18n.getMessage('mute'),
         maximumVolume: 2
     });
     

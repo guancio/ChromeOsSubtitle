@@ -3,7 +3,7 @@ zip.useWebWorkers = packaged_app;
 
 (function() {
     // add extra default options 
-    var tracksText = mejs.i18n.t('Captions/Subtitles');
+    var tracksText = chrome.i18n.getMessage('openSubs');
     
     var timeUpdateHandler = function() {
         //This function is called by an eventlistener on
@@ -45,7 +45,7 @@ zip.useWebWorkers = packaged_app;
                 '<ul>' +
                 '<li>' +
                 '<div class="mejs-button  mejs-captionload" >' +
-                '<button type="button" title="' + mejs.i18n.t('Load Subtitle') + '" aria-label="' + mejs.i18n.t('Load Subtitle') + '"></button>' +
+                '<button type="button" title="' + chrome.i18n.getMessage('Load Subtitle') + '" aria-label="' + chrome.i18n.getMessage('Load Subtitle') + '"></button>' +
                 '</div>' +
                 '<select id="select_sub" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width:150px;height: 18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute;">' +
                     '<option value="-1">None</option>' +
@@ -94,7 +94,7 @@ zip.useWebWorkers = packaged_app;
                 
                 var temp = [];
                 
-                wrnch.waterfall(entries, function(entry, i, next) {
+                wrnch.forEachSync(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         temp.push(file);
                         

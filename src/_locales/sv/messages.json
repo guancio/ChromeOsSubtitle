@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "1.5.11 Växla till helskärm ............................................. .............................. 39"
+  },
+  "help": {
+    "message": "Open Help"
+  },
+  "info": {
+    "message": "Info"
+  },
+  "downSubs": {
+    "message": "Download Subtitles from OpenSubtitles.org"
+  },
+  "play": {
+    "message": "Spela/Paus"
+  },
+  "stop": {
+    "message": "Stopp"
+  },
+  "settings": {
+    "message": "Inställningar"
+  },
+  "media": {
+    "message": "Open Media"
+  },
+  "subtitles": {
+    "message": "Subtitle Settings"
+  },
+  "openSubs": {
+    "message": "Load Subtitles"
+  },
+  "mute": {
+    "message": "Toggle Mute"
+  }
+}

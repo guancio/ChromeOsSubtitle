@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "切換全屏"
+  },
+  "help": {
+    "message": "打開幫助"
+  },
+  "info": {
+    "message": "資訊"
+  },
+  "downSubs": {
+    "message": "從OpenSubtitles.org下載字幕"
+  },
+  "play": {
+    "message": "播放/暫停"
+  },
+  "stop": {
+    "message": "停止"
+  },
+  "settings": {
+    "message": "設定"
+  },
+  "media": {
+    "message": "開放媒體"
+  },
+  "subtitles": {
+    "message": "字幕設置"
+  },
+  "openSubs": {
+    "message": "加載字幕"
+  },
+  "mute": {
+    "message": "切換靜音"
+  }
+}

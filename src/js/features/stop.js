@@ -1,10 +1,11 @@
 (function() {
     // STOP BUTTON
     MediaElementPlayer.prototype.stopButton = function() {
-        var t = this;
+        var t = this,
+            stopText = chrome.i18n.getMessage('stop');
         
         $('<div class="mejs-button mejs-stop-button mejs-stop">' +
-            '<button type="button" title="Stop" aria-label="Stop"></button>' +
+            '<button type="button" title="' + stopText + '" aria-label="' + stopText + '"></button>' +
         '</div>')
         .on('click', function() {
             if(t.getCurrentTime() > 0) {

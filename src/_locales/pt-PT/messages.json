@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "Toggle Fullscreen"
+  },
+  "help": {
+    "message": "Open Help"
+  },
+  "info": {
+    "message": "Informação"
+  },
+  "downSubs": {
+    "message": "Download Subtitles from OpenSubtitles.org"
+  },
+  "play": {
+    "message": "Reproduzir/Pausa"
+  },
+  "stop": {
+    "message": "Parar"
+  },
+  "settings": {
+    "message": "Configurações"
+  },
+  "media": {
+    "message": "Open Media"
+  },
+  "subtitles": {
+    "message": "Subtitle Settings"
+  },
+  "openSubs": {
+    "message": "Load Subtitles"
+  },
+  "mute": {
+    "message": "Toggle Mute"
+  }
+}

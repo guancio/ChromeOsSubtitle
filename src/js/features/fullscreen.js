@@ -1,5 +1,5 @@
 (function() {
-    var fullscreenText = mejs.i18n.t('Fullscreen');
+    var fullscreenText = chrome.i18n.getMessage('fullscreen');
     
     MediaElementPlayer.prototype.fullscreen = function() {
         var t = this,

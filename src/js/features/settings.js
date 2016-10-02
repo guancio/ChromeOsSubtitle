@@ -3,7 +3,7 @@
         var t = this;
         
         $('<div class="mejs-button mejs-settings-button mejs-settings" >' +
-            '<button type="button" title="' + mejs.i18n.t('Settings') + '" aria-label="' + mejs.i18n.t('Settings') + '"></button>' +
+            '<button type="button" title="' + chrome.i18n.getMessage('settings') + '" aria-label="' + chrome.i18n.getMessage('settings') + '"></button>' +
             '<div class="mejs-settings-selector skip">' +
             '<ul id="settings_list"></ul>' +
             '</div>' +

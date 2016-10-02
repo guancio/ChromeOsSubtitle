@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "Toggle Fullscreen"
+  },
+  "help": {
+    "message": "Open Help"
+  },
+  "info": {
+    "message": "Информация"
+  },
+  "downSubs": {
+    "message": "Download Subtitles from OpenSubtitles.org"
+  },
+  "play": {
+    "message": "Play/Pause"
+  },
+  "stop": {
+    "message": "Остановить"
+  },
+  "settings": {
+    "message": "Настройки\n"
+  },
+  "media": {
+    "message": "Open Media"
+  },
+  "subtitles": {
+    "message": "Subtitle Settings"
+  },
+  "openSubs": {
+    "message": "Load Subtitles"
+  },
+  "mute": {
+    "message": "Toggle Mute"
+  }
+}

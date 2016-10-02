@@ -15,7 +15,7 @@
                 var temp = [],
                     path = path.slice(autoLoadDirectory.path.length + 1).split('.').slice(0, -1).join('.');
                 
-                wrnch.waterfall(t.options.subExts, function(extension, i, next) {
+                wrnch.forEachSync(t.options.subExts, function(extension, i, next) {
                     autoLoadDirectory.entry.getFile(path + '.' + extension, {}, function(fileEntry) {
                         fileEntry.file(function(file) {
                             temp.push(file);

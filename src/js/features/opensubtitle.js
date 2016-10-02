@@ -21,7 +21,7 @@
         var prec = $('#li_encoding');
         
         $('<li>')
-            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '" aria-label="' + mejs.i18n.t('Download subtitles from OpenSubtitles.org') + '"></button></div>'))
+            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + chrome.i18n.getMessage('downSubs') + '" aria-label="' + chrome.i18n.getMessage('downSubs') + '"></button></div>'))
             .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
             .appendTo(prec)
             .insertBefore(prec.find('label'));
@@ -45,7 +45,7 @@
             
             t.notify('Unzipping subtitles...', 5000);
             
-            wrnch.waterfall(content.result.data, function(e, i, next) {
+            wrnch.forEachSync(content.result.data, function(e, i, next) {
                 wrnch.gunzip(e.data, function(data) {
                     temp.push(new File([data], subs[i].SubFileName));
                     next();

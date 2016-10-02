@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "ملء الشاشة تبديل"
+  },
+  "help": {
+    "message": "مساعدة المفتوحة"
+  },
+  "info": {
+    "message": "معلومات"
+  },
+  "downSubs": {
+    "message": "تحميل ترجمات من OpenSubtitles.org"
+  },
+  "play": {
+    "message": "تشغيل / إيقاف مؤقت"
+  },
+  "stop": {
+    "message": "توقف"
+  },
+  "settings": {
+    "message": "الإعدادات"
+  },
+  "media": {
+    "message": "فتح وسائل الإعلام"
+  },
+  "subtitles": {
+    "message": "إعدادات الترجمة"
+  },
+  "openSubs": {
+    "message": "ترجمات تحميل"
+  },
+  "mute": {
+    "message": "تبديل كتم"
+  }
+}

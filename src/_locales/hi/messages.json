@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "पूर्णस्क्रीन चालू करें"
+  },
+  "help": {
+    "message": "खोलने में मदद"
+  },
+  "info": {
+    "message": "जानकारी"
+  },
+  "downSubs": {
+    "message": "OpenSubtitles.org से उपशीर्षक डाउनलोड करें"
+  },
+  "play": {
+    "message": "प्ले पौस"
+  },
+  "stop": {
+    "message": "रुकें"
+  },
+  "settings": {
+    "message": "सेटिंग्स "
+  },
+  "media": {
+    "message": "खुला मीडिया"
+  },
+  "subtitles": {
+    "message": "उपशीर्षक सेटिंग"
+  },
+  "openSubs": {
+    "message": "लोड उपशीर्षक"
+  },
+  "mute": {
+    "message": "टॉगल म्यूट"
+  }
+}

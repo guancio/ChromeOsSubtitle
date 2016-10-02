@@ -1,5 +1,5 @@
 (function() {
-    var playpauseText = mejs.i18n.t('Play/Pause');
+    var playpauseText = chrome.i18n.getMessage('play');
     
     // PLAY/pause BUTTON
     MediaElementPlayer.prototype.playpause = function() {

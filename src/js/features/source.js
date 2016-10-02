@@ -3,7 +3,7 @@
         var t = this;
         
         $('<div class="mejs-button mejs-source-button mejs-source">' +
-            '<button type="button" title="' + mejs.i18n.t('Open Media') + '" aria-label="' + mejs.i18n.t('Open Media') + '"></button>' +
+            '<button type="button" title="' + chrome.i18n.getMessage('media') + '" aria-label="' + chrome.i18n.getMessage('media') + '"></button>' +
         '</div>')
             .appendTo(t.leftControls)
             .on('click', function(e) {
@@ -32,7 +32,7 @@
                     return;
                 }
                 
-                wrnch.waterfall(entries, function(entry, i, next) {
+                wrnch.forEachSync(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         file.fileEntry = entry;
                         temp.push(file);

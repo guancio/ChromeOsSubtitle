@@ -1,0 +1,35 @@
+{
+  "fullscreen": {
+    "message": "Vollbild"
+  },
+  "help": {
+    "message": "Hilfe öffnen"
+  },
+  "info": {
+    "message": "Informationen"
+  },
+  "downSubs": {
+    "message": "Laden Sie Untertitel aus OpenSubtitles.org"
+  },
+  "play": {
+    "message": "Starten/Stoppen"
+  },
+  "stop": {
+    "message": "Stopp"
+  },
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "media": {
+    "message": "Open Media"
+  },
+  "subtitles": {
+    "message": "Untertiteleinstellungen"
+  },
+  "openSubs": {
+    "message": "Laden Sie Untertitel"
+  },
+  "mute": {
+    "message": "Toggle Mute"
+  }
+}

@@ -1,0 +1,35 @@
+{
+    "fullscreen": {
+        "message": "Basculer en plein écran"
+    },
+    "help": {
+        "message": "Ouvrir l'aide"
+    },
+    "info": {
+        "message": "Infos"
+    },
+    "downSubs": {
+        "message": "Télécharger sous-titres de OpenSubtitles.org"
+    },
+    "play": {
+        "message": "Lecture/Pause"
+    },
+    "stop": {
+        "message": "Arrêter"
+    },
+    "settings": {
+        "message": "Paramètres"
+    },
+    "media": {
+        "message": "Open Media"
+    },
+    "subtitles": {
+        "message": "Paramètres de sous-titres"
+    },
+    "openSubs": {
+        "message": "Sous-titres de charge"
+    },
+    "mute": {
+        "message": "Basculer Mute"
+    }
+}

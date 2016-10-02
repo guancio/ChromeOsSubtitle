@@ -23,7 +23,7 @@
                 return;
             }
             
-            wrnch.waterfall(window.launchData.items, function(e, i, next) {
+            wrnch.forEachSync(window.launchData.items, function(e, i, next) {
                 e.entry.file(function(file) {
                     file.fileEntry = e.entry;
                     temp.push(file);
