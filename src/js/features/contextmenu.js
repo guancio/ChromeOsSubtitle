@@ -1,9 +1,5 @@
 (function() {
     MediaElementPlayer.prototype.contextmenu = function() {
-        if(!packaged_app) {
-            return;
-        }
-        
         var t = this;
         
         chrome.contextMenus.onClicked.addListener(function(info) {

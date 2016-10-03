@@ -1,8 +1,5 @@
 (function() {
     MediaElementPlayer.prototype.autosrt = function() {
-        if(!packaged_app)
-            return;
-        
         var t = this,
             autoLoadDirectory;
         

@@ -74,23 +74,19 @@ wrnch = {
     
     storage: {
         get: function(key, def_value, cb) {
-            if(packaged_app) {
-                var temp = {};
-                temp[key] = def_value;
-                
-                chrome.storage.sync.get(temp, function(obj) {
-                    cb(obj[key]);
-                });
-            }
+            var temp = {};
+            temp[key] = def_value;
+            
+            chrome.storage.sync.get(temp, function(obj) {
+                cb(obj[key]);
+            });
         },
         
         set: function(key, value, cb) {
-            if(packaged_app) {
-                var temp = {};
-                temp[key] = value;
-                
-                chrome.storage.sync.set(temp, cb);
-            }
+            var temp = {};
+            temp[key] = value;
+            
+            chrome.storage.sync.set(temp, cb);
         }
     },
     

@@ -1,5 +1,5 @@
 zip.workerScriptsPath = 'lib/zipjs/WebContent/';
-zip.useWebWorkers = packaged_app;
+zip.useWebWorkers = true;
 
 (function() {
     // add extra default options 
