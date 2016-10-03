@@ -20,9 +20,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
         this.media = node;
         this.media.player = this;
         
-        // extend default options
-        this.options = mejs.MepDefaults;
-        
         // start up
         this.init();
     };

@@ -1,5 +1,5 @@
 (function() {
-    mejs.MepDefaults = {
+    MediaElementPlayer.prototype.options = {
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
         

@@ -1,5 +1,5 @@
 (function() {
-    wrnch.extend(mejs.MepDefaults, {
+    wrnch.extend(MediaElementPlayer.prototype.options, {
         muteText: chrome.i18n.getMessage('mute'),
         maximumVolume: 2
     });
