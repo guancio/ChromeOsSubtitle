@@ -24,7 +24,6 @@ a:visited {
     z-index: 1000;
 }
 
-.mejs-container .mejs-mediaelement,
 .mejs-container video {
     position: absolute;
     top: 50%;
@@ -35,14 +34,6 @@ a:visited {
 
 /* Start: LAYERS */
 .mejs-layer {
-    width: 100%;
-    height: 100%;
-}
-
-.mejs-mediaelement {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
 }

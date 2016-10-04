@@ -1,5 +1,4 @@
-var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
-    mejs = {};
+var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
 
 (function() {
     var timeUpdateHandler = function() {
@@ -10,10 +9,10 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     };
     
     // wraps a MediaElement object in player controls
-    mejs.MediaElementPlayer = function(node) {
+    MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
-        if(!(this instanceof mejs.MediaElementPlayer)) {
-            return new mejs.MediaElementPlayer(node);
+        if(!(this instanceof MediaElementPlayer)) {
+            return new MediaElementPlayer(node);
         }
         
         // these will be reset after the MediaElement.success fires
@@ -25,7 +24,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     };
     
     // actual player
-    mejs.MediaElementPlayer.prototype = {
+    MediaElementPlayer.prototype = {
         controlsAreVisible: true,
         
         init: function() {
@@ -37,7 +36,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
             
             // build container
             t.container = $('<div class="mejs-container">' +
-                                '<div class="mejs-mediaelement"></div>' +
                                 '<div class="mejs-layers"></div>' +
                                 '<div class="mejs-controls">' +
                                     '<div id="left" class="skip"></div>' +
@@ -47,7 +45,10 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                             '</div>').appendTo($('#main'));
             
             // move the <video/video> tag into the right spot
-            t.container.find('.mejs-mediaelement').append(t.media);
+            t.container
+                    .append(t.media)
+                    .find('.mejs-layers')
+                    .insertBefore(t.media);
             
             // find parts
             t.controls = t.container.find('.mejs-controls');
@@ -106,7 +107,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
         // Sets up all controls and events
         meReady: function() {
             var t = this,
-                mf = mejs.MediaFeatures,
                 featureIndex,
                 feature;
             
@@ -137,7 +137,8 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
                     // toggle controls
                     if(t.controlsAreVisible) {
                         t.hideControls();
-                    } else {
+                    }
+                    else {
                         t.showControls();
                     }
                 });
@@ -473,5 +474,5 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0),
     };
     
     // push out to window
-    window.MediaElementPlayer = mejs.MediaElementPlayer;
+    window.MediaElementPlayer = MediaElementPlayer;
 })();
