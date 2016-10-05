@@ -23,7 +23,6 @@
         $('<li>')
             .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + chrome.i18n.getMessage('downSubs') + '" aria-label="' + chrome.i18n.getMessage('downSubs') + '"></button></div>'))
             .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
-            .appendTo(prec)
             .insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');

@@ -45,10 +45,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
                             '</div>').appendTo($('#main'));
             
             // move the <video/video> tag into the right spot
-            t.container
-                    .append(t.media)
-                    .find('.mejs-layers')
-                    .insertBefore(t.media);
+            $(t.media).insertBefore($('.mejs-layers'));
             
             // find parts
             t.controls = t.container.find('.mejs-controls');
@@ -235,6 +232,10 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
                 t.railBar.removeClass('mejs-buffering');
                 t.notify('Cannot play the given file!', 3000);
             }, false);
+            
+            $(window).on('resize', function() {
+                t.resizeVideo();
+            });
         },
         
         isEnded: function() {

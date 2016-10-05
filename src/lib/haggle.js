@@ -1,9 +1,10 @@
 (function() {
     function Haggle(el) {
-        if(!(this instanceof Haggle))
+        if(!(this instanceof Haggle)) {
             return new Haggle(el);
+        }
         
-        if(el instanceof HTMLElement || el === document) {
+        if(el instanceof HTMLElement || el === document || el === window) {
             this.el = el;
             return this;
         }
@@ -142,10 +143,6 @@
         return this.css(useOpacity ? { 'opacity': 1 } : { 'visibility': 'visible' });
     };
     
-    Haggle.prototype.parent = function() {
-        return this.el.parentElement;
-    };
-    
     Haggle.prototype.attr = function(arg) {
         if(typeof arg === 'object') {
             for(var prop in arg) {
@@ -162,7 +159,9 @@
     };
     
     Haggle.prototype.insertBefore = function(el) {
-        this.parent().insertBefore(this.el, el instanceof Haggle ? el.el : el);
+        el = el instanceof Haggle ? el.el : el;
+        el.parentElement.appendChild(this.el);
+        el.parentElement.insertBefore(this.el, el);
         
         return this;
     };

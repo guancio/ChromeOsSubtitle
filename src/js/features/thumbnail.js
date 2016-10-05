@@ -13,7 +13,6 @@
                 'width': 121,
                 'height': 96
             })
-            .appendTo(timefloat)
             .insertBefore(timefloat.find('.mejs-time-float-current'));
         
         thumbnailVideo.on('seeked', function() {
