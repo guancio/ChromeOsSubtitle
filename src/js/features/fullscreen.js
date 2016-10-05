@@ -3,14 +3,14 @@
     
     MediaElementPlayer.prototype.fullscreen = function() {
         var t = this,
-            fullscreenBtn = $('<div class="mejs-button mejs-fullscreen-button">' +
+            fullscreenBtn = $('<div class="mejs-button mejs-fullscreen">' +
                     '<button type="button" title="' + fullscreenText + '" aria-label="' + fullscreenText + '"></button>' +
                 '</div>').on('click', function() {
                     t.toggleFullscreen();
                 }).appendTo(t.rightControls);
         
         $(document).on('webkitfullscreenchange', function() {
-            fullscreenBtn.toggleClass('mejs-unfullscreen-button');
+            fullscreenBtn.toggleClass('mejs-unfullscreen');
         }, false);
     };
     

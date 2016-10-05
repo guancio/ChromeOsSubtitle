@@ -8,14 +8,12 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
         this.player.setCurrentRail();
     };
     
-    // wraps a MediaElement object in player controls
     MediaElementPlayer = function(node) {
         // enforce object, even without "new" (via John Resig)
         if(!(this instanceof MediaElementPlayer)) {
             return new MediaElementPlayer(node);
         }
         
-        // these will be reset after the MediaElement.success fires
         this.media = node;
         this.media.player = this;
         
@@ -114,15 +112,13 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             for(featureIndex in t.options.features) {
                 feature = t.options.features[featureIndex];
                 
-                if(typeof t[feature] === 'function') {
-                    try {
-                        t[feature]();
-                        console.log('Loaded:', feature);
-                    } catch(e) {
-                        // TODO: report control error
-                        console.error('Load Failed:', feature);
-                        console.error(e);
-                    }
+                try {
+                    t[feature]();
+                    console.log('Loaded:', feature);
+                } catch(e) {
+                    // TODO: report control error
+                    console.error('Load Failed:', feature);
+                    console.error(e);
                 }
             }
             

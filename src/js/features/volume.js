@@ -16,7 +16,7 @@
         this.gainNode.connect(audioContext.destination);
         
         var t = this,
-            mute = $('<div class="mejs-button mejs-volume-button mejs-mute">' +
+            mute = $('<div class="mejs-button mejs-volume mejs-mute">' +
                     '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
                     '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
                 '</div>').appendTo(t.rightControls),

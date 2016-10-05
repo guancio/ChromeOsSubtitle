@@ -1,10 +1,10 @@
 #!/bin/sh
 
-which gjslint > /dev/null;
+which gjslint > /dev/null
 
 if [ $? -ne 0 ]; then
-    printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n";
-    exit;
+    printf "Can't find Google Closure Linter.\nUse 'sudo apt-get install closure-linter' to install it.\n"
+    exit
 fi
 
 set -e
@@ -15,9 +15,7 @@ printf 'Linting files.....\n'
 #               0001 - Extra space at end of line
 #               0002 - Space before '(' in for and if
 #               0110 - Line too long
-#               0200 - Invalid JSDoc tag.
-#               0213 - Missing type in @param tag
-gjslint --disable 0001,0002,0110,0200,0213 --nojsdoc --recurse src/js -- src/background.js;
+gjslint --disable 0001,0002,0110 --nojsdoc --recurse src/js -- src/background.js
 
 if [ "$1" = "--lint-only" ]; then
     exit
