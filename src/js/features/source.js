@@ -22,7 +22,7 @@
                 acceptsAllTypes: false,
                 accepts: [
                             {
-                                extensions: t.options.mediaExts
+                                extensions: t.mediaExts
                             }
                 ]
             }, function(entries) {

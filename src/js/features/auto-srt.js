@@ -12,20 +12,20 @@
                 var temp = [],
                     path = path.slice(autoLoadDirectory.path.length + 1).split('.').slice(0, -1).join('.');
                 
-                wrnch.forEachSync(t.options.subExts, function(extension, i, next) {
+                wrnch.forEachSync(t.subExts, function(extension, i, next) {
                     autoLoadDirectory.entry.getFile(path + '.' + extension, {}, function(fileEntry) {
                         fileEntry.file(function(file) {
                             temp.push(file);
                             next();
                             
-                            if(i === t.options.subExts.length - 1) {
+                            if(i === t.subExts.length - 1) {
                                 t.filterFiles(temp);
                             }
                         });
                     }, function() {
                         next();
                         
-                        if(i === t.options.subExts.length - 1) {
+                        if(i === t.subExts.length - 1) {
                             t.filterFiles(temp);
                         }
                     });

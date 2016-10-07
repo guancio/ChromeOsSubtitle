@@ -109,8 +109,8 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             t.buildoverlays();
             
             // add user-defined features/controls
-            for(featureIndex in t.options.features) {
-                feature = t.options.features[featureIndex];
+            for(featureIndex in t.features) {
+                feature = t.features[featureIndex];
                 
                 try {
                     t[feature]();
@@ -168,7 +168,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
                 t.updateCurrent();
             }, false);
             
-            t.options.success(t);
+            t.success(t);
         },
         
         buildoverlays: function() {
@@ -405,10 +405,10 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             for(i = 0; i < files.length; i++) {
                 ext = files[i].name.split('.').pop().toLowerCase();
                 
-                if(t.options.mediaExts.indexOf(ext) !== -1 && t.playlist.every(function(e) { return e.name !== files[i].name; })) {
+                if(t.mediaExts.indexOf(ext) !== -1 && t.playlist.every(function(e) { return e.name !== files[i].name; })) {
                     tempPlay.push(files[i]);
                 }
-                else if(t.options.subExts.indexOf(ext) !== -1 && t.subtitles.every(function(e) { return e.file.name !== files[i].name; })) {
+                else if(t.subExts.indexOf(ext) !== -1 && t.subtitles.every(function(e) { return e.file.name !== files[i].name; })) {
                     tempSubs.push({
                         file: files[i],
                         entries: null
@@ -442,7 +442,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             
             chrome.contextMenus.remove('setSrc', function() {
                 if(chrome.runtime.lastError) {
-                    console.log('Nothing!');
+                    wrnch.noop();
                 }
                 
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'playlist', 'id': 'setSrc' });
@@ -458,7 +458,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             
             chrome.contextMenus.remove('setSubtitle', function() {
                 if(chrome.runtime.lastError) {
-                    console.log('Nothing!');
+                    wrnch.noop();
                 }
                 
                 chrome.contextMenus.create({ 'title': 'Select', 'parentId': 'subtitles', 'id': 'setSubtitle' });

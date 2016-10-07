@@ -5,8 +5,8 @@
         // listen for key presses
         window.addEventListener('keydown', function(e) {
             // find a matching key
-            for(var i = 0, il = t.options.keyActions.length; i < il; i++) {
-                var keyAction = t.options.keyActions[i];
+            for(var i = 0, il = t.keyActions.length; i < il; i++) {
+                var keyAction = t.keyActions[i];
                 
                 for(var j = 0, jl = keyAction.keys.length; j < jl; j++) {
                     if(e.keyCode === keyAction.keys[j]) {

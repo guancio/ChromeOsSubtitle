@@ -84,7 +84,7 @@ zip.useWebWorkers = true;
                 acceptsAllTypes: false,
                 accepts: [
                     {
-                        extensions: t.options.subExts
+                        extensions: t.subExts
                     }
                 ]
             }, function(entries) {

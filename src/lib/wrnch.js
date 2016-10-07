@@ -2,6 +2,10 @@
 Utility methods
 */
 wrnch = {
+    noop: function() {
+        return undefined;
+    },
+    
     extend: function(o1, o2) {
         for(var prop in o2) {
             if(o2.hasOwnProperty(prop)) {

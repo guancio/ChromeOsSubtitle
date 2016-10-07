@@ -1,5 +1,5 @@
 (function() {
-    MediaElementPlayer.prototype.options = {
+    wrnch.extend(MediaElementPlayer.prototype, {
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
         
@@ -60,7 +60,7 @@
                         player.moveCaptions(38);
                     }
                     else if(activeModifiers.ctrl) {
-                        player.setVolume(Math.min(player.getVolume() + 0.1, player.options.maximumVolume));
+                        player.setVolume(Math.min(player.getVolume() + 0.1, player.maximumVolume));
                     }
                     else if(activeModifiers.shift) {
                         player.changeBrightness(true);
@@ -276,5 +276,5 @@
                 }
             }
         ]
-    };
+    });
 })();

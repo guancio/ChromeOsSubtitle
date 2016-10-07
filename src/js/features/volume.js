@@ -1,5 +1,5 @@
 (function() {
-    wrnch.extend(MediaElementPlayer.prototype.options, {
+    wrnch.extend(MediaElementPlayer.prototype, {
         muteText: chrome.i18n.getMessage('mute'),
         maximumVolume: 2
     });
@@ -17,8 +17,8 @@
         
         var t = this,
             mute = $('<div class="mejs-button mejs-volume mejs-mute">' +
-                    '<button type="button" title="' + t.options.muteText + '" aria-label="' + t.options.muteText + '"></button>' +
-                    '<progress id="volumeBar" value="' + t.options.startVolume + '" max="' + t.options.maximumVolume + '"></progress>' +
+                    '<button type="button" title="' + t.muteText + '" aria-label="' + t.muteText + '"></button>' +
+                    '<progress id="volumeBar" value="' + t.startVolume + '" max="' + t.maximumVolume + '"></progress>' +
                 '</div>').appendTo(t.rightControls),
             volumeBar = t.container.find('#volumeBar'),
             handleVolumeMove = function(e) {
@@ -39,7 +39,7 @@
                 
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)
-                t.setVolume(Math.max(0, Math.min(volume * 2, t.options.maximumVolume)));
+                t.setVolume(Math.max(0, Math.min(volume * 2, t.maximumVolume)));
             };
         
         volumeBar
@@ -69,6 +69,6 @@
             }
         }, false);
         
-        t.setVolume(t.options.startVolume);
+        t.setVolume(t.startVolume);
     };
 })();
