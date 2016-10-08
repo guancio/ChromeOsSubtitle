@@ -1,4 +1,7 @@
 (function() {
+    var CANVAS_WIDTH = 121,
+        CANVAS_HEIGHT = 96;
+    
     var thumbnailVideo = $('<video>'),
         canvas = $('<canvas>'),
         ctx = canvas
@@ -10,18 +13,18 @@
         
         canvas
             .attr({
-                'width': 121,
-                'height': 96
+                'width': CANVAS_WIDTH,
+                'height': CANVAS_HEIGHT
             })
             .insertBefore(timefloat.find('.mejs-time-float-current'));
         
         thumbnailVideo.on('seeked', function() {
-            ctx.drawImage(thumbnailVideo.get(0), 0, 0, canvas.attr('width'), canvas.attr('height'));
+            ctx.drawImage(thumbnailVideo.get(0), 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         });
     };
     
     MediaElementPlayer.prototype.setThumbnailSrc = function(src) {
-        ctx.clearRect(0, 0, canvas.attr('width'), canvas.attr('height'));
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         thumbnailVideo.attr({ 'src': src });
     };
     

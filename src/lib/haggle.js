@@ -58,7 +58,11 @@
     
     Haggle.prototype.css = function(arg) {
         if(arg instanceof Object) {
-            wrnch.extend(this.el.style, arg);
+            for(var prop in arg) {
+                if(arg.hasOwnProperty(prop)) {
+                    this.el[prop] = arg[prop];
+                }
+            }
             
             return this;
         }
