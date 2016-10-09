@@ -32,6 +32,9 @@ cp src/sprite.svg app
 printf "Copying root JS files...\n"
 cp src/background.js app
 
+printf "Copying _locales...\n"
+cp --recursive src/_locales app
+
 printf "Compressing CSS...\n"
 java -jar 'yui.jar' src/*.css > app/style.min.css
 

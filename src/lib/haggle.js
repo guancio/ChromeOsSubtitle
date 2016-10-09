@@ -60,7 +60,7 @@
         if(arg instanceof Object) {
             for(var prop in arg) {
                 if(arg.hasOwnProperty(prop)) {
-                    this.el[prop] = arg[prop];
+                    this.el.style[prop] = arg[prop];
                 }
             }
             
