@@ -101,16 +101,16 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
         
         // Sets up all controls and events
         meReady: function() {
-            var t = this,
-                featureIndex,
-                feature;
+            var i,
+                feature,
+                t = this;
             
             // built in feature
             t.buildoverlays();
             
             // add user-defined features/controls
-            for(featureIndex in t.features) {
-                feature = t.features[featureIndex];
+            for(i = 0; i < t.features.length; i++) {
+                feature = t.features[i];
                 
                 try {
                     t[feature]();
@@ -197,11 +197,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             t.media.addEventListener('seeked', function() {
                 loading.hide(true);
                 t.railBar.removeClass('mejs-buffering');
-            }, false);
-            
-            t.media.addEventListener('waiting', function() {
-                loading.show(true);
-                t.railBar.addClass('mejs-buffering');
             }, false);
             
             // show/hide loading

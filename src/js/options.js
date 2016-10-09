@@ -97,9 +97,6 @@
                         
                         if(seekDuration) {
                             player.seek(seekDuration);
-                            
-                            player.showControls();
-                            player.startControlsTimer();
                         }
                     }
                 }
@@ -120,9 +117,6 @@
                         
                         if(seekDuration) {
                             player.seek(seekDuration);
-                            
-                            player.showControls();
-                            player.startControlsTimer();
                         }
                     }
                 }
