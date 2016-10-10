@@ -155,7 +155,7 @@ zip.useWebWorkers = true;
             else if(d.startsWith('[Script Info]')) {
                 current.entries = wrnch.ass(d);
             }
-            else if(d.startsWith('<SAMI>'))) {
+            else if(d.startsWith('<SAMI>')) {
                 current.entries = wrnch.smi(d);
             }
             else {

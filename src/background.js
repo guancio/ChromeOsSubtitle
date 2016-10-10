@@ -54,9 +54,6 @@ chrome.runtime.onInstalled.addListener(function() {
             for(var i = 0; i < encodings.length; i++) {
                 chrome.contextMenus.create({ 'title': encodings[i], 'type': 'radio', 'parentId': 'setEncoding', 'id': i + 'e' });
             }
-        chrome.contextMenus.create({ 'title': 'Display Size', 'parentId': 'subtitles', 'id': 'captionSize' });
-            chrome.contextMenus.create({ 'title': 'Increase', 'parentId': 'captionSize', 'id': 'incCaptionSize' });
-            chrome.contextMenus.create({ 'title': 'Decrease', 'parentId': 'captionSize', 'id': 'decCaptionSize' });
     
     chrome.contextMenus.create({ 'title': 'Playlist', 'id': 'playlist' });
         chrome.contextMenus.create({ 'title': 'Navigation', 'parentId': 'playlist', 'id': 'setPlayType' });

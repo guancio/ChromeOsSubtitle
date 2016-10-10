@@ -156,7 +156,7 @@
                 keys: [90],  // z
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.decCaptionDelay();
+                        player.changeSubtitleDelay(true);
                     }
                 }
             },
@@ -164,7 +164,7 @@
                 keys: [88],  // x
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.incCaptionDelay();
+                        player.changeSubtitleDelay();
                     }
                 }
             },

@@ -1,16 +1,10 @@
 (function() {
     var capDelayInput;
     
-    MediaElementPlayer.prototype.decCaptionDelay = function() {
-        t.capDelayValue -= 0.1;
-        capDelayInput.attr({ 'value': t.capDelayValue.toFixed(1) });
-        t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
-    };
-    
-    MediaElementPlayer.prototype.incCaptionDelay = function() {
-        t.capDelayValue += 0.1;
-        capDelayInput.attr({ 'value': t.capDelayValue.toFixed(1) });
-        t.notify('Captions Delay: ' + (t.capDelayValue * 1000).toFixed() + 'ms');
+    MediaElementPlayer.prototype.changeSubtitleDelay = function(decrease) {
+        this.capDelayValue += decrease ? -0.1 : 0.1;
+        capDelayInput.attr({ 'value': this.capDelayValue.toFixed(1) });
+        this.notify('Captions Delay: ' + (this.capDelayValue * 1000).toFixed() + 'ms');
     };
     
     MediaElementPlayer.prototype.subdelay = function() {

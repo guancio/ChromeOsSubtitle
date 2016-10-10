@@ -1,19 +1,27 @@
 (function() {
-    var capSizeInput;
+    var capSizeInput,
+        capSizeValue;
+    
+    function updateCaptionSize() {
+        $('.mejs-captions-layer').css({
+            'line-height': capSizeValue + 'px',
+            'font-size': capSizeValue + 'px'
+        });
+    }
     
     MediaElementPlayer.prototype.decCaptionSize = function() {
-        t.capSizeValue = Math.max(10, t.capSizeValue - 2);
-        t.notify('Caption Size: ' + t.capSizeValue + 'px');
-        wrnch.storage.set('default_sub_size', t.capSizeValue);
-        capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
+        capSizeValue = Math.max(10, capSizeValue - 2);
+        this.notify('Caption Size: ' + capSizeValue + 'px');
+        wrnch.storage.set('default_sub_size', capSizeValue);
+        capSizeInput.attr({ 'value': capSizeValue.toFixed() });
         updateCaptionSize();
     };
     
     MediaElementPlayer.prototype.incCaptionSize = function() {
-        t.capSizeValue = Math.min(t.capSizeValue + 2, 50);
-        t.notify('Caption Size: ' + t.capSizeValue + 'px');
-        wrnch.storage.set('default_sub_size', t.capSizeValue);
-        capSizeInput.attr({ 'value': t.capSizeValue.toFixed() });
+        capSizeValue = Math.min(capSizeValue + 2, 50);
+        this.notify('Caption Size: ' + capSizeValue + 'px');
+        wrnch.storage.set('default_sub_size', capSizeValue);
+        capSizeInput.attr({ 'value': capSizeValue.toFixed() });
         updateCaptionSize();
     };
     
@@ -21,16 +29,9 @@
         var t = this,
             captionSelector = t.captionsButton.find('.mejs-captions-selector');
         
-        function updateCaptionSize() {
-            $('.mejs-captions-layer').css({
-                'line-height': t.capSizeValue + 'px',
-                'font-size': t.capSizeValue + 'px'
-            });
-        }
-        
         capSizeInput = $('<input type="number" min="10" max="50" step="2"></input>').on('input', function(e) {
-            t.capSizeValue = parseInt(e.target.value) || 0;
-            wrnch.storage.set('default_sub_size', t.capSizeValue);
+            capSizeValue = parseInt(e.target.value) || 0;
+            wrnch.storage.set('default_sub_size', capSizeValue);
             updateCaptionSize();
         });
         
@@ -41,7 +42,7 @@
         
         wrnch.storage.get('default_sub_size', 22, function(value) {
             capSizeInput.attr({ 'value': Number(value).toFixed() });
-            t.capSizeValue = value;
+            capSizeValue = value;
             updateCaptionSize();
         });
     };
