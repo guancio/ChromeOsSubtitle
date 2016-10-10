@@ -9,16 +9,8 @@
         });
     }
     
-    MediaElementPlayer.prototype.decCaptionSize = function() {
-        capSizeValue = Math.max(10, capSizeValue - 2);
-        this.notify('Caption Size: ' + capSizeValue + 'px');
-        wrnch.storage.set('default_sub_size', capSizeValue);
-        capSizeInput.attr({ 'value': capSizeValue.toFixed() });
-        updateCaptionSize();
-    };
-    
-    MediaElementPlayer.prototype.incCaptionSize = function() {
-        capSizeValue = Math.min(capSizeValue + 2, 50);
+    MediaElementPlayer.prototype.changeSubtitleSize = function(decrease) {
+        capSizeValue = Math.min(Math.max(10, capSizeValue + (decrease ? -2 : 2)), 50);
         this.notify('Caption Size: ' + capSizeValue + 'px');
         wrnch.storage.set('default_sub_size', capSizeValue);
         capSizeInput.attr({ 'value': capSizeValue.toFixed() });

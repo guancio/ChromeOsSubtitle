@@ -140,7 +140,7 @@
                 keys: [189],  // -
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.decCaptionSize();
+                        player.changeSubtitleSize(decrease);
                     }
                 }
             },
@@ -148,7 +148,7 @@
                 keys: [187],  // +
                 action: function(player, keyCode, activeModifiers) {
                     if(activeModifiers.ctrl) {
-                        player.incCaptionSize();
+                        player.changeSubtitleSize();
                     }
                 }
             },
