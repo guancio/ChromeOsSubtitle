@@ -107,8 +107,6 @@ zip.useWebWorkers = true;
                 });
             });
         });
-        
-        t.capDelayValue = 0;
     };
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
@@ -154,10 +152,10 @@ zip.useWebWorkers = true;
             if((/<tt\s+xml/ig).exec(d)) {
                 current.entries = wrnch.dfxp(d);
             }
-            else if(/\[Script Info\]/.exec(d)) {
+            else if(d.startsWith('[Script Info]')) {
                 current.entries = wrnch.ass(d);
             }
-            else if(/<SAMI>/.exec(d)) {
+            else if(d.startsWith('<SAMI>'))) {
                 current.entries = wrnch.smi(d);
             }
             else {
