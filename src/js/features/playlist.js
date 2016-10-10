@@ -1,6 +1,6 @@
 (function() {
-    var playTypes = ['Normal', 'Repeat', 'Shuffle'],
-        playType = 0;
+    var playType = 0,
+        playTypes = ['Normal', 'Repeat', 'Shuffle'];
     
     wrnch.storage.get('playType', 0, function(value) {
         playType = value;
@@ -14,17 +14,17 @@
     MediaElementPlayer.prototype.next = function(previous) {
         var temp = this.playIndex;
         
-        if(this.playIndex === null) {
+        if(temp === null) {
             return;
         }
         
         if(playType === 0) {
-            if((previous && (this.playIndex === 0)) ||
-                this.playIndex === this.playlist.length - 1) {
+            if((previous && (this.playIndex === 0)) || (!previous &&
+                this.playIndex === this.playlist.length - 1)) {
                 return;
             }
             
-            this.playIndex = this.playIndex + (previous ? -1 : 1);
+            this.playIndex += (previous ? -1 : 1);
         }
         else if(playType === 1) {
             this.playIndex = (this.playlist.length + this.playIndex + (previous ? -1 : 1)) % this.playlist.length;
