@@ -14,13 +14,12 @@
         
         var timefloat = t.rail.find('.mejs-time-float'),
             timefloatcurrent = timefloat.find('.mejs-time-float-current'),
-            handleMouseMove = function(e, mouseDown) {
+            handleMouseMove = function(x, mouseDown) {
                 // mouse position relative to the object
-                var x = e.pageX,
+                var pos,
+                    newTime,
                     offset = t.railBar.offset(),
-                    width = t.railBar.outerWidth(),
-                    newTime = 0,
-                    pos = 0;
+                    width = t.railBar.outerWidth();
                 
                 if(t.getSrc()) {
                     pos = x - offset.left;
@@ -40,11 +39,11 @@
         // handle clicks
         t.railBar
             .on('mousemove', function(e) {
-                handleMouseMove(e, false);
+                handleMouseMove(e.pageX, false);
             })
             .on('mousedown', function(e) {
                 if(e.which === 1) {
-                    handleMouseMove(e, true);
+                    handleMouseMove(e.pageX, true);
                 }
             });
     };
