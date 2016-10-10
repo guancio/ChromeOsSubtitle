@@ -157,6 +157,9 @@ zip.useWebWorkers = true;
             else if(/\[Script Info\]/.exec(d)) {
                 current.entries = wrnch.ass(d);
             }
+            else if(/<SAMI>/.exec(d)) {
+                current.entries = wrnch.smi(d);
+            }
             else {
                 current.entries = wrnch.webvvt(d);
             }

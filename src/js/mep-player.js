@@ -168,7 +168,7 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
                 t.updateCurrent();
             }, false);
             
-            t.success(t);
+            t.success();
         },
         
         buildoverlays: function() {

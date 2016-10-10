@@ -8,14 +8,13 @@
         
         mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
         
-        subExts: ['srt', 'sub', 'txt', 'ass', 'dfxp'],
+        subExts: ['srt', 'sub', 'txt', 'ass', 'dfxp', 'smi'],
         
-        success: function(mediaElement) {
-            mainMediaElement = mediaElement;
+        success: function() {
             chrome.app.window.get('master').show();
             
-            var t = mainMediaElement,
-                temp = [];
+            var temp = [],
+                t = mainMediaElement = this;
             
             if(!window.launchData || !window.launchData.items || !window.launchData.items.length) {
                 t.filterFiles([]);

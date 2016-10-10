@@ -215,7 +215,7 @@ wrnch = {
     },
     
     dfxp: function(trackText) {
-        var pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/g,
+        var pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/gi,
             match,
             entries = {
                 text: [],
@@ -227,6 +227,25 @@ wrnch = {
             entries.times.push({
                 start: wrnch.timeCodeToSeconds(match[1]),
                 stop: wrnch.timeCodeToSeconds(match[2])
+            });
+        }
+        
+        return entries;
+    },
+    
+    smi: function(trackText) {
+        var pattern = /<SYNC START=(\d+?)><P Class=.*?>((?:.|\s)+?)<SYNC START=(\d+?)><P Class=.*?>/gi,
+            match,
+            entries = {
+                text: [],
+                times: []
+            };
+        
+        while(match = pattern.exec(trackText)) {
+            entries.text.push(match[2]);
+            entries.times.push({
+                start: parseInt(match[1]) / 1000,
+                stop: parseInt(match[3]) / 1000
             });
         }
         
