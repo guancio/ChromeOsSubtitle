@@ -1,5 +1,3 @@
-var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
-
 (function() {
     var timeUpdateHandler = function() {
         //This function is called by an eventlistener on
@@ -379,8 +377,6 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
             }
         },
         
-        brightness: 1.0,
-        
         changeBrightness: function(inc) {
             this.brightness = Math.min(Math.max(0.5, this.brightness + (inc ? 0.1 : -0.1)), 2);
             this.media.style.webkitFilter = 'brightness(' + this.brightness + ')';
@@ -393,10 +389,12 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
         },
         
         filterFiles: function(files, overwrite) {
-            var i, ext, options,
+            var i,
+                ext,
+                options,
+                t = this,
                 tempPlay = [],
-                tempSubs = [],
-                t = this;
+                tempSubs = [];
             
             for(i = 0; i < files.length; i++) {
                 ext = files[i].name.split('.').pop().toLowerCase();

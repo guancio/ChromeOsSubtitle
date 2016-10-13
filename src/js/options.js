@@ -3,6 +3,8 @@
         // initial volume when the player starts (overrided by user cookie)
         startVolume: 0.8,
         
+        brightness: 1.0,
+        
         // features to show
         features: ['contextmenu', 'notification', 'playlist', 'source', 'playpause', 'stopButton', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settings', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'thumbnail'],
         
