@@ -23,7 +23,7 @@ zip.useWebWorkers = true;
         t.subtitles = [];
         
         t.captions = $('<div class="mejs-captions-layer mejs-layer">' + 
-                            '<div class="mejs-captions-position mejs-captions-position-hover">' + 
+                            '<div class="mejs-captions-position">' + 
                                 '<span class="mejs-captions-text"></span>' + 
                             '</div>' + 
                         '</div>').appendTo(t.layers).hide();

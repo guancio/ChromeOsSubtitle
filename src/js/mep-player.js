@@ -360,20 +360,21 @@ var packaged_app = (window.location.origin.indexOf('chrome-extension') === 0);
         },
         
         moveCaptions: function(keyCode) {
-            var c = $('.mejs-captions-position');
+            var c = $('.mejs-captions-position'),
+                computedStyles = window.getComputedStyle(c.get());
             
             switch(keyCode) {
                 case 37:
-                    c.css({ 'left': wrnch.addToPixel(c.css('left'), -8) + 'px' });
+                    c.css({ 'left': wrnch.addToPixel(computedStyles.left, -8) + 'px' });
                     break;
                 case 38:
-                    c.css({ 'bottom': wrnch.addToPixel(c.css('bottom'), 8) + 'px' });
+                    c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, 8) + 'px' });
                     break;
                 case 39:
-                    c.css({ 'left': wrnch.addToPixel(c.css('left'), 8) + 'px' });
+                    c.css({ 'left': wrnch.addToPixel(computedStyles.left, 8) + 'px' });
                     break;
                 case 40:
-                    c.css({ 'bottom': wrnch.addToPixel(c.css('bottom'), -8) + 'px' });
+                    c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, -8) + 'px' });
                     break;
             }
         },
