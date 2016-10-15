@@ -34,9 +34,9 @@
             t.container = $('<div class="mejs-container">' +
                                 '<div class="mejs-layers"></div>' +
                                 '<div class="mejs-controls">' +
-                                    '<div id="left" class="skip"></div>' +
-                                    '<div id="right" class="skip"></div>' +
-                                    '<div id="middle" class="skip"></div>' +
+                                    '<div id="left"></div>' +
+                                    '<div id="right"></div>' +
+                                    '<div id="middle"></div>' +
                                 '</div>' +
                             '</div>').appendTo($('#main'));
             

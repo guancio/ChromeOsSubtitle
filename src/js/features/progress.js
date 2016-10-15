@@ -3,7 +3,7 @@
     MediaElementPlayer.prototype.progress = function() {
         var t = this;
         
-        t.rail = $('<div class="mejs-time-rail skip">' +
+        t.rail = $('<div class="mejs-time-rail">' +
                         '<progress id="railBar" min="0" max="1"></progress>' +
                         '<span class="mejs-time-float">' +
                             '<span class="mejs-time-float-current">00:00</span>' +

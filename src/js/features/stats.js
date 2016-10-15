@@ -1,8 +1,8 @@
 (function() {
     MediaElementPlayer.prototype.stats = function() {
         var t = this,
-            service = null,
-            tracker = null;
+            service = analytics.getService('ice_cream_app'),
+            tracker = service.getTracker('UA-46086399-2');
         
         var sendView = function(page) {
             tracker.sendAppView('MainView');
@@ -11,9 +11,6 @@
         var sendEvent = function(event, p1, p2) {
             tracker.sendEvent(event, p1, p2);
         };
-        
-        service = analytics.getService('ice_cream_app');
-        tracker = service.getTracker('UA-46086399-2');
         
         setInterval(function() {
             sendView('MainView');

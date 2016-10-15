@@ -41,7 +41,7 @@ zip.useWebWorkers = true;
         
         t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
                 '<button type="button" title="' + tracksText + '" aria-label="' + tracksText + '"></button>' +
-                '<div class="mejs-captions-selector skip">' +
+                '<div class="mejs-captions-selector">' +
                 '<ul>' +
                 '<li>' +
                 '<div class="mejs-button  mejs-captionload" >' +

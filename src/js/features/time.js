@@ -5,7 +5,7 @@
     MediaElementPlayer.prototype.current = function() {
         var t = this;
         
-        t.rightControls.append($('<div class="mejs-time skip">' +
+        t.rightControls.append($('<div class="mejs-time">' +
             '<span class="mejs-currenttime">00:00</span>' +
         '</div>'));
         
