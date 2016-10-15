@@ -39,7 +39,7 @@ zip.useWebWorkers = true;
         
         encodingText += '</select></il>';
         
-        t.captionsButton = $('<div class="mejs-button mejs-captions-button mejs-captions-enabled">' +
+        t.captionsButton = $('<div class="mejs-button mejs-captions mejs-captions-enabled">' +
                 '<button type="button" title="' + tracksText + '" aria-label="' + tracksText + '"></button>' +
                 '<div class="mejs-captions-selector">' +
                 '<ul>' +

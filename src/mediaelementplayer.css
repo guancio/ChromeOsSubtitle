@@ -191,17 +191,11 @@ a:visited {
 }
 
 .mejs-container .mejs-controls .mejs-button {
-    list-style-type: none;
     background-image: none;
     display: block;
     float: left;
-    margin: 0;
-    padding: 0;
     width: 27px;
     height: 24px;
-    font-size: 11px;
-    line-height: 11px;
-    font-family: Helvetica, Arial;
     border: 0;
 }
 
@@ -315,14 +309,14 @@ a:visited {
     background-position: -240px 0;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize label {
+.mejs-controls .mejs-captions .mejs-captions-selector .mejs-captionsize label {
     width: 75px;
     float: left;
     padding: 3px 0 0 5px;
     line-height: 20px;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector .mejs-captionsize input {
+.mejs-controls .mejs-captions .mejs-captions-selector .mejs-captionsize input {
     background-color: transparent;
     width: 95px;
     height: 25px;
@@ -495,16 +489,16 @@ a:visited {
 /* End: Mute/Volume */
 
 /* Start: TRACK (Captions and Chapters) */
-.mejs-controls .mejs-captions-button,
+.mejs-controls .mejs-captions,
 .mejs-controls .mejs-settings {
     position: relative;
 }
 
-.mejs-controls .mejs-captions-button button {
+.mejs-controls .mejs-captions button {
     background-position: -192px 0;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector,
+.mejs-controls .mejs-captions .mejs-captions-selector,
 .mejs-controls .mejs-settings .mejs-settings-selector {
     position: absolute;
     bottom: 26px;
@@ -519,7 +513,7 @@ a:visited {
     transition: height 0.25s, visibility 0.15s;
 }
 
-.mejs-controls .mejs-captions-button:hover .mejs-captions-selector {
+.mejs-controls .mejs-captions:hover .mejs-captions-selector {
     visibility: visible;
     height: 140px;
 }
@@ -529,13 +523,13 @@ a:visited {
     height: 60px;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector ul,
+.mejs-controls .mejs-captions .mejs-captions-selector ul,
 .mejs-controls .mejs-settings .mejs-settings-selector ul {
     margin: 0;
     padding: 0;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector ul li,
+.mejs-controls .mejs-captions .mejs-captions-selector ul li,
 .mejs-controls .mejs-settings .mejs-settings-selector ul li {
     margin: 0 0 6px 0;
     display: block;
@@ -543,7 +537,7 @@ a:visited {
     overflow: hidden;
 }
 
-.mejs-controls .mejs-captions-button .mejs-captions-selector ul li label {
+.mejs-controls .mejs-captions .mejs-captions-selector ul li label {
     line-height: 15px;
     font-family: helvetica, arial;
     font-size: 10px;
