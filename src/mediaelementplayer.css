@@ -191,12 +191,9 @@ a:visited {
 }
 
 .mejs-container .mejs-controls .mejs-button {
-    background-image: none;
-    display: block;
     float: left;
     width: 27px;
     height: 24px;
-    border: 0;
 }
 
 #left {
@@ -217,7 +214,6 @@ a:visited {
 
 .mejs-controls .mejs-button > button {
     cursor: pointer;
-    display: block;
     position: absolute;
     height: 24px;
     width: 24px;
@@ -257,41 +253,41 @@ a:visited {
 
 /* End: Time (current / duration) */
 
-.mejs-controls .mejs-play > button {
+.mejs-button.mejs-play > button {
     background-position: -480px 0;
 }
 
-.mejs-controls .mejs-pause > button {
+.mejs-button.mejs-pause > button {
     background-position: -432px 0;
 }
 
-.mejs-controls .mejs-source > button {
+.mejs-button.mejs-source > button {
     background-position: -288px 0;
 }
 
-.mejs-controls .mejs-info > button {
+.mejs-button.mejs-info > button {
     background-position: -144px 0;
 }
 
-.mejs-controls .mejs-info > button:hover {
+.mejs-button.mejs-info > button:hover {
     background-position: -96px 0;
 }
 
-.mejs-controls .mejs-settings > button {
+.mejs-button.mejs-settings > button {
     background-position: -528px 0;
     transform: rotateZ(0);
     transition: transform 0.8s;
 }
 
-.mejs-controls .mejs-settings > button:hover {
+.mejs-button.mejs-settings > button:hover {
     transform: rotateZ(360deg);
 }
 
-.mejs-controls .mejs-help > button {
+.mejs-button.mejs-help > button {
     background-position: -48px 0;
 }
 
-.mejs-controls .mejs-help > button:hover {
+.mejs-button.mejs-help > button:hover {
     background-position: 0 0;
 }
 
@@ -322,7 +318,7 @@ a:visited {
     text-align: center;
 }
 
-.mejs-controls .mejs-stop > button {
+.mejs-button.mejs-stop > button {
     background-position: -576px 0;
 }
 
