@@ -1,9 +1,4 @@
 (function() {
-    wrnch.extend(MediaElementPlayer.prototype, {
-        muteText: chrome.i18n.getMessage('mute'),
-        maximumVolume: 2
-    });
-    
     MediaElementPlayer.prototype.volume = function() {
         var audioContext = new window.AudioContext(),
             source = audioContext.createMediaElementSource(this.media);
@@ -27,15 +22,10 @@
                 
                 // calculate the new volume based on the mouse position
                 // height is width becuase we have rotated the progress bar
-                var railHeight = volumeBar.outerWidth(),
-                    newY = e.pageY - totalOffset.top;
+                var newY = e.pageY - totalOffset.top,
+                    railHeight = volumeBar.outerWidth();
                 
                 volume = (railHeight - newY) / railHeight;
-                
-                // the controls just hide themselves (usually when mouse moves too far up)
-                if(totalOffset.top == 0 || totalOffset.left == 0) {
-                    return;
-                }
                 
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)

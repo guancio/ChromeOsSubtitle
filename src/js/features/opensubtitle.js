@@ -1,6 +1,55 @@
 (function() {
     var host = 'https://api.opensubtitles.org/xml-rpc',
-        openSubsLang = [ ['alb', 'Albanian'], ['ara', 'Arabic'], ['baq', 'Basque'], ['pob', 'Brazilian'], ['bul', 'Bulgarian'], ['cat', 'Catalan'], ['chi', 'Chinese'], ['cze', 'Czech'], ['dan', 'Danish'], ['dut', 'Dutch'], ['eng', 'English'], ['est', 'Estonian'], ['fin', 'Finnish'], ['fre', 'French'], ['geo', 'Georgian'], ['ger', 'German'], ['glg', 'Galician'], ['ell', 'Greek'], ['heb', 'Hebrew'], ['hin', 'Hindi'], ['hrv', 'Croatian'], ['hun', 'Hungarian'], ['ice', 'Icelandic'], ['ind', 'Indonesian'], ['ita', 'Italian'], ['jpn', 'Japanese'], ['khm', 'Khmer'], ['kor', 'Korean'], ['mac', 'Macedonian'], ['may', 'Malay'], ['nor', 'Norwegian'], ['oci', 'Occitan'], ['per', 'Persian'], ['pol', 'Polish'], ['por', 'Portuguese'], ['rum', 'Romanian'], ['rus', 'Russian'], ['scc', 'Serbian'], ['sin', 'Sinhalese'], ['slo', 'Slovak'], ['slv', 'Slovenian'], ['spa', 'Spanish'], ['swe', 'Swedish'], ['tgl', 'Tagalog'], ['tha', 'Thai'], ['tur', 'Turkish'], ['ukr', 'Ukrainian'], ['vie', 'Vietnamese'] ],
+        openSubsLang = {
+            'alb': 'Albanian',
+            'ara': 'Arabic',
+            'baq': 'Basque',
+            'pob': 'Brazilian',
+            'bul': 'Bulgarian',
+            'cat': 'Catalan',
+            'chi': 'Chinese',
+            'cze': 'Czech',
+            'dan': 'Danish',
+            'dut': 'Dutch',
+            'eng': 'English',
+            'est': 'Estonian',
+            'fin': 'Finnish',
+            'fre': 'French',
+            'geo': 'Georgian',
+            'ger': 'German',
+            'glg': 'Galician',
+            'ell': 'Greek',
+            'heb': 'Hebrew',
+            'hin': 'Hindi',
+            'hrv': 'Croatian',
+            'hun': 'Hungarian',
+            'ice': 'Icelandic',
+            'ind': 'Indonesian',
+            'ita': 'Italian',
+            'jpn': 'Japanese',
+            'khm': 'Khmer',
+            'kor': 'Korean',
+            'mac': 'Macedonian',
+            'may': 'Malay',
+            'nor': 'Norwegian',
+            'oci': 'Occitan',
+            'per': 'Persian',
+            'pol': 'Polish',
+            'por': 'Portuguese',
+            'rum': 'Romanian',
+            'rus': 'Russian',
+            'scc': 'Serbian',
+            'sin': 'Sinhalese',
+            'slo': 'Slovak',
+            'slv': 'Slovenian',
+            'spa': 'Spanish',
+            'swe': 'Swedish',
+            'tgl': 'Tagalog',
+            'tha': 'Thai',
+            'tur': 'Turkish',
+            'ukr': 'Ukrainian',
+            'vie': 'Vietnamese'
+        },
         subtitleHistory = {};
     
     MediaElementPlayer.prototype.opensubtitle = function() {
@@ -28,8 +77,8 @@
         var selectLang = $('#select_opensubtitle_lang');
         
         wrnch.storage.get('default_opensubtitle_lang', 'eng', function(value) {
-            openSubsLang.forEach(function(e) {
-                $('<option value="' + e[0] + '"' + (e[0] === value ? 'selected' : '') + '>' + e[1] + '</option>').appendTo(selectLang);
+            Object.keys(openSubsLang).forEach(function(key) {
+                $('<option value="' + key + '"' + (key === value ? 'selected' : '') + '>' + openSubsLang[key] + '</option>').appendTo(selectLang);
             });
             lang = value;
         });
@@ -59,12 +108,12 @@
         function downloadSubtitle(subs) {
             service.DownloadSubtitles({
                 params: [
-                    t.opensubtitleService.token, 
+                    t.opensubtitleService.token,
                     subs.map(function(e) {
                         return e.IDSubtitleFile;
                     })
                 ],
-                onException: function(errorObj) {
+                onException: function() {
                     t.notify('Subtitle download failed.');
                 },
                 onComplete: function(responseObj) {
@@ -91,7 +140,7 @@
                 }], {
                     limit: 8
                 }],
-                onException: function(errorObj) {
+                onException: function() {
                     t.notify('Subtitle search failed. Please try later.', 2000);
                 },
                 onComplete: function(responseObj) {
@@ -122,7 +171,7 @@
             else {
                 service.LogIn({
                     params: ['', '', '', 'ChromeSubtitleVideoplayer'],
-                    onException: function(errorObj) {
+                    onException: function() {
                         t.notify('Opensubtitles.org authentication failed!', 2000);
                     },
                     onComplete: function(responseObj) {

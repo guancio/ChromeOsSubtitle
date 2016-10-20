@@ -139,8 +139,8 @@ zip.useWebWorkers = true;
     
     MediaElementPlayer.prototype.parseSubtitles = function() {
         var t = this,
-            current = t.subtitles[t.subIndex],
-            reader = new FileReader();
+            reader = new FileReader(),
+            current = t.subtitles[t.subIndex];
         
         // Prevent displaySubtitles from calling parseSubtitles too many times.
         current.entries = {};
