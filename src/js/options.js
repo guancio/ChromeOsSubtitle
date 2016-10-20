@@ -33,13 +33,10 @@
                 e.entry.file(function(file) {
                     file.fileEntry = e.entry;
                     temp.push(file);
-                    
-                    if(i === window.launchData.items.length - 1) {
-                        t.filterFiles(temp, true);
-                    }
-                    
                     next();
                 });
+            }, function() {
+                t.filterFiles(temp, true);
             });
         },
         

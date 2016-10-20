@@ -36,13 +36,10 @@
                     entry.file(function(file) {
                         file.fileEntry = entry;
                         temp.push(file);
-                        
-                        if(i === entries.length - 1) {
-                            t.filterFiles(temp, true);
-                        }
-                        
                         next();
                     });
+                }, function() {
+                    t.filterFiles(temp, true);
                 });
             });
         };

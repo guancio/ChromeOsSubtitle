@@ -17,18 +17,12 @@
                         fileEntry.file(function(file) {
                             temp.push(file);
                             next();
-                            
-                            if(i === t.subExts.length - 1) {
-                                t.filterFiles(temp);
-                            }
                         });
                     }, function() {
                         next();
-                        
-                        if(i === t.subExts.length - 1) {
-                            t.filterFiles(temp);
-                        }
                     });
+                }, function() {
+                    t.filterFiles(temp);
                 });
             });
         });

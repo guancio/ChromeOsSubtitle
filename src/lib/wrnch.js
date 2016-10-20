@@ -77,9 +77,9 @@ wrnch = {
     },
     
     storage: {
-        get: function(key, def_value, cb) {
+        get: function(key, defaultValue, cb) {
             var temp = {};
-            temp[key] = def_value;
+            temp[key] = defaultValue;
             
             chrome.storage.sync.get(temp, function(obj) {
                 cb(obj[key]);
@@ -102,13 +102,10 @@ wrnch = {
                 wrnch.forEachSync(entries, function(entry, i, next) {
                     entry.getData(new zip.BlobWriter(), function(data) {
                         temp.push(new File([data], entry.filename));
-                        
-                        if(i === entries.length - 1) {
-                            cb(temp);
-                        }
-                        
                         next();
                     });
+                }, function() {
+                    cb(temp);
                 });
             });
         }, function() {
@@ -124,12 +121,12 @@ wrnch = {
         });
     },
     
-    forEachSync: function(array, action) {
+    forEachSync: function(array, action, finalAction) {
         var i = -1,
             len = array.length,
             next = function() {
                 if(++i === len) {
-                    return;
+                    return finalAction();
                 }
                 
                 action(array[i], i, next);
@@ -144,13 +141,13 @@ wrnch = {
             pattern_timecode = /^([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ([0-9]{2}:[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/;
         
         var i,
-            lines = trackText.split(/\r?\n/),
+            text,
+            timecode,
             entries = {
                 text: [],
                 times: []
             },
-            timecode,
-            text;
+            lines = trackText.split(/\r?\n/);
         
         for(i = 0; i < lines.length; i++) {
             // check for the line number
@@ -187,11 +184,11 @@ wrnch = {
         var i,
             line,
             temp,
-            lines = trackText.split(/\r?\n/),
             entries = {
                 text: [],
                 times: []
-            };
+            },
+            lines = trackText.split(/\r?\n/);
         
         for(i = 0; i < lines.length; i++) {
             line = lines[i];
@@ -215,12 +212,12 @@ wrnch = {
     },
     
     dfxp: function(trackText) {
-        var pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/gi,
-            match,
+        var match,
             entries = {
                 text: [],
                 times: []
-            };
+            },
+            pattern = /<p begin="(.*?)" end="(.*?)">(.*?)<\/p>/gi;
         
         while(match = pattern.exec(trackText)) {
             entries.text.push(match[3]);
@@ -234,12 +231,12 @@ wrnch = {
     },
     
     smi: function(trackText) {
-        var pattern = /<SYNC START=(\d+?)><P Class=.*?>((?:.|\s)+?)<SYNC START=(\d+?)><P Class=.*?>/gi,
-            match,
+        var match,
             entries = {
                 text: [],
                 times: []
-            };
+            },
+            pattern = /<SYNC START=(\d+?)><P Class=.*?>((?:.|\s)+?)<SYNC START=(\d+?)><P Class=.*?>/gi;
         
         while(match = pattern.exec(trackText)) {
             entries.text.push(match[2]);

@@ -97,13 +97,10 @@ zip.useWebWorkers = true;
                 wrnch.forEachSync(entries, function(entry, i, next) {
                     entry.file(function(file) {
                         temp.push(file);
-                        
-                        if(i === entries.length - 1) {
-                            t.filterFiles(temp);
-                        }
-                        
                         next();
                     });
+                }, function() {
+                    t.filterFiles(temp);
                 });
             });
         });

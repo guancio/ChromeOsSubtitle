@@ -97,11 +97,9 @@
                 wrnch.gunzip(e.data, function(data) {
                     temp.push(new File([data], subs[i].SubFileName));
                     next();
-                    
-                    if(i === content.result.data.length - 1) {
-                        t.filterFiles(temp);
-                    }
                 });
+            }, function() {
+                t.filterFiles(temp);
             });
         }
         
