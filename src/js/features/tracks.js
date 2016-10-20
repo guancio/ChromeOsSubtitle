@@ -26,7 +26,7 @@ zip.useWebWorkers = true;
                             '<div class="mejs-captions-position">' + 
                                 '<span class="mejs-captions-text"></span>' + 
                             '</div>' + 
-                        '</div>').appendTo(t.layers).hide();
+                        '</div>').insertBefore(t.controls).hide();
         t.captionsText = t.captions.find('.mejs-captions-text');
         
         var encodingText = '<li id="li_encoding">' +

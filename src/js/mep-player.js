@@ -32,23 +32,23 @@
             
             // build container
             t.container = $('<div class="mejs-container">' +
-                                '<div class="mejs-layers"></div>' +
                                 '<div class="mejs-controls">' +
                                     '<div id="left"></div>' +
                                     '<div id="right"></div>' +
                                     '<div id="middle"></div>' +
                                 '</div>' +
-                            '</div>').appendTo($('#main'));
+                            '</div>').appendTo($(document.body));
             
-            // move the <video/video> tag into the right spot
-            $(t.media).insertBefore($('.mejs-layers'));
             
             // find parts
             t.controls = t.container.find('.mejs-controls');
             t.leftControls = t.controls.find('#left');
             t.rightControls = t.controls.find('#right');
             t.middleControls = t.controls.find('#middle');
-            t.layers = t.container.find('.mejs-layers');
+            
+            // move the <video/video> tag into the right spot
+            $(t.media).insertBefore(t.controls);
+            
             
             t.meReady();
         },
@@ -182,7 +182,7 @@
                 .on('click', function() {
                     t.isPaused() ? t.play() : t.pause();
                 })
-                .appendTo(t.layers);
+                .insertBefore(t.controls);
             
             t.media.addEventListener('seeking', function() {
                 loading.show(true);

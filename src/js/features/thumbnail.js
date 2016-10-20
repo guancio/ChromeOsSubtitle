@@ -19,7 +19,7 @@
             .insertBefore(timefloat.find('.mejs-time-float-current'));
         
         thumbnailVideo.on('seeked', function() {
-            ctx.drawImage(thumbnailVideo.get(0), 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(thumbnailVideo.get(), 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         });
     };
     
