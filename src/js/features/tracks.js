@@ -47,7 +47,7 @@ zip.useWebWorkers = true;
                 '<div class="mejs-button  mejs-captionload" >' +
                 '<button type="button" title="' + chrome.i18n.getMessage('Load Subtitle') + '" aria-label="' + chrome.i18n.getMessage('Load Subtitle') + '"></button>' +
                 '</div>' +
-                '<select id="select_sub" style="padding: 0px 0px 0px 0px;text-overflow: ellipsis;width:150px;height: 18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute;">' +
+                '<select id="select_sub" style="width:150px;height: 18px;overflow: hidden;left:40px;position:absolute;">' +
                     '<option value="-1">None</option>' +
                 '</select>' +
                 '</li>' +

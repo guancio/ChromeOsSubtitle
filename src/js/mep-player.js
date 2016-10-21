@@ -94,7 +94,7 @@
             t.controlsTimer = setTimeout(function() {
                 t.hideControls();
                 t.controlsTimer = null;
-            }, timeout || 1500);
+            }, 1500000);
         },
         
         // Sets up all controls and events

@@ -1,60 +1,36 @@
 (function() {
-    var host = 'https://api.opensubtitles.org/xml-rpc',
+    var subtitleHistory = {},
         openSubsLang = {
-            'alb': 'Albanian',
-            'ara': 'Arabic',
-            'baq': 'Basque',
-            'pob': 'Brazilian',
-            'bul': 'Bulgarian',
-            'cat': 'Catalan',
-            'chi': 'Chinese',
-            'cze': 'Czech',
-            'dan': 'Danish',
-            'dut': 'Dutch',
-            'eng': 'English',
-            'est': 'Estonian',
-            'fin': 'Finnish',
-            'fre': 'French',
-            'geo': 'Georgian',
-            'ger': 'German',
-            'glg': 'Galician',
-            'ell': 'Greek',
-            'heb': 'Hebrew',
-            'hin': 'Hindi',
-            'hrv': 'Croatian',
-            'hun': 'Hungarian',
-            'ice': 'Icelandic',
-            'ind': 'Indonesian',
-            'ita': 'Italian',
-            'jpn': 'Japanese',
-            'khm': 'Khmer',
-            'kor': 'Korean',
-            'mac': 'Macedonian',
-            'may': 'Malay',
-            'nor': 'Norwegian',
-            'oci': 'Occitan',
-            'per': 'Persian',
-            'pol': 'Polish',
-            'por': 'Portuguese',
-            'rum': 'Romanian',
-            'rus': 'Russian',
-            'scc': 'Serbian',
-            'sin': 'Sinhalese',
-            'slo': 'Slovak',
-            'slv': 'Slovenian',
-            'spa': 'Spanish',
-            'swe': 'Swedish',
-            'tgl': 'Tagalog',
-            'tha': 'Thai',
-            'tur': 'Turkish',
-            'ukr': 'Ukrainian',
-            'vie': 'Vietnamese'
+            'alb': 'Albanian', 'ara': 'Arabic',
+            'baq': 'Basque', 'pob': 'Brazilian',
+            'bul': 'Bulgarian', 'cat': 'Catalan',
+            'chi': 'Chinese', 'cze': 'Czech',
+            'dan': 'Danish', 'dut': 'Dutch',
+            'eng': 'English', 'est': 'Estonian',
+            'fin': 'Finnish', 'fre': 'French',
+            'geo': 'Georgian', 'ger': 'German',
+            'glg': 'Galician', 'ell': 'Greek',
+            'heb': 'Hebrew', 'hin': 'Hindi',
+            'hrv': 'Croatian', 'hun': 'Hungarian',
+            'ice': 'Icelandic', 'ind': 'Indonesian',
+            'ita': 'Italian', 'jpn': 'Japanese',
+            'khm': 'Khmer', 'kor': 'Korean',
+            'mac': 'Macedonian', 'may': 'Malay',
+            'nor': 'Norwegian', 'oci': 'Occitan',
+            'per': 'Persian', 'pol': 'Polish',
+            'por': 'Portuguese', 'rum': 'Romanian',
+            'rus': 'Russian', 'scc': 'Serbian',
+            'sin': 'Sinhalese', 'slo': 'Slovak',
+            'slv': 'Slovenian', 'spa': 'Spanish',
+            'swe': 'Swedish', 'tgl': 'Tagalog',
+            'tha': 'Thai', 'tur': 'Turkish',
+            'ukr': 'Ukrainian', 'vie': 'Vietnamese'
         },
-        subtitleHistory = {};
+        host = 'https://api.opensubtitles.org/xml-rpc';
     
     MediaElementPlayer.prototype.opensubtitle = function() {
-        var t = this,
-            lang,
+        var lang,
+            t = this,
             service = new rpc.ServiceProxy(host, {
                 sanitize: false,
                 protocol: 'XML-RPC',
@@ -71,7 +47,7 @@
         
         $('<li>')
             .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + chrome.i18n.getMessage('downSubs') + '" aria-label="' + chrome.i18n.getMessage('downSubs') + '"></button></div>'))
-            .append($('<select id="select_opensubtitle_lang" style="padding: 0px 0px 0px 0px;text-overflow:ellipsis;width: 150px;height:18px;overflow: hidden;white-space: nowrap;left:40px;position:absolute"/>'))
+            .append($('<select id="select_opensubtitle_lang" style="width: 150px;height:18px;left:40px;position:absolute"/>'))
             .insertBefore(prec.find('label'));
         
         var selectLang = $('#select_opensubtitle_lang');
