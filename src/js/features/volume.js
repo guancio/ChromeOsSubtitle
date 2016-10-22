@@ -11,11 +11,6 @@
         this.gainNode.connect(audioContext.destination);
         
         var t = this,
-            mute = $('<div class="mejs-button mejs-volume mejs-mute">' +
-                    '<button type="button" title="' + t.muteText + '" aria-label="' + t.muteText + '"></button>' +
-                    '<progress id="volumeBar" value="' + t.startVolume + '" max="' + t.maximumVolume + '"></progress>' +
-                '</div>').appendTo(t.rightControls),
-            volumeBar = t.container.find('#volumeBar'),
             handleVolumeMove = function(e) {
                 var volume = null,
                     totalOffset = volumeBar.offset();
@@ -30,7 +25,18 @@
                 // ensure the volume isn't outside 0-2
                 // set the media object (this will trigger the volumechanged event)
                 t.setVolume(Math.max(0, Math.min(volume * 2, t.maximumVolume)));
-            };
+            },
+            mute = $('<div class="mejs-button mejs-volume mejs-mute">' +
+                        '<button type="button" title="' + t.muteText + '" aria-label="' + t.muteText + '"></button>' +
+                        '<progress id="volumeBar" value="' + t.startVolume + '" max="' + t.maximumVolume + '"></progress>' +
+                    '</div>')
+                        .appendTo(t.rightControls)
+                        .find('button')
+                        .on('click', function() {
+                            t.setMuted(!t.isMuted());
+                        });
+            
+            volumeBar = t.container.find('#volumeBar'),;
         
         volumeBar
             .on('mousedown', function(e) {
@@ -39,13 +45,6 @@
             })
             .on('mouseup mouseleave', function() {
                 volumeBar.off('mousemove', handleVolumeMove);
-            });
-        
-        // MUTE button
-        mute
-            .find('button')
-            .on('click', function() {
-                t.setMuted(!t.isMuted());
             });
         
         // listen for volume change events from other sources
