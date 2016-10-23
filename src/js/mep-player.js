@@ -26,7 +26,6 @@
         init: function() {
             var t = this;
             
-            // DESKTOP: use MediaElementPlayer controls
             // remove native controls
             t.media.controls = false;
             
@@ -39,7 +38,6 @@
                                 '</div>' +
                             '</div>').appendTo($(document.body));
             
-            
             // find parts
             t.controls = t.container.find('.mejs-controls');
             t.leftControls = t.controls.find('#left');
@@ -48,7 +46,6 @@
             
             // move the <video/video> tag into the right spot
             $(t.media).insertBefore(t.controls);
-            
             
             t.meReady();
         },
@@ -178,11 +175,11 @@
                         '</div>' +
                     '</div>' +
                 '</div>')
-                .hide(true) // start out hidden
-                .on('click', function() {
-                    t.isPaused() ? t.play() : t.pause();
-                })
-                .insertBefore(t.controls);
+                    .hide(true) // start out hidden
+                    .on('click', function() {
+                        t.isPaused() ? t.play() : t.pause();
+                    })
+                    .insertBefore(t.controls);
             
             t.media.addEventListener('seeking', function() {
                 loading.show(true);

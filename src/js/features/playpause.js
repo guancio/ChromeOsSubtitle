@@ -5,8 +5,8 @@
     MediaElementPlayer.prototype.playpause = function() {
         var t = this;
         
-        $('<div class="mejs-button mejs-playpause-button mejs-play" >' +
-            '<button type="button" title="' + playpauseText + '" aria-label="' + playpauseText + '"></button>' +
+        $('<div class="mejs-button mejs-play" >' +
+            '<button type="button" title="' + playpauseText + '"></button>' +
         '</div>')
             .on('click', function(e) {
                 e.preventDefault();

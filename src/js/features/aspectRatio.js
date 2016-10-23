@@ -9,8 +9,8 @@
     
     MediaElementPlayer.prototype.resizeVideo = function() {
         var targetAspectRatio,
-            wH = window.innerHeight,
-            wW = window.innerWidth;
+            wW = window.innerWidth,
+            wH = window.innerHeight;
         
         if(currentAspectRatio === 0) {
             targetAspectRatio = this.media.videoWidth / this.media.videoHeight;

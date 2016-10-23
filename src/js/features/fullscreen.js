@@ -4,7 +4,7 @@
     MediaElementPlayer.prototype.fullscreen = function() {
         var t = this,
             fullscreenBtn = $('<div class="mejs-button mejs-fullscreen">' +
-                    '<button type="button" title="' + fullscreenText + '" aria-label="' + fullscreenText + '"></button>' +
+                    '<button type="button" title="' + fullscreenText + '></button>' +
                 '</div>').on('click', function() {
                     t.toggleFullscreen();
                 }).appendTo(t.rightControls);

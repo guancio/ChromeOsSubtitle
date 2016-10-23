@@ -2,9 +2,7 @@
 Utility methods
 */
 wrnch = {
-    noop: function() {
-        return undefined;
-    },
+    noop: function() {},
     
     extend: function(o1, o2) {
         for(var prop in o2) {
@@ -16,24 +14,18 @@ wrnch = {
         return o1;
     },
     
-    b64toBlob: function(b64Data, contentType, sliceSize) {
-        contentType = contentType || '';
-        sliceSize = sliceSize || 1024;
+    b64toBlob: function(data) {
+        var byteArrays = [],
+            sliceSize = 1024,
+            data = atob(data);
         
-        function charCodeFromCharacter(c) {
-            return c.charCodeAt(0);
+        for(var offset = 0; offset < data.length; offset += sliceSize) {
+            byteArrays.push(new Uint8Array(Array.prototype.map.call(data.slice(offset, offset + sliceSize), function(c) {
+                return c.charCodeAt(0);
+            })));
         }
         
-        var byteCharacters = atob(b64Data),
-            byteArrays = [];
-        
-        for(var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            byteArrays.push(new Uint8Array(Array.prototype.map.call(byteCharacters.slice(offset, offset + sliceSize), charCodeFromCharacter)));
-        }
-        
-        return new Blob(byteArrays, {
-            type: contentType
-        });
+        return new Blob(byteArrays);
     },
     
     secondsToTimeCode: function(time) {
@@ -60,10 +52,11 @@ wrnch = {
     },
     
     deBounce: function(func, timeout) {
-        var timer = null;
+        var a,
+            timer = null;
         
         return function() {
-            var a = Array.prototype.slice.call(arguments);
+            a = Array.prototype.slice.call(arguments);
             
             if(timer !== null) {
                 clearTimeout(timer);
@@ -129,10 +122,10 @@ wrnch = {
                     return finalAction();
                 }
                 
-                action(array[i], i, next);
+                return action(array[i], i, next);
             };
         
-        next();
+        return next();
     },
     
     webvvt: function(trackText) {

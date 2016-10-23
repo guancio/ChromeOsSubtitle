@@ -36,7 +36,7 @@
                             t.setMuted(!t.isMuted());
                         });
             
-            volumeBar = t.container.find('#volumeBar'),;
+            volumeBar = t.container.find('#volumeBar');
         
         volumeBar
             .on('mousedown', function(e) {

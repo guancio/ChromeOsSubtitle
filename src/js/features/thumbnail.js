@@ -2,8 +2,8 @@
     var CANVAS_WIDTH = 121,
         CANVAS_HEIGHT = 96;
     
-    var thumbnailVideo = $('<video>'),
-        canvas = $('<canvas>'),
+    var canvas = $('<canvas>'),
+        thumbnailVideo = $('<video>'),
         ctx = canvas
                 .get()
                 .getContext('2d');
