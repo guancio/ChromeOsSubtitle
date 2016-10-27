@@ -27,24 +27,22 @@
                 t.setVolume(Math.max(0, Math.min(volume * 2, t.maximumVolume)));
             },
             mute = $('<div class="mejs-button mejs-volume mejs-mute">' +
-                        '<button type="button" title="' + t.muteText + '" aria-label="' + t.muteText + '"></button>' +
+                        '<button type="button" title="' + t.muteText + '"></button>' +
                         '<progress id="volumeBar" value="' + t.startVolume + '" max="' + t.maximumVolume + '"></progress>' +
                     '</div>')
-                        .appendTo(t.rightControls)
-                        .find('button')
-                        .on('click', function() {
-                            t.setMuted(!t.isMuted());
-                        });
-            
-            volumeBar = t.container.find('#volumeBar');
+                        .appendTo(t.rightControls),
+            volumeBar = mute.find('#volumeBar')
+                            .on('mousedown', function(e) {
+                                handleVolumeMove(e);
+                                volumeBar.on('mousemove', handleVolumeMove);
+                            })
+                            .on('mouseup mouseleave', function() {
+                                volumeBar.off('mousemove', handleVolumeMove);
+                            });
         
-        volumeBar
-            .on('mousedown', function(e) {
-                handleVolumeMove(e);
-                volumeBar.on('mousemove', handleVolumeMove);
-            })
-            .on('mouseup mouseleave', function() {
-                volumeBar.off('mousemove', handleVolumeMove);
+        mute.find('button')
+            .on('click', function() {
+                t.setMuted(!t.isMuted());
             });
         
         // listen for volume change events from other sources

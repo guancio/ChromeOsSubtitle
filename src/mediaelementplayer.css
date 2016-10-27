@@ -3,10 +3,7 @@ body {
     padding: 0;
 }
 
-a:link {
-    color: #ffffff
-}
-
+a:link,
 a:visited {
     color: #ffffff
 }
@@ -576,7 +573,7 @@ a:visited {
     left: 0;
     bottom: 0;
     right: 0;
-    width: 600px;
+    width: 650px;
     display: table;
     height: auto;
     background: rgba(50,50,50,0.7);

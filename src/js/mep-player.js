@@ -24,7 +24,9 @@
         controlsAreVisible: true,
         
         init: function() {
-            var t = this;
+            var i,
+                feature,
+                t = this;
             
             // remove native controls
             t.media.controls = false;
@@ -46,59 +48,6 @@
             
             // move the <video/video> tag into the right spot
             $(t.media).insertBefore(t.controls);
-            
-            t.meReady();
-        },
-        
-        showControls: function() {
-            var t = this;
-            
-            if(t.controlsAreVisible) {
-                return;
-            }
-            
-            t.media.addEventListener('timeupdate', timeUpdateHandler, false);
-            
-            t.controls.show(true);
-            $(document.body).css({ 'cursor': 'pointer' });
-            t.controlsAreVisible = true;
-        },
-        
-        hideControls: function() {
-            var t = this;
-            
-            if(!t.controlsAreVisible) {
-                return;
-            }
-            
-            // fade out main controls
-            t.controls.hide(true);
-            $(document.body).css({ 'cursor': 'none' });
-            t.controlsAreVisible = false;
-            
-            t.media.removeEventListener('timeupdate', timeUpdateHandler, false);
-        },
-        
-        controlsTimer: null,
-        
-        startControlsTimer: function(timeout) {
-            var t = this;
-            
-            if(t.controlsTimer !== null) {
-                clearTimeout(t.controlsTimer);
-            }
-            
-            t.controlsTimer = setTimeout(function() {
-                t.hideControls();
-                t.controlsTimer = null;
-            }, timeout || 1500);
-        },
-        
-        // Sets up all controls and events
-        meReady: function() {
-            var i,
-                feature,
-                t = this;
             
             // built in feature
             t.buildoverlays();
@@ -133,8 +82,7 @@
             }
             else {
                 // show/hide controls
-                t.container
-                    .on('mousemove', function() {
+                t.container.on('mousemove', function() {
                         if(!t.controlsAreVisible) {
                             t.showControls();
                         }
@@ -164,6 +112,46 @@
             }, false);
             
             t.success();
+        },
+        
+        showControls: function() {
+            if(this.controlsAreVisible) {
+                return;
+            }
+            
+            this.media.addEventListener('timeupdate', timeUpdateHandler, false);
+            
+            this.controls.show(true);
+            $(document.body).css({ 'cursor': 'pointer' });
+            this.controlsAreVisible = true;
+        },
+        
+        hideControls: function() {
+            if(!this.controlsAreVisible) {
+                return;
+            }
+            
+            // fade out main controls
+            this.controls.hide(true);
+            $(document.body).css({ 'cursor': 'none' });
+            this.controlsAreVisible = false;
+            
+            this.media.removeEventListener('timeupdate', timeUpdateHandler, false);
+        },
+        
+        controlsTimer: null,
+        
+        startControlsTimer: function(timeout) {
+            var t = this;
+            
+            if(t.controlsTimer !== null) {
+                clearTimeout(t.controlsTimer);
+            }
+            
+            t.controlsTimer = setTimeout(function() {
+                t.hideControls();
+                t.controlsTimer = null;
+            }, timeout || 1500);
         },
         
         buildoverlays: function() {

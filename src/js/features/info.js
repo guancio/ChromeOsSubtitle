@@ -1,7 +1,7 @@
 (function() {
     MediaElementPlayer.prototype.info = function() {
         var t = this,
-            infoText = '<div class="mejs-window" style="width:650px;">' +
+            infoText = '<div class="mejs-window">' +
                             '<img src="icon.png" style="width:80px;height:auto;"/>' +
                             '<h2>Subtitle Videoplayer v' + chrome.runtime.getManifest().version + '</h2>' +
                             'Please visit our project <a href="https://github.com/guancio/ChromeOsSubtitle">home page</a>.' +

@@ -46,7 +46,7 @@
         var prec = $('#li_encoding');
         
         $('<li>')
-            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + chrome.i18n.getMessage('downSubs') + '" aria-label="' + chrome.i18n.getMessage('downSubs') + '"></button></div>'))
+            .append($('<div id="opensubtitle_button" class="mejs-button  mejs-openload" > <button type="button" title="' + chrome.i18n.getMessage('downSubs') + '"></button></div>'))
             .append($('<select id="select_opensubtitle_lang" style="width: 150px;height:18px;left:40px;position:absolute"/>'))
             .insertBefore(prec.find('label'));
         

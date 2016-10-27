@@ -5,7 +5,7 @@
             stopText = chrome.i18n.getMessage('stop');
         
         $('<div class="mejs-button mejs-stop">' +
-            '<button type="button" title="' + stopText + '></button>' +
+            '<button type="button" title="' + stopText + '"></button>' +
         '</div>')
             .on('click', function() {
                 if(t.getCurrentTime() > 0) {
