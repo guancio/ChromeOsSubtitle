@@ -17,7 +17,9 @@
         
         success: function() {
             var temp = [],
-                mainMediaElement = t = this;
+                t = this;
+            
+            mainMediaElement = t;
             
             chrome.app.window
                             .get('master')

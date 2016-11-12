@@ -87,12 +87,7 @@
                             t.showControls();
                         }
                         
-                        t.startControlsTimer(2500);
-                    })
-                    .on('mouseleave', function() {
-                        if(!t.isPaused()) {
-                            t.startControlsTimer(1000);
-                        }
+                        t.startControlsTimer();
                     });
             }
             
@@ -139,20 +134,9 @@
             this.media.removeEventListener('timeupdate', timeUpdateHandler, false);
         },
         
-        controlsTimer: null,
-        
-        startControlsTimer: function(timeout) {
-            var t = this;
-            
-            if(t.controlsTimer !== null) {
-                clearTimeout(t.controlsTimer);
-            }
-            
-            t.controlsTimer = setTimeout(function() {
-                t.hideControls();
-                t.controlsTimer = null;
-            }, timeout || 1500);
-        },
+        startControlsTimer: wrnch.deBounce(function() {
+            mainMediaElement.hideControls();
+        }, 2500),
         
         buildoverlays: function() {
             var t = this,

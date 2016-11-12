@@ -1,7 +1,4 @@
-/*
-Utility methods
-*/
-wrnch = {
+window.wrnch = {
     noop: function() {},
     
     extend: function(o1, o2) {

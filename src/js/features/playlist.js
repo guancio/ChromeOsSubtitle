@@ -43,11 +43,11 @@
     };
     
     MediaElementPlayer.prototype.setPlayType = function(value) {
-        chrome.contextMenus.update(playType + 'p', { 'checked': false });
+        chrome.contextMenus.update(playType + 'n', { 'checked': false });
         
         playType = parseInt(value);
         
-        chrome.contextMenus.update(playType + 'p', { 'checked': true });
+        chrome.contextMenus.update(playType + 'n', { 'checked': true });
         
         wrnch.storage.set('playType', playType);
         this.notify('Playlist Navigation: ' + playTypes[playType]);
