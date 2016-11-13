@@ -11,7 +11,7 @@
         // features to show
         features: ['contextmenu', 'notification', 'playlist', 'source', 'playpause', 'stopButton', 'progress', 'current', 'duration', 'tracks', 'subdelay', 'subsize', 'volume', 'settings', 'info', 'help', 'fullscreen', 'drop', 'stats', 'opensubtitle', 'autosrt', 'shortcuts', 'thumbnail'],
         
-        mediaExts: ['aac', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
+        mediaExts: ['aac', 'avi', 'mp4', 'm4a', 'mp1', 'mp2', 'mp3', 'mpg', 'mpeg', 'oga', 'ogg', 'wav', 'webm', 'm4v', 'ogv', 'mkv'],
         
         subExts: ['srt', 'sub', 'txt', 'ass', 'dfxp', 'smi'],
         
