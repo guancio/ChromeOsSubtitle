@@ -198,6 +198,7 @@
             
             // error handling
             t.media.addEventListener('error', function(e) {
+                console.log(e);
                 if(t.getSrc() === '') {
                     return;
                 }
@@ -306,6 +307,25 @@
                 this.playIndex = parseInt(index);
             }
             
+            if(this.playlist[this.playIndex].name.split('.').pop().toLowerCase() === 'flv') {
+                if(this.flvTransmuxer !== undefined) {
+                    this.flvTransmuxer.unload();
+                    this.flvTransmuxer.detachMediaElement();
+                    this.flvTransmuxer.destroy();
+                    delete this.flvTransmuxer;
+                }
+
+                this.flvTransmuxer = new flvjs({
+                    url: window.URL.createObjectURL(this.playlist[this.playIndex]),
+                    type: 'flv'
+                });
+
+                this.flvTransmuxer.attachMediaElement(this.media);
+                this.flvTransmuxer.load();
+
+                return;
+            }
+
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
             document.title = this.playlist[this.playIndex].name;
             
