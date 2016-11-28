@@ -80,6 +80,7 @@
                     }
                 });
             }
+            
             if('onmousemove' in window) {
                 // show/hide controls
                 t.container.on('mousemove', function() {
