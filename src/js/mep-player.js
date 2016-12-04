@@ -84,12 +84,12 @@
             if('onmousemove' in window) {
                 // show/hide controls
                 t.container.on('mousemove', function() {
-                        if(!t.controlsAreVisible) {
-                            t.showControls();
-                        }
-                        
-                        t.startControlsTimer();
-                    });
+                    if(!t.controlsAreVisible) {
+                        t.showControls();
+                    }
+                    
+                    t.startControlsTimer();
+                });
             }
             
             // EVENTS
