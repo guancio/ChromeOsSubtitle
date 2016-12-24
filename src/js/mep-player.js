@@ -17,6 +17,8 @@
         
         // start up
         this.init();
+        
+        return this;
     };
     
     // actual player
@@ -183,6 +185,7 @@
             
             // error handling
             t.media.addEventListener('error', function(e) {
+                console.log(e);
                 if(t.getSrc() === '') {
                     return;
                 }
@@ -291,6 +294,25 @@
                 this.playIndex = parseInt(index);
             }
             
+            if(this.playlist[this.playIndex].name.split('.').pop().toLowerCase() === 'flv') {
+                if(this.flvTransmuxer !== undefined) {
+                    this.flvTransmuxer.unload();
+                    this.flvTransmuxer.detachMediaElement();
+                    this.flvTransmuxer.destroy();
+                    delete this.flvTransmuxer;
+                }
+
+                this.flvTransmuxer = new flvjs({
+                    url: window.URL.createObjectURL(this.playlist[this.playIndex]),
+                    type: 'flv'
+                });
+
+                this.flvTransmuxer.attachMediaElement(this.media);
+                this.flvTransmuxer.load();
+
+                return;
+            }
+
             this.media.src = window.URL.createObjectURL(this.playlist[this.playIndex]);
             document.title = this.playlist[this.playIndex].name;
             
@@ -345,6 +367,23 @@
                     c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, -8) + 'px' });
                     break;
             }
+        },
+        
+        grabFrame: function() {
+            var a = $('<a>'),
+                c = $('<canvas>');
+            
+            c.attr({
+                height: this.media.videoHeight,
+                width: this.media.videoWidth
+            });
+            
+            c.get().getContext('2d').drawImage(this.media, 0, 0);
+            
+            a.attr({
+                href: c.get().toDataURL('image/png'),
+                download: this.playlist[this.playIndex].name + '@' + parseInt(this.getCurrentTime()) + '.png'
+            }).get().click();
         },
         
         changeBrightness: function(inc) {
