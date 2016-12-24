@@ -17,6 +17,8 @@
         
         // start up
         this.init();
+        
+        return this;
     };
     
     // actual player
@@ -380,6 +382,23 @@
                     c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, -8) + 'px' });
                     break;
             }
+        },
+        
+        grabFrame: function() {
+            var a = $('<a>'),
+                c = $('<canvas>');
+            
+            c.attr({
+                height: this.media.videoHeight,
+                width: this.media.videoWidth
+            });
+            
+            c.get().getContext('2d').drawImage(this.media, 0, 0);
+            
+            a.attr({
+                href: c.get().toDataURL('image/png'),
+                download: this.playlist[this.playIndex].name + '@' + parseInt(this.getCurrentTime()) + '.png'
+            }).get().click();
         },
         
         changeBrightness: function(inc) {

@@ -269,6 +269,14 @@
                         player.cyclePlayType();
                     }
                 }
+            },
+            {
+                keys: [80],  // p
+                action: function(player, activeModifiers) {
+                    if(activeModifiers.ctrl) {
+                        player.grabFrame();
+                    }
+                }
             }
         ]
     });
