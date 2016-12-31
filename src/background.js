@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function() {
         type: 'basic',
         iconUrl: 'icon.png',
         title: 'Here is what\'s new in Subtitle Video Player!',
-        message: 'Google Materials Design Face-lift.\nFixes for many annoying bugs!\nLeaner, Meaner and Fitter!',
+        message: 'Partial FLV support!\nFixed disappearing controls.\nAdded screen grab (Ctrl + P) feature!',
         contextMessage: 'Click on this notification to visit the Wiki!',
         priority: 2,
         isClickable: true,
