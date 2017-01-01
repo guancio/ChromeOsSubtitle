@@ -73,13 +73,11 @@
                 // for touch devices (iOS, Android)
                 // show/hide without animation on touch
                 t.media.addEventListener('touchstart', function() {
-                    // toggle controls
-                    if(t.controlsAreVisible) {
-                        t.hideControls();
-                    }
-                    else {
+                    if(!t.controlsAreVisible) {
                         t.showControls();
                     }
+                    
+                    t.startControlsTimer();
                 });
             }
             
