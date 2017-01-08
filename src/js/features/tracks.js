@@ -124,7 +124,7 @@ zip.useWebWorkers = true;
         this.media.removeEventListener('timeupdate', timeUpdateHandler);
         
         if(this.subIndex !== -1) {
-            if(this.subtitles[this.subIndex].entries && this.subtitles[this.subIndex].entries.text === []) {
+            if(this.subtitles[this.subIndex].entries && this.subtitles[this.subIndex].entries.text.length === 0) {
                 this.notify('The given Subtitle file is corrupted!', 3000);
             }
             else {
