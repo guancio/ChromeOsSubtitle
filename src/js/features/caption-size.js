@@ -13,7 +13,7 @@
         capSizeValue = Math.min(Math.max(10, capSizeValue + (decrease ? -2 : 2)), 50);
         this.notify('Caption Size: ' + capSizeValue + 'px');
         wrnch.storage.set('default_sub_size', capSizeValue);
-        capSizeInput.attr({ 'value': capSizeValue.toFixed() });
+        capSizeInput.attr({ value: capSizeValue.toFixed() });
         updateCaptionSize();
     };
     
@@ -33,7 +33,7 @@
             .appendTo(captionSelector.find('ul'));
         
         wrnch.storage.get('default_sub_size', 22, function(value) {
-            capSizeInput.attr({ 'value': Number(value).toFixed() });
+            capSizeInput.attr({ value: Number(value).toFixed() });
             capSizeValue = value;
             updateCaptionSize();
         });

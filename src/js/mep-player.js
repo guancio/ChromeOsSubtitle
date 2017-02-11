@@ -307,7 +307,7 @@
 
                 this.flvTransmuxer.attachMediaElement(this.media);
                 this.flvTransmuxer.load();
-
+                
                 return;
             }
 
@@ -353,16 +353,16 @@
             
             switch(keyCode) {
                 case 37:
-                    c.css({ 'left': wrnch.addToPixel(computedStyles.left, -8) + 'px' });
+                    c.css({ left: wrnch.addToPixel(computedStyles.left, -8) + 'px' });
                     break;
                 case 38:
-                    c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, 8) + 'px' });
+                    c.css({ bottom: wrnch.addToPixel(computedStyles.bottom, 8) + 'px' });
                     break;
                 case 39:
-                    c.css({ 'left': wrnch.addToPixel(computedStyles.left, 8) + 'px' });
+                    c.css({ left: wrnch.addToPixel(computedStyles.left, 8) + 'px' });
                     break;
                 case 40:
-                    c.css({ 'bottom': wrnch.addToPixel(computedStyles.bottom, -8) + 'px' });
+                    c.css({ bottom: wrnch.addToPixel(computedStyles.bottom, -8) + 'px' });
                     break;
             }
         },

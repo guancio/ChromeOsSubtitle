@@ -3,7 +3,7 @@
         var t = this;
         
         $('<div class="mejs-button mejs-source-button mejs-source">' +
-            '<button type="button" title="' + chrome.i18n.getMessage('media') + '" aria-label="' + chrome.i18n.getMessage('media') + '"></button>' +
+            '<button type="button" title="' + chrome.i18n.getMessage('media') + '"></button>' +
         '</div>')
             .appendTo(t.leftControls)
             .on('click', function(e) {

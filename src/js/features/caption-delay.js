@@ -3,7 +3,7 @@
     
     MediaElementPlayer.prototype.changeSubtitleDelay = function(decrease) {
         this.capDelayValue += decrease ? -0.1 : 0.1;
-        capDelayInput.attr({ 'value': this.capDelayValue.toFixed(1) });
+        capDelayInput.attr({ value: this.capDelayValue.toFixed(1) });
         this.notify('Captions Delay: ' + (this.capDelayValue * 1000).toFixed() + 'ms');
     };
     
@@ -21,7 +21,7 @@
             .appendTo(captionSelector.find('ul'));
         
         t.media.addEventListener('loadeddata', function() {
-            capDelayInput.attr({ 'value': 0 });
+            capDelayInput.attr({ value: 0 });
             t.capDelayValue = 0;
         });
     };

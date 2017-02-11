@@ -13,8 +13,8 @@
         
         canvas
             .attr({
-                'width': CANVAS_WIDTH,
-                'height': CANVAS_HEIGHT
+                width: CANVAS_WIDTH,
+                height: CANVAS_HEIGHT
             })
             .insertBefore(timefloat.find('.mejs-time-float-current'));
         
@@ -24,11 +24,14 @@
     };
     
     MediaElementPlayer.prototype.setThumbnailSrc = function(src) {
+        console.log('asas');
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        thumbnailVideo.attr({ 'src': src });
+        thumbnailVideo.attr({ src: src });
+        console.log(thumbnailVideo);
     };
     
     MediaElementPlayer.prototype.paintThumbnail = wrnch.deBounce(function(time) {
-        thumbnailVideo.attr({ 'currentTime': time });
+        console.log(time);
+        thumbnailVideo.attr({ currentTime: time });
     }, 100);
 })();

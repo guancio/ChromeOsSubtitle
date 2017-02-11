@@ -12,7 +12,11 @@
                 for(var j = 0, jl = keyAction.keys.length; j < jl; j++) {
                     if(e.keyCode === keyAction.keys[j]) {
                         e.preventDefault();
-                        keyAction.action(t, { 'shift': e.shiftKey, 'alt': e.altKey, 'ctrl': e.ctrlKey });
+                        keyAction.action(t, {
+                            shift: e.shiftKey,
+                            alt: e.altKey,
+                            ctrl: e.ctrlKey
+                        });
                     }
                 }
             }

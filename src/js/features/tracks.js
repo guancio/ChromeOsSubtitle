@@ -58,21 +58,21 @@ zip.useWebWorkers = true;
         
         t.captionEncodingSelect = $(document).find('#encoding-selector').on('change', function(e) {
             wrnch.storage.get('default_encoding', 6, function(value) {
-                chrome.contextMenus.update(value + 'e', { 'checked': false });
+                chrome.contextMenus.update(value + 'e', { checked: false });
                 $(document).trigger('subtitleEncodingChanged', e.target.value);
                 t.setEncoding(e.target.value);
-                chrome.contextMenus.update(e.target.value + 'e', { 'checked': true });
+                chrome.contextMenus.update(e.target.value + 'e', { checked: true });
             });
         });
         
         wrnch.storage.get('default_encoding', 6, function(value) {
-            t.captionEncodingSelect.attr({ 'value': value });
+            t.captionEncodingSelect.attr({ value: value });
         });
         
         t.subSelect = $(document).find('#select_sub').on('change', function(e) {
-            chrome.contextMenus.update(t.subIndex + 's', { 'checked': false });
+            chrome.contextMenus.update(t.subIndex + 's', { checked: false });
             t.setSubtitle(e.target.value);
-            chrome.contextMenus.update(t.subIndex + 's', { 'checked': true });
+            chrome.contextMenus.update(t.subIndex + 's', { checked: true });
         });
         
         t.captionsButton.find('.mejs-captionload').find('button').on('click', function(e) {
@@ -108,7 +108,7 @@ zip.useWebWorkers = true;
     
     MediaElementPlayer.prototype.setEncoding = function(index) {
         wrnch.storage.set('default_encoding', parseInt(index));
-        this.captionEncodingSelect.attr({ 'value': parseInt(index) });
+        this.captionEncodingSelect.attr({ value: parseInt(index) });
         
         //Force subtitles to be re-parsed with new encoding.
         for(var i = 0; i < this.subtitles.length; i++) {
@@ -119,7 +119,7 @@ zip.useWebWorkers = true;
     MediaElementPlayer.prototype.setSubtitle = function(index) {
         this.subIndex = parseInt(index);
         this.captions.hide();
-        this.subSelect.attr({ 'value': this.subIndex });
+        this.subSelect.attr({ value: this.subIndex });
         
         this.media.removeEventListener('timeupdate', timeUpdateHandler);
         

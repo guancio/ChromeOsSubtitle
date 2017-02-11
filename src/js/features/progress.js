@@ -30,7 +30,7 @@
                         t.setCurrentTime(newTime);
                     }
                     
-                    timefloat.css({ 'left': pos + 'px' });
+                    timefloat.css({ left: pos + 'px' });
                     timefloatcurrent.html(wrnch.secondsToTimeCode(newTime));
                     t.paintThumbnail(newTime);
                 }
@@ -50,7 +50,7 @@
     
     MediaElementPlayer.prototype.setCurrentRail = function() {
         if(this.getSrc()) {
-            this.railBar.attr({ 'value': this.getCurrentTime() / this.getDuration() });
+            this.railBar.attr({ value: this.getCurrentTime() / this.getDuration() });
         }
     };
 })();
